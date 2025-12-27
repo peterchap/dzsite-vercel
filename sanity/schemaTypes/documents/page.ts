@@ -1,0 +1,63 @@
+export default {
+    name: "page",
+    title: "Page",
+    type: "document",
+    fields: [
+        { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
+        {
+            name: "slug",
+            title: "Slug",
+            type: "slug",
+            options: { source: "title" },
+            validation: (r: any) => r.required(),
+        },
+        { name: "seo", title: "SEO", type: "seo", initialValue: { _type: "seo" } },
+
+        // Optional: allow a page-level hero, then sections
+        {
+            name: "hero",
+            title: "Hero",
+            type: "section.heroSplitCta",
+        },
+        {
+            name: "sections",
+            title: "Sections",
+            type: "array",
+            of: [
+                { type: "section.heroSplitCta" },
+                { type: "section.simpleText" },
+                { type: "section.attackChainDiagram" },
+                { type: "section.benefitCards" },
+                { type: "section.signalGroups" },
+                { type: "section.globalCoverage" },
+                { type: "section.jsonExample" },
+                { type: "section.primaryUseCase" },
+                { type: "section.secondaryUseCases" },
+                { type: "section.productSplit" },
+                { type: "section.privacyCompliance" },
+                { type: "section.finalCta" },
+                { type: "section.faqList" },
+                { type: "section.statsGrid" },
+                { type: "section.featureList" },
+                { type: "section.integrationMethods" },
+                { type: "section.featureHighlight" },
+                { type: "section.domainLookup" },
+                { type: "section.pricingOverview" },
+                { type: "section.ctaBanner" },
+                { type: "section.dataSources" },
+                { type: "section.useCaseGrid" },
+                { type: "section.falsePositiveReduction" },
+                { type: "section.dataDictionary" },
+                { type: "section.documentList" },
+                { type: "section.featureGrid" },
+            ],
+        },
+    ],
+    preview: {
+        select: { title: "title", slug: "slug.current" },
+        prepare({ title, slug }: any) {
+            return { title, subtitle: slug ? `/${slug}` : "" };
+        },
+    },
+};
+
