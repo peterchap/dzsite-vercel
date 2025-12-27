@@ -53,7 +53,7 @@ export function DataDictionaryModal({
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                complete: (results: Papa.ParseResult<any>) => {
+                complete: (results: any) => {
                     setData(results.data);
                     setLoading(false);
                 },

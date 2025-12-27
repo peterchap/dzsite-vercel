@@ -1,4 +1,5 @@
 // /sanity/schemas/sections/heroPdiLaunch.js
+import type { Rule } from "sanity"
 export default {
   name: "section.heroPdiLaunch",
   title: "Hero – PDI Launch",
@@ -23,7 +24,7 @@ export default {
           ],
         },
       ],
-      validation: (r) => r.min(1).max(3),
+      validation: (r: Rule) => r.min(1).max(3),
     },
     {
       name: "note",

@@ -1,8 +1,12 @@
-import { NextStudio } from 'next-sanity/studio'
-import config from '../../../sanity.config'
+"use client"
 
-export { metadata, viewport } from 'next-sanity/studio'
+import dynamic from "next/dynamic"
+import config from "../../../sanity.config"
+
+const Studio = dynamic(() => import("next-sanity/studio").then(m => m.NextStudio), {
+  ssr: false,
+})
 
 export default function StudioPage() {
-  return <NextStudio config={config} />
+  return <Studio config={config} />
 }

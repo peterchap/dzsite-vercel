@@ -3,7 +3,7 @@ import React from "react";
 type Props = {
   children: React.ReactNode;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
 };
 
 export function Container({ children, className = "", as: Tag = "div" }: Props) {

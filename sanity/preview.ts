@@ -14,5 +14,8 @@ export const sanityPreviewClient = createClient({
 
 export async function sanityPreviewFetch<T>(query: string, params?: Record<string, any>) {
   // No caching in preview mode
-  return sanityPreviewClient.fetch<T>(query, params);
+  if (params === undefined) {
+    return sanityPreviewClient.fetch<T>(query)
+  }
+  return sanityPreviewClient.fetch<T>(query, params as any)
 }

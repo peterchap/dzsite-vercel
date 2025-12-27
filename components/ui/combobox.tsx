@@ -75,7 +75,7 @@ export function Combobox({
                 <CommandItem
                   key={item.value}
                   value={item.value}
-                  onSelect={(currentValue) => {
+                  onSelect={(currentValue: string) => {
                     // If the user selects the same item, clear the selection. Otherwise, set the new value.
                     setValue(currentValue === value ? null : currentValue);
                     setOpen(false);

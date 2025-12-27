@@ -2,7 +2,9 @@ import type { DocumentActionComponent } from "sanity";
 
 export const PreviewAction: DocumentActionComponent = (props) => {
   const { draft, published, onComplete } = props;
-  const slug = draft?.slug?.current || published?.slug?.current;
+  const d = draft as any;
+  const p = published as any;
+  const slug = d?.slug?.current || p?.slug?.current;
 
   const label = "Preview";
   const disabled = !slug;
