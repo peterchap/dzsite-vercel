@@ -14,7 +14,7 @@ export default function ResponsibleDisclosurePage() {
         <PageShell>
             {/* Hero Section */}
             <div className="border-b border-slate-100 bg-slate-50/30">
-                <div className="mx-auto max-w-6xl px-6 py-24 lg:py-32">
+                <div className="mx-auto max-w-6xl px-6 py-16 lg:py-20">
                     <div className="max-w-3xl">
                         <p className="text-sm font-bold uppercase tracking-widest text-blue-600">Trust & Safety</p>
                         <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
@@ -28,8 +28,8 @@ export default function ResponsibleDisclosurePage() {
             </div>
 
             {/* Content Sections */}
-            <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
-                <div className="mx-auto max-w-3xl space-y-20">
+            <div className="mx-auto max-w-6xl px-6 py-12 lg:py-16">
+                <div className="mx-auto max-w-3xl space-y-12">
 
                     {/* Reporting */}
                     <LegalSection title="Reporting a Vulnerability">
@@ -120,7 +120,7 @@ export default function ResponsibleDisclosurePage() {
 
 function LegalSection({ title, children, border = true }: { title: string; children: React.ReactNode; border?: boolean }) {
     return (
-        <section className={cn("space-y-6", border && "pb-16 border-b border-slate-100")}>
+        <section className={cn("space-y-6", border && "pb-10 border-b border-slate-100")}>
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{title}</h2>
             <div className="text-slate-600 leading-relaxed font-medium">
                 {children}

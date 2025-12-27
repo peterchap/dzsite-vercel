@@ -4,6 +4,7 @@ import page from "./documents/page";
 import useCase from "./documents/useCase";
 import pricingPage from "./documents/pricingPage";
 import blogPost from "./documents/blogPost";
+import subscriber from "./documents/subscriber";
 
 // Objects
 import seo from "./objects/seo";
@@ -44,6 +45,7 @@ export const schemaTypes = [
   useCase,
   pricingPage,
   blogPost,
+  subscriber,
 
   seo,
   cta,

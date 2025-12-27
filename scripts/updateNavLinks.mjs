@@ -28,11 +28,11 @@ async function run() {
   }
 
   const navLinks = [
-    { _type: 'navLink', label: 'Home', pageRef: { _type: 'reference', _ref: 'page.home' } },
-    { _type: 'navLink', label: 'Domain Intelligence', pageRef: { _type: 'reference', _ref: 'page.domain-intelligence' } },
-    { _type: 'navLink', label: 'Use Cases', pageRef: { _type: 'reference', _ref: 'page.use-cases' } },
-    { _type: 'navLink', label: 'Pricing', pageRef: { _type: 'reference', _ref: 'page.pricing' } },
-    { _type: 'navLink', label: 'Contact', pageRef: { _type: 'reference', _ref: 'page.contact' } },
+    { _type: 'navLink', label: 'Home', href: '/' },
+    { _type: 'navLink', label: 'Domain Intelligence', href: '/domain-intelligence' },
+    { _type: 'navLink', label: 'Documentation', href: '/docs' },
+    { _type: 'navLink', label: 'Pricing', href: '/pricing' },
+    { _type: 'navLink', label: 'Blog', href: '/blog' },
   ]
 
   const footerLinks = navLinks

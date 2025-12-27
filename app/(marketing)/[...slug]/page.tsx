@@ -42,22 +42,22 @@ export default async function PageBySlug(
     const preview = (await draftMode()).isEnabled;
     const fetcher = preview ? sanityPreviewFetch : sanityFetch;
     const page = await fetcher<PageDoc>(pageBySlugQuery, { slug });
-        if (!page) return notFound();
+    if (!page) return notFound();
 
-        const hasHero = !!(page.hero && page.hero._type === "section.heroSplitCta");
-        const hasSections = Array.isArray(page.sections) && page.sections.length > 0;
+    const hasHero = !!(page.hero && page.hero._type === "section.heroSplitCta");
+    const hasSections = Array.isArray(page.sections) && page.sections.length > 0;
 
-        return (
-            <PageShell>
-                {hasHero ? <HeroSplitCta {...(page.hero as any)} /> : null}
-                {hasSections ? (
-                    <SectionRenderer sections={page.sections} />
-                ) : null}
-                {!hasHero && !hasSections ? (
-                    <div className="mx-auto max-w-3xl px-6 py-16 text-center text-slate-500">
-                        No content found yet. Add a hero or sections in Studio.
-                    </div>
-                ) : null}
-            </PageShell>
-        );
+    return (
+        <PageShell>
+            {hasHero ? <HeroSplitCta {...(page.hero as any)} /> : null}
+            {hasSections ? (
+                <SectionRenderer sections={page.sections} />
+            ) : null}
+            {!hasHero && !hasSections ? (
+                <div className="mx-auto max-w-3xl px-6 py-16 text-center text-slate-500">
+                    No content found yet. Add a hero or sections in Studio.
+                </div>
+            ) : null}
+        </PageShell>
+    );
 }

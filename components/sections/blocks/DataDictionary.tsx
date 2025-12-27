@@ -68,11 +68,11 @@ export default function DataDictionary({
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                complete: (results: Papa.ParseResult<any>) => {
+                complete: (results: any) => {
                     setData(results.data);
                     setLoading(false);
                 },
-                error: (err: Error) => {
+                error: (err: any) => {
                     console.error("CSV Parse Error", err);
                     setError("Failed to load CSV data.");
                     setLoading(false);

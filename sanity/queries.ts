@@ -233,3 +233,34 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
   social
 }`;
+
+export const allBlogPostsQuery = `
+*[_type == "blogPost"] | order(publishedAt desc){
+  _id,
+  title,
+  "slug": slug.current,
+  publishedAt,
+  excerpt,
+  "tags": tags[],
+  "imageUrl": image.asset->url
+}
+`;
+
+export const blogPostBySlugQuery = `
+*[_type == "blogPost" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  publishedAt,
+  excerpt,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "url": asset->url
+    }
+  },
+  tags,
+  seo
+}
+`;

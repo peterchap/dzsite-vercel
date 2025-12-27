@@ -25,8 +25,9 @@ export function Header({
     const defaultNavLinks = [
         { label: "Home", href: "/" },
         { label: "Domain Intelligence", href: "/domain-intelligence" },
-        { label: "Use Cases", href: "/use-cases" },
+        { label: "Documentation", href: "/docs" },
         { label: "Pricing", href: "/pricing" },
+        { label: "Blog", href: "/blog" },
     ];
 
     const navLinks = (passedNavLinks && passedNavLinks.length > 0) ? passedNavLinks : defaultNavLinks;
