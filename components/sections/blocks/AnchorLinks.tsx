@@ -74,7 +74,7 @@ export function AnchorLinks({ title, subtitle, selectedAnchors = [], isDark, beh
                 <ButtonLink
                   key={item.anchor}
                   href={`#${item.anchor}`}
-                  variant={isActive ? "primary" : "outline"}
+                  variant={isActive ? "primary" : "secondary"}
                   onClick={onClick(item.anchor)}
                   className={`rounded-full px-8 py-2.5 text-sm font-semibold transition-all duration-300 shadow-sm ${isActive
                       ? 'bg-blue-600 text-white shadow-blue-200 hover:bg-blue-700'
