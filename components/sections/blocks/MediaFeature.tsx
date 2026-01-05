@@ -61,13 +61,19 @@ export function MediaFeature({
                         )}
                         {cta?.href && cta?.label && (
                             <div className={cn("pt-4", isBottom ? "flex justify-center" : "")}>
-                                <ButtonLink
-                                    href={cta.href}
-                                    variant={cta.variant || "primary"}
-                                    size="lg"
-                                >
-                                    {cta.label}
-                                </ButtonLink>
+                                {(() => {
+                                    const safeVariant: "primary" | "secondary" | "ghost" =
+                                        cta.variant === "outline" ? "secondary" : (cta.variant ?? "primary");
+                                    return (
+                                        <ButtonLink
+                                            href={cta.href}
+                                            variant={safeVariant}
+                                            size="lg"
+                                        >
+                                            {cta.label}
+                                        </ButtonLink>
+                                    );
+                                })()}
                             </div>
                         )}
                     </div>
