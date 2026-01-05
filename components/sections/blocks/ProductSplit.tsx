@@ -53,7 +53,7 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
 
             {left.cta?.href ? (
               <div className="mt-7">
-                <ButtonLink href={left.cta.href} variant={(left.cta.variant as any) ?? "secondary"}>
+                <ButtonLink href={left.cta.href} variant={(left.cta.variant as any) ?? "secondary"} size="lg">
                   {left.cta.label}
                 </ButtonLink>
               </div>
@@ -90,12 +90,12 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
               </div>
 
               {center.cta?.href ? (
-                <div className="mt-7">
-                  <ButtonLink href={center.cta.href} variant={(center.cta.variant as any) ?? "secondary"}>
-                    {center.cta.label}
-                  </ButtonLink>
-                </div>
-              ) : null}
+                  <div className="mt-7">
+                    <ButtonLink href={center.cta.href} variant={(center.cta.variant as any) ?? "secondary"} size="lg">
+                      {center.cta.label}
+                    </ButtonLink>
+                  </div>
+                ) : null}
             </div>
           ) : null}
 
@@ -130,7 +130,7 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
 
             {right.cta?.href ? (
               <div className="mt-7">
-                <ButtonLink href={right.cta.href} variant={(right.cta.variant as any) ?? "primary"}>
+                <ButtonLink href={right.cta.href} variant={(right.cta.variant as any) ?? "primary"} size="lg">
                   {right.cta.label}
                 </ButtonLink>
               </div>

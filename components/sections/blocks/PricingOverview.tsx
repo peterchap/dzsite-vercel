@@ -61,6 +61,7 @@ export default function PricingOverview({ isDark, title, tiers }: PricingOvervie
                                     <ButtonLink
                                         href={tier.cta.href || "#"}
                                         variant={(tier.cta.variant as any) || (i === 1 ? "primary" : "secondary")}
+                                        size="lg"
                                         className="w-full justify-center"
                                     >
                                         {tier.cta.label || "Get Started"}

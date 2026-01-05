@@ -63,13 +63,13 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
           {(hasPrimary || hasSecondary || dataDictionary?.enabled) ? (
             <div className="mt-10 flex flex-wrap justify-center gap-3">
               {hasPrimary ? (
-                <ButtonLink href={primaryCta!.href} variant={primaryCta!.variant ?? "primary"}>
+                <ButtonLink href={primaryCta!.href} variant={primaryCta!.variant ?? "primary"} size="lg">
                   {primaryCta!.label}
                 </ButtonLink>
               ) : null}
 
               {hasSecondary ? (
-                <ButtonLink href={secondaryCta!.href} variant={secondaryCta!.variant ?? "secondary"}>
+                <ButtonLink href={secondaryCta!.href} variant={secondaryCta!.variant ?? "secondary"} size="lg">
                   {secondaryCta!.label}
                 </ButtonLink>
               ) : null}

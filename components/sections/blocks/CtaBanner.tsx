@@ -48,16 +48,32 @@ export default function CtaBanner({
                         )}
 
                         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                            {primaryCta && (
-                                <ButtonLink href={primaryCta.href || "#"} variant={primaryCta.variant as any || "primary"} className="h-14 px-8 text-lg">
-                                    {primaryCta.label}
-                                </ButtonLink>
-                            )}
-                            {secondaryCta && (
-                                <ButtonLink href={secondaryCta.href || "#"} variant={secondaryCta.variant as any || "secondary"} className="h-14 px-8 text-lg border-white/20 text-white hover:bg-white/10">
-                                    {secondaryCta.label}
-                                </ButtonLink>
-                            )}
+                            {primaryCta && (() => {
+                                const v = (primaryCta.variant || "primary").toLowerCase();
+                                const safeVariant: "primary" | "secondary" | "ghost" =
+                                    v === "outline" ? "secondary" : (v === "primary" || v === "secondary" || v === "ghost" ? (v as any) : "primary");
+                                return (
+                                    <ButtonLink href={primaryCta.href || "#"} variant={safeVariant} size="lg">
+                                        {primaryCta.label}
+                                    </ButtonLink>
+                                );
+                            })()}
+
+                            {secondaryCta && (() => {
+                                const v = (secondaryCta.variant || "secondary").toLowerCase();
+                                const safeVariant: "primary" | "secondary" | "ghost" =
+                                    v === "outline" ? "secondary" : (v === "primary" || v === "secondary" || v === "ghost" ? (v as any) : "secondary");
+                                return (
+                                    <ButtonLink
+                                        href={secondaryCta.href || "#"}
+                                        variant={safeVariant}
+                                        size="lg"
+                                        className="border-white/20 text-white hover:bg-white/10"
+                                    >
+                                        {secondaryCta.label}
+                                    </ButtonLink>
+                                );
+                            })()}
                         </div>
 
                         {supportingText && (

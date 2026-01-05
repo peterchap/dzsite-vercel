@@ -31,13 +31,13 @@ export function FinalCta({ headline, subheadline, primaryCta, secondaryCta, isDa
             ) : null}
 
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <ButtonLink href={primaryCta.href} variant={primaryCta.variant ?? "primary"}>
+              <ButtonLink href={primaryCta.href} variant={primaryCta.variant ?? "primary"} size="lg">
                 {primaryCta.label}
                 <ArrowRight className="h-4 w-4" />
               </ButtonLink>
 
               {secondaryCta ? (
-                <ButtonLink href={secondaryCta.href} variant={secondaryCta.variant ?? "secondary"}>
+                <ButtonLink href={secondaryCta.href} variant={secondaryCta.variant ?? "secondary"} size="lg">
                   {secondaryCta.label}
                 </ButtonLink>
               ) : null}

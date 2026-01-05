@@ -5,16 +5,24 @@ type Props = {
   href: string;
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
   className?: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
-export function ButtonLink({ href, children, variant = "primary", className = "", onClick }: Props) {
+export function ButtonLink({ href, children, variant = "primary", size = "md", className = "", onClick }: Props) {
   const safeHref = normalizeHref(href);
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition " +
+    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ring-offset-white " +
     "active:translate-y-[1px]";
+
+  const sizeClasses =
+    size === "sm"
+      ? "px-4 py-2 text-sm"
+      : size === "lg"
+        ? "px-6 py-3 text-base"
+        : "px-5 py-3 text-sm"; // md default
 
   const styles =
     variant === "primary"
@@ -33,7 +41,7 @@ export function ButtonLink({ href, children, variant = "primary", className = ""
   if (!safeHref) return null;
 
   return (
-    <a href={safeHref} className={`${base} ${styles} ${className}`} onClick={onClick}>
+    <a href={safeHref} className={`${base} ${sizeClasses} ${styles} ${className}`} onClick={onClick}>
       {children}
     </a>
   );
