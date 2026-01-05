@@ -3,6 +3,7 @@ export default {
   title: "Section: Simple Text",
   type: "object",
   fields: [
+    { name: "anchor", title: "Section Anchor", type: "string", description: "Lowercase letters, numbers, dashes; unique per page", validation: (r: any) => r.regex(/^[a-z0-9-]+$/).warning("Use lowercase letters, numbers, dashes") },
     { name: "kicker", title: "Kicker (optional)", type: "string" },
     { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
     { name: "body", title: "Body", type: "text", rows: 7, validation: (r: any) => r.required() },

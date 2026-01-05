@@ -1,8 +1,15 @@
+import React from "react";
 import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
-export function FeatureGrid({ title, subtitle, features, isDark }: any) {
+export function FeatureGrid({ title, subtitle, features, isDark, columns = 3 }: any) {
+    const gridCols = columns === 4
+        ? "lg:grid-cols-4"
+        : columns === 2
+            ? "lg:grid-cols-2"
+            : "lg:grid-cols-3";
+
     return (
         <section className={cn("py-24", isDark ? 'bg-slate-50' : 'bg-white')}>
             <Container>
@@ -13,7 +20,7 @@ export function FeatureGrid({ title, subtitle, features, isDark }: any) {
                     </div>
                 )}
 
-                <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className={cn("mt-16 grid gap-8 sm:grid-cols-2", gridCols)}>
                     {features?.map((f: any, i: number) => (
                         <div key={i} className="flex flex-col rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-blue-500/5">
                             {/* Icon placeholder/support if we have dynamic icon names later */}

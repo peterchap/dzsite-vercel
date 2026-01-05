@@ -40,7 +40,17 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentTypeList("page")
             .title("Pages")
-            .filter('_id != "page.home"')
+            .filter('_id != "page.home" && slug.current != "site-settings" && title != "Site Settings"')
+        ),
+
+      // Helper: Orphan 'Site Settings' pages (open and delete)
+      S.listItem()
+        .title("Orphan Site Settings Pages")
+        .id("orphan-site-settings-pages")
+        .child(
+          S.documentTypeList("page")
+            .title("Orphan Site Settings Pages")
+            .filter('slug.current == "site-settings" || title match "Site Settings"')
         ),
 
       // Other document types, excluding ones we surface as singletons

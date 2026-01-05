@@ -14,9 +14,10 @@ type Props = {
   title: string;
   left: Col;
   right: Col & { integrationLine?: string };
+  center?: Col & { integrationLine?: string };
 };
 
-export default function ProductSplit({ title, left, right, isDark }: Props & { isDark?: boolean }) {
+export default function ProductSplit({ title, left, right, center, isDark }: Props & { isDark?: boolean }) {
   return (
     <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
@@ -27,7 +28,7 @@ export default function ProductSplit({ title, left, right, isDark }: Props & { i
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className={`mt-10 grid gap-6 ${center ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
           {/* Developers / SMB */}
           <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400" />
@@ -58,6 +59,45 @@ export default function ProductSplit({ title, left, right, isDark }: Props & { i
               </div>
             ) : null}
           </div>
+
+          {center ? (
+            <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400" />
+
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 rounded-2xl bg-blue-50 p-3 ring-1 ring-blue-100">
+                  <PlugZap className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-slate-500">Integrations & Add-ons</p>
+                  <h3 className="mt-1 text-xl font-semibold text-slate-900">{center.heading}</h3>
+                </div>
+              </div>
+
+              <p className="mt-4 whitespace-pre-line text-slate-600">{center.body}</p>
+
+              {center.integrationLine ? (
+                <div className="mt-4 flex items-start gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <PlugZap className="mt-0.5 h-4 w-4 text-blue-600" />
+                  <p className="text-sm text-slate-600">{center.integrationLine}</p>
+                </div>
+              ) : null}
+
+              <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-500">
+                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Prebuilt connectors</span>
+                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Flexible workflows</span>
+                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Extensible</span>
+              </div>
+
+              {center.cta?.href ? (
+                <div className="mt-7">
+                  <ButtonLink href={center.cta.href} variant={(center.cta.variant as any) ?? "secondary"}>
+                    {center.cta.label}
+                  </ButtonLink>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
 
           {/* Enterprise */}
           <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">

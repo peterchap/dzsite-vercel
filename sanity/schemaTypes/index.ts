@@ -38,6 +38,9 @@ import falsePositiveReduction from "./objects/sections/falsePositiveReduction";
 import dataDictionary from "./objects/sections/dataDictionary";
 import documentList from "./objects/sections/documentList";
 import featureGrid from "./objects/sections/featureGrid";
+import anchorLinks from "./objects/sections/anchorLinks";
+import mediaFeature from "./objects/sections/mediaFeature";
+import pillarRouter from "./objects/sections/pillarRouter";
 
 export const schemaTypes = [
   siteSettings,
@@ -77,4 +80,7 @@ export const schemaTypes = [
   dataDictionary,
   documentList,
   featureGrid,
+  anchorLinks,
+  mediaFeature,
+  pillarRouter,
 ];

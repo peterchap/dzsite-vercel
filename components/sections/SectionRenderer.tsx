@@ -30,6 +30,9 @@ import UseCaseGrid from "@/components/sections/blocks/UseCaseGrid";
 import FalsePositiveReduction from "@/components/sections/blocks/FalsePositiveReduction";
 import DataDictionary from "@/components/sections/blocks/DataDictionary";
 import DocumentList from "@/components/sections/blocks/DocumentList";
+import { MediaFeature } from "@/components/sections/blocks/MediaFeature";
+import { AnchorLinks } from "@/components/sections/blocks/AnchorLinks";
+import { PillarRouter } from "@/components/sections/blocks/PillarRouter";
 
 type Section = {
   _type: string;
@@ -48,260 +51,317 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
       {sections.map((section, index) => {
         const key = section._key ?? `${section._type}-${index}`;
         const isDark = index % 2 === 0;
+        const anchorId = (section.anchor as string | undefined) ?? (section._key ? `s-${section._key}` : undefined);
 
         switch (section._type) {
+          case "section.mediaFeature":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <MediaFeature {...section} isDark={isDark} />
+              </div>
+            );
+
+          case "section.pillarRouter":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PillarRouter {...section} isDark={isDark} />
+              </div>
+            );
+
           case "section.heroSplitCta":
             return (
-              <HeroSplitCta
-                key={key}
-                {...(section as unknown as React.ComponentProps<typeof HeroSplitCta>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <HeroSplitCta
+                  {...(section as unknown as React.ComponentProps<typeof HeroSplitCta>)}
+                />
+              </div>
             );
 
           case "section.simpleText":
             return (
-              <SimpleText
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof SimpleText>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <SimpleText
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof SimpleText>)}
+                />
+              </div>
             );
 
           case "section.attackChainDiagram":
-            return <AttackChainDiagram key={key} isDark={isDark} {...section} />;
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <AttackChainDiagram isDark={isDark} {...section} />
+              </div>
+            );
 
 
           case "section.benefitCards":
             return (
-              <BenefitCards
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof BenefitCards>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <BenefitCards
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof BenefitCards>)}
+                />
+              </div>
             );
 
           case "section.signalGroups":
             return (
-              <SignalGroups
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof SignalGroups>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <SignalGroups
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof SignalGroups>)}
+                />
+              </div>
             );
 
           case "section.globalCoverage":
             return (
-              <GlobalCoverage
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof GlobalCoverage>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <GlobalCoverage
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof GlobalCoverage>)}
+                />
+              </div>
             );
 
           case "section.jsonExample":
             return (
-              <JsonExample
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof JsonExample>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <JsonExample
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof JsonExample>)}
+                />
+              </div>
             );
 
           case "section.primaryUseCase":
             return (
-              <PrimaryUseCase
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof PrimaryUseCase>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PrimaryUseCase
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof PrimaryUseCase>)}
+                />
+              </div>
             );
 
           case "section.secondaryUseCases":
             return (
-              <SecondaryUseCases
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof SecondaryUseCases>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <SecondaryUseCases
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof SecondaryUseCases>)}
+                />
+              </div>
             );
 
           case "section.productSplit":
             return (
-              <ProductSplit
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof ProductSplit>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ProductSplit
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof ProductSplit>)}
+                />
+              </div>
             );
 
           case "section.privacyCompliance":
             return (
-              <PrivacyCompliance
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof PrivacyCompliance>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PrivacyCompliance
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof PrivacyCompliance>)}
+                />
+              </div>
             );
 
           case "section.finalCta":
             return (
-              <FinalCta
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FinalCta>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FinalCta
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FinalCta>)}
+                />
+              </div>
             );
 
           case "section.faqList":
             return (
-              <FaqList
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FaqList>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FaqList
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FaqList>)}
+                />
+              </div>
             );
 
           case "section.featureGrid":
             return (
-              <FeatureGrid
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FeatureGrid>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FeatureGrid
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FeatureGrid>)}
+                />
+              </div>
+            );
+
+          case "section.anchorLinks":
+            return (
+              <div id={anchorId} key={key}>
+                <AnchorLinks
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof AnchorLinks>)}
+                />
+              </div>
             );
 
           case "section.howItWorksSteps":
             return (
-              <HowItWorksSteps
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof HowItWorksSteps>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <HowItWorksSteps
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof HowItWorksSteps>)}
+                />
+              </div>
             );
 
           case "section.useCaseCards":
             return (
-              <UseCaseCards
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof UseCaseCards>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <UseCaseCards
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof UseCaseCards>)}
+                />
+              </div>
             );
 
           case "section.twoProductSplit":
             return (
-              <TwoProductSplit
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof TwoProductSplit>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <TwoProductSplit
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof TwoProductSplit>)}
+                />
+              </div>
             );
 
           case "section.statsGrid":
             return (
-              <StatsGrid
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof StatsGrid>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <StatsGrid
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof StatsGrid>)}
+                />
+              </div>
             );
 
           case "section.featureList":
             return (
-              <FeatureList
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FeatureList>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FeatureList
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FeatureList>)}
+                />
+              </div>
             );
 
           case "section.integrationMethods":
             return (
-              <IntegrationMethods
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof IntegrationMethods>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <IntegrationMethods
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof IntegrationMethods>)}
+                />
+              </div>
             );
 
           case "section.featureHighlight":
             return (
-              <FeatureHighlight
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FeatureHighlight>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FeatureHighlight
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FeatureHighlight>)}
+                />
+              </div>
             );
 
           case "section.domainLookup":
             return (
-              <DomainLookup
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof DomainLookup>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DomainLookup
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof DomainLookup>)}
+                />
+              </div>
             );
 
           case "section.pricingOverview":
             return (
-              <PricingOverview
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof PricingOverview>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PricingOverview
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof PricingOverview>)}
+                />
+              </div>
             );
 
           case "section.ctaBanner":
             return (
-              <CtaBanner
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof CtaBanner>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <CtaBanner
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof CtaBanner>)}
+                />
+              </div>
             );
 
           case "section.dataSources":
             return (
-              <DataSources
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof DataSources>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DataSources
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof DataSources>)}
+                />
+              </div>
             );
 
           case "section.useCaseGrid":
             return (
-              <UseCaseGrid
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof UseCaseGrid>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <UseCaseGrid
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof UseCaseGrid>)}
+                />
+              </div>
             );
 
           case "section.falsePositiveReduction":
             return (
-              <FalsePositiveReduction
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof FalsePositiveReduction>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <FalsePositiveReduction
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof FalsePositiveReduction>)}
+                />
+              </div>
             );
 
           case "section.dataDictionary":
             return (
-              <DataDictionary
-                key={key}
-                isDark={isDark}
-                {...(section as unknown as React.ComponentProps<typeof DataDictionary>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DataDictionary
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof DataDictionary>)}
+                />
+              </div>
             );
 
           case "section.documentList":
             return (
-              <DocumentList
-                key={key}
-                {...(section as unknown as React.ComponentProps<typeof DocumentList>)}
-              />
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DocumentList
+                  {...(section as unknown as React.ComponentProps<typeof DocumentList>)}
+                />
+              </div>
             );
 
           default:

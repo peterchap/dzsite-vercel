@@ -1,15 +1,14 @@
+import React from "react";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { normalizeHref } from "@/lib/links";
-import { urlFor } from "@/sanity/lib/image";
-import Image from "next/image";
+import { ChevronDown } from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-type NavLink = { label: string; href: string };
+type NavLink = { label: string; href: string; children?: NavLink[] };
 type Cta = { label: string; href: string; variant?: "primary" | "secondary" | "ghost" };
 
 export function Header({
-    title,
-    logo,
     navLinks: passedNavLinks,
     primaryCta,
     secondaryCta,
@@ -31,6 +30,7 @@ export function Header({
     ];
 
     const navLinks = (passedNavLinks && passedNavLinks.length > 0) ? passedNavLinks : defaultNavLinks;
+
     return (
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/70 backdrop-blur-xl transition hover:bg-white/80">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -42,17 +42,48 @@ export function Header({
 
                 <nav className="hidden items-center gap-8 md:flex">
                     {navLinks.map((link, i) => {
-                        // Force transformation of About to Domain Intelligence if it comes from Sanity
+                        const hasChildren = link.children && link.children.length > 0;
                         const l = link.label === "About"
-                            ? { label: "Domain Intelligence", href: "/domain-intelligence" }
+                            ? { ...link, label: "Domain Intelligence", href: "/domain-intelligence" }
                             : link;
 
                         const href = normalizeHref(l.href);
-                        if (!href) return null;
+                        if (!href && !hasChildren) return null;
+
+                        if (hasChildren) {
+                            return (
+                                <DropdownMenu.Root key={`${href || l.label}-${i}`}>
+                                    <DropdownMenu.Trigger className="group flex items-center gap-1 text-sm font-medium text-slate-600 transition hover:text-blue-600 outline-none">
+                                        {l.label}
+                                        <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                                    </DropdownMenu.Trigger>
+
+                                    <DropdownMenu.Portal>
+                                        <DropdownMenu.Content
+                                            className="z-[60] min-w-[160px] rounded-xl border border-slate-200 bg-white p-2 shadow-xl animate-in fade-in zoom-in duration-200"
+                                            align="start"
+                                            sideOffset={8}
+                                        >
+                                            {l.children?.map((child, ci) => (
+                                                <DropdownMenu.Item key={ci} asChild>
+                                                    <Link
+                                                        href={normalizeHref(child.href) || "#"}
+                                                        className="block rounded-lg px-3 py-2 text-sm text-slate-600 outline-none transition hover:bg-slate-50 hover:text-blue-600"
+                                                    >
+                                                        {child.label}
+                                                    </Link>
+                                                </DropdownMenu.Item>
+                                            ))}
+                                        </DropdownMenu.Content>
+                                    </DropdownMenu.Portal>
+                                </DropdownMenu.Root>
+                            );
+                        }
+
                         return (
                             <Link
                                 key={`${href}-${i}`}
-                                href={href}
+                                href={href || "#"}
                                 className="relative text-sm font-medium text-slate-600 transition hover:text-blue-600 group"
                             >
                                 {l.label}

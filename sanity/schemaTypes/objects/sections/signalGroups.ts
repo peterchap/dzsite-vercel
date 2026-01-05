@@ -3,6 +3,7 @@ export default {
   title: "Section: Signal Groups (Explainable Scoring)",
   type: "object",
   fields: [
+    { name: "anchor", title: "Section Anchor", type: "string", description: "Lowercase letters, numbers, dashes; unique per page", validation: (r: any) => r.regex(/^[a-z0-9-]+$/).warning("Use lowercase letters, numbers, dashes") },
     { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
     { name: "intro", title: "Intro (optional)", type: "text", rows: 3 },
     {

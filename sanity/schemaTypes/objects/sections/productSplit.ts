@@ -15,6 +15,22 @@ export default {
       ],
     },
     {
+      name: "center",
+      title: "Center Column (optional)",
+      type: "object",
+      fields: [
+        { name: "heading", title: "Heading", type: "string" },
+        { name: "body", title: "Body", type: "text", rows: 4 },
+        { name: "cta", title: "CTA", type: "cta" },
+        {
+          name: "integrationLine",
+          title: "Integration Line (optional)",
+          type: "string",
+          description: "Optional note shown in card, e.g. connector/integration blurb.",
+        },
+      ],
+    },
+    {
       name: "right",
       title: "Right Column",
       type: "object",

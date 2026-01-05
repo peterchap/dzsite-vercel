@@ -3,7 +3,7 @@ export default {
     title: "CTA",
     type: "object",
     fields: [
-        { name: "label", title: "Label", type: "string", validation: (Rule: any) => Rule.required() },
+        { name: "label", title: "Label", type: "string" },
         {
             name: "href",
             title: "Link (internal or external)",
@@ -32,6 +32,13 @@ export default {
             })
         },
         {
+            name: "anchor",
+            title: "Section Anchor (optional)",
+            type: "string",
+            description: "Lowercase letters, numbers, dashes; appended as #anchor",
+            validation: (Rule: any) => Rule.regex(/^[a-z0-9-]+$/).warning('Use lowercase letters, numbers, dashes'),
+        },
+        {
             name: "variant",
             title: "Variant",
             type: "string",
@@ -41,7 +48,13 @@ export default {
     ],
     validation: (Rule: any) => Rule.custom((val: any) => {
         if (!val) return true;
-        if (val.pageRef || val.href || val.externalHref) return true;
-        return "Provide Internal Page or an External URL";
+        const hasLink = val.pageRef || val.href || val.externalHref;
+        const hasLabel = !!val.label;
+
+        if (!hasLink && !hasLabel) return true; // Both empty is fine
+        if (hasLink && !hasLabel) return "Label is required when a link is provided";
+        if (hasLabel && !hasLink) return "A link (Internal Page or External URL) is required when a label is provided";
+
+        return true;
     }),
 };

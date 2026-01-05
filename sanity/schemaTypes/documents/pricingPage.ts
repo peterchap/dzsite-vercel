@@ -2,6 +2,36 @@ export default {
     name: "pricingPage",
     title: "Pricing Page",
     type: "document",
+    initialValue: {
+        slug: { current: "pricing" },
+        sections: [
+            {
+                _type: "section.anchorLinks",
+                title: "Jump to Pricing",
+                behavior: "switch",
+                selectedAnchors: [
+                    { anchor: "pricing-phishing-alerts", label: "Phishing Alerts" },
+                    { anchor: "pricing-api", label: "API" },
+                    { anchor: "pricing-cloud-shares", label: "Cloud Shares" },
+                ],
+            },
+            {
+                _type: "section.pricingOverview",
+                title: "Phishing Alerts",
+                anchor: "pricing-phishing-alerts",
+            },
+            {
+                _type: "section.pricingOverview",
+                title: "API",
+                anchor: "pricing-api",
+            },
+            {
+                _type: "section.pricingOverview",
+                title: "Cloud Shares",
+                anchor: "pricing-cloud-shares",
+            },
+        ],
+    },
     fields: [
         { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
         {
@@ -48,6 +78,9 @@ export default {
                 { type: "section.falsePositiveReduction" },
                 { type: "section.documentList" },
                 { type: "section.featureGrid" },
+                { type: "section.anchorLinks" },
+                { type: "section.mediaFeature" },
+                { type: "section.pillarRouter" },
             ],
         },
         { name: "headline", title: "Headline (Legacy)", type: "string" },

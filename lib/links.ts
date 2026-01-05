@@ -3,6 +3,11 @@ export function normalizeHref(input?: string | null): string | undefined {
   let href = String(input).trim();
   if (!href) return undefined;
 
+  // Allow in-page hash anchors as-is
+  if (href.startsWith("#")) {
+    return href;
+  }
+
   // If it's already absolute (http, https, mailto, tel), keep as-is
   const lower = href.toLowerCase();
   if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("mailto:") || lower.startsWith("tel:")) {

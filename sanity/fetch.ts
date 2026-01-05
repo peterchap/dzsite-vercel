@@ -1,7 +1,7 @@
 import { sanityClient } from "./client";
 export { sanityClient };
 
-export async function sanityFetch<T>(query: string, params?: Record<string, any>, revalidateSeconds = 60) {
+export async function sanityFetch<T>(query: string, params?: Record<string, any>, revalidateSeconds = 5) {
     // Next.js caching (App Router). You can tune per page.
     // Guard: if query references $slug, ensure a slug param is provided
     if (/\$slug\b/.test(query)) {

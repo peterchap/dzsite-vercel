@@ -16,24 +16,34 @@ export const pageBySlugQuery = `
     headline,
     subheadline,
     badge,
-    primaryCta{
-      label,
-      variant,
-      "href": coalesce(
-        href,
-        externalHref,
-        select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    "primaryCta": select(defined(primaryCta) => {
+      "label": primaryCta.label,
+      "variant": primaryCta.variant,
+      "href": select(
+        defined(primaryCta.anchor) => select(
+          defined(primaryCta.href) || defined(primaryCta.externalHref) => coalesce(primaryCta.href, primaryCta.externalHref) + "#" + primaryCta.anchor,
+          true => select(primaryCta.pageRef->slug.current == "home" => "/", "/" + primaryCta.pageRef->slug.current) + "#" + primaryCta.anchor
+        ),
+        true => select(
+          defined(primaryCta.href) || defined(primaryCta.externalHref) => coalesce(primaryCta.href, primaryCta.externalHref),
+          true => select(primaryCta.pageRef->slug.current == "home" => "/", "/" + primaryCta.pageRef->slug.current)
+        )
       )
-    },
-    secondaryCta{
-      label,
-      variant,
-      "href": coalesce(
-        href,
-        externalHref,
-        select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    }, true => primaryCta),
+    "secondaryCta": select(defined(secondaryCta) => {
+      "label": secondaryCta.label,
+      "variant": secondaryCta.variant,
+      "href": select(
+        defined(secondaryCta.anchor) => select(
+          defined(secondaryCta.href) || defined(secondaryCta.externalHref) => coalesce(secondaryCta.href, secondaryCta.externalHref) + "#" + secondaryCta.anchor,
+          true => select(secondaryCta.pageRef->slug.current == "home" => "/", "/" + secondaryCta.pageRef->slug.current) + "#" + secondaryCta.anchor
+        ),
+        true => select(
+          defined(secondaryCta.href) || defined(secondaryCta.externalHref) => coalesce(secondaryCta.href, secondaryCta.externalHref),
+          true => select(secondaryCta.pageRef->slug.current == "home" => "/", "/" + secondaryCta.pageRef->slug.current)
+        )
       )
-    },
+    }, true => secondaryCta),
     dataDictionary{
       enabled,
       buttonText,
@@ -50,6 +60,11 @@ export const pageBySlugQuery = `
     _key,
     _type,
     ...,
+    anchor,
+    "selectedAnchors": select(
+      _type == "section.anchorLinks" => selectedAnchors,
+      true => []
+    ),
     "csvFile": select(
       _type == "section.dataDictionary" => csvFile {
         asset->{
@@ -62,19 +77,29 @@ export const pageBySlugQuery = `
     "primaryCta": select(defined(primaryCta) => {
       "label": primaryCta.label,
       "variant": primaryCta.variant,
-      "href": coalesce(
-        primaryCta.href,
-        primaryCta.externalHref,
-        select(primaryCta.pageRef->slug.current == "home" => "/", "/" + primaryCta.pageRef->slug.current)
+      "href": select(
+        defined(primaryCta.anchor) => select(
+          defined(primaryCta.href) || defined(primaryCta.externalHref) => coalesce(primaryCta.href, primaryCta.externalHref) + "#" + primaryCta.anchor,
+          true => select(primaryCta.pageRef->slug.current == "home" => "/", "/" + primaryCta.pageRef->slug.current) + "#" + primaryCta.anchor
+        ),
+        true => select(
+          defined(primaryCta.href) || defined(primaryCta.externalHref) => coalesce(primaryCta.href, primaryCta.externalHref),
+          true => select(primaryCta.pageRef->slug.current == "home" => "/", "/" + primaryCta.pageRef->slug.current)
+        )
       )
     }, true => primaryCta),
     "secondaryCta": select(defined(secondaryCta) => {
       "label": secondaryCta.label,
       "variant": secondaryCta.variant,
-      "href": coalesce(
-        secondaryCta.href,
-        secondaryCta.externalHref,
-        select(secondaryCta.pageRef->slug.current == "home" => "/", "/" + secondaryCta.pageRef->slug.current)
+      "href": select(
+        defined(secondaryCta.anchor) => select(
+          defined(secondaryCta.href) || defined(secondaryCta.externalHref) => coalesce(secondaryCta.href, secondaryCta.externalHref) + "#" + secondaryCta.anchor,
+          true => select(secondaryCta.pageRef->slug.current == "home" => "/", "/" + secondaryCta.pageRef->slug.current) + "#" + secondaryCta.anchor
+        ),
+        true => select(
+          defined(secondaryCta.href) || defined(secondaryCta.externalHref) => coalesce(secondaryCta.href, secondaryCta.externalHref),
+          true => select(secondaryCta.pageRef->slug.current == "home" => "/", "/" + secondaryCta.pageRef->slug.current)
+        )
       )
     }, true => secondaryCta),
     // Nested left/right objects with CTAs
@@ -83,10 +108,15 @@ export const pageBySlugQuery = `
       "cta": select(defined(cta) => {
         "label": cta.label,
         "variant": cta.variant,
-        "href": coalesce(
-          cta.href,
-          cta.externalHref,
-          select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+        "href": select(
+          defined(cta.anchor) => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+          ),
+          true => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+          )
         )
       }, true => cta)
     }, true => left),
@@ -95,23 +125,50 @@ export const pageBySlugQuery = `
       "cta": select(defined(cta) => {
         "label": cta.label,
         "variant": cta.variant,
-        "href": coalesce(
-          cta.href,
-          cta.externalHref,
-          select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+        "href": select(
+          defined(cta.anchor) => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+          ),
+          true => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+          )
         )
       }, true => cta)
     }, true => right),
+    "center": select(defined(center) => center{
+      ...,
+      "cta": select(defined(cta) => {
+        "label": cta.label,
+        "variant": cta.variant,
+        "href": select(
+          defined(cta.anchor) => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+          ),
+          true => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+          )
+        )
+      }, true => cta)
+    }, true => center),
     // Arrays of cards with inner CTA
     "cards": select(defined(cards) => cards[]{
       ...,
       "cta": select(defined(cta) => {
         "label": cta.label,
         "variant": cta.variant,
-        "href": coalesce(
-          cta.href,
-          cta.externalHref,
-          select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+        "href": select(
+          defined(cta.anchor) => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+          ),
+          true => select(
+            defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+            true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+          )
         )
       }, true => cta)
     }, true => cards),
@@ -152,20 +209,43 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
   navLinks[]{
     label,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
-    )
+    "href": select(
+      defined(anchor) => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+      ),
+      true => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref),
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+      )
+    ),
+    children[]{
+      label,
+      "href": select(
+        defined(anchor) => select(
+          defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+          true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+        ),
+        true => select(
+          defined(href) || defined(externalHref) => coalesce(href, externalHref),
+          true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+        )
+      )
+    }
   },
 
   // Legacy (keep)
   footerLinks[]{
     label,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    "href": select(
+      defined(anchor) => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+      ),
+      true => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref),
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+      )
     )
   },
 
@@ -176,59 +256,74 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
   productLinks[]{
     label,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    "href": select(
+      defined(anchor) => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+      ),
+      true => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref),
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+      )
     )
   },
 
   trustLinks[]{
     label,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    "href": select(
+      defined(anchor) => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+      ),
+      true => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref),
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+      )
     )
   },
 
   companyLinks[]{
     label,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    "href": select(
+      defined(anchor) => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref) + "#" + anchor,
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current) + "#" + anchor
+      ),
+      true => select(
+        defined(href) || defined(externalHref) => coalesce(href, externalHref),
+        true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+      )
     )
   },
 
   primaryCta{
     label,
     variant,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
-    )
+    "href": select(
+      defined(href) || defined(externalHref) => coalesce(href, externalHref),
+      true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    ),
+    anchor
   },
 
   secondaryCta{
     label,
     variant,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
-    )
+    "href": select(
+      defined(href) || defined(externalHref) => coalesce(href, externalHref),
+      true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    ),
+    anchor
   },
 
   portalCta{
     label,
     variant,
-    "href": coalesce(
-      href,
-      externalHref,
-      select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
-    )
+    "href": select(
+      defined(href) || defined(externalHref) => coalesce(href, externalHref),
+      true => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current)
+    ),
+    anchor
   },
 
   social

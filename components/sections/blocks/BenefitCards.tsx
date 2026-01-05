@@ -1,5 +1,6 @@
 import React from "react";
 import { BadgeCheck, Clock, Filter, Workflow } from "lucide-react";
+import { Container } from "@/components/ui/Container";
 
 type BenefitCard = { title: string; description: string };
 type Props = {
@@ -19,13 +20,23 @@ const ICONS: Record<string, React.ReactNode> = {
 export default function BenefitCards({ kicker, title, subtitle, cards, isDark }: Props & { isDark?: boolean }) {
   return (
     <section className={`relative overflow-hidden py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
-
-      <div className="relative mx-auto max-w-6xl px-6">
+      <Container className="relative">
         <div className="max-w-3xl text-center mx-auto">
-          {kicker ? <p className="text-sm font-medium text-slate-500 text-center">{kicker}</p> : null}
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 text-center">{title}</h2>
-          {subtitle ? <p className="mt-3 text-lg text-slate-600 text-center">{subtitle}</p> : null}
+          {kicker && (
+            <p className="text-sm font-medium text-slate-500 text-center">
+              {kicker}
+            </p>
+          )}
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 text-center">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="mt-3 text-lg text-slate-600 text-center">
+              {subtitle}
+            </p>
+          )}
         </div>
+
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {cards?.map((c, idx) => (
             <div
@@ -61,7 +72,7 @@ export default function BenefitCards({ kicker, title, subtitle, cards, isDark }:
             Designed for SOC workflows
           </span>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

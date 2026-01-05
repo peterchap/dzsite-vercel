@@ -28,7 +28,7 @@ export default function PricingOverview({ isDark, title, tiers }: PricingOvervie
                         {title}
                     </h2>
                 )}
-                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-wrap justify-center gap-8">
                     {tiers?.map((tier, i) => {
                         const isMainHighlighted = tiers.length === 3 && i === 1;
                         const isEnterpriseHighlighted = tiers.length === 4 && i === 3;
@@ -37,15 +37,15 @@ export default function PricingOverview({ isDark, title, tiers }: PricingOvervie
                         return (
                             <div
                                 key={i}
-                                className={`flex flex-col p-8 rounded-3xl border transition-all duration-300 ${isHighlighted
+                                className={`flex flex-col w-full md:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-sm p-8 rounded-3xl border transition-all duration-300 ${isHighlighted
                                     ? "border-blue-500 bg-white shadow-xl lg:scale-105 z-10"
                                     : "border-slate-200 bg-white shadow-sm hover:border-blue-200"
                                     }`}
                             >
                                 <div className="mb-8">
-                                    <h3 className="text-xl font-bold text-center text-900">{tier.name}</h3>
+                                    <h3 className="text-xl font-bold text-center text-slate-900">{tier.name}</h3>
                                     <h3 className="mt-3 text-xl font-bold text-center text-slate-700">{tier.price}</h3>
-                                    
+
                                     {tier.subtitle && <p className="mt-2 text-center text-sm text-slate-500">{tier.subtitle}</p>}
                                 </div>
                                 <ul className="mb-10 space-y-4 flex-1">
