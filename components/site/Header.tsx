@@ -21,7 +21,7 @@ export function Header({
     secondaryCta?: Cta;
     portalCta?: Cta;
 }) {
-    const defaultNavLinks = [
+    const defaultNavLinks: NavLink[] = [
         { label: "Home", href: "/" },
         { label: "Domain Intelligence", href: "/domain-intelligence" },
         { label: "Documentation", href: "/docs" },
@@ -29,7 +29,7 @@ export function Header({
         { label: "Blog", href: "/blog" },
     ];
 
-    const navLinks = (passedNavLinks && passedNavLinks.length > 0) ? passedNavLinks : defaultNavLinks;
+    const navLinks: NavLink[] = (passedNavLinks && passedNavLinks.length > 0) ? passedNavLinks : defaultNavLinks;
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/70 backdrop-blur-xl transition hover:bg-white/80">
