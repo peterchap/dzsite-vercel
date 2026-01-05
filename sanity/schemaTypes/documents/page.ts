@@ -53,6 +53,7 @@ export default {
                 { type: "section.anchorLinks" },
                 { type: "section.mediaFeature" },
                 { type: "section.pillarRouter" },
+                { type: "section.trustEvidence" },
             ],
         },
     ],

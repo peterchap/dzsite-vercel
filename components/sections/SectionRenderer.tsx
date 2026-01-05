@@ -33,6 +33,7 @@ import DocumentList from "@/components/sections/blocks/DocumentList";
 import { MediaFeature } from "@/components/sections/blocks/MediaFeature";
 import { AnchorLinks } from "@/components/sections/blocks/AnchorLinks";
 import { PillarRouter } from "@/components/sections/blocks/PillarRouter";
+import { TrustEvidence } from "@/components/sections/blocks/TrustEvidence";
 
 type Section = {
   _type: string;
@@ -65,6 +66,13 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
             return (
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <PillarRouter {...section} isDark={isDark} />
+              </div>
+            );
+
+          case "section.trustEvidence":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <TrustEvidence {...section} isDark={isDark} />
               </div>
             );
 

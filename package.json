@@ -17,7 +17,8 @@
     "site:seed-home": "node scripts/seedHomeContent.mjs",
     "sanity:fix-seo-null": "node scripts/fixSeoNull.mjs",
     "sanity:check-home-links": "node scripts/checkHomeLinks.mjs",
-    "studio:dev": "npx sanity dev --port 3333"
+    "studio:dev": "npx sanity dev --port 3333",
+    "site:seed-trust": "node scripts/seedTrustEvidence.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

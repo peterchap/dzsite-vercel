@@ -41,6 +41,7 @@ import featureGrid from "./objects/sections/featureGrid";
 import anchorLinks from "./objects/sections/anchorLinks";
 import mediaFeature from "./objects/sections/mediaFeature";
 import pillarRouter from "./objects/sections/pillarRouter";
+import trustEvidence from "./objects/sections/trustEvidence";
 
 export const schemaTypes = [
   siteSettings,
@@ -83,4 +84,5 @@ export const schemaTypes = [
   anchorLinks,
   mediaFeature,
   pillarRouter,
+  trustEvidence,
 ];
