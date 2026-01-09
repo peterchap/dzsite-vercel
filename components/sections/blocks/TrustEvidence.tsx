@@ -44,7 +44,7 @@ export function TrustEvidence({
   };
 
   return (
-    <section id={anchor} className={cn("py-24 border-y border-slate-100", isDark ? "bg-slate-50" : "bg-white")}> 
+    <section id={anchor} className={cn("py-12 border-y border-slate-100", isDark ? "bg-slate-50" : "bg-white")}>
       <Container>
         <div className="mx-auto max-w-7xl">
           <div className="overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white/80 shadow-2xl px-8 py-12 md:px-16 md:py-16 text-center">

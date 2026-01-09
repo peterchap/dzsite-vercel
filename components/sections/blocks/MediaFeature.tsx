@@ -38,7 +38,7 @@ export function MediaFeature({
     const fitClass = imageFit === "contain" ? "object-contain" : "object-cover";
 
     return (
-        <section className={cn("py-24", isDark ? 'bg-slate-50' : 'bg-white')}>
+        <section className={cn("py-12", isDark ? 'bg-slate-50' : 'bg-white')}>
             <Container>
                 <div className={cn(
                     "grid gap-12 lg:items-center",

@@ -2,7 +2,7 @@ import { SectionJsonExample } from "@/sanity/types";
 
 export function JsonExample({ title, intro, json, callouts, isDark }: SectionJsonExample & { isDark?: boolean }) {
     return (
-        <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+        <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
             <div className="mx-auto max-w-6xl px-6">
                 <h2 className="text-3xl font-semibold">{title}</h2>
                 {intro && <p className="mt-4 max-w-2xl opacity-80">{intro}</p>}

@@ -15,7 +15,7 @@ interface StatsGridProps {
 
 export default function StatsGrid({ isDark, title, items }: StatsGridProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 {title && (
                     <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">

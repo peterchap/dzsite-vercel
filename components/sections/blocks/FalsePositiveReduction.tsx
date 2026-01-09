@@ -33,7 +33,7 @@ export default function FalsePositiveReduction({
     image,
 }: FalsePositiveReductionProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 <div className="grid gap-0 lg:grid-cols-2 lg:items-center">
                     {/* Left Content */}

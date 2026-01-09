@@ -8,7 +8,7 @@ type Props = {
 
 export default function PrimaryUseCase({ title, body, example, isDark }: Props & { isDark?: boolean }) {
   return (
-    <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>

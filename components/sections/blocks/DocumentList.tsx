@@ -12,7 +12,7 @@ export default function DocumentList({
     documents?: any[];
 }) {
     return (
-        <section className="py-24 bg-white relative">
+        <section className="py-12 bg-white relative">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="max-w-2xl">
                     {title && <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">{title}</h2>}

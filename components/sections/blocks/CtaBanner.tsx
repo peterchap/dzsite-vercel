@@ -28,7 +28,7 @@ export default function CtaBanner({
     supportingText,
 }: CtaBannerProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 <div className="overflow-hidden rounded-[2.5rem] bg-slate-900 px-8 py-16 text-center shadow-2xl md:px-16 md:py-20 relative">
                     {/* Decorative background gradients */}

@@ -2,7 +2,7 @@ import { SectionUseCaseCards } from "@/sanity/types";
 
 export function UseCaseCards({ title, subtitle, cards, isDark }: SectionUseCaseCards & { isDark?: boolean }) {
     return (
-        <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+        <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
             <div className="mx-auto max-w-6xl px-6">
                 {title && <h2 className="text-3xl font-semibold text-center">{title}</h2>}
                 {subtitle && <p className="mt-4 max-w-2xl text-slate-600 text-center mx-auto">{subtitle}</p>}

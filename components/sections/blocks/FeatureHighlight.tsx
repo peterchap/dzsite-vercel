@@ -17,7 +17,7 @@ interface FeatureHighlightProps {
 
 export default function FeatureHighlight({ isDark, title, content, approaches, visual }: FeatureHighlightProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
                     <div className="space-y-8">

@@ -8,7 +8,7 @@ export function FinalCta({ headline, subheadline, primaryCta, secondaryCta, isDa
   const title = headline ?? rest?.title
   const subtitle = subheadline ?? rest?.subtitle
   return (
-    <section className={`relative overflow-hidden py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`relative overflow-hidden py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       {/* background */}
       <div className={`absolute inset-0 ${isDark ? 'bg-slate-50' : 'bg-white'}`} />
       <div className="absolute -left-24 -bottom-24 h-72 w-72 rounded-full bg-blue-200/30 blur-3xl" />

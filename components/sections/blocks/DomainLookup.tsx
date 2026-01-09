@@ -50,7 +50,7 @@ export default function DomainLookup({ isDark, title, content, placeholder, butt
     };
 
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 <div className="mx-auto max-w-4xl text-center">
                     {title && (

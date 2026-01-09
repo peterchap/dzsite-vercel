@@ -30,7 +30,7 @@ export default function SignalGroups({
   isDark
 }: Props & { isDark?: boolean }) {
   return (
-    <section className={`relative overflow-hidden py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`relative overflow-hidden py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
 
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Centered header */}

@@ -19,18 +19,18 @@ type Props = {
 
 export default function ProductSplit({ title, left, right, center, isDark }: Props & { isDark?: boolean }) {
   return (
-    <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-3xl text-center mx-auto">
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900 text-center">{title}</h2>
           <p className="mt-3 text-slate-600 text-center">
-            Choose self-serve speed for integration, or enterprise delivery for operational scale and workflows.
+
           </p>
         </div>
 
-        <div className={`mt-10 grid gap-6 ${center ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
-          {/* Developers / SMB */}
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">
+        <div className={`mt-10 grid gap-6 ${center ? 'lg:grid-cols-3 md:grid-rows-[auto_1fr_auto_auto]' : 'lg:grid-cols-2 md:grid-rows-[auto_1fr_auto_auto]'}`}>
+          {/* Left Column */}
+          <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md md:grid md:grid-rows-subgrid md:row-span-4">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400" />
 
             <div className="flex items-start gap-3">
@@ -38,30 +38,28 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
                 <Code2 className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-500">For Developers & SMBs</p>
                 <h3 className="mt-1 text-xl font-semibold text-slate-900">{left.heading}</h3>
               </div>
             </div>
 
-            <p className="mt-4 whitespace-pre-line text-slate-600">{left.body}</p>
-
-            <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-500">
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Fast integration</span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Transparent pricing</span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">API-first</span>
+            <div className="flex flex-col">
+              <p className="mt-4 whitespace-pre-line text-slate-600">{left.body}</p>
             </div>
 
-            {left.cta?.href ? (
-              <div className="mt-7">
+            {/* Placeholder for integration line to maintain grid alignment */}
+            <div className="invisible h-0 md:h-auto" aria-hidden="true" />
+
+            <div className="mt-auto flex flex-col pt-7">
+              {left.cta?.href && (
                 <ButtonLink href={left.cta.href} variant={(left.cta.variant as any) ?? "secondary"} size="lg">
                   {left.cta.label}
                 </ButtonLink>
-              </div>
-            ) : null}
+              )}
+            </div>
           </div>
 
           {center ? (
-            <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">
+            <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md md:grid md:grid-rows-subgrid md:row-span-4">
               <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400" />
 
               <div className="flex items-start gap-3">
@@ -69,38 +67,37 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
                   <PlugZap className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-slate-500">Integrations & Add-ons</p>
                   <h3 className="mt-1 text-xl font-semibold text-slate-900">{center.heading}</h3>
                 </div>
               </div>
 
-              <p className="mt-4 whitespace-pre-line text-slate-600">{center.body}</p>
-
-              {center.integrationLine ? (
-                <div className="mt-4 flex items-start gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <PlugZap className="mt-0.5 h-4 w-4 text-blue-600" />
-                  <p className="text-sm text-slate-600">{center.integrationLine}</p>
-                </div>
-              ) : null}
-
-              <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-500">
-                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Prebuilt connectors</span>
-                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Flexible workflows</span>
-                <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Extensible</span>
+              <div className="flex flex-col">
+                <p className="mt-4 whitespace-pre-line text-slate-600">{center.body}</p>
               </div>
 
-              {center.cta?.href ? (
-                  <div className="mt-7">
-                    <ButtonLink href={center.cta.href} variant={(center.cta.variant as any) ?? "secondary"} size="lg">
-                      {center.cta.label}
-                    </ButtonLink>
+              <div className="flex flex-col">
+                {center.integrationLine ? (
+                  <div className="mt-4 flex items-start gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <PlugZap className="mt-0.5 h-4 w-4 text-blue-600" />
+                    <p className="text-sm text-slate-600">{center.integrationLine}</p>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="invisible h-0 md:h-auto" aria-hidden="true" />
+                )}
+              </div>
+
+              <div className="mt-auto flex flex-col pt-7">
+                {center.cta?.href && (
+                  <ButtonLink href={center.cta.href} variant={(center.cta.variant as any) ?? "secondary"} size="lg">
+                    {center.cta.label}
+                  </ButtonLink>
+                )}
+              </div>
             </div>
           ) : null}
 
-          {/* Enterprise */}
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md">
+          {/* Right Column */}
+          <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-md md:grid md:grid-rows-subgrid md:row-span-4">
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400" />
 
             <div className="flex items-start gap-3">
@@ -108,33 +105,32 @@ export default function ProductSplit({ title, left, right, center, isDark }: Pro
                 <Building2 className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-500">For Mid-Market & Enterprise</p>
                 <h3 className="mt-1 text-xl font-semibold text-slate-900">{right.heading}</h3>
               </div>
             </div>
 
-            <p className="mt-4 whitespace-pre-line text-slate-600">{right.body}</p>
-
-            {right.integrationLine ? (
-              <div className="mt-4 flex items-start gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <PlugZap className="mt-0.5 h-4 w-4 text-blue-600" />
-                <p className="text-sm text-slate-600">{right.integrationLine}</p>
-              </div>
-            ) : null}
-
-            <div className="mt-6 flex flex-wrap gap-2 text-xs text-slate-500">
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Feeds & webhooks</span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">Volume tiers</span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1">SLAs</span>
+            <div className="flex flex-col">
+              <p className="mt-4 whitespace-pre-line text-slate-600">{right.body}</p>
             </div>
 
-            {right.cta?.href ? (
-              <div className="mt-7">
+            <div className="flex flex-col">
+              {right.integrationLine ? (
+                <div className="mt-4 flex items-start gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <PlugZap className="mt-0.5 h-4 w-4 text-blue-600" />
+                  <p className="text-sm text-slate-600">{right.integrationLine}</p>
+                </div>
+              ) : (
+                <div className="invisible h-0 md:h-auto" aria-hidden="true" />
+              )}
+            </div>
+
+            <div className="mt-auto flex flex-col pt-7">
+              {right.cta?.href && (
                 <ButtonLink href={right.cta.href} variant={(right.cta.variant as any) ?? "primary"} size="lg">
                   {right.cta.label}
                 </ButtonLink>
-              </div>
-            ) : null}
+              )}
+            </div>
           </div>
         </div>
       </div>

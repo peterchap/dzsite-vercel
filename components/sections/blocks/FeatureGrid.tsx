@@ -11,7 +11,7 @@ export function FeatureGrid({ title, subtitle, features, isDark, columns = 3 }: 
             : "lg:grid-cols-3";
 
     return (
-        <section className={cn("py-24", isDark ? 'bg-slate-50' : 'bg-white')}>
+        <section className={cn("py-12", isDark ? 'bg-slate-50' : 'bg-white')}>
             <Container>
                 {(title || subtitle) && (
                     <div className="max-w-2xl">

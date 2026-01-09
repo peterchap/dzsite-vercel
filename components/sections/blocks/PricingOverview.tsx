@@ -6,6 +6,9 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 interface PricingOverviewProps {
     isDark?: boolean;
     title?: string;
+    subtitle?: string;
+    description?: string;
+    footer?: string;
     tiers?: {
         name?: string;
         price?: string;
@@ -19,14 +22,24 @@ interface PricingOverviewProps {
     }[];
 }
 
-export default function PricingOverview({ isDark, title, tiers }: PricingOverviewProps) {
+export default function PricingOverview({ isDark, title, subtitle, description, footer, tiers }: PricingOverviewProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
-                {title && (
-                    <h2 className="mb-16 text-center text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                        {title}
-                    </h2>
+                {(title || subtitle || description) && (
+                    <div className="mb-16 text-center">
+                        {title && (
+                            <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                                {title}
+                            </h2>
+                        )}
+                        {subtitle && <p className="mt-4 text-lg font-medium text-blue-600">{subtitle}</p>}
+                        {description && (
+                            <p className="mt-4 mx-auto max-w-2xl text-lg text-slate-600">
+                                {description}
+                            </p>
+                        )}
+                    </div>
                 )}
                 <div className="flex flex-wrap justify-center gap-8">
                     {tiers?.map((tier, i) => {
@@ -71,6 +84,13 @@ export default function PricingOverview({ isDark, title, tiers }: PricingOvervie
                         );
                     })}
                 </div>
+                {footer && (
+                    <div className="mt-16 pt-8 border-t border-slate-100 text-center mx-auto max-w-2xl">
+                        <p className="text-base text-slate-500 leading-relaxed italic">
+                            {footer}
+                        </p>
+                    </div>
+                )}
             </Container>
         </section>
     );

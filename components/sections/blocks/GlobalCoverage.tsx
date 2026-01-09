@@ -21,7 +21,7 @@ export default function GlobalCoverageSection(props: GlobalCoverageProps & { isD
   const points: CoveragePoint[] = Array.isArray(coveragePoints) ? coveragePoints : [];
 
   return (
-    <section className={`py-24 overflow-hidden ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`py-12 overflow-hidden ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="container mx-auto px-4">
         {title && (
           <h2 className="text-4xl font-bold text-center mb-4">{title}</h2>

@@ -17,7 +17,7 @@ interface UseCaseGridProps {
 
 export default function UseCaseGrid({ isDark, title, subtitle, useCases }: UseCaseGridProps) {
     return (
-        <section className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
                 <div className="mb-16 max-w-3xl">
                     {title && (

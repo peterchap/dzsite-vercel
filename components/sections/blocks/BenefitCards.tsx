@@ -19,7 +19,7 @@ const ICONS: Record<string, React.ReactNode> = {
 
 export default function BenefitCards({ kicker, title, subtitle, cards, isDark }: Props & { isDark?: boolean }) {
   return (
-    <section className={`relative overflow-hidden py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`relative overflow-hidden py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <Container className="relative">
         <div className="max-w-3xl text-center mx-auto">
           {kicker && (

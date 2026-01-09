@@ -42,6 +42,10 @@ import anchorLinks from "./objects/sections/anchorLinks";
 import mediaFeature from "./objects/sections/mediaFeature";
 import pillarRouter from "./objects/sections/pillarRouter";
 import trustEvidence from "./objects/sections/trustEvidence";
+import twoColumnFeature from "./objects/sections/twoColumnFeature";
+import iconList from "./objects/sections/iconList";
+import contact from "./objects/sections/contact";
+import threeColumnDetailed from "./objects/sections/threeColumnDetailed";
 
 export const schemaTypes = [
   siteSettings,
@@ -85,4 +89,8 @@ export const schemaTypes = [
   mediaFeature,
   pillarRouter,
   trustEvidence,
+  twoColumnFeature,
+  iconList,
+  threeColumnDetailed,
+  contact,
 ];

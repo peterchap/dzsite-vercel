@@ -11,7 +11,7 @@ type Props = {
 
 export default function PrivacyCompliance({ title, body, enterpriseNote, cta, isDark }: Props & { isDark?: boolean }) {
   return (
-    <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-center text-2xl font-semibold tracking-tight">{title}</h2>

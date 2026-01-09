@@ -7,7 +7,7 @@ export default function SecondaryUseCases({
   isDark,
 }: { title: string; subheadline?: string; items: Item[]; isDark?: boolean }) {
   return (
-    <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+    <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
         <h2 className="text-2xl font-semibold text-center tracking-tight">{title}</h2>
         {subheadline ? <p className="mt-2 text-slate-500 text-center">{subheadline}</p> : null}

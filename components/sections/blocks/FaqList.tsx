@@ -2,7 +2,7 @@ import { SectionFaqList } from "@/sanity/types";
 
 export function FaqList({ title, items, isDark }: SectionFaqList & { isDark?: boolean }) {
     return (
-        <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+        <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
             <div className="mx-auto max-w-4xl px-6">
                 {title && <h2 className="text-3xl font-semibold">{title}</h2>}
 

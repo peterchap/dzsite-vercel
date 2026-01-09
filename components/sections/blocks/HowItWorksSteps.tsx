@@ -2,7 +2,7 @@ import { SectionHowItWorksSteps } from "@/sanity/types";
 
 export function HowItWorksSteps({ title, subtitle, steps, isDark }: SectionHowItWorksSteps & { isDark?: boolean }) {
     return (
-        <section className={`py-24 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
+        <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
             <div className="mx-auto max-w-6xl px-6">
                 {title && <h2 className="text-3xl font-semibold">{title}</h2>}
                 {subtitle && <p className="mt-4 max-w-2xl text-slate-600">{subtitle}</p>}

@@ -38,6 +38,12 @@ export type SectionTwoProductSplit = {
     right: { label?: string; headline: string; text?: string; bullets: string[]; cta?: Cta };
 };
 
+export type SectionTwoColumnFeature = {
+  _type: "section.twoColumnFeature";
+  left: { kicker?: string; title: string; features?: string[] };
+  right: { kicker?: string; title: string; subtitle?: string };
+};
+
 export type SectionJsonExample = {
     _type: "section.jsonExample";
     title: string;
@@ -77,6 +83,7 @@ export type SectionFinalCta = {
 export type PageSection =
     | SectionFeatureGrid
     | SectionTwoProductSplit
+    | SectionTwoColumnFeature
     | SectionJsonExample
     | SectionHowItWorksSteps
     | SectionUseCaseCards

@@ -12,7 +12,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 export function PillarRouter({ title, subtitle, pillars }: any) {
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-12 bg-white overflow-hidden">
             <Container>
                 {(title || subtitle) && (
                     <div className="max-w-3xl mb-20 text-center mx-auto">

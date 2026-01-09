@@ -34,6 +34,10 @@ import { MediaFeature } from "@/components/sections/blocks/MediaFeature";
 import { AnchorLinks } from "@/components/sections/blocks/AnchorLinks";
 import { PillarRouter } from "@/components/sections/blocks/PillarRouter";
 import { TrustEvidence } from "@/components/sections/blocks/TrustEvidence";
+import TwoColumnFeature from "@/components/sections/blocks/TwoColumnFeature";
+import IconList from "@/components/sections/blocks/IconList";
+import ThreeColumnDetailed from "@/components/sections/blocks/ThreeColumnDetailed";
+import ContactSection from "@/components/sections/blocks/ContactSection";
 
 type Section = {
   _type: string;
@@ -73,6 +77,46 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
             return (
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <TrustEvidence {...section} isDark={isDark} />
+              </div>
+            );
+
+          case "section.twoColumnFeature":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <TwoColumnFeature
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof TwoColumnFeature>)}
+                />
+              </div>
+            );
+
+          case "section.iconList":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <IconList
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof IconList>)}
+                />
+              </div>
+            );
+
+          case "section.threeColumnDetailed":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ThreeColumnDetailed
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof ThreeColumnDetailed>)}
+                />
+              </div>
+            );
+
+          case "section.contact":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ContactSection
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof ContactSection>)}
+                />
               </div>
             );
 
