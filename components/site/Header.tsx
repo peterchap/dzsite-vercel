@@ -4,6 +4,7 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { normalizeHref } from "@/lib/links";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { CurrencySelector } from "@/components/ui/CurrencySelector";
 
 type NavLink = { label: string; href: string; children?: NavLink[] };
 type Cta = { label: string; href: string; variant?: "primary" | "secondary" | "ghost" };
@@ -95,6 +96,8 @@ export function Header({
 
                 <div className="flex items-center gap-3">
                     <div className="hidden items-center gap-3 md:flex">
+                        <CurrencySelector className="h-9 w-[110px] text-xs" />
+                        <div className="h-4 w-px bg-slate-200 mx-1" />
                         {secondaryCta ? (
                             <ButtonLink href={secondaryCta.href} variant={secondaryCta.variant ?? "secondary"}>
                                 {secondaryCta.label}
@@ -113,12 +116,14 @@ export function Header({
                             </div>
                         ) : null}
                     </div>
-                    {/* Mobile Menu Button (Subtle Placeholder) */}
-                    <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white p-2 text-slate-600 transition hover:bg-slate-50 md:hidden">
-                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
+                    <div className="flex items-center gap-2 md:hidden">
+                        <CurrencySelector className="h-9 w-[100px] text-xs" />
+                        <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white p-2 text-slate-600 transition hover:bg-slate-50">
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>

@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "@/components/ui/Container";
 import { Check } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { useCurrency } from "@/components/providers/CurrencyProvider";
 
 interface PricingOverviewProps {
     isDark?: boolean;
@@ -11,6 +12,7 @@ interface PricingOverviewProps {
     footer?: string;
     tiers?: {
         name?: string;
+        priceInCents?: number;
         price?: string;
         subtitle?: string;
         features?: string[];
@@ -23,29 +25,35 @@ interface PricingOverviewProps {
 }
 
 export default function PricingOverview({ isDark, title, subtitle, description, footer, tiers }: PricingOverviewProps) {
+    const { formatPrice } = useCurrency();
+
     return (
         <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
-                {(title || subtitle || description) && (
-                    <div className="mb-16 text-center">
-                        {title && (
-                            <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                                {title}
-                            </h2>
-                        )}
-                        {subtitle && <p className="mt-4 text-lg font-medium text-blue-600">{subtitle}</p>}
-                        {description && (
-                            <p className="mt-4 mx-auto max-w-2xl text-lg text-slate-600">
-                                {description}
-                            </p>
-                        )}
-                    </div>
+                <div className="mb-16 text-center">
+                    {title && (
+                        <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                            {title}
+                        </h2>
+                    )}
+                    {subtitle && <p className="mt-4 text-lg font-medium text-blue-600">{subtitle}</p>}
+                </div>
+
+                {description && (
+                    <p className="mb-12 text-center mx-auto max-w-2xl text-lg text-slate-600">
+                        {description}
+                    </p>
                 )}
+
                 <div className="flex flex-wrap justify-center gap-8">
                     {tiers?.map((tier, i) => {
                         const isMainHighlighted = tiers.length === 3 && i === 1;
                         const isEnterpriseHighlighted = tiers.length === 4 && i === 3;
                         const isHighlighted = isMainHighlighted || isEnterpriseHighlighted;
+
+                        const displayPrice = tier.priceInCents
+                            ? formatPrice(tier.priceInCents)
+                            : tier.price;
 
                         return (
                             <div
@@ -57,9 +65,12 @@ export default function PricingOverview({ isDark, title, subtitle, description, 
                             >
                                 <div className="mb-8">
                                     <h3 className="text-xl font-bold text-center text-slate-900">{tier.name}</h3>
-                                    <h3 className="mt-3 text-xl font-bold text-center text-slate-700">{tier.price}</h3>
+                                    <div className="mt-4 flex flex-col items-center">
+                                        <span className="text-sm text-center font-bold text-slate-700">{displayPrice}</span>
+                                        {tier.priceInCents ? <span className="mt-1 text-sm text-slate-700">per month</span> : null}
+                                    </div>
 
-                                    {tier.subtitle && <p className="mt-2 text-center text-sm text-slate-500">{tier.subtitle}</p>}
+                                    {tier.subtitle && <p className="mt-4 text-center text-sm text-slate-500">{tier.subtitle}</p>}
                                 </div>
                                 <ul className="mb-10 space-y-4 flex-1">
                                     {tier.features?.map((f, j) => (

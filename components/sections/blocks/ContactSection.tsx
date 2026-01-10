@@ -1,11 +1,14 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Container } from "@/components/ui/Container";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { urlFor } from "@/sanity/lib/image";
+import { useForm } from "react-hook-form";
 
 interface ContactSectionProps {
     isDark?: boolean;
@@ -19,7 +22,43 @@ interface ContactSectionProps {
     };
 }
 
+type FormData = {
+    name: string;
+    email: string;
+    company: string;
+    phone: string;
+    subject: string;
+    message: string;
+};
+
 export default function ContactSection({ isDark, title, subtitle, contactInfo }: ContactSectionProps) {
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const onSubmit = async (data: FormData) => {
+        setStatus("loading");
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                setStatus("success");
+                reset();
+            } else {
+                const result = await response.json();
+                setStatus("error");
+                setErrorMessage(result.error || "Failed to send message.");
+            }
+        } catch (error) {
+            setStatus("error");
+            setErrorMessage("An unexpected error occurred.");
+        }
+    };
+
     return (
         <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
@@ -87,44 +126,101 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                     {/* Right Column: Contact Form */}
                     <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-100">
                         <h3 className="text-xl font-bold text-slate-900 mb-6">Send us a message</h3>
-                        <form className="space-y-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input id="name" placeholder="Your name" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="Email address" />
-                                </div>
-                            </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="company">Company</Label>
-                                    <Input id="company" placeholder="Company name" />
+                        {status === "success" ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in duration-500">
+                                <div className="mb-4 rounded-full bg-emerald-50 p-3 text-emerald-600 ring-1 ring-emerald-100">
+                                    <CheckCircle2 className="h-12 w-12" />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="phone">Phone</Label>
-                                    <Input id="phone" placeholder="Phone number" />
+                                <h4 className="text-2xl font-bold text-slate-900">Message Sent!</h4>
+                                <p className="mt-2 text-slate-600">
+                                    Thank you for reaching out. We've received your message and will get back to you shortly.
+                                </p>
+                                <Button
+                                    onClick={() => setStatus("idle")}
+                                    variant="outline"
+                                    className="mt-8"
+                                >
+                                    Send another message
+                                </Button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="name">Name</Label>
+                                        <Input
+                                            id="name"
+                                            placeholder="Your name"
+                                            {...register("name", { required: "Name is required" })}
+                                            className={errors.name ? "border-red-500" : ""}
+                                        />
+                                        {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="Email address"
+                                            {...register("email", {
+                                                required: "Email is required",
+                                                pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                    message: "Invalid email address"
+                                                }
+                                            })}
+                                            className={errors.email ? "border-red-500" : ""}
+                                        />
+                                        {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="subject">Subject</Label>
-                                <Input id="subject" placeholder="What is this about?" />
-                            </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="company">Company</Label>
+                                        <Input id="company" placeholder="Company name" {...register("company")} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="phone">Phone</Label>
+                                        <Input id="phone" placeholder="Phone number" {...register("phone")} />
+                                    </div>
+                                </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="message">Message</Label>
-                                <Textarea id="message" placeholder="How can we help?" className="min-h-[120px]" />
-                            </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="subject">Subject</Label>
+                                    <Input id="subject" placeholder="What is this about?" {...register("subject")} />
+                                </div>
 
-                            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-100 mt-2">
-                                <Send className="mr-2 h-4 w-4" />
-                                Send Message
-                            </Button>
-                        </form>
+                                <div className="space-y-2">
+                                    <Label htmlFor="message">Message</Label>
+                                    <Textarea
+                                        id="message"
+                                        placeholder="How can we help?"
+                                        className={`min-h-[120px] ${errors.message ? "border-red-500" : ""}`}
+                                        {...register("message", { required: "Message is required" })}
+                                    />
+                                    {errors.message && <p className="text-xs text-red-500">{errors.message.message}</p>}
+                                </div>
+
+                                {status === "error" && (
+                                    <p className="text-sm font-medium text-red-500">{errorMessage}</p>
+                                )}
+
+                                <Button
+                                    type="submit"
+                                    disabled={status === "loading"}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-100 mt-2"
+                                >
+                                    {status === "loading" ? (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <Send className="mr-2 h-4 w-4" />
+                                    )}
+                                    {status === "loading" ? "Sending..." : "Send Message"}
+                                </Button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </Container>

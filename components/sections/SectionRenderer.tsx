@@ -1,5 +1,7 @@
-// components/sections/SectionRenderer.tsx
+"use client";
+
 import React from "react";
+import { useCurrency } from "@/components/providers/CurrencyProvider";
 
 import { HeroSplitCta } from "@/components/sections/blocks/HeroSplitCta";
 import SimpleText from "@/components/sections/blocks/SimpleText";
@@ -46,14 +48,34 @@ type Section = {
 };
 
 export default function SectionRenderer({ sections }: { sections?: Section[] }) {
+  const { convertText } = useCurrency();
+
   if (!sections?.length) return null;
 
-  // Debug once
-  console.log("SECTIONS", sections.map((s) => s._type));
+  // Recursively process all fields to convert {{PRICE:cents}} markers
+  const deepConvert = (obj: any): any => {
+    if (typeof obj === "string") return convertText(obj);
+    if (Array.isArray(obj)) return obj.map(deepConvert);
+    if (obj !== null && typeof obj === "object") {
+      const newObj: any = {};
+      for (const key in obj) {
+        // Skip internal sanity keys or non-string-friendly keys if needed
+        if (key.startsWith("_") && key !== "_type" && key !== "_key") {
+          newObj[key] = obj[key];
+          continue;
+        }
+        newObj[key] = deepConvert(obj[key]);
+      }
+      return newObj;
+    }
+    return obj;
+  };
+
+  const processedSections = sections.map(deepConvert);
 
   return (
     <>
-      {sections.map((section, index) => {
+      {processedSections.map((section, index) => {
         const key = section._key ?? `${section._type}-${index}`;
         const isDark = index % 2 === 0;
         const anchorId = (section.anchor as string | undefined) ?? (section._key ? `s-${section._key}` : undefined);
