@@ -8,6 +8,33 @@ export default {
     { name: "title", title: "Title", type: "string" },
     { name: "subtitle", title: "Subtitle", type: "text", rows: 3 },
     {
+      name: "steps",
+      title: "Diagram Steps",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "step",
+          fields: [
+            { name: "title", title: "Title", type: "string" },
+            { name: "subtitle", title: "Subtitle", type: "string" },
+            {
+              name: "icon",
+              title: "Icon Name",
+              type: "string",
+              description: "Lucide icon name (e.g., Globe, Network, Shield, AlertTriangle)",
+            },
+            {
+              name: "features",
+              title: "Detailed Bullets",
+              type: "array",
+              of: [{ type: "string" }],
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: "highlightTitle",
       title: "Highlight Title (optional)",
       type: "string",

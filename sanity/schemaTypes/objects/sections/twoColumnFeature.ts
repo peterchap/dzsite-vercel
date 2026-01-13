@@ -19,11 +19,30 @@ export default {
         { name: "kicker", title: "Eyebrow", type: "string" },
         { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
         {
+          name: "featureSets",
+          title: "Feature Sets",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              name: "featureSet",
+              fields: [
+                { name: "heading", title: "Heading", type: "string" },
+                {
+                  name: "features",
+                  title: "Bullets",
+                  type: "array",
+                  of: [{ type: "string" }],
+                },
+              ],
+            },
+          ],
+        },
+        {
           name: "features",
-          title: "Feature Bullets",
+          title: "Feature Bullets (Deprecated/Simple)",
           type: "array",
           of: [{ type: "string" }],
-          validation: (r: any) => r.min(1),
         },
       ],
     },
@@ -35,6 +54,32 @@ export default {
         { name: "kicker", title: "Eyebrow", type: "string" },
         { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
         { name: "subtitle", title: "Subtitle", type: "text", rows: 3 },
+        {
+          name: "featureSets",
+          title: "Feature Sets",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              name: "featureSet",
+              fields: [
+                { name: "heading", title: "Heading", type: "string" },
+                {
+                  name: "features",
+                  title: "Bullets",
+                  type: "array",
+                  of: [{ type: "string" }],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "features",
+          title: "Feature Bullets (Deprecated/Simple)",
+          type: "array",
+          of: [{ type: "string" }],
+        },
       ],
     },
   ],

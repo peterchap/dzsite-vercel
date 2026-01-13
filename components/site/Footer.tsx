@@ -1,6 +1,8 @@
 type NavLink = { label: string; href: string };
 import { normalizeHref } from "@/lib/links";
 import { Mail, Linkedin, Twitter, Github } from "lucide-react";
+import { BrandingLogo } from "@/components/site/BrandingLogo";
+import Link from "next/link";
 
 export function Footer({
     title,
@@ -34,7 +36,9 @@ export function Footer({
                     <div className="lg:col-span-4">
                         <div className="flex flex-col gap-6">
                             <div>
-                                <div className="text-xl font-black tracking-tight text-slate-900">{title ?? "Datazag"}</div>
+                                <Link href="/" className="group inline-flex items-center">
+                                    <BrandingLogo className="text-2xl group-hover:scale-[1.02]" />
+                                </Link>
                                 <p className="mt-4 text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
                                     {footerAbout ?? "Predictive domain intelligence and security-focused data products for the modern enterprise."}
                                 </p>

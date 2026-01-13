@@ -4,6 +4,7 @@ export default {
   type: "object",
   fields: [
     { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
+    { name: "subtitle", title: "Subtitle", type: "string" },
     {
       name: "left",
       title: "Left Column",
@@ -50,9 +51,12 @@ export default {
     },
   ],
   preview: {
-    select: { title: "title" },
-    prepare({ title }: any) {
-      return { title: title ?? "Product Split", subtitle: "Developers vs Enterprise" };
+    select: { title: "title", subtitle: "subtitle" },
+    prepare({ title, subtitle }: any) {
+      return {
+        title: title ?? "Product Split",
+        subtitle: subtitle ?? "Developers vs Enterprise (Two/Three Column)"
+      };
     },
   },
 };

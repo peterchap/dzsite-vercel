@@ -51,14 +51,11 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
     const formatPrice = useCallback((basePriceInCents: number): string => {
         if (isLoading || !rates || !rates[selectedCurrency]) {
-            // Fallback to USD format while loading or if rate is missing
+            // Fallback to deterministic USD format while loading or if rate is missing.
+            // Avoid Intl.NumberFormat here for hydration safety as its output (whitespace/symbols) 
+            // can vary slightly between Node.js and Browser.
             const usdPrice = basePriceInCents / 100;
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }).format(usdPrice);
+            return `$${Math.round(usdPrice).toLocaleString()}`;
         }
 
         const convertedAmount = (basePriceInCents * rates[selectedCurrency]) / 100;

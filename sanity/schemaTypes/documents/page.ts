@@ -2,27 +2,48 @@ export default {
     name: "page",
     title: "Page",
     type: "document",
+    groups: [
+        { name: "content", title: "Main Content", default: true },
+        { name: "hero", title: "Hero Section" },
+        { name: "seo", title: "SEO & Social" },
+        { name: "pageinfo", title: "Page Info" },
+    ],
     fields: [
-        { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
+        {
+            name: "title",
+            title: "Title",
+            type: "string",
+            group: "pageinfo",
+            validation: (r: any) => r.required(),
+        },
         {
             name: "slug",
             title: "Slug",
             type: "slug",
+            group: "pageinfo",
             options: { source: "title" },
             validation: (r: any) => r.required(),
         },
-        { name: "seo", title: "SEO", type: "seo", initialValue: { _type: "seo" } },
+        {
+            name: "seo",
+            title: "SEO",
+            type: "seo",
+            group: "seo",
+            initialValue: { _type: "seo" },
+        },
 
         // Optional: allow a page-level hero, then sections
         {
             name: "hero",
             title: "Hero",
             type: "section.heroSplitCta",
+            group: "hero",
         },
         {
             name: "sections",
             title: "Sections",
             type: "array",
+            group: "content",
             of: [
                 { type: "section.heroSplitCta" },
                 { type: "section.simpleText" },
@@ -58,6 +79,7 @@ export default {
                 { type: "section.twoColumnFeature" },
                 { type: "section.threeColumnDetailed" },
                 { type: "section.contact" },
+                { type: "section.centeredImage" },
             ],
         },
     ],

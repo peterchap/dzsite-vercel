@@ -5,6 +5,7 @@ import { normalizeHref } from "@/lib/links";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { CurrencySelector } from "@/components/ui/CurrencySelector";
+import { BrandingLogo } from "@/components/site/BrandingLogo";
 
 type NavLink = { label: string; href: string; children?: NavLink[] };
 type Cta = { label: string; href: string; variant?: "primary" | "secondary" | "ghost" };
@@ -36,9 +37,7 @@ export function Header({
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/70 backdrop-blur-xl transition hover:bg-white/80">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
                 <Link href="/" className="group flex items-center">
-                    <span className="text-3xl font-bold leading-tight tracking-tight bg-gradient-to-r from-[#00509d] to-[#0088ed] bg-clip-text text-transparent transition-transform duration-200 group-hover:scale-[1.02] py-1">
-                        Datazag
-                    </span>
+                    <BrandingLogo className="text-3xl group-hover:scale-[1.02]" />
                 </Link>
 
                 <nav className="hidden items-center gap-8 md:flex">

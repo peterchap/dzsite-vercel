@@ -17,12 +17,37 @@ export default {
           name: "benefitCard",
           fields: [
             { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
-            { name: "description", title: "Description", type: "text", rows: 3, validation: (r: any) => r.required() }
+            { name: "description", title: "Description (optional)", type: "text", rows: 3 },
+            {
+              name: "bullets",
+              title: "Bullet Points (optional)",
+              type: "array",
+              of: [{ type: "string" }]
+            }
           ],
           preview: { select: { title: "title" } }
         }
       ],
       validation: (r: any) => r.required().min(3).max(6)
+    },
+    {
+      name: "columns",
+      title: "Number of Columns",
+      type: "number",
+      initialValue: 2,
+      options: {
+        list: [
+          { title: "2 Columns", value: 2 },
+          { title: "3 Columns", value: 3 }
+        ],
+        layout: "radio"
+      }
+    },
+    {
+      name: "footer",
+      title: "Footer Text (optional)",
+      type: "text",
+      rows: 3
     }
   ],
   preview: {

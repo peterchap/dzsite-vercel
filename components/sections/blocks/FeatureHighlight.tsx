@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { CheckCircle2 } from "lucide-react";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 
 interface FeatureHighlightProps {
     isDark?: boolean;
@@ -13,9 +14,10 @@ interface FeatureHighlightProps {
         text?: string;
     }[];
     visual?: any;
+    cta?: any;
 }
 
-export default function FeatureHighlight({ isDark, title, content, approaches, visual }: FeatureHighlightProps) {
+export default function FeatureHighlight({ isDark, title, content, approaches, visual, cta }: FeatureHighlightProps) {
     return (
         <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
@@ -34,19 +36,33 @@ export default function FeatureHighlight({ isDark, title, content, approaches, v
                             )}
                         </div>
 
-                        <div className="space-y-4">
-                            <h3 className="text-xl font-bold text-slate-900">Our Approach:</h3>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                {approaches?.map((approach, i) => (
-                                    <div key={i} className="flex gap-3">
-                                        <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-500" />
-                                        <div>
-                                            <span className="block font-bold text-slate-900">{approach.label}:</span>
-                                            <span className="text-sm text-slate-600">{approach.text}</span>
+                        <div className="space-y-6">
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold text-slate-900">Our Approach:</h3>
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    {approaches?.map((approach, i) => (
+                                        <div key={i} className="flex gap-3">
+                                            <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-500" />
+                                            <div>
+                                                <span className="block font-bold text-slate-900">{approach.label}:</span>
+                                                <span className="text-sm text-slate-600">{approach.text}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
+
+                            {cta && cta.label && (
+                                <div className="pt-2">
+                                    <ButtonLink
+                                        href={cta.href || "#"}
+                                        variant={cta.variant || "primary"}
+                                        size="lg"
+                                    >
+                                        {cta.label}
+                                    </ButtonLink>
+                                </div>
+                            )}
                         </div>
                     </div>
 

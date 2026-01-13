@@ -12,20 +12,23 @@ type Col = {
 
 type Props = {
   title: string;
+  subtitle?: string;
   left: Col;
   right: Col & { integrationLine?: string };
   center?: Col & { integrationLine?: string };
 };
 
-export default function ProductSplit({ title, left, right, center, isDark }: Props & { isDark?: boolean }) {
+export default function ProductSplit({ title, subtitle, left, right, center, isDark }: Props & { isDark?: boolean }) {
   return (
     <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-3xl text-center mx-auto">
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900 text-center">{title}</h2>
-          <p className="mt-3 text-slate-600 text-center">
-
-          </p>
+          {subtitle && (
+            <p className="mt-3 text-lg text-slate-600 text-center">
+              {subtitle}
+            </p>
+          )}
         </div>
 
         <div className={`mt-10 grid gap-6 ${center ? 'lg:grid-cols-3 md:grid-rows-[auto_1fr_auto_auto]' : 'lg:grid-cols-2 md:grid-rows-[auto_1fr_auto_auto]'}`}>

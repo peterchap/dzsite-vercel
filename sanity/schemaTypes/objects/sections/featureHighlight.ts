@@ -21,6 +21,7 @@ export default {
             ],
         },
         { name: "visual", title: "Visual / Image", type: "image" },
+        { name: "cta", title: "Call to Action", type: "cta" },
     ],
     preview: {
         select: { title: "title" },

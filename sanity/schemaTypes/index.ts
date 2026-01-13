@@ -46,6 +46,7 @@ import twoColumnFeature from "./objects/sections/twoColumnFeature";
 import iconList from "./objects/sections/iconList";
 import contact from "./objects/sections/contact";
 import threeColumnDetailed from "./objects/sections/threeColumnDetailed";
+import centeredImage from "./objects/sections/centeredImage";
 
 export const schemaTypes = [
   siteSettings,
@@ -93,4 +94,5 @@ export const schemaTypes = [
   iconList,
   threeColumnDetailed,
   contact,
+  centeredImage,
 ];

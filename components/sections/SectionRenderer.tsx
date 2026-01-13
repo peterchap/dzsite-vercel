@@ -40,6 +40,7 @@ import TwoColumnFeature from "@/components/sections/blocks/TwoColumnFeature";
 import IconList from "@/components/sections/blocks/IconList";
 import ThreeColumnDetailed from "@/components/sections/blocks/ThreeColumnDetailed";
 import ContactSection from "@/components/sections/blocks/ContactSection";
+import CenteredImage from "@/components/sections/blocks/CenteredImage";
 
 type Section = {
   _type: string;
@@ -49,6 +50,11 @@ type Section = {
 
 export default function SectionRenderer({ sections }: { sections?: Section[] }) {
   const { convertText } = useCurrency();
+  const [hasMounted, setHasMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   if (!sections?.length) return null;
 
@@ -71,7 +77,7 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
     return obj;
   };
 
-  const processedSections = sections.map(deepConvert);
+  const processedSections = hasMounted ? sections.map(deepConvert) : sections;
 
   return (
     <>
@@ -138,6 +144,16 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
                 <ContactSection
                   isDark={isDark}
                   {...(section as unknown as React.ComponentProps<typeof ContactSection>)}
+                />
+              </div>
+            );
+
+          case "section.centeredImage":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <CenteredImage
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof CenteredImage>)}
                 />
               </div>
             );
