@@ -1,17 +1,31 @@
 export default {
     name: "section.jsonExample",
-    title: "Section: JSON Example",
+    title: "Section: Code Example",
     type: "object",
     fields: [
         { name: "anchor", title: "Section Anchor", type: "string", description: "Lowercase letters, numbers, dashes; unique per page", validation: (r: any) => r.regex(/^[a-z0-9-]+$/).warning("Use lowercase letters, numbers, dashes") },
         { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
         { name: "intro", title: "Intro", type: "text", rows: 3 },
         {
-            name: "json",
-            title: "JSON payload",
+            name: "language",
+            title: "Language",
+            type: "string",
+            options: {
+                list: [
+                    { title: "JSON", value: "json" },
+                    { title: "SQL", value: "sql" },
+                    { title: "Python", value: "python" },
+                ],
+            },
+            initialValue: "json",
+            validation: (r: any) => r.required(),
+        },
+        {
+            name: "code",
+            title: "Code snippet",
             type: "text",
             rows: 16,
-            description: "Paste JSON. Rendering layer can pretty-print.",
+            description: "Paste your code snippet here.",
             validation: (r: any) => r.required(),
         },
         {
@@ -30,5 +44,8 @@ export default {
             ],
         },
     ],
-    preview: { select: { title: "title" }, prepare: ({ title }: any) => ({ title: title ?? "JSON Example" }) },
+    preview: {
+        select: { title: "title", language: "language" },
+        prepare: ({ title, language }: any) => ({ title: `${title ?? "Code Example"} (${language?.toUpperCase() ?? "JSON"})` })
+    },
 };

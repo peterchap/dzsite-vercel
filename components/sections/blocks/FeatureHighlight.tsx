@@ -15,13 +15,22 @@ interface FeatureHighlightProps {
     }[];
     visual?: any;
     cta?: any;
+    layoutRatio?: "50-50" | "60-40" | "40-60";
 }
 
-export default function FeatureHighlight({ isDark, title, content, approaches, visual, cta }: FeatureHighlightProps) {
+const RATIO_CLASSES = {
+    "50-50": "lg:grid-cols-2",
+    "60-40": "lg:grid-cols-[1.5fr_1fr]",
+    "40-60": "lg:grid-cols-[1fr_1.5fr]",
+};
+
+export default function FeatureHighlight({ isDark, title, content, approaches, visual, cta, layoutRatio = "50-50" }: FeatureHighlightProps) {
+    const gridClass = RATIO_CLASSES[layoutRatio] || RATIO_CLASSES["50-50"];
+
     return (
         <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
-                <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+                <div className={`grid gap-12 ${gridClass} lg:items-center`}>
                     <div className="space-y-8">
                         <div>
                             {title && (
@@ -66,14 +75,15 @@ export default function FeatureHighlight({ isDark, title, content, approaches, v
                         </div>
                     </div>
 
-                    <div className="relative aspect-square w-full scale-95 lg:scale-100">
+                    <div className="relative w-full scale-95 lg:scale-100">
                         {visual && (
-                            <div className="relative h-full w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl">
+                            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white p-2 shadow-2xl">
                                 <Image
                                     src={urlFor(visual).url()}
                                     alt={title || "Feature Visual"}
-                                    fill
-                                    className="object-contain p-4"
+                                    width={1200}
+                                    height={800}
+                                    className="w-full h-auto rounded-2xl object-contain"
                                 />
                             </div>
                         )}

@@ -1,6 +1,6 @@
 export default {
     name: "section.threeColumnDetailed",
-    title: "Section: Three Column Detailed",
+    title: "Section: Detailed Columns (1-4)",
     type: "object",
     fields: [
         {
@@ -67,10 +67,11 @@ export default {
                                 { name: "footer", title: "Centered Footer", type: "string" },
                             ],
                         },
+                        { name: "cta", title: "Column CTA", type: "cta" },
                     ],
                 },
             ],
-            validation: (r: any) => r.length(3),
+            validation: (r: any) => r.min(1).max(4),
         },
     ],
     preview: {

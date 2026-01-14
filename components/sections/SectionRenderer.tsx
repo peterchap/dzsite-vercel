@@ -14,7 +14,7 @@ import ProductSplit from "@/components/sections/blocks/ProductSplit";
 import PrivacyCompliance from "@/components/sections/blocks/PrivacyCompliance";
 import { FinalCta } from "@/components/sections/blocks/FinalCta";
 import AttackChainDiagram from "@/components/sections/blocks/AttackChainDiagram";
-import { JsonExample } from "@/components/sections/blocks/JsonExample";
+import { CodeExample } from "@/components/sections/blocks/CodeExample";
 import { FaqList } from "@/components/sections/blocks/FaqList";
 import { FeatureGrid } from "@/components/sections/blocks/FeatureGrid";
 import { HowItWorksSteps } from "@/components/sections/blocks/HowItWorksSteps";
@@ -41,6 +41,7 @@ import IconList from "@/components/sections/blocks/IconList";
 import ThreeColumnDetailed from "@/components/sections/blocks/ThreeColumnDetailed";
 import ContactSection from "@/components/sections/blocks/ContactSection";
 import CenteredImage from "@/components/sections/blocks/CenteredImage";
+import PricingTable from "@/components/sections/blocks/PricingTable";
 
 type Section = {
   _type: string;
@@ -218,9 +219,9 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
           case "section.jsonExample":
             return (
               <div id={anchorId} key={key} className="scroll-mt-24">
-                <JsonExample
+                <CodeExample
                   isDark={isDark}
-                  {...(section as unknown as React.ComponentProps<typeof JsonExample>)}
+                  {...(section as any)}
                 />
               </div>
             );
@@ -391,6 +392,16 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
                 <PricingOverview
                   isDark={isDark}
                   {...(section as unknown as React.ComponentProps<typeof PricingOverview>)}
+                />
+              </div>
+            );
+
+          case "section.pricingTable":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PricingTable
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof PricingTable>)}
                 />
               </div>
             );

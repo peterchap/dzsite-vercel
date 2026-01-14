@@ -80,6 +80,7 @@ export default {
                 { type: "section.threeColumnDetailed" },
                 { type: "section.contact" },
                 { type: "section.centeredImage" },
+                { type: "section.pricingTable" },
             ],
         },
     ],

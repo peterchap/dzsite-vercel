@@ -47,6 +47,7 @@ import iconList from "./objects/sections/iconList";
 import contact from "./objects/sections/contact";
 import threeColumnDetailed from "./objects/sections/threeColumnDetailed";
 import centeredImage from "./objects/sections/centeredImage";
+import pricingTable from "./objects/sections/pricingTable";
 
 export const schemaTypes = [
   siteSettings,
@@ -95,4 +96,5 @@ export const schemaTypes = [
   threeColumnDetailed,
   contact,
   centeredImage,
+  pricingTable,
 ];

@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "@/components/ui/Container";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 
 interface Feature {
     text?: string;
@@ -20,6 +21,7 @@ interface ColumnProps {
         outcomes?: string[];
         footer?: string;
     };
+    cta?: any;
 }
 
 interface ThreeColumnDetailedProps {
@@ -49,14 +51,17 @@ export default function ThreeColumnDetailed({ isDark, title, subtitle, columns }
                         )}
                     </div>
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:grid-rows-[auto_1fr_auto]">
+                <div className={`grid grid-cols-1 gap-8 ${columns.length === 2 ? "md:grid-cols-2 md:grid-rows-[auto_1fr_auto]" :
+                        columns.length === 3 ? "md:grid-cols-3 md:grid-rows-[auto_1fr_auto]" :
+                            columns.length >= 4 ? "md:grid-cols-2 lg:grid-cols-4 md:grid-rows-[auto_1fr_auto_auto_1fr_auto] lg:grid-rows-[auto_1fr_auto]" : "md:grid-cols-1"
+                    }`}>
                     {columns.map((col, i) => (
                         <div
                             key={i}
                             className="flex flex-col md:grid md:grid-rows-subgrid md:row-span-3 rounded-3xl border border-slate-200 bg-white h-full shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md"
                         >
                             {/* 1) Title and Sub-title */}
-                            <div className="p-8 border-b border-slate-100 bg-slate-50/50 flex flex-col justify-center">
+                            <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col justify-center">
                                 {col.top?.title && (
                                     <h3 className="text-2xl font-bold tracking-tight mb-2 leading-tight text-slate-900">
                                         {col.top.title}
@@ -70,13 +75,13 @@ export default function ThreeColumnDetailed({ isDark, title, subtitle, columns }
                             </div>
 
                             {/* 2) Heading and bullet points with icon */}
-                            <div className="p-8 flex flex-col">
+                            <div className="p-6 flex flex-col">
                                 {col.middle?.heading && (
-                                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-6">
+                                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-5">
                                         {col.middle.heading}
                                     </h4>
                                 )}
-                                <ul className="space-y-5">
+                                <ul className="space-y-3.5 mb-4">
                                     {col.middle?.features?.map((feat, fi) => (
                                         <li key={fi} className="flex items-start gap-4 group">
                                             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-slate-50 border border-slate-100 text-sm shadow-sm group-hover:scale-110 transition-transform">
@@ -91,7 +96,7 @@ export default function ThreeColumnDetailed({ isDark, title, subtitle, columns }
                             </div>
 
                             {/* 3) Outcome box in different shade with Heading, bullet points and a centered footer */}
-                            <div className="p-8 border-t bg-blue-50/30 border-blue-100/50 flex flex-col">
+                            <div className="p-6 border-t bg-blue-50/30 border-blue-100/50 flex flex-col">
                                 {col.bottom?.heading && (
                                     <h4 className="text-sm font-bold text-slate-800 mb-5">
                                         {col.bottom.heading}
@@ -113,6 +118,19 @@ export default function ThreeColumnDetailed({ isDark, title, subtitle, columns }
                                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                                             {col.bottom.footer}
                                         </p>
+                                    </div>
+                                )}
+
+                                {col.cta && col.cta.label && (
+                                    <div className="mt-8 pt-6 border-t border-slate-200/60 flex justify-center">
+                                        <ButtonLink
+                                            href={col.cta.href || "#"}
+                                            variant={col.cta.variant || "secondary"}
+                                            size="sm"
+                                            className="w-full justify-center text-center"
+                                        >
+                                            {col.cta.label}
+                                        </ButtonLink>
                                     </div>
                                 )}
                             </div>

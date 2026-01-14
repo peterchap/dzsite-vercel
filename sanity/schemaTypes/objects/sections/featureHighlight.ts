@@ -22,6 +22,20 @@ export default {
         },
         { name: "visual", title: "Visual / Image", type: "image" },
         { name: "cta", title: "Call to Action", type: "cta" },
+        {
+            name: "layoutRatio",
+            title: "Layout Ratio",
+            type: "string",
+            options: {
+                list: [
+                    { title: "Equal (50:50)", value: "50-50" },
+                    { title: "Wider Content (60:40)", value: "60-40" },
+                    { title: "Wider Visual (40:60)", value: "40-60" },
+                ],
+                layout: "radio",
+            },
+            initialValue: "50-50",
+        },
     ],
     preview: {
         select: { title: "title" },
