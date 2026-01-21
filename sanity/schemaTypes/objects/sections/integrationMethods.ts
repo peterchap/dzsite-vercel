@@ -19,7 +19,7 @@ export default {
                             name: "benefits",
                             title: "Benefits",
                             type: "array",
-                            of: [{ type: "string" }],
+                            of: [{ type: "block" }],
                         },
                         {
                             name: "listTitle",

@@ -1,8 +1,16 @@
 import React from "react";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 
 interface Callout {
     label: string;
     text?: string;
+}
+
+interface CTA {
+    label: string;
+    href?: string;
+    externalHref?: string;
+    variant?: "primary" | "secondary" | "ghost";
 }
 
 interface CodeExampleProps {
@@ -12,10 +20,11 @@ interface CodeExampleProps {
     json?: string; // Support existing content
     language: "json" | "sql" | "python";
     callouts?: Callout[];
+    cta?: CTA;
     isDark?: boolean;
 }
 
-export function CodeExample({ title, intro, code, json, language, callouts, isDark }: CodeExampleProps) {
+export function CodeExample({ title, intro, code, json, language, callouts, cta, isDark }: CodeExampleProps) {
     const finalCode = code || json || "";
     // Simple syntax highlighting using regex
     const highlight = (code: string, lang: string) => {
@@ -80,14 +89,31 @@ export function CodeExample({ title, intro, code, json, language, callouts, isDa
                         </pre>
                     </div>
 
-                    {callouts && callouts.length > 0 && (
-                        <div className="space-y-4">
-                            {callouts.map((c, i) => (
-                                <div key={i} className="rounded-lg border border-slate-200 p-4 bg-white shadow-sm">
-                                    <p className="font-semibold text-slate-900">{c.label}</p>
-                                    {c.text && <p className="mt-1 text-sm text-slate-600">{c.text}</p>}
+                    {(callouts || cta) && (
+                        <div className="space-y-6">
+                            {callouts && callouts.length > 0 && (
+                                <div className="space-y-4">
+                                    {callouts.map((c, i) => (
+                                        <div key={i} className="rounded-lg border border-slate-200 p-4 bg-white shadow-sm">
+                                            <p className="font-semibold text-slate-900">{c.label}</p>
+                                            {c.text && <p className="mt-1 text-sm text-slate-600">{c.text}</p>}
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
+
+                            {cta && cta.label && (
+                                <div className="pt-2">
+                                    <ButtonLink
+                                        size="lg"
+                                        variant={cta.variant || "primary"}
+                                        className="w-full justify-center"
+                                        href={cta.href || cta.externalHref || "#"}
+                                    >
+                                        {cta.label}
+                                    </ButtonLink>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

@@ -16,7 +16,12 @@ export default {
           name: "useCaseItem",
           fields: [
             { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
-            { name: "description", title: "Description (optional)", type: "text", rows: 2 },
+            {
+              name: "description",
+              title: "Description (optional)",
+              type: "array",
+              of: [{ type: "block" }]
+            },
           ],
           preview: { select: { title: "title" } },
         },

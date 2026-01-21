@@ -7,6 +7,7 @@ export const metadata = {
     description: 'Stop phishing attacks in under 60 seconds.',
 }
 
+// Force rebuild
 export default function BrandProtectionPage() {
     return (
         <div className="flex flex-col">

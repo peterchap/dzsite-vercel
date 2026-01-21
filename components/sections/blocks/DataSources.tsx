@@ -10,6 +10,7 @@ interface DataSourcesProps {
         icon?: string;
         title?: string;
         description?: string;
+        features?: string[];
     }[];
 }
 
@@ -58,9 +59,23 @@ export default function DataSources({ isDark, title, subtitle, sources }: DataSo
                                 <h3 className="mb-3 text-xl font-bold text-slate-900">
                                     {source.title}
                                 </h3>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    {source.description}
-                                </p>
+                                {source.description && (
+                                    <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                        {source.description}
+                                    </p>
+                                )}
+                                {source.features && source.features.length > 0 && (
+                                    <ul className="mt-auto space-y-2.5">
+                                        {source.features.map((feature, fi) => (
+                                            <li key={fi} className="flex items-start gap-2.5">
+                                                <Icons.Check className="mt-1 h-3.5 w-3.5 shrink-0 text-blue-600" />
+                                                <span className="text-sm text-slate-600 leading-tight">
+                                                    {feature}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         );
                     })}

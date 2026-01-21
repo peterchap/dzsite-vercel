@@ -48,6 +48,11 @@ import contact from "./objects/sections/contact";
 import threeColumnDetailed from "./objects/sections/threeColumnDetailed";
 import centeredImage from "./objects/sections/centeredImage";
 import pricingTable from "./objects/sections/pricingTable";
+import circularFeatures from "./objects/sections/circularFeatures";
+import whoShouldApply from "./objects/sections/whoShouldApply";
+import detectionGrid from "./objects/sections/detectionGrid";
+
+import comparisonTable from "./objects/sections/comparisonTable";
 
 export const schemaTypes = [
   siteSettings,
@@ -97,4 +102,8 @@ export const schemaTypes = [
   contact,
   centeredImage,
   pricingTable,
+  circularFeatures,
+  whoShouldApply,
+  detectionGrid,
+  comparisonTable,
 ];

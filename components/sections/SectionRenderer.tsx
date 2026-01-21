@@ -42,6 +42,10 @@ import ThreeColumnDetailed from "@/components/sections/blocks/ThreeColumnDetaile
 import ContactSection from "@/components/sections/blocks/ContactSection";
 import CenteredImage from "@/components/sections/blocks/CenteredImage";
 import PricingTable from "@/components/sections/blocks/PricingTable";
+import CircularFeatures from "@/components/sections/blocks/CircularFeatures";
+import WhoShouldApply from "@/components/sections/blocks/WhoShouldApply";
+import DetectionGrid from "@/components/sections/blocks/DetectionGrid";
+import ComparisonTable from "@/components/sections/blocks/ComparisonTable";
 
 type Section = {
   _type: string;
@@ -442,6 +446,46 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
                 <FalsePositiveReduction
                   isDark={isDark}
                   {...(section as unknown as React.ComponentProps<typeof FalsePositiveReduction>)}
+                />
+              </div>
+            );
+
+          case "section.circularFeatures":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <CircularFeatures
+                  isDark={isDark}
+                  {...(section as any)}
+                />
+              </div>
+            );
+
+          case "section.whoShouldApply":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <WhoShouldApply
+                  isDark={isDark}
+                  {...(section as any)}
+                />
+              </div>
+            );
+
+          case "section.detectionGrid":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DetectionGrid
+                  isDark={isDark}
+                  {...(section as any)}
+                />
+              </div>
+            );
+
+          case "section.comparisonTable":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ComparisonTable
+                  isDark={isDark}
+                  {...(section as any)}
                 />
               </div>
             );

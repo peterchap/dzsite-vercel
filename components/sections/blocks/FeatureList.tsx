@@ -1,4 +1,5 @@
 import React from "react";
+import { PortableText } from "next-sanity";
 import { Container } from "@/components/ui/Container";
 import { CheckCircle2 } from "lucide-react";
 
@@ -6,6 +7,7 @@ interface FeatureListProps {
     isDark?: boolean;
     title?: string;
     subtitle?: string;
+    description?: any[]; // PortableTextBlock[]
     footer?: string;
     groups?: {
         title?: string;
@@ -14,7 +16,7 @@ interface FeatureListProps {
     }[];
 }
 
-export default function FeatureList({ isDark, title, subtitle, footer, groups }: FeatureListProps) {
+export default function FeatureList({ isDark, title, subtitle, description, footer, groups }: FeatureListProps) {
     return (
         <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
             <Container>
@@ -25,9 +27,14 @@ export default function FeatureList({ isDark, title, subtitle, footer, groups }:
                         </h2>
                     )}
                     {subtitle && (
-                        <p className="text-lg text-slate-600 leading-relaxed">
+                        <p className="text-lg text-slate-600 leading-relaxed mb-6">
                             {subtitle}
                         </p>
+                    )}
+                    {description && (
+                        <div className="text-lg text-slate-600 leading-relaxed [&_p]:mb-4">
+                            <PortableText value={description} />
+                        </div>
                     )}
                 </div>
                 <div className="flex flex-wrap justify-center gap-12">

@@ -38,6 +38,11 @@ export function DataDictionaryModal({
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
@@ -74,6 +79,8 @@ export function DataDictionaryModal({
     );
 
     const headers = data.length > 0 ? Object.keys(data[0]) : [];
+
+    if (!mounted) return <>{trigger}</>;
 
     return (
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>

@@ -4,11 +4,12 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { CheckCircle2 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { PortableText } from "next-sanity";
 
 interface FeatureHighlightProps {
     isDark?: boolean;
     title?: string;
-    content?: string;
+    content?: any;
     approaches?: {
         label?: string;
         text?: string;
@@ -39,9 +40,13 @@ export default function FeatureHighlight({ isDark, title, content, approaches, v
                                 </h2>
                             )}
                             {content && (
-                                <p className="text-lg text-slate-600 leading-relaxed">
-                                    {content}
-                                </p>
+                                <div className="text-lg text-slate-600 leading-relaxed space-y-4">
+                                    {Array.isArray(content) ? (
+                                        <PortableText value={content} />
+                                    ) : (
+                                        <p>{content}</p>
+                                    )}
+                                </div>
                             )}
                         </div>
 

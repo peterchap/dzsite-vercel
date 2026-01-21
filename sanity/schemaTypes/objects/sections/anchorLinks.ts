@@ -1,4 +1,3 @@
-import AnchorMultiSelect from "../../../components/AnchorMultiSelect";
 export default {
   name: "section.anchorLinks",
   title: "Section: Anchor Buttons",
@@ -22,20 +21,29 @@ export default {
     },
     {
       name: "selectedAnchors",
-      title: "Anchors to Link",
+      title: "Features & Buttons",
       type: "array",
       of: [{
         type: "object",
         name: "anchorItem",
+        title: "Feature Item",
         fields: [
-          { name: "anchor", title: "Anchor", type: "string" },
-          { name: "label", title: "Label", type: "string" },
+          { name: "featureTitle", title: "Feature Title", type: "string" },
+          { name: "featureDescription", title: "Feature Description", type: "array", of: [{ type: "block" }] },
+          { name: "label", title: "Button Label", type: "string", validation: (r: any) => r.required() },
+          { name: "anchor", title: "Target Anchor ID", type: "string", description: "The ID of the section to jump to (e.g. 'pricing')", validation: (r: any) => r.required() },
         ],
+        preview: {
+          select: { title: "featureTitle", subtitle: "label" },
+          prepare({ title, subtitle }: any) {
+            return {
+              title: title || subtitle || "Untitled",
+              subtitle: title ? subtitle : "",
+            };
+          },
+        },
       }],
-      validation: (r: any) => r.min(1).warning("Select at least one anchor"),
-      components: {
-        input: AnchorMultiSelect,
-      },
+      validation: (r: any) => r.min(1).max(5).warning("Select between 1 and 5 items"),
     },
   ],
   preview: {

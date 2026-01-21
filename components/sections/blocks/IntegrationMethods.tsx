@@ -1,4 +1,5 @@
 import React from "react";
+import { PortableText } from "next-sanity";
 import { Container } from "@/components/ui/Container";
 import * as Icons from "lucide-react";
 import Image from "next/image";
@@ -10,7 +11,7 @@ interface IntegrationMethodsProps {
     methods?: {
         icon?: string;
         headline?: string;
-        benefits?: string[];
+        benefits?: any[]; // PortableTextBlock[]
         listTitle?: string;
         listItems?: string[];
         codeSnippet?: {
@@ -42,29 +43,28 @@ export default function IntegrationMethods({ isDark, title, methods, diagram }: 
                                     <h3 className="text-2xl font-bold text-slate-900">{method.headline}</h3>
                                 </div>
 
-                                <div className="mb-8 grid gap-6 md:grid-cols-2">
+                                <div className="mb-8 flex flex-col gap-8">
                                     <div className="space-y-4">
                                         <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Benefits</h4>
-                                        <ul className="space-y-2">
-                                            {method.benefits?.map((b, j) => (
-                                                <li key={j} className="flex items-start gap-2 text-sm text-slate-600">
-                                                    <Icons.Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
-                                                    {b}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <div className="text-slate-600 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_p]:mb-4">
+                                            {method.benefits?.length ? (
+                                                <PortableText value={method.benefits} />
+                                            ) : null}
+                                        </div>
                                     </div>
-                                    <div className="space-y-4">
-                                        <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">{method.listTitle || "Details"}</h4>
-                                        <ul className="space-y-2">
-                                            {method.listItems?.map((li, j) => (
-                                                <li key={j} className="flex items-start gap-2 text-sm text-slate-600">
-                                                    <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
-                                                    {li}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+                                    {method.listItems && method.listItems.length > 0 && (
+                                        <div className="space-y-4 pt-4 border-t border-slate-100">
+                                            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">{method.listTitle || "Details"}</h4>
+                                            <ul className="space-y-2">
+                                                {method.listItems.map((li, j) => (
+                                                    <li key={j} className="flex items-start gap-2 text-sm text-slate-600">
+                                                        <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
+                                                        {li}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {method.codeSnippet && (

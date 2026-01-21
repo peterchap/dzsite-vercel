@@ -1,5 +1,5 @@
 export const pageBySlugQuery = `
-*[_type in ["page", "pricingPage", "useCase"] && slug.current == $slug][0]{
+*[_type in ["page", "useCase"] && slug.current == $slug][0]{
   _id,
   title,
   "slug": slug.current,
@@ -102,6 +102,20 @@ export const pageBySlugQuery = `
         )
       )
     }, true => secondaryCta),
+    "cta": select(defined(cta) => {
+      "label": cta.label,
+      "variant": cta.variant,
+      "href": select(
+        defined(cta.anchor) => select(
+          defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+          true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+        ),
+        true => select(
+          defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+          true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+        )
+      )
+    }, true => cta),
     // Nested left/right objects with CTAs
     "left": select(defined(left) => left{
       ...,

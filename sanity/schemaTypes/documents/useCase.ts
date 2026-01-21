@@ -54,6 +54,7 @@ export default {
                 { type: "section.falsePositiveReduction" },
                 { type: "section.documentList" },
                 { type: "section.featureGrid" },
+                { type: "section.circularFeatures" },
             ],
         },
         { name: "problem", title: "Problem", type: "text", rows: 5 },

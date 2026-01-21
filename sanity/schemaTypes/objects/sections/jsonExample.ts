@@ -43,6 +43,11 @@ export default {
                 },
             ],
         },
+        {
+            name: "cta",
+            title: "CTA (Optional)",
+            type: "cta",
+        },
     ],
     preview: {
         select: { title: "title", language: "language" },
