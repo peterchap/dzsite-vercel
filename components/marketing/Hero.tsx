@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { Shield, Database } from "lucide-react"
+import Image from "next/image"
+import { urlFor } from "@/sanity/lib/image"
 
 interface HeroProps {
     heading: string
@@ -8,9 +10,10 @@ interface HeroProps {
         label: string
         link: string
     }
+    image?: any
 }
 
-export function Hero({ heading, subheading, primaryCta }: HeroProps) {
+export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
     return (
         <section className="relative overflow-hidden bg-[#131326] px-6 py-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-7xl text-center">
@@ -20,6 +23,19 @@ export function Hero({ heading, subheading, primaryCta }: HeroProps) {
                 <p className="mt-6 text-lg leading-8 text-gray-300 max-w-2xl mx-auto">
                     {subheading}
                 </p>
+
+                {image && (
+                    <div className="mt-10 max-w-4xl mx-auto">
+                        <Image
+                            src={urlFor(image).url()}
+                            alt={heading}
+                            width={1200}
+                            height={600}
+                            className="w-full h-auto rounded-xl border border-white/10 shadow-2xl"
+                            priority
+                        />
+                    </div>
+                )}
 
                 {primaryCta && (
                     <div className="mt-10 flex items-center justify-center gap-x-6">

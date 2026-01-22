@@ -7,6 +7,8 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Button } from "@/components/ui/button";
 import { DataDictionaryModal } from "@/components/ui/DataDictionaryModal";
 import { Sparkles, ShieldCheck, FileText } from "lucide-react";
+import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
 
 export function HeroSplitCta(props: SectionHeroSplitCta) {
   const { eyebrow, headline, subheadline, badge, primaryCta, secondaryCta, dataDictionary } = props;
@@ -47,6 +49,20 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
               {subheadline}
             </p>
           ) : null}
+
+          {/* Optional Image */}
+          {props.image && (
+            <div className="mt-8 max-w-4xl mx-auto px-4">
+              <Image
+                src={urlFor(props.image).url()}
+                alt="Hero Image"
+                width={1000}
+                height={500}
+                className="w-full h-auto rounded-xl shadow-xl border border-slate-200"
+                priority
+              />
+            </div>
+          )}
 
           {/* Badge / trust line */}
           {badge ? (

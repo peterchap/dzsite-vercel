@@ -2,6 +2,8 @@ import React from "react";
 import { Code2, Building2, PlugZap } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
+import { PortableText } from "next-sanity";
+
 type Cta = { label: string; href: string; variant?: "primary" | "secondary" | "ghost" };
 
 type Col = {
@@ -13,12 +15,23 @@ type Col = {
 type Props = {
   title: string;
   subtitle?: string;
+  description?: any[];
   left: Col;
   right: Col & { integrationLine?: string };
   center?: Col & { integrationLine?: string };
 };
 
-export default function ProductSplit({ title, subtitle, left, right, center, isDark }: Props & { isDark?: boolean }) {
+export default function ProductSplit({ title, subtitle, description, left, right, center, isDark }: Props & { isDark?: boolean }) {
+  const components = {
+    block: {
+      normal: ({ children }: any) => <p className="mb-4 text-center">{children}</p>,
+      center: ({ children }: any) => <p className="mb-4 text-center">{children}</p>,
+      left: ({ children }: any) => <p className="mb-4 text-left">{children}</p>,
+      right: ({ children }: any) => <p className="mb-4 text-right">{children}</p>,
+      justify: ({ children }: any) => <p className="mb-4 text-justify">{children}</p>,
+    }
+  };
+
   return (
     <section className={`py-12 ${isDark ? 'bg-slate-50' : 'bg-white'}`}>
       <div className="mx-auto max-w-6xl px-6">
@@ -28,6 +41,11 @@ export default function ProductSplit({ title, subtitle, left, right, center, isD
             <p className="mt-3 text-lg text-slate-600 text-center">
               {subtitle}
             </p>
+          )}
+          {description && (
+            <div className="mt-6 text-lg text-slate-600">
+              <PortableText value={description} components={components} />
+            </div>
           )}
         </div>
 

@@ -13,6 +13,7 @@ interface PricingOverviewProps {
     footer?: string;
     tiers?: {
         name?: string;
+        highlight?: boolean;
         priceInCents?: number;
         price?: string;
         subtitle?: string;
@@ -50,9 +51,7 @@ export default function PricingOverview({ isDark, title, subtitle, description, 
 
                 <div className="flex flex-wrap justify-center gap-8">
                     {tiers?.map((tier, i) => {
-                        const isMainHighlighted = tiers.length === 3 && i === 1;
-                        const isEnterpriseHighlighted = tiers.length === 4 && i === 3;
-                        const isHighlighted = isMainHighlighted || isEnterpriseHighlighted;
+                        const isHighlighted = tier.highlight;
 
                         const displayPrice = tier.priceInCents
                             ? formatPrice(tier.priceInCents)
@@ -84,14 +83,14 @@ export default function PricingOverview({ isDark, title, subtitle, description, 
                                     ))}
                                 </ul>
 
-                                {tier.cta && (
+                                {tier.cta && tier.cta.label && tier.cta.href && (
                                     <ButtonLink
-                                        href={tier.cta.href || "#"}
-                                        variant={(tier.cta.variant as any) || (i === 1 ? "primary" : "secondary")}
+                                        href={tier.cta.href}
+                                        variant={(tier.cta.variant as any) || "secondary"}
                                         size="lg"
                                         className="w-full justify-center"
                                     >
-                                        {tier.cta.label || "Get Started"}
+                                        {tier.cta.label}
                                     </ButtonLink>
                                 )}
                             </div>

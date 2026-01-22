@@ -7,6 +7,7 @@ export type SectionHeroSplitCta = {
     eyebrow?: string;
     headline: string;
     subheadline?: string;
+    image?: SanityImageSource;
     badge?: string;
     primaryCta: Cta;
     secondaryCta?: Cta;
@@ -39,9 +40,9 @@ export type SectionTwoProductSplit = {
 };
 
 export type SectionTwoColumnFeature = {
-  _type: "section.twoColumnFeature";
-  left: { kicker?: string; title: string; features?: string[] };
-  right: { kicker?: string; title: string; subtitle?: string };
+    _type: "section.twoColumnFeature";
+    left: { kicker?: string; title: string; features?: string[] };
+    right: { kicker?: string; title: string; subtitle?: string };
 };
 
 export type SectionJsonExample = {

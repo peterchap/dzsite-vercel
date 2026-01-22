@@ -17,6 +17,7 @@ export default {
                     type: "object",
                     fields: [
                         { name: "name", title: "Tier Name", type: "string" },
+                        { name: "highlight", title: "Highlight Tier", type: "boolean", initialValue: false },
                         { name: "priceInCents", title: "Price (in USD Cents)", type: "number", description: "Base price in USD cents. e.g. 9900 for $99. Leave empty for 'Custom' or free tiers." },
                         { name: "price", title: "Price Label (Static)", type: "string", description: "Fallback if cents not provided, or for text like 'Custom' or 'Free'" },
                         { name: "subtitle", title: "Subtitle", type: "string" },

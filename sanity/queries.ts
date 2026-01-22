@@ -12,6 +12,7 @@ export const pageBySlugQuery = `
   },
   hero{
     _type,
+    image,
     eyebrow,
     headline,
     subheadline,

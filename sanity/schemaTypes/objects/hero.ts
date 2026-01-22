@@ -17,6 +17,14 @@ export default defineType({
             rows: 3,
         }),
         defineField({
+            name: 'image',
+            title: 'Image',
+            type: 'image',
+            options: {
+                hotspot: true,
+            },
+        }),
+        defineField({
             name: 'primaryCta',
             title: 'Primary CTA',
             type: 'object',
@@ -32,14 +40,6 @@ export default defineType({
                     title: 'Link'
                 })
             ]
-        }),
-        defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
         }),
     ],
 })

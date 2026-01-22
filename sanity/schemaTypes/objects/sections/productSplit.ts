@@ -6,6 +6,22 @@ export default {
     { name: "title", title: "Title", type: "string", validation: (r: any) => r.required() },
     { name: "subtitle", title: "Subtitle", type: "string" },
     {
+      name: "description",
+      title: "Description",
+      type: "array",
+      of: [
+        {
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" },
+            { title: "Center", value: "center" },
+            { title: "Right", value: "right" },
+            { title: "Justify", value: "justify" },
+          ]
+        }
+      ]
+    },
+    {
       name: "left",
       title: "Left Column",
       type: "object",

@@ -7,6 +7,7 @@ export default {
         { name: "eyebrow", title: "Eyebrow (optional)", type: "string" },
         { name: "headline", title: "Headline", type: "string", validation: (r: any) => r.required() },
         { name: "subheadline", title: "Subheadline", type: "text", rows: 3 },
+        { name: "image", title: "Image", type: "image", options: { hotspot: true } },
         { name: "badge", title: "Badge text (optional)", type: "string" },
         { name: "primaryCta", title: "Primary CTA", type: "cta" },
         { name: "secondaryCta", title: "Secondary CTA", type: "cta" },
