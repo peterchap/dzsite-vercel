@@ -24,6 +24,7 @@ export default function SimpleText({
 
   const selectedFont = fontClasses[fontStyle] || "font-sans";
 
+  
   const components = {
     block: {
       normal: ({ children }: any) => <p className="mb-4 text-left">{children}</p>,
