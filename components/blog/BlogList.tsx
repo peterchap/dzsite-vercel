@@ -11,6 +11,7 @@ export function BlogList({ posts }: { posts: any[] }) {
         );
     }
 
+
     return (
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
