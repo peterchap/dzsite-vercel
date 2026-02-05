@@ -4,6 +4,7 @@ export interface DomainData {
     status: string;
     // Core DNS
     ns1?: string;
+    ns?: string;
     soa?: string;
     a?: string;
     aaaa?: string;
@@ -22,6 +23,7 @@ export interface DomainData {
     mx_ptr?: string;
     mx_ptr_regdom?: string;
     mx_under_customer?: boolean;
+    mx_status?: string;
     // SPF/DMARC
     spf?: string;
     dmarc?: string;
@@ -33,6 +35,7 @@ export interface DomainData {
     www_cname?: string;
     // Mail Subdomain
     mail_a?: string;
+    mail_ptr?: string;
     mail_mx?: string;
     mail_spf?: string;
     mail_dmarc?: string;
@@ -73,6 +76,8 @@ export interface DomainData {
 
 const MOCK_DATA: DomainData = {
     domain: "mock-sample.com",
+    registered_domain: "mock-sample.com",
+    status: "active",
     decision_flag: true,
     mx_domain: "mx-mock.google.com",
     is_known_mbp: true,
