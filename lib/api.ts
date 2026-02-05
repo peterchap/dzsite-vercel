@@ -1,34 +1,74 @@
 export interface DomainData {
     domain: string;
-    mx_domain?: string;
-    is_known_mbp?: boolean;
-    mx_status?: string;
+    registered_domain: string;
+    status: string;
+    // Core DNS
+    ns1?: string;
+    soa?: string;
     a?: string;
-    is_spf_block?: boolean;
-    is_phishing?: boolean;
-    is_disposable?: boolean;
-    is_parked?: boolean;
-    is_malware?: boolean;
-    is_new_domain?: boolean;
-    top_domain_rank?: number;
-    mbp?: string;
-    spf?: string;
-    dmarc?: string;
-    isp?: string;
-    isp_country?: string;
-    ns?: string;
+    aaaa?: string;
     ptr?: string;
     cname?: string;
+    ip_int?: number;
+    // MX & Email
     mx?: string;
+    mx_domain?: string;
+    mx_tld?: string;
+    mx_priority?: number;
+    mx_host_final?: string;
+    mx_regdom_final?: string;
+    mx_cname_chain?: string[];
+    mx_ips?: string[];
+    mx_ptr?: string;
+    mx_ptr_regdom?: string;
+    mx_under_customer?: boolean;
+    // SPF/DMARC
+    spf?: string;
+    dmarc?: string;
+    bimi?: string;
+    // WWW
     www?: string;
+    www_a?: string;
     www_ptr?: string;
     www_cname?: string;
+    // Mail Subdomain
     mail_a?: string;
-    mail_ptr?: string;
     mail_mx?: string;
     mail_spf?: string;
     mail_dmarc?: string;
-    decision_flag?: boolean;
+    // Infrastructure
+    asn?: string;
+    isp?: string;              // Often enriched
+    isp_country?: string;      // Often enriched
+    mbp?: string;              // Mail Provider Name
+    is_known_mbp?: boolean;
+    // Risk & Flags
+    is_phishing?: boolean;
+    is_malware?: boolean;
+    is_parked?: boolean;
+    is_disposable?: boolean;
+    is_new_domain?: boolean;
+    is_spf_block?: boolean;
+    is_dga_suspect?: boolean;
+    dga_sld_entropy?: number;
+    dga_sld_length?: number;
+    risk_level?: string;       // "low", "medium", "high", "critical"
+    risk_reasons?: string;
+    risk_score?: number;       // 0-100
+    top_domain_rank?: number;
+    decision_flag?: boolean;   // Derived flag
+    // Certificates
+    https_cert_ok?: boolean;
+    https_cert_issuer?: string;
+    smtp_cert_ok?: boolean;
+    // Meta
+    _meta?: {
+        timings: {
+            fetch_ms: number;
+            total_ms: number;
+            [key: string]: number;
+        };
+    };
 }
 
 const MOCK_DATA: DomainData = {

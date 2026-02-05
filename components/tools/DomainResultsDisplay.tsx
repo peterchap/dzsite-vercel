@@ -17,46 +17,16 @@ import {
     ArrowRight,
     Activity,
     Copy,
-    Database
+    Database,
+    Lock,
+    Cpu
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CopyButton } from "@/components/ui/copy-button";
-
-interface DomainData {
-    domain: string;
-    mx_domain?: string;
-    is_known_mbp?: boolean;
-    mx_status?: string;
-    a?: string;
-    is_spf_block?: boolean;
-    is_phishing?: boolean;
-    is_disposable?: boolean;
-    is_parked?: boolean;
-    is_malware?: boolean;
-    is_new_domain?: boolean;
-    top_domain_rank?: number;
-    mbp?: string;
-    spf?: string;
-    dmarc?: string;
-    isp?: string;
-    isp_country?: string;
-    ns?: string;
-    ptr?: string;
-    cname?: string;
-    mx?: string;
-    www?: string;
-    www_ptr?: string;
-    www_cname?: string;
-    mail_a?: string;
-    mail_ptr?: string;
-    mail_mx?: string;
-    mail_spf?: string;
-    mail_dmarc?: string;
-    decision_flag?: boolean;
-}
+import { DomainData } from "@/lib/api";
 
 interface DomainResultsDisplayProps {
     data: DomainData;
@@ -67,7 +37,18 @@ type TabId = "overview" | "dns" | "infrastructure" | "security";
 export function DomainResultsDisplay({ data }: DomainResultsDisplayProps) {
     const [activeTab, setActiveTab] = useState<TabId>("overview");
 
-    const riskScore = data.is_phishing || data.is_malware ? 95 : (data.is_disposable || data.is_parked ? 75 : 15);
+    // Calculate or infer risk score for display
+    let riskScore = data.risk_score;
+    if (riskScore === undefined || riskScore === null) {
+        // Fallback mapping based on risk_level
+        const map: Record<string, number> = { "low": 10, "medium": 50, "high": 85, "critical": 95 };
+        riskScore = map[data.risk_level?.toLowerCase() || "low"] || 10;
+
+        // Override with explicit flags if present
+        if (data.is_malware || data.is_phishing) riskScore = 95;
+        else if (data.is_parked || data.is_disposable) riskScore = 75;
+    }
+
     const riskColor = riskScore > 80 ? "text-rose-600" : riskScore > 50 ? "text-amber-500" : "text-emerald-500";
     const riskBg = riskScore > 80 ? "bg-rose-50 border-rose-100" : riskScore > 50 ? "bg-amber-50 border-amber-100" : "bg-emerald-50 border-emerald-100";
 
@@ -118,9 +99,25 @@ export function DomainResultsDisplay({ data }: DomainResultsDisplayProps) {
                         ></div>
                     </div>
                     <p className="mt-4 text-xs font-bold leading-relaxed opacity-80">
-                        {riskScore > 80 ? "Critical Threat Detected. Immediate action required." : riskScore > 50 ? "Suspicious Activity. Manual review recommended." : "Low Risk Profile. Standard trust levels applied."}
+                        {data.risk_level?.toUpperCase() || (riskScore > 80 ? "CRITICAL RISK" : "LOW RISK")}
                     </p>
                 </div>
+
+                {data._meta?.timings && (
+                    <div className="px-6 py-4 rounded-3xl bg-slate-50 border border-slate-100">
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Lookup Timings</h3>
+                        <div className="space-y-1">
+                            <div className="flex justify-between text-xs text-slate-500">
+                                <span>Total</span>
+                                <span className="font-mono">{data._meta.timings.total_ms?.toFixed(0)}ms</span>
+                            </div>
+                            <div className="flex justify-between text-xs text-slate-500">
+                                <span>Fetch</span>
+                                <span className="font-mono">{data._meta.timings.fetch_ms?.toFixed(0)}ms</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </aside>
 
             {/* Main Data View */}
@@ -133,16 +130,16 @@ export function DomainResultsDisplay({ data }: DomainResultsDisplayProps) {
                     <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div className="space-y-2">
                             <div className="flex items-center gap-3 mb-2">
-                                <Badge className="bg-blue-500 hover:bg-blue-500 text-white font-black italic rounded-lg">VERIFIED INTEL</Badge>
-                                <span className="text-slate-500 font-mono text-xs">ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+                                <Badge className={cn("font-black italic rounded-lg text-white", data.status === "ALIVE" ? "bg-emerald-500 hover:bg-emerald-600" : "bg-slate-600")}>
+                                    {data.status || "UNKNOWN"}
+                                </Badge>
+                                <span className="text-slate-500 font-mono text-xs">Generated {new Date().toLocaleTimeString()}</span>
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-black tracking-tight">{data.domain}</h1>
+                            <h1 className="text-4xl md:text-5xl font-black tracking-tight break-all">{data.domain}</h1>
                             <div className="flex items-center gap-6 pt-2">
                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Decision</p>
-                                    <p className={cn("font-bold text-lg", data.decision_flag ? "text-emerald-400" : "text-rose-400")}>
-                                        {data.decision_flag ? "Mailable" : "Rejected"}
-                                    </p>
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Registered Domain</p>
+                                    <p className="font-bold text-lg">{data.registered_domain || data.domain}</p>
                                 </div>
                                 <div className="w-px h-8 bg-slate-800"></div>
                                 <div className="space-y-1">
@@ -150,12 +147,6 @@ export function DomainResultsDisplay({ data }: DomainResultsDisplayProps) {
                                     <p className="font-bold text-lg text-slate-200">{data.isp || "Unknown"}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <Button className="bg-white/10 hover:bg-white/20 border-white/10 rounded-2xl h-14 px-8 font-bold">
-                                <Fingerprint className="h-5 w-5 mr-3 text-blue-400" />
-                                Pivot Data
-                            </Button>
                         </div>
                     </div>
                 </div>
@@ -166,26 +157,6 @@ export function DomainResultsDisplay({ data }: DomainResultsDisplayProps) {
                     {activeTab === "dns" && <DnsSection data={data} />}
                     {activeTab === "infrastructure" && <InfrastructureSection data={data} />}
                     {activeTab === "security" && <SecuritySection data={data} />}
-                </div>
-
-                {/* Portal Upsell */}
-                <div className="bg-blue-600 rounded-[2rem] p-12 text-white shadow-2xl shadow-blue-600/20 flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-8">
-                        <Database className="h-8 w-8 text-white" />
-                    </div>
-                    <h2 className="text-3xl font-black mb-4">Unlock Full Historical Intelligence</h2>
-                    <p className="text-blue-100 mb-8 max-w-2xl text-lg font-medium opacity-90 leading-relaxed">
-                        This preview shows current signals. Our full platform provides 10+ years of WHOIS history,
-                        associated IPs, and real-time DNS monitoring for security teams.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <Button className="bg-white text-blue-600 hover:bg-blue-50 rounded-2xl h-14 px-12 font-black shadow-xl">
-                            Start Enterprise Trial
-                        </Button>
-                        <Button variant="outline" className="border-white/20 bg-transparent hover:bg-white/10 text-white rounded-2xl h-14 px-12 font-black">
-                            Contact Sales
-                        </Button>
-                    </div>
                 </div>
             </main>
         </div>
@@ -203,13 +174,9 @@ function OverviewSection({ data }: { data: DomainData }) {
                     </h3>
                     <div className="space-y-4">
                         <InfoItem label="Mail Provider" value={data.mbp || "Custom Infrastructure"} />
-                        <InfoItem label="Mail Status" value={data.mx_status === 'OK' ? "Operating Normally" : "Signal Anomalies Detected"} highlight={data.mx_status === 'OK'} />
-                        <InfoItem label="Trusted MBP" value={data.is_known_mbp ? "Yes - Vetted Provider" : "No - Primary/Private Host"} highlight={data.is_known_mbp} />
-                        <p className="pt-4 text-sm text-slate-500 leading-relaxed font-medium">
-                            {data.is_known_mbp
-                                ? "This domain uses a globally recognized mail provider with high reputation scoring."
-                                : "This domain uses private or local infrastructure which may require additional scrutiny for high-volume sending."}
-                        </p>
+                        <InfoItem label="MX Status" value={data.mx ? "Active" : "No MX Records"} highlight={!!data.mx} />
+                        <InfoItem label="Trusted Provider" value={data.is_known_mbp ? "Yes - Vetted" : "No - Unverified"} highlight={data.is_known_mbp} />
+                        <InfoItem label="SPF Auth" value={data.spf ? "Present" : "Missing / None"} highlight={!!data.spf} />
                     </div>
                 </div>
 
@@ -219,36 +186,36 @@ function OverviewSection({ data }: { data: DomainData }) {
                         Security Posture
                     </h3>
                     <div className="space-y-4">
-                        <FlagItem label="Phishing Check" value={data.is_phishing} inverse />
-                        <FlagItem label="Malware Check" value={data.is_malware} inverse />
-                        <FlagItem label="Disposable Provider" value={data.is_disposable} inverse />
-                        <FlagItem label="Parked / For Sale" value={data.is_parked} inverse />
+                        <FlagItem label="Phishing Detected" value={data.is_phishing} inverse />
+                        <FlagItem label="Malware Host" value={data.is_malware} inverse />
+                        <FlagItem label="Disposable Email" value={data.is_disposable} inverse />
+                        <FlagItem label="Parked Domain" value={data.is_parked} inverse />
                     </div>
                 </div>
             </div>
 
             <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 space-y-6">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-black text-slate-900">Intelligence Interpretation</h3>
+                    <h3 className="text-xl font-black text-slate-900">Advanced Analysis</h3>
                     <Badge variant="outline" className="border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[10px]">Contextual AI</Badge>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mail Server Context</p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">DGA Entropy</p>
                         <p className="text-sm font-semibold text-slate-700 leading-relaxed">
-                            {data.mx_domain ? `Valid MX cluster identified at ${data.mx_domain}.` : "No primary MX cluster detected."}
+                            {data.dga_sld_entropy ? `${data.dga_sld_entropy.toFixed(2)} / 5.0` : "N/A"}
                         </p>
                     </div>
                     <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Risk Summary</p>
-                        <p className="text-sm font-semibold text-slate-700 leading-relaxed">
-                            {data.decision_flag ? "Intelligence suggests a legitimate, mailable commercial entity." : "High probability of service misuse or fraud attempt detected."}
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Risk Level</p>
+                        <p className="text-sm font-semibold text-slate-700 leading-relaxed capitalize">
+                            {data.risk_level || "Unknown"}
                         </p>
                     </div>
                     <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Standing</p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Rank</p>
                         <p className="text-sm font-semibold text-slate-700 leading-relaxed">
-                            {data.top_domain_rank ? `Ranked in the top ${Math.ceil(data.top_domain_rank / 1000) * 1000} most active global domains.` : "Limited global traffic signature detected."}
+                            {data.top_domain_rank ? `Top ${Math.ceil(data.top_domain_rank / 1000)}k` : "Unranked"}
                         </p>
                     </div>
                 </div>
@@ -260,23 +227,20 @@ function OverviewSection({ data }: { data: DomainData }) {
 function DnsSection({ data }: { data: DomainData }) {
     const records = [
         { type: "A", value: data.a, label: "IPv4 Address" },
-        { type: "NS", value: data.ns, label: "Name Server" },
+        { type: "AAAA", value: data.aaaa, label: "IPv6 Address" },
+        { type: "NS", value: data.ns1, label: "Name Server" },
         { type: "MX", value: data.mx, label: "Mail Exchanger" },
         { type: "TXT (SPF)", value: data.spf, label: "Sender Policy Framework" },
         { type: "TXT (DMARC)", value: data.dmarc, label: "DMARC Policy" },
+        { type: "TXT (BIMI)", value: data.bimi, label: "Brand Indicators" },
+        { type: "SOA", value: data.soa, label: "Start of Authority" },
         { type: "PTR", value: data.ptr, label: "Reverse DNS" },
         { type: "CNAME", value: data.cname, label: "Canonical Name" },
     ].filter(r => r.value);
 
     return (
         <div className="p-8 rounded-3xl bg-white border border-slate-100 shadow-sm space-y-8">
-            <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-black text-slate-900">Resource Records</h3>
-                <div className="flex gap-2">
-                    <Button variant="ghost" size="sm" className="font-bold text-slate-400 h-8 hover:text-blue-600"><Copy className="h-3.5 w-3.5 mr-2" /> Copy All</Button>
-                </div>
-            </div>
-
+            <h3 className="text-2xl font-black text-slate-900">Resource Records</h3>
             <div className="rounded-2xl border border-slate-50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-slate-50">
@@ -319,6 +283,24 @@ function InfrastructureSection({ data }: { data: DomainData }) {
                 <InfrastructureStatCard title="Mail Cluster" value={data.mbp || "Self-Hosted"} icon={<Mail className="h-4 w-4" />} />
             </div>
 
+            {/* MX IPs Drilldown */}
+            {data.mx_ips && data.mx_ips.length > 0 && (
+                <div className="p-8 rounded-3xl bg-white border border-slate-100 shadow-sm space-y-6">
+                    <h4 className="text-xl font-black text-slate-900 flex items-center gap-3">
+                        <Cpu className="h-5 w-5 text-blue-500" />
+                        MX Infrastructure Nodes
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {data.mx_ips.map((ip, i) => (
+                            <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100 font-mono text-sm font-bold text-slate-600 flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                                {ip}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="p-8 rounded-3xl bg-white border border-slate-100 shadow-sm space-y-6">
                     <h4 className="text-xl font-black text-slate-900 flex items-center gap-3">
@@ -326,10 +308,10 @@ function InfrastructureSection({ data }: { data: DomainData }) {
                         Web Deployment
                     </h4>
                     <div className="space-y-4">
-                        <DetailRow label="Primary WWW Host" value={`www.${data.domain}`} />
-                        <DetailRow label="WWW A Record" value={data.www} />
+                        <DetailRow label="Primary WWW Host" value={data.www || "Unreachable"} />
+                        <DetailRow label="WWW A Record" value={data.www_a} />
                         <DetailRow label="WWW Pointer" value={data.www_ptr} />
-                        <DetailRow label="WWW Canonical" value={data.www_cname} />
+                        <DetailRow label="HTTPS Cert" value={data.https_cert_ok !== undefined ? (data.https_cert_ok ? "Valid" : "Invalid") : "Unknown"} />
                     </div>
                 </div>
                 <div className="p-8 rounded-3xl bg-white border border-slate-100 shadow-sm space-y-6">
@@ -338,10 +320,10 @@ function InfrastructureSection({ data }: { data: DomainData }) {
                         Mail Deployment
                     </h4>
                     <div className="space-y-4">
-                        <DetailRow label="Mail Subdomain" value={`mail.${data.domain}`} />
                         <DetailRow label="Mail Host IP" value={data.mail_a} />
                         <DetailRow label="Mail MX" value={data.mail_mx} />
-                        <DetailRow label="Mail SPF" value={data.mail_spf} />
+                        <DetailRow label="SMTP Cert" value={data.smtp_cert_ok !== undefined ? (data.smtp_cert_ok ? "Valid" : "Invalid/None") : "Unknown"} />
+                        <DetailRow label="MX Host Final" value={data.mx_host_final} />
                     </div>
                 </div>
             </div>
@@ -362,7 +344,7 @@ function SecuritySection({ data }: { data: DomainData }) {
                     <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 italic underline decoration-slate-100 underline-offset-8">Direct Threats</h4>
                     <ThreatItem title="Phishing Activity" description="Known campaigns targeting financial or retail credentials." status={data.is_phishing} />
                     <ThreatItem title="Malware Host" description="Domains associated with C2 nodes or payload distribution." status={data.is_malware} />
-                    <ThreatItem title="Parked Sinkhole" description="Domains resolving to generic parking pages (common for spam traps)." status={data.is_parked} />
+                    <ThreatItem title="DGA Suspect" description="Algorithmic domain generation often used by botnets." status={data.is_dga_suspect} />
                 </div>
                 <div className="space-y-6">
                     <h4 className="text-sm font-black uppercase tracking-widest text-slate-400 italic underline decoration-slate-100 underline-offset-8">Structural Quality</h4>
@@ -437,3 +419,4 @@ function ThreatItem({ title, description, status }: { title: string, description
         </div>
     );
 }
+
