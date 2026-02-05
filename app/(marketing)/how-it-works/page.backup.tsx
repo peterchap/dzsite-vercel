@@ -6,6 +6,7 @@ export const metadata = {
     description: 'How Datazag detects phishing in under 60 seconds.',
 }
 
+
 export default function HowItWorksPage() {
     return (
         <div className="flex flex-col">
