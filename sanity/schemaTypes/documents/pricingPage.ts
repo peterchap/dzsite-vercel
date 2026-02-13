@@ -66,6 +66,8 @@ export default {
                 { type: "section.privacyCompliance" },
                 { type: "section.finalCta" },
                 { type: "section.faqList" },
+                { type: "section.comparisonTable" },
+                { type: "section.comparisonGrid" },
                 { type: "section.statsGrid" },
                 { type: "section.featureList" },
                 { type: "section.integrationMethods" },

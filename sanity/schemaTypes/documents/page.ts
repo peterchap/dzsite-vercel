@@ -85,6 +85,7 @@ export default {
                 { type: "section.whoShouldApply" },
                 { type: "section.detectionGrid" },
                 { type: "section.comparisonTable" },
+                { type: "section.comparisonGrid" },
             ],
         },
     ],

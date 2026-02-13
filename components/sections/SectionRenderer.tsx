@@ -46,6 +46,7 @@ import CircularFeatures from "@/components/sections/blocks/CircularFeatures";
 import WhoShouldApply from "@/components/sections/blocks/WhoShouldApply";
 import DetectionGrid from "@/components/sections/blocks/DetectionGrid";
 import ComparisonTable from "@/components/sections/blocks/ComparisonTable";
+import ComparisonGrid from "@/components/sections/blocks/ComparisonGrid";
 
 type Section = {
   _type: string;
@@ -90,6 +91,7 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
         const key = section._key ?? `${section._type}-${index}`;
         const isDark = index % 2 === 0;
         const anchorId = (section.anchor as string | undefined) ?? (section._key ? `s-${section._key}` : undefined);
+        console.log("Rendering section:", section._type);
 
         switch (section._type) {
           case "section.mediaFeature":
@@ -490,6 +492,16 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               </div>
             );
 
+          case "section.comparisonGrid":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ComparisonGrid
+                  isDark={isDark}
+                  {...(section as any)}
+                />
+              </div>
+            );
+
           case "section.dataDictionary":
             return (
               <div id={anchorId} key={key} className="scroll-mt-24">
@@ -520,7 +532,7 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
                   margin: "16px 0",
                 }}
               >
-                <strong>Missing block:</strong> {section._type}
+                <strong>Unknown block type:</strong> {section._type}
               </div>
             );
         }

@@ -53,6 +53,7 @@ import whoShouldApply from "./objects/sections/whoShouldApply";
 import detectionGrid from "./objects/sections/detectionGrid";
 
 import comparisonTable from "./objects/sections/comparisonTable";
+import comparisonGrid from "./objects/sections/comparisonGrid";
 
 export const schemaTypes = [
   siteSettings,
@@ -106,4 +107,5 @@ export const schemaTypes = [
   whoShouldApply,
   detectionGrid,
   comparisonTable,
+  comparisonGrid,
 ];
