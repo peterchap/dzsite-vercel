@@ -13,6 +13,7 @@ interface HeroProps {
     image?: any
 }
 
+
 export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
     return (
         <section className="relative overflow-hidden bg-[#131326] px-6 py-24 sm:py-32 lg:px-8">
@@ -99,3 +100,4 @@ export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
         </section>
     )
 }
+
