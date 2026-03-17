@@ -324,6 +324,7 @@ function InfrastructureSection({ data }: { data: DomainData }) {
                         <DetailRow label="Mail MX" value={data.mail_mx} />
                         <DetailRow label="SMTP Cert" value={data.smtp_cert_ok !== undefined ? (data.smtp_cert_ok ? "Valid" : "Invalid/None") : "Unknown"} />
                         <DetailRow label="MX Host Final" value={data.mx_host_final} />
+                        <DetailRow label="MX PTR" value={data.mx_ptr} />
                     </div>
                 </div>
             </div>
