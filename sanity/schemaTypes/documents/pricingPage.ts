@@ -84,6 +84,7 @@ export default {
                 { type: "section.mediaFeature" },
                 { type: "section.pillarRouter" },
                 { type: "section.circularFeatures" },
+                { type: "section.gridContent" },
             ],
         },
         { name: "headline", title: "Headline (Legacy)", type: "string" },

@@ -58,6 +58,7 @@ export default {
                 { type: "section.detectionGrid" },
                 { type: "section.comparisonTable" },
                 { type: "section.comparisonGrid" },
+                { type: "section.gridContent" },
             ],
         },
         { name: "problem", title: "Problem", type: "text", rows: 5 },

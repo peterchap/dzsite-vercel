@@ -28,7 +28,7 @@ export default {
           preview: { select: { title: "title" } }
         }
       ],
-      validation: (r: any) => r.required().min(3).max(6)
+      validation: (r: any) => r.required().min(1).max(6)
     },
     {
       name: "columns",

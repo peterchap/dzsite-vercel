@@ -47,6 +47,7 @@ import WhoShouldApply from "@/components/sections/blocks/WhoShouldApply";
 import DetectionGrid from "@/components/sections/blocks/DetectionGrid";
 import ComparisonTable from "@/components/sections/blocks/ComparisonTable";
 import ComparisonGrid from "@/components/sections/blocks/ComparisonGrid";
+import { GridContent } from "@/components/sections/blocks/GridContent";
 
 type Section = {
   _type: string;
@@ -517,6 +518,16 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <DocumentList
                   {...(section as unknown as React.ComponentProps<typeof DocumentList>)}
+                />
+              </div>
+            );
+
+          case "section.gridContent":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <GridContent
+                  isDark={isDark}
+                  {...(section as unknown as React.ComponentProps<typeof GridContent>)}
                 />
               </div>
             );

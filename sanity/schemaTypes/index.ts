@@ -52,6 +52,7 @@ import circularFeatures from "./objects/sections/circularFeatures";
 import whoShouldApply from "./objects/sections/whoShouldApply";
 import detectionGrid from "./objects/sections/detectionGrid";
 
+import gridContent from "./objects/sections/gridContent";
 import comparisonTable from "./objects/sections/comparisonTable";
 import comparisonGrid from "./objects/sections/comparisonGrid";
 
@@ -108,4 +109,5 @@ export const schemaTypes = [
   detectionGrid,
   comparisonTable,
   comparisonGrid,
+  gridContent,
 ];
