@@ -4,6 +4,7 @@ import React from "react";
 import { useCurrency } from "@/components/providers/CurrencyProvider";
 
 import { HeroSplitCta } from "@/components/sections/blocks/HeroSplitCta";
+import HeroAttackTimeline from "@/components/sections/blocks/HeroAttackTimeline";
 import SimpleText from "@/components/sections/blocks/SimpleText";
 import BenefitCards from "@/components/sections/blocks/BenefitCards";
 import SignalGroups from "@/components/sections/blocks/SignalGroups";
@@ -48,6 +49,8 @@ import DetectionGrid from "@/components/sections/blocks/DetectionGrid";
 import ComparisonTable from "@/components/sections/blocks/ComparisonTable";
 import ComparisonGrid from "@/components/sections/blocks/ComparisonGrid";
 import { GridContent } from "@/components/sections/blocks/GridContent";
+import InfrastructureAuditStack from "@/components/sections/blocks/InfrastructureAuditStack";
+import PersonaSwitchboard from "@/components/sections/blocks/PersonaSwitchboard";
 
 type Section = {
   _type: string;
@@ -171,6 +174,15 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <HeroSplitCta
                   {...(section as unknown as React.ComponentProps<typeof HeroSplitCta>)}
+                />
+              </div>
+            );
+
+          case "section.heroAttackTimeline":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <HeroAttackTimeline
+                  {...(section as unknown as React.ComponentProps<typeof HeroAttackTimeline>)}
                 />
               </div>
             );
@@ -528,6 +540,24 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
                 <GridContent
                   isDark={isDark}
                   {...(section as unknown as React.ComponentProps<typeof GridContent>)}
+                />
+              </div>
+            );
+
+          case "section.infrastructureAuditStack":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <InfrastructureAuditStack
+                  {...(section as unknown as React.ComponentProps<typeof InfrastructureAuditStack>)}
+                />
+              </div>
+            );
+
+          case "section.personaSwitchboard":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PersonaSwitchboard
+                  {...(section as unknown as React.ComponentProps<typeof PersonaSwitchboard>)}
                 />
               </div>
             );

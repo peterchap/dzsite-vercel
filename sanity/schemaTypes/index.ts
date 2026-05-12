@@ -5,6 +5,7 @@ import useCase from "./documents/useCase";
 import pricingPage from "./documents/pricingPage";
 import blogPost from "./documents/blogPost";
 import subscriber from "./documents/subscriber";
+import persona from "./documents/persona";
 
 // Objects
 import seo from "./objects/seo";
@@ -13,6 +14,7 @@ import navLink from "./objects/navLink";
 
 // Sections
 import heroSplitCta from "./objects/sections/heroSplitCta";
+import heroAttackTimeline from "./objects/sections/heroAttackTimeline";
 import simpleText from "./objects/sections/simpleText";
 import attackChainDiagram from "./objects/sections/attackChainDiagram";
 import signalGroups from "./objects/sections/signalGroups";
@@ -51,6 +53,8 @@ import pricingTable from "./objects/sections/pricingTable";
 import circularFeatures from "./objects/sections/circularFeatures";
 import whoShouldApply from "./objects/sections/whoShouldApply";
 import detectionGrid from "./objects/sections/detectionGrid";
+import infrastructureAuditStack from "./objects/sections/infrastructureAuditStack";
+import personaSwitchboard from "./objects/sections/personaSwitchboard";
 
 import gridContent from "./objects/sections/gridContent";
 import comparisonTable from "./objects/sections/comparisonTable";
@@ -63,12 +67,14 @@ export const schemaTypes = [
   pricingPage,
   blogPost,
   subscriber,
+  persona,
 
   seo,
   cta,
   navLink,
 
   heroSplitCta,
+  heroAttackTimeline,
   simpleText,
   attackChainDiagram,
   benefitCards,
@@ -110,4 +116,6 @@ export const schemaTypes = [
   comparisonTable,
   comparisonGrid,
   gridContent,
+  infrastructureAuditStack,
+  personaSwitchboard,
 ];

@@ -36,7 +36,7 @@ export default {
         {
             name: "hero",
             title: "Hero",
-            type: "section.heroSplitCta",
+            type: "section.heroAttackTimeline",
             group: "hero",
         },
         {
@@ -46,6 +46,7 @@ export default {
             group: "content",
             of: [
                 { type: "section.heroSplitCta" },
+                { type: "section.heroAttackTimeline" },
                 { type: "section.simpleText" },
                 { type: "section.attackChainDiagram" },
                 { type: "section.benefitCards" },
@@ -87,6 +88,8 @@ export default {
                 { type: "section.comparisonTable" },
                 { type: "section.comparisonGrid" },
                 { type: "section.gridContent" },
+                { type: "section.infrastructureAuditStack" },
+                { type: "section.personaSwitchboard" },
             ],
         },
     ],

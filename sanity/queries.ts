@@ -13,6 +13,18 @@ export const pageBySlugQuery = `
   hero{
     _type,
     image,
+    heroImageDesktop{
+      asset->{
+        url
+      }
+    },
+    heroImageMobile{
+      asset->{
+        url
+      }
+    },
+    timelineStages,
+    detectionMarker,
     eyebrow,
     headline,
     subheadline,
@@ -61,6 +73,16 @@ export const pageBySlugQuery = `
     _key,
     _type,
     ...,
+    heroImageDesktop{
+      asset->{
+        url
+      }
+    },
+    heroImageMobile{
+      asset->{
+        url
+      }
+    },
     anchor,
     "selectedAnchors": select(
       _type == "section.anchorLinks" => selectedAnchors,
@@ -212,7 +234,19 @@ export const pageBySlugQuery = `
           select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
         )
       }, true => cta)
-    }, true => features)
+    }, true => features),
+    "personas": select(
+      _type == "section.personaSwitchboard" => personas[]->{
+        title,
+        "slug": slug.current,
+        headline,
+        description,
+        dataPoints,
+        samplePayload,
+        accentColor
+      },
+      true => null
+    )
   }
 }
 `;
