@@ -51,6 +51,8 @@ import ComparisonGrid from "@/components/sections/blocks/ComparisonGrid";
 import { GridContent } from "@/components/sections/blocks/GridContent";
 import InfrastructureAuditStack from "@/components/sections/blocks/InfrastructureAuditStack";
 import PersonaSwitchboard from "@/components/sections/blocks/PersonaSwitchboard";
+import DataCorpus from "@/components/sections/blocks/DataCorpus";
+import IntegrationShowcase from "@/components/sections/blocks/IntegrationShowcase";
 
 type Section = {
   _type: string;
@@ -558,6 +560,24 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <PersonaSwitchboard
                   {...(section as unknown as React.ComponentProps<typeof PersonaSwitchboard>)}
+                />
+              </div>
+            );
+
+          case "section.dataCorpus":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DataCorpus
+                  {...(section as unknown as React.ComponentProps<typeof DataCorpus>)}
+                />
+              </div>
+            );
+
+          case "section.integrationShowcase":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <IntegrationShowcase
+                  {...(section as unknown as React.ComponentProps<typeof IntegrationShowcase>)}
                 />
               </div>
             );

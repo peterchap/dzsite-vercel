@@ -6,6 +6,7 @@ import pricingPage from "./documents/pricingPage";
 import blogPost from "./documents/blogPost";
 import subscriber from "./documents/subscriber";
 import persona from "./documents/persona";
+import integration from "./documents/integration";
 
 // Objects
 import seo from "./objects/seo";
@@ -55,6 +56,8 @@ import whoShouldApply from "./objects/sections/whoShouldApply";
 import detectionGrid from "./objects/sections/detectionGrid";
 import infrastructureAuditStack from "./objects/sections/infrastructureAuditStack";
 import personaSwitchboard from "./objects/sections/personaSwitchboard";
+import dataCorpus from "./objects/sections/dataCorpus";
+import integrationShowcase from "./objects/sections/integrationShowcase";
 
 import gridContent from "./objects/sections/gridContent";
 import comparisonTable from "./objects/sections/comparisonTable";
@@ -68,6 +71,7 @@ export const schemaTypes = [
   blogPost,
   subscriber,
   persona,
+  integration,
 
   seo,
   cta,
@@ -118,4 +122,6 @@ export const schemaTypes = [
   gridContent,
   infrastructureAuditStack,
   personaSwitchboard,
+  dataCorpus,
+  integrationShowcase,
 ];

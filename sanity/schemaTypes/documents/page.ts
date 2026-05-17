@@ -90,6 +90,8 @@ export default {
                 { type: "section.gridContent" },
                 { type: "section.infrastructureAuditStack" },
                 { type: "section.personaSwitchboard" },
+                { type: "section.dataCorpus" },
+                { type: "section.integrationShowcase" },
             ],
         },
     ],

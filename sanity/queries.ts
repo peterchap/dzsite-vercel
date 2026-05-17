@@ -246,6 +246,16 @@ export const pageBySlugQuery = `
         accentColor
       },
       true => null
+    ),
+    "integrations": select(
+      _type == "section.integrationShowcase" => integrations[]->{
+        title,
+        method,
+        description,
+        codeSnippet,
+        iconType
+      },
+      true => null
     )
   }
 }
