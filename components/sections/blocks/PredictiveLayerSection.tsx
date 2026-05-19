@@ -116,7 +116,7 @@ export default function PredictiveLayerSection(props: PredictiveLayerSectionProp
                             const classNames = "group flex items-center justify-between p-4 sm:p-5 rounded-xl border border-white/5 bg-slate-950/[0.02] hover:bg-slate-950/[0.06] hover:border-blue-500/30 transition-all duration-300 relative overflow-hidden shadow-sm";
 
                             return hasLink ? (
-                                <a key={idx} href={band.cta.href} className={classNames}>
+                                <a key={idx} href={band.cta?.href} className={classNames}>
                                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                                     {innerContent}
                                 </a>
