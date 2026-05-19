@@ -53,6 +53,13 @@ import InfrastructureAuditStack from "@/components/sections/blocks/Infrastructur
 import PersonaSwitchboard from "@/components/sections/blocks/PersonaSwitchboard";
 import DataCorpus from "@/components/sections/blocks/DataCorpus";
 import IntegrationShowcase from "@/components/sections/blocks/IntegrationShowcase";
+import VendorThesisSection from "@/components/sections/blocks/VendorThesisSection";
+import ThreatReportCTA from "@/components/sections/blocks/ThreatReportCTA";
+import HowItWorksSection from "@/components/sections/blocks/HowItWorksSection";
+import Why360Section from "@/components/sections/blocks/Why360Section";
+import DeliveryModesSection from "@/components/sections/blocks/DeliveryModesSection";
+import PartnershipSegmentsSection from "@/components/sections/blocks/PartnershipSegmentsSection";
+import PredictiveLayerSection from "@/components/sections/blocks/PredictiveLayerSection";
 
 type Section = {
   _type: string;
@@ -578,6 +585,69 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <IntegrationShowcase
                   {...(section as unknown as React.ComponentProps<typeof IntegrationShowcase>)}
+                />
+              </div>
+            );
+
+          case "section.vendorThesisSection":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <VendorThesisSection
+                  {...(section as unknown as React.ComponentProps<typeof VendorThesisSection>)}
+                />
+              </div>
+            );
+
+          case "section.threatReportCTA":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <ThreatReportCTA
+                  {...(section as unknown as React.ComponentProps<typeof ThreatReportCTA>)}
+                />
+              </div>
+            );
+
+          case "section.howItWorks":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <HowItWorksSection
+                  {...(section as unknown as React.ComponentProps<typeof HowItWorksSection>)}
+                />
+              </div>
+            );
+
+          case "section.why360Conversion":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <Why360Section
+                  {...(section as unknown as React.ComponentProps<typeof Why360Section>)}
+                />
+              </div>
+            );
+
+          case "section.deliveryModesSection":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <DeliveryModesSection
+                  {...(section as unknown as React.ComponentProps<typeof DeliveryModesSection>)}
+                />
+              </div>
+            );
+
+          case "section.partnershipSegmentsSection":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PartnershipSegmentsSection
+                  {...(section as unknown as React.ComponentProps<typeof PartnershipSegmentsSection>)}
+                />
+              </div>
+            );
+
+          case "section.predictiveLayerSection":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <PredictiveLayerSection
+                  {...(section as unknown as React.ComponentProps<typeof PredictiveLayerSection>)}
                 />
               </div>
             );

@@ -68,10 +68,9 @@ export default function PersonaSwitchboard({
     const activeStyles = getAccentStyles(activePersona?.accentColor);
 
     return (
-        <section id={anchor} className="relative py-24 bg-[#0a0a0a] overflow-hidden border-t border-white/5">
+        <section id={anchor} className="relative py-24 bg-slate-950 overflow-hidden border-t border-white/5">
             {/* Background blur matching the active persona */}
-            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] blur-[120px] rounded-full pointer-events-none transition-colors duration-700 ${activeStyles.bg}`} />
-            
+
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
@@ -85,13 +84,13 @@ export default function PersonaSwitchboard({
                 </div>
 
                 <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                    
+
                     {/* Left side: Persona Cards */}
                     <div className="lg:col-span-5 space-y-4">
                         {personas.map((persona, idx) => {
                             const isActive = activeIndex === idx;
                             const styles = getAccentStyles(persona.accentColor);
-                            
+
                             return (
                                 <button
                                     key={idx}
@@ -100,7 +99,7 @@ export default function PersonaSwitchboard({
                                     className={`w-full text-left p-6 rounded-xl border transition-all duration-300 group relative overflow-hidden backdrop-blur-xl
                                         ${isActive 
                                             ? `bg-black/60 ${styles.border} ${styles.glow}` 
-                                            : 'bg-white/5 border-white/10 hover:bg-white/10'
+                                            : 'bg-slate-950/5 border-white/10 hover:bg-slate-950/10'
                                         }
                                     `}
                                 >
@@ -117,7 +116,7 @@ export default function PersonaSwitchboard({
                                             </p>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Active state inner glow */}
                                     {isActive && (
                                         <div className={`absolute inset-0 opacity-10 pointer-events-none ${styles.bg}`} />

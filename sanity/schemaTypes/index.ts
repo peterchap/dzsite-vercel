@@ -58,6 +58,13 @@ import infrastructureAuditStack from "./objects/sections/infrastructureAuditStac
 import personaSwitchboard from "./objects/sections/personaSwitchboard";
 import dataCorpus from "./objects/sections/dataCorpus";
 import integrationShowcase from "./objects/sections/integrationShowcase";
+import vendorThesisSection from "./objects/sections/vendorThesisSection";
+import threatReportCTA from "./objects/sections/threatReportCTA";
+import howItWorksSection from "./objects/sections/howItWorksSection";
+import why360Conversion from "./objects/sections/why360Conversion";
+import deliveryModesSection from "./objects/sections/deliveryModesSection";
+import partnershipSegmentsSection from "./objects/sections/partnershipSegmentsSection";
+import predictiveLayerSection from "./objects/sections/predictiveLayerSection";
 
 import gridContent from "./objects/sections/gridContent";
 import comparisonTable from "./objects/sections/comparisonTable";
@@ -124,4 +131,11 @@ export const schemaTypes = [
   personaSwitchboard,
   dataCorpus,
   integrationShowcase,
+  vendorThesisSection,
+  threatReportCTA,
+  howItWorksSection,
+  why360Conversion,
+  deliveryModesSection,
+  partnershipSegmentsSection,
+  predictiveLayerSection,
 ];

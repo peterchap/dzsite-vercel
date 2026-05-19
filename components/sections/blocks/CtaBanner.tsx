@@ -1,7 +1,6 @@
 import React from "react";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-
 interface CtaBannerProps {
     isDark?: boolean;
     headline?: string;
@@ -18,7 +17,6 @@ interface CtaBannerProps {
     };
     supportingText?: string;
 }
-
 export default function CtaBanner({
     isDark,
     headline,
@@ -28,13 +26,10 @@ export default function CtaBanner({
     supportingText,
 }: CtaBannerProps) {
     return (
-        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${"bg-slate-950"}`}>
             <Container>
-                <div className="overflow-hidden rounded-[2.5rem] bg-slate-900 px-8 py-16 text-center shadow-2xl md:px-16 md:py-20 relative">
+                <div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-8 py-16 text-center shadow-2xl md:px-16 md:py-20 relative">
                     {/* Decorative background gradients */}
-                    <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-blue-500/20 blur-[100px]" />
-                    <div className="absolute -right-20 -bottom-20 h-64 w-64 rounded-full bg-blue-600/20 blur-[100px]" />
-
                     <div className="relative z-10 mx-auto max-w-3xl">
                         {headline && (
                             <h2 className="mb-6 text-3xl font-extrabold tracking-tight text-white md:text-5xl">
@@ -46,7 +41,6 @@ export default function CtaBanner({
                                 {subheadline}
                             </p>
                         )}
-
                         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                             {primaryCta && (() => {
                                 const v = (primaryCta.variant || "primary").toLowerCase();
@@ -58,7 +52,6 @@ export default function CtaBanner({
                                     </ButtonLink>
                                 );
                             })()}
-
                             {secondaryCta && (() => {
                                 const v = (secondaryCta.variant || "secondary").toLowerCase();
                                 const safeVariant: "primary" | "secondary" | "ghost" =
@@ -68,16 +61,15 @@ export default function CtaBanner({
                                         href={secondaryCta.href || "#"}
                                         variant={safeVariant}
                                         size="lg"
-                                        className="border-white/20 text-white hover:bg-white/10"
+                                        className="border-white/20 text-white hover:bg-slate-950/10"
                                     >
                                         {secondaryCta.label}
                                     </ButtonLink>
                                 );
                             })()}
                         </div>
-
                         {supportingText && (
-                            <p className="mt-8 text-sm text-slate-500">
+                            <p className="mt-8 text-sm text-slate-400">
                                 {supportingText}
                             </p>
                         )}

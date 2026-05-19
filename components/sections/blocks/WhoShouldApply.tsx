@@ -1,11 +1,9 @@
 "use client";
-
 import React, { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Check, Shield, Users, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
 interface PricingDetails {
     title?: string;
     price?: string;
@@ -13,7 +11,6 @@ interface PricingDetails {
     savings?: string;
     details?: string[];
 }
-
 interface SegmentItem {
     _key: string;
     title: string;
@@ -26,7 +23,6 @@ interface SegmentItem {
         url: string;
     };
 }
-
 interface WhoShouldApplyProps {
     title: string;
     subtitle?: string;
@@ -35,7 +31,6 @@ interface WhoShouldApplyProps {
     anchor?: string;
     isDark?: boolean;
 }
-
 export default function WhoShouldApply({
     title,
     subtitle,
@@ -45,13 +40,11 @@ export default function WhoShouldApply({
     isDark = false,
 }: WhoShouldApplyProps) {
     const [activeTab, setActiveTab] = useState(0);
-
     if (!items || items.length === 0) return null;
-
     return (
         <section
             id={anchor}
-            className={`py-24 ${isDark ? "bg-slate-900 text-white" : "bg-white text-slate-900"}`}
+            className={`py-24 ${isDark ? "bg-slate-950 text-white" : "bg-slate-950 text-white"}`}
         >
             <Container>
                 <div className="text-center max-w-3xl mx-auto mb-16">
@@ -59,12 +52,11 @@ export default function WhoShouldApply({
                         {title}
                     </h2>
                     {subtitle && (
-                        <p className={`mt-4 text-lg leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+                        <p className={`mt-4 text-lg leading-relaxed ${isDark ? "text-slate-400" : "text-slate-300"}`}>
                             {subtitle}
                         </p>
                     )}
                 </div>
-
                 {layout === "tabs" ? (
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
                         {/* Tabs Navigation */}
@@ -78,22 +70,22 @@ export default function WhoShouldApply({
                                                 ? "border-blue-500 bg-blue-500/10"
                                                 : "border-blue-600 bg-blue-50"
                                             : isDark
-                                                ? "border-slate-800 hover:border-slate-700 bg-slate-900"
-                                                : "border-slate-100 hover:border-slate-200 bg-white"
+                                                ? "border-slate-800 hover:border-slate-700 bg-slate-950"
+                                                : "border-white/10 hover:border-white/10 bg-slate-950"
                                         }`}
                                 >
                                     <div className="relative z-10 flex items-center justify-between">
                                         <div>
                                             <h3 className={`font-bold text-lg ${activeTab === index
                                                     ? isDark ? "text-blue-400" : "text-blue-700"
-                                                    : isDark ? "text-slate-300" : "text-slate-700"
+                                                    : isDark ? "text-slate-300" : "text-slate-300"
                                                 }`}>
                                                 {item.title}
                                             </h3>
                                             {item.badge && (
                                                 <span className={`inline-block mt-2 text-xs font-semibold px-2 py-0.5 rounded-full ${activeTab === index
                                                         ? "bg-blue-100 text-blue-700"
-                                                        : "bg-slate-100 text-slate-600"
+                                                        : "bg-white/5 text-slate-300"
                                                     }`}>
                                                     {item.badge}
                                                 </span>
@@ -106,7 +98,6 @@ export default function WhoShouldApply({
                                 </button>
                             ))}
                         </div>
-
                         {/* Tab Content */}
                         <div className="lg:w-2/3">
                             <AnimatePresence mode="wait">
@@ -117,8 +108,8 @@ export default function WhoShouldApply({
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.2 }}
                                     className={`rounded-2xl p-8 border ${isDark
-                                            ? "bg-slate-800/50 border-slate-700"
-                                            : "bg-white border-slate-200 shadow-xl shadow-slate-200/50"
+                                            ? "bg-white/5/50 border-slate-700"
+                                            : "bg-slate-950 border-white/10 shadow-xl shadow-slate-200/50"
                                         }`}
                                 >
                                     <ContentCard item={items[activeTab]} isDark={isDark} />
@@ -132,8 +123,8 @@ export default function WhoShouldApply({
                             <div
                                 key={item._key}
                                 className={`flex flex-col rounded-2xl p-6 border transition-all hover:shadow-lg ${isDark
-                                        ? "bg-slate-800/50 border-slate-700 hover:border-slate-600"
-                                        : "bg-white border-slate-200 shadow-sm hover:border-blue-200 hover:shadow-blue-100/50"
+                                        ? "bg-white/5/50 border-slate-700 hover:border-slate-600"
+                                        : "bg-slate-950 border-white/10 shadow-sm hover:border-blue-200 hover:shadow-blue-100/50"
                                     }`}
                             >
                                 <div className="mb-6">
@@ -153,34 +144,31 @@ export default function WhoShouldApply({
         </section>
     );
 }
-
 function ContentCard({ item, isDark, isCardView = false }: { item: SegmentItem; isDark: boolean; isCardView?: boolean }) {
     return (
         <div className={`space-y-8 ${isCardView ? "flex-1 flex flex-col" : ""}`}>
             {/* Ideal For */}
             <div>
-                <h4 className={`text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 ${isDark ? "text-slate-400" : "text-slate-500"
+                <h4 className={`text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 ${isDark ? "text-slate-400" : "text-slate-400"
                     }`}>
                     <Users className="w-4 h-4" /> Ideal For
                 </h4>
                 <ul className="space-y-3">
                     {item.idealFor?.map((text, i) => (
                         <li key={i} className="flex items-start gap-3 text-sm">
-                            <div className={`mt-0.5 rounded-full p-0.5 ${isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"
+                            <div className={`mt-0.5 rounded-full p-0.5 ${isDark ? "bg-slate-700 text-slate-300" : "bg-white/5 text-slate-300"
                                 }`}>
                                 <Check className="w-3 h-3" />
                             </div>
-                            <span className={isDark ? "text-slate-300" : "text-slate-700"}>{text}</span>
+                            <span className={isDark ? "text-slate-300" : "text-slate-300"}>{text}</span>
                         </li>
                     ))}
                 </ul>
             </div>
-
-            <div className={`w-full h-px ${isDark ? "bg-slate-700" : "bg-slate-100"}`} />
-
+            <div className={`w-full h-px ${isDark ? "bg-slate-700" : "bg-white/5"}`} />
             {/* What You'll Deploy */}
             <div className={isCardView ? "flex-1" : ""}>
-                <h4 className={`text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 ${isDark ? "text-slate-400" : "text-slate-500"
+                <h4 className={`text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 ${isDark ? "text-slate-400" : "text-slate-400"
                     }`}>
                     <Shield className="w-4 h-4" /> What You'll Deploy
                 </h4>
@@ -191,28 +179,27 @@ function ContentCard({ item, isDark, isCardView = false }: { item: SegmentItem; 
                                 }`}>
                                 <Check className="w-3 h-3" />
                             </div>
-                            <span className={isDark ? "text-slate-300" : "text-slate-700"}>{text}</span>
+                            <span className={isDark ? "text-slate-300" : "text-slate-300"}>{text}</span>
                         </li>
                     ))}
                 </ul>
             </div>
-
             {/* Pricing Box */}
             {item.pricing && (
                 <div className={`rounded-xl p-6 ${isDark
-                        ? "bg-slate-900 border border-slate-700"
-                        : "bg-slate-50 border border-slate-200"
+                        ? "bg-slate-950 border border-slate-700"
+                        : "bg-white/5 border border-white/10"
                     } ${isCardView ? "mt-auto" : ""}`}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                         <div>
-                            <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${isDark ? "text-slate-500" : "text-slate-500"
+                            <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${isDark ? "text-slate-400" : "text-slate-400"
                                 }`}>
                                 {item.pricing.title}
                             </p>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-2xl font-bold">{item.pricing.price}</span>
                                 {item.pricing.originalPrice && (
-                                    <span className={`text-sm line-through ${isDark ? "text-slate-500" : "text-slate-400"
+                                    <span className={`text-sm line-through ${isDark ? "text-slate-400" : "text-slate-400"
                                         }`}>
                                         {item.pricing.originalPrice}
                                     </span>
@@ -226,7 +213,6 @@ function ContentCard({ item, isDark, isCardView = false }: { item: SegmentItem; 
                             </div>
                         )}
                     </div>
-
                     {item.cta && (
                         <ButtonLink
                             href={item.cta.url}

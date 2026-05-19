@@ -1,7 +1,6 @@
 import React from "react";
 import * as Icons from "lucide-react";
 import { Container } from "@/components/ui/Container";
-
 interface DataSourcesProps {
     isDark?: boolean;
     title?: string;
@@ -13,24 +12,22 @@ interface DataSourcesProps {
         features?: string[];
     }[];
 }
-
 export default function DataSources({ isDark, title, subtitle, sources }: DataSourcesProps) {
     return (
-        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${"bg-slate-950"}`}>
             <Container>
                 <div className="mb-16 max-w-3xl">
                     {title && (
-                        <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                        <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
                             {title}
                         </h2>
                     )}
                     {subtitle && (
-                        <p className="text-lg text-slate-600 leading-relaxed">
+                        <p className="text-lg text-slate-300 leading-relaxed">
                             {subtitle}
                         </p>
                     )}
                 </div>
-
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {sources?.map((source, i) => {
                         const iconInput = (source.icon || "Database").trim();
@@ -42,11 +39,10 @@ export default function DataSources({ isDark, title, subtitle, sources }: DataSo
                         const IconComponent = iconKey
                             ? (Icons as any)[iconKey]
                             : Icons.HelpCircle;
-
                         return (
                             <div
                                 key={i}
-                                className="flex flex-col p-8 rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
+                                className="flex flex-col p-8 rounded-2xl border border-white/10 bg-slate-950 shadow-sm transition hover:shadow-md"
                             >
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                                     {IconComponent ? <IconComponent className="h-6 w-6" /> : null}
@@ -56,11 +52,11 @@ export default function DataSources({ isDark, title, subtitle, sources }: DataSo
                                         Icon "{iconInput}" not found
                                     </p>
                                 )}
-                                <h3 className="mb-3 text-xl font-bold text-slate-900">
+                                <h3 className="mb-3 text-xl font-bold text-white">
                                     {source.title}
                                 </h3>
                                 {source.description && (
-                                    <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                    <p className="text-sm text-slate-300 leading-relaxed mb-4">
                                         {source.description}
                                     </p>
                                 )}
@@ -69,7 +65,7 @@ export default function DataSources({ isDark, title, subtitle, sources }: DataSo
                                         {source.features.map((feature, fi) => (
                                             <li key={fi} className="flex items-start gap-2.5">
                                                 <Icons.Check className="mt-1 h-3.5 w-3.5 shrink-0 text-blue-600" />
-                                                <span className="text-sm text-slate-600 leading-tight">
+                                                <span className="text-sm text-slate-300 leading-tight">
                                                     {feature}
                                                 </span>
                                             </li>

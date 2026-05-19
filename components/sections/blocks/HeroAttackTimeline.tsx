@@ -106,7 +106,7 @@ export default function HeroAttackTimeline(props: HeroAttackTimelineProps) {
               {secondaryCta?.href && secondaryCta?.label && (
                 <Link
                   href={secondaryCta.href}
-                  className="rounded-lg border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10"
+                  className="rounded-lg border border-white/25 bg-slate-950/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-slate-950/10"
                 >
                   {secondaryCta.label}
                 </Link>
@@ -163,7 +163,7 @@ export default function HeroAttackTimeline(props: HeroAttackTimelineProps) {
                     {stage.label}
                   </div>
                   <div className="mt-1.5 text-[9px] text-slate-300 drop-shadow-md">{stage.time}</div>
-                  {/*<div className="mx-auto mt-2 h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_15px_rgba(59,130,246,0.95)]" />*/}
+                  {/*<div className="mx-auto mt-2 h-2.5 w-2.5 rounded-full bg-slate-950 shadow-[0_0_15px_rgba(59,130,246,0.95)]" />*/}
                 </div>
               ))}
 

@@ -256,6 +256,36 @@ export const pageBySlugQuery = `
         iconType
       },
       true => null
+    ),
+    "segments": select(
+      _type == "section.partnershipSegmentsSection" => segments[]{
+        ...,
+        "partnerUrl": select(
+          defined(pageRef) => select(pageRef->slug.current == "home" => "/", "/" + pageRef->slug.current),
+          true => partnerUrl
+        )
+      },
+      true => null
+    ),
+    "capabilityBands": select(
+      _type == "section.predictiveLayerSection" => capabilityBands[]{
+        ...,
+        "cta": select(defined(cta) => {
+          "label": cta.label,
+          "variant": cta.variant,
+          "href": select(
+            defined(cta.anchor) => select(
+              defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref) + "#" + cta.anchor,
+              true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current) + "#" + cta.anchor
+            ),
+            true => select(
+              defined(cta.href) || defined(cta.externalHref) => coalesce(cta.href, cta.externalHref),
+              true => select(cta.pageRef->slug.current == "home" => "/", "/" + cta.pageRef->slug.current)
+            )
+          )
+        }, true => cta)
+      },
+      true => null
     )
   }
 }

@@ -29,7 +29,7 @@ export function Footer({
     const displayCopyright = copyright?.replace("{year}", currentYear.toString()) ?? `© ${currentYear} ${title ?? "Datazag"}. All rights reserved.`;
 
     return (
-        <footer className="border-t border-slate-100 bg-white pt-24 pb-12">
+        <footer className="border-t border-white/10 bg-slate-950 pt-24 pb-12">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
                     {/* Brand Column */}
@@ -39,7 +39,7 @@ export function Footer({
                                 <Link href="/" className="group inline-flex items-center">
                                     <BrandingLogo className="text-2xl group-hover:scale-[1.02]" />
                                 </Link>
-                                <p className="mt-4 text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
+                                <p className="mt-4 text-sm font-medium leading-relaxed text-slate-400 max-w-xs">
                                     {footerAbout ?? "Predictive domain intelligence and security-focused data products for the modern enterprise."}
                                 </p>
                             </div>
@@ -51,12 +51,12 @@ export function Footer({
                                     </a>
                                 )}
                                 {normalizeHref(social?.x) && (
-                                    <a href={normalizeHref(social?.x)} className="text-slate-400 hover:text-slate-900 transition-colors">
+                                    <a href={normalizeHref(social?.x)} className="text-slate-400 hover:text-white transition-colors">
                                         <Twitter className="h-5 w-5" />
                                     </a>
                                 )}
                                 {normalizeHref(social?.github) && (
-                                    <a href={normalizeHref(social?.github)} className="text-slate-400 hover:text-slate-900 transition-colors">
+                                    <a href={normalizeHref(social?.github)} className="text-slate-400 hover:text-white transition-colors">
                                         <Github className="h-5 w-5" />
                                     </a>
                                 )}
@@ -77,7 +77,7 @@ export function Footer({
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="mt-24 border-t border-slate-100 pt-12">
+                <div className="mt-24 border-t border-white/10 pt-12">
                     <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
                         <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                             {displayCopyright}
@@ -87,7 +87,7 @@ export function Footer({
                             {securityEmail && (
                                 <a
                                     href={`mailto:${securityEmail}`}
-                                    className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors"
+                                    className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors"
                                 >
                                     <Mail className="h-3.5 w-3.5" />
                                     REPORT VULNERABILITY
@@ -98,7 +98,7 @@ export function Footer({
                             {footerLinks.length > 0 && productLinks.length === 0 && trustLinks.length === 0 && companyLinks.length === 0 && (
                                 <div className="flex items-center gap-4">
                                     {footerLinks.filter(l => l.href && l.label).map((l, idx) => (
-                                        <a key={`${l.href}-${idx}`} href={normalizeHref(l.href)} className="text-xs font-bold text-slate-400 hover:text-slate-900 uppercase tracking-tight">
+                                        <a key={`${l.href}-${idx}`} href={normalizeHref(l.href)} className="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-tight">
                                             {l.label}
                                         </a>
                                     ))}
@@ -122,7 +122,7 @@ function FooterColumn({ title, links }: { title: string; links: NavLink[] }) {
                     <li key={`${link.href}-${idx}`}>
                         <a
                             href={normalizeHref(link.href)}
-                            className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
+                            className="text-sm font-bold text-slate-300 hover:text-blue-600 transition-colors"
                         >
                             {link.label}
                         </a>

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-
 interface MediaFeatureProps {
     isDark?: boolean;
     imagePosition?: "left" | "right" | "bottom";
@@ -19,7 +18,6 @@ interface MediaFeatureProps {
         variant?: "primary" | "secondary" | "outline" | "ghost";
     };
 }
-
 export function MediaFeature({
     isDark,
     imagePosition = "right",
@@ -32,13 +30,11 @@ export function MediaFeature({
 }: MediaFeatureProps) {
     const isBottom = imagePosition === "bottom";
     const isPlain = imageStyle === "plain";
-
     // Determine the object-fit class. 
     // If it's plain, we usually want contain, but we'll respect the user's fit setting if provided.
     const fitClass = imageFit === "contain" ? "object-contain" : "object-cover";
-
     return (
-        <section className={cn("py-12", isDark ? 'bg-slate-50' : 'bg-white')}>
+        <section className={cn("py-12", 'bg-slate-950')}>
             <Container>
                 <div className={cn(
                     "grid gap-12 lg:items-center",
@@ -50,12 +46,12 @@ export function MediaFeature({
                         isBottom ? "text-center max-w-3xl mx-auto" : (imagePosition === "left" ? "lg:order-2 lg:text-left" : "lg:order-1")
                     )}>
                         {title && (
-                            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                                 {title}
                             </h2>
                         )}
                         {subtitle && (
-                            <p className="text-lg text-slate-500 leading-relaxed font-medium">
+                            <p className="text-lg text-slate-400 leading-relaxed font-medium">
                                 {subtitle}
                             </p>
                         )}
@@ -77,10 +73,9 @@ export function MediaFeature({
                             </div>
                         )}
                     </div>
-
                     <div className={cn(
                         "relative w-full overflow-hidden",
-                        !isPlain && "rounded-[2.5rem] border border-slate-200 bg-white shadow-2xl",
+                        !isPlain && "rounded-[2.5rem] border border-white/10 bg-slate-950 shadow-2xl",
                         isBottom ? "aspect-video max-w-5xl mx-auto" : "aspect-[4/3]",
                         imagePosition === "left" ? "lg:order-1" : "lg:order-2",
                         isPlain && "bg-transparent"

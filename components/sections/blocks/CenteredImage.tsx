@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "@/components/ui/Container";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-
 interface CenteredImageProps {
     kicker?: string;
     title: string;
@@ -11,7 +10,6 @@ interface CenteredImageProps {
     footer?: string;
     isDark?: boolean;
 }
-
 export default function CenteredImage({
     kicker,
     title,
@@ -21,7 +19,7 @@ export default function CenteredImage({
     isDark,
 }: CenteredImageProps) {
     return (
-        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${"bg-slate-950"}`}>
             <Container>
                 <div className="mx-auto max-w-4xl text-center">
                     {kicker && (
@@ -29,17 +27,16 @@ export default function CenteredImage({
                             {kicker}
                         </p>
                     )}
-                    <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+                    <h2 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
                         {title}
                     </h2>
                     {subtitle && (
-                        <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+                        <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
                             {subtitle}
                         </p>
                     )}
-
                     {mainImage && (
-                        <div className="mt-12 relative rounded-2xl border border-slate-200 bg-white p-2 shadow-xl overflow-hidden">
+                        <div className="mt-12 relative rounded-2xl border border-white/10 bg-slate-950 p-2 shadow-xl overflow-hidden">
                             <Image
                                 src={urlFor(mainImage).url()}
                                 alt={title}
@@ -50,9 +47,8 @@ export default function CenteredImage({
                             />
                         </div>
                     )}
-
                     {footer && (
-                        <p className="mt-8 text-slate-500 max-w-2xl mx-auto">
+                        <p className="mt-8 text-slate-400 max-w-2xl mx-auto">
                             {footer}
                         </p>
                     )}

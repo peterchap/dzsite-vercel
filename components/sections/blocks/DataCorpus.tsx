@@ -79,17 +79,15 @@ export default function DataCorpus({
     ];
 
     return (
-        <section id={anchor} className="relative py-24 lg:py-32 bg-[#0a0a0a] overflow-hidden border-t border-white/5">
+        <section id={anchor} className="relative py-24 lg:py-32 bg-slate-950 overflow-hidden border-t border-white/5">
             {/* Ambient Backgrounds */}
-            <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.15),rgba(255,255,255,0))] pointer-events-none" />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-cyan-900/10 blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    
+
                     {/* Left Column: Visuals & Metrics */}
                     <div className="relative h-[500px] rounded-3xl border border-white/10 bg-black/40 overflow-hidden flex flex-col items-center justify-center backdrop-blur-sm">
-                        
+
                         {/* Animated SVG Network Graph */}
                         {mounted && (
                             <svg className="absolute inset-0 w-full h-full opacity-60 pointer-events-none">
@@ -99,7 +97,7 @@ export default function DataCorpus({
                                         <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.8" />
                                     </linearGradient>
                                 </defs>
-                                
+
                                 {/* Edges */}
                                 {edges.map(([sourceId, targetId], i) => {
                                     const source = nodes.find(n => n.id === sourceId)!;
@@ -154,7 +152,7 @@ export default function DataCorpus({
 
                         {/* Floating Metrics Overlay */}
                         <div className="relative z-10 flex flex-col gap-6 items-center w-full max-w-sm px-6">
-                            
+
                             <motion.div 
                                 className="w-full bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-neon-blue transition-all"
                                 whileHover={{ scale: 1.02 }}
@@ -197,7 +195,7 @@ export default function DataCorpus({
                                 const Icon = IconMap[feature.icon?.toLowerCase()] || Database;
                                 return (
                                     <div key={idx} className="space-y-3">
-                                        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                                        <div className="w-12 h-12 rounded-xl bg-slate-950/5 border border-white/10 flex items-center justify-center">
                                             <Icon className="w-6 h-6 text-cyan-400" />
                                         </div>
                                         <h3 className="text-lg font-bold text-white">

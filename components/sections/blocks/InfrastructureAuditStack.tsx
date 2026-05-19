@@ -40,25 +40,24 @@ export default function InfrastructureAuditStack({
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <section id={anchor} className="relative py-24 bg-[#0a0a0a] overflow-hidden border-t border-white/5">
+        <section id={anchor} className="relative py-24 bg-slate-950 overflow-hidden border-t border-white/5">
             {/* Background elements */}
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    
+
                     {/* Left Column: Context & Typography */}
                     <div className="space-y-8">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm font-mono text-cyan-400">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/5 border border-white/10 text-sm font-mono text-cyan-400">
                             <Hexagon className="w-4 h-4" />
                             <span>Intelligence Core</span>
                         </div>
-                        
+
                         <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
                             {headline}
                         </h2>
-                        
+
                         {subheadline && (
                             <p className="text-lg text-neutral-400 leading-relaxed max-w-xl">
                                 {subheadline}
@@ -70,15 +69,15 @@ export default function InfrastructureAuditStack({
                             {layers.map((layer, idx) => {
                                 const isActive = activeIndex === idx;
                                 const theme = layerThemes[idx % layerThemes.length];
-                                
+
                                 return (
                                     <button
                                         key={idx}
                                         onClick={() => setActiveIndex(idx)}
                                         className={`w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-center justify-between group
                                             ${isActive 
-                                                ? `bg-white/10 ${theme.border} ${theme.glow}` 
-                                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                                                ? `bg-slate-950/10 ${theme.border} ${theme.glow}` 
+                                                : 'bg-slate-950/5 border-white/10 hover:bg-slate-950/10 hover:border-white/20'
                                             }
                                         `}
                                     >
@@ -105,7 +104,7 @@ export default function InfrastructureAuditStack({
                             <div className="pt-6">
                                 <Link
                                     href={primaryCta.href}
-                                    className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+                                    className="inline-flex items-center gap-2 bg-slate-950 text-black px-6 py-3 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
                                 >
                                     {primaryCta.label}
                                     <ArrowRight className="w-4 h-4" />
@@ -151,7 +150,7 @@ export default function InfrastructureAuditStack({
                                                 </div>
                                             </div>
 
-                                            <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                                            <div className="p-4 rounded-lg bg-slate-950/5 border border-white/10">
                                                 <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Intelligence Outcome</div>
                                                 <div className="text-white font-medium">{layer.outcome}</div>
                                             </div>

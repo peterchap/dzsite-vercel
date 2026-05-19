@@ -1,9 +1,7 @@
 "use client";
-
 import React from "react";
 import { Container } from "@/components/ui/Container";
 import { ShieldAlert, ScanSearch, Info, CheckCircle2 } from "lucide-react";
-
 interface DetectionCardProps {
     _key: string;
     title: string;
@@ -11,7 +9,6 @@ interface DetectionCardProps {
     whyItMatters?: string;
     detectionMethods?: string[];
 }
-
 interface DetectionGridProps {
     title?: string;
     subtitle?: string;
@@ -20,7 +17,6 @@ interface DetectionGridProps {
     anchor?: string;
     isDark?: boolean;
 }
-
 export default function DetectionGrid({
     title,
     subtitle,
@@ -30,26 +26,24 @@ export default function DetectionGrid({
     isDark = false,
 }: DetectionGridProps) {
     if (!cards || cards.length === 0) return null;
-
     return (
         <section
             id={anchor}
-            className={`py-24 ${isDark ? "bg-slate-50" : "bg-white"}`}
+            className={`py-24 ${"bg-slate-950"}`}
         >
             <Container>
                 <div className="mb-16 max-w-3xl mx-auto text-center">
                     {title && (
-                        <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                        <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
                             {title}
                         </h2>
                     )}
                     {subtitle && (
-                        <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                        <p className="mt-4 text-lg leading-relaxed text-slate-300">
                             {subtitle}
                         </p>
                     )}
                 </div>
-
                 <div
                     className="grid gap-8"
                     style={{
@@ -59,13 +53,12 @@ export default function DetectionGrid({
                     {cards.map((card) => (
                         <div
                             key={card._key}
-                            className="flex flex-col rounded-2xl p-8 border border-slate-200 bg-white hover:border-blue-200 hover:shadow-lg hover:shadow-blue-50/50 transition-all duration-300"
+                            className="flex flex-col rounded-2xl p-8 border border-white/10 bg-slate-950 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-50/50 transition-all duration-300"
                         >
                             {/* Header */}
                             <div className="mb-8">
                                 <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
                             </div>
-
                             {/* Grid Content */}
                             <div className="flex-1 grid gap-8 sm:grid-cols-2">
                                 {/* Left Column: What we detect & Why it matters */}
@@ -73,37 +66,35 @@ export default function DetectionGrid({
                                     {/* What we detect */}
                                     {card.whatWeDetect && card.whatWeDetect.length > 0 && (
                                         <div>
-                                            <h4 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2 text-slate-500">
+                                            <h4 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2 text-slate-400">
                                                 <ShieldAlert className="w-4 h-4" /> What we detect
                                             </h4>
                                             <ul className="space-y-2">
                                                 {card.whatWeDetect.map((item, i) => (
                                                     <li key={i} className="flex items-start gap-2 text-sm">
                                                         <div className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500" />
-                                                        <span className="text-slate-700">{item}</span>
+                                                        <span className="text-slate-300">{item}</span>
                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
                                     )}
-
                                     {/* Why it matters */}
                                     {card.whyItMatters && (
                                         <div>
-                                            <h4 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2 text-slate-500">
+                                            <h4 className="text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2 text-slate-400">
                                                 <Info className="w-4 h-4" /> Why it matters
                                             </h4>
-                                            <p className="text-sm leading-relaxed text-slate-600">
+                                            <p className="text-sm leading-relaxed text-slate-300">
                                                 {card.whyItMatters}
                                             </p>
                                         </div>
                                     )}
                                 </div>
-
                                 {/* Right Column: Detection Methods */}
                                 <div>
                                     {card.detectionMethods && card.detectionMethods.length > 0 && (
-                                        <div className="h-full rounded-xl p-6 bg-slate-900 border border-slate-800 shadow-sm">
+                                        <div className="h-full rounded-xl p-6 bg-slate-950 border border-slate-800 shadow-sm">
                                             <h4 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 text-blue-400">
                                                 <ScanSearch className="w-4 h-4" /> Detection Methods
                                             </h4>

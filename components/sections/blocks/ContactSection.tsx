@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2 } from "lucide-react";
@@ -9,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { urlFor } from "@/sanity/lib/image";
 import { useForm } from "react-hook-form";
-
 interface ContactSectionProps {
     isDark?: boolean;
     title?: string;
@@ -21,7 +19,6 @@ interface ContactSectionProps {
         image?: any;
     };
 }
-
 type FormData = {
     name: string;
     email: string;
@@ -30,12 +27,10 @@ type FormData = {
     subject: string;
     message: string;
 };
-
 export default function ContactSection({ isDark, title, subtitle, contactInfo }: ContactSectionProps) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
-
     const onSubmit = async (data: FormData) => {
         setStatus("loading");
         try {
@@ -44,7 +39,6 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
             });
-
             if (response.ok) {
                 setStatus("success");
                 reset();
@@ -58,19 +52,17 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
             setErrorMessage("An unexpected error occurred.");
         }
     };
-
     return (
-        <section className={`py-12 ${isDark ? "bg-slate-50" : "bg-white"}`}>
+        <section className={`py-12 ${"bg-slate-950"}`}>
             <Container>
                 <div className="mx-auto max-w-3xl text-center mb-16">
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                         {title || "Get in Touch"}
                     </h2>
-                    <p className="mt-4 text-lg leading-8 text-slate-600">
+                    <p className="mt-4 text-lg leading-8 text-slate-300">
                         {subtitle || "Have questions? We'd love to hear from you."}
                     </p>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                     {/* Left Column: Contact Info */}
                     <div className="space-y-12">
@@ -81,39 +73,36 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                                         <Mail className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h3 className="text-base font-semibold text-slate-900">Email</h3>
-                                        <p className="mt-1 text-slate-600">{contactInfo.email}</p>
+                                        <h3 className="text-base font-semibold text-white">Email</h3>
+                                        <p className="mt-1 text-slate-300">{contactInfo.email}</p>
                                     </div>
                                 </div>
                             )}
-
                             {contactInfo?.phone && (
                                 <div className="flex gap-4 items-start">
                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-200">
                                         <Phone className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h3 className="text-base font-semibold text-slate-900">Phone</h3>
-                                        <p className="mt-1 text-slate-600">{contactInfo.phone}</p>
+                                        <h3 className="text-base font-semibold text-white">Phone</h3>
+                                        <p className="mt-1 text-slate-300">{contactInfo.phone}</p>
                                     </div>
                                 </div>
                             )}
-
                             {contactInfo?.office && (
                                 <div className="flex gap-4 items-start">
                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-200">
                                         <MapPin className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h3 className="text-base font-semibold text-slate-900">Office</h3>
-                                        <p className="mt-1 text-slate-600 whitespace-pre-line">{contactInfo.office}</p>
+                                        <h3 className="text-base font-semibold text-white">Office</h3>
+                                        <p className="mt-1 text-slate-300 whitespace-pre-line">{contactInfo.office}</p>
                                     </div>
                                 </div>
                             )}
                         </div>
-
                         {contactInfo?.image && (
-                            <div className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-sm transition-transform hover:scale-[1.02] duration-300">
+                            <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-sm transition-transform hover:scale-[1.02] duration-300">
                                 <img
                                     src={urlFor(contactInfo.image).width(800).height(500).url()}
                                     alt="Office"
@@ -122,18 +111,16 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                             </div>
                         )}
                     </div>
-
                     {/* Right Column: Contact Form */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-100">
-                        <h3 className="text-xl font-bold text-slate-900 mb-6">Send us a message</h3>
-
+                    <div className="rounded-2xl border border-white/10 bg-slate-950 p-8 shadow-xl shadow-slate-100">
+                        <h3 className="text-xl font-bold text-white mb-6">Send us a message</h3>
                         {status === "success" ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in duration-500">
                                 <div className="mb-4 rounded-full bg-emerald-50 p-3 text-emerald-600 ring-1 ring-emerald-100">
                                     <CheckCircle2 className="h-12 w-12" />
                                 </div>
-                                <h4 className="text-2xl font-bold text-slate-900">Message Sent!</h4>
-                                <p className="mt-2 text-slate-600">
+                                <h4 className="text-2xl font-bold text-white">Message Sent!</h4>
+                                <p className="mt-2 text-slate-300">
                                     Thank you for reaching out. We've received your message and will get back to you shortly.
                                 </p>
                                 <Button
@@ -175,7 +162,6 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                                         {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                                     </div>
                                 </div>
-
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="company">Company</Label>
@@ -186,12 +172,10 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                                         <Input id="phone" placeholder="Phone number" {...register("phone")} />
                                     </div>
                                 </div>
-
                                 <div className="space-y-2">
                                     <Label htmlFor="subject">Subject</Label>
                                     <Input id="subject" placeholder="What is this about?" {...register("subject")} />
                                 </div>
-
                                 <div className="space-y-2">
                                     <Label htmlFor="message">Message</Label>
                                     <Textarea
@@ -202,11 +186,9 @@ export default function ContactSection({ isDark, title, subtitle, contactInfo }:
                                     />
                                     {errors.message && <p className="text-xs text-red-500">{errors.message.message}</p>}
                                 </div>
-
                                 {status === "error" && (
                                     <p className="text-sm font-medium text-red-500">{errorMessage}</p>
                                 )}
-
                                 <Button
                                     type="submit"
                                     disabled={status === "loading"}

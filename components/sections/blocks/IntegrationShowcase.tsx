@@ -51,12 +51,11 @@ export default function IntegrationShowcase({
     const activeIntegration = integrations[activeIndex];
 
     return (
-        <section id={anchor} className="relative py-24 bg-[#050505] overflow-hidden border-t border-white/5">
+        <section id={anchor} className="relative py-24 bg-slate-950 overflow-hidden border-t border-white/5">
             {/* Subtle background glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
-                
+
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
                         {headline}
@@ -69,14 +68,14 @@ export default function IntegrationShowcase({
                 </div>
 
                 <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-                    
+
                     {/* Left Side: Navigation */}
                     <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-8">
                         <div className="space-y-4">
                             {integrations.map((integration, idx) => {
                                 const isActive = activeIndex === idx;
                                 const Icon = IconMap[integration.iconType?.toLowerCase()] || Code;
-                                
+
                                 return (
                                     <button
                                         key={idx}
@@ -84,7 +83,7 @@ export default function IntegrationShowcase({
                                         className={`w-full text-left p-6 rounded-2xl border transition-all duration-300 group
                                             ${isActive 
                                                 ? 'bg-blue-600/10 border-blue-500/50 shadow-[0_0_20px_rgba(37,99,235,0.15)]' 
-                                                : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10'
+                                                : 'bg-slate-950/5 border-white/5 hover:bg-slate-950/10 hover:border-white/10'
                                             }
                                         `}
                                     >
@@ -98,7 +97,7 @@ export default function IntegrationShowcase({
                                                         {integration.title}
                                                     </h3>
                                                     {integration.method && (
-                                                        <span className={`text-xs font-mono px-2 py-1 rounded transition-colors ${isActive ? 'bg-blue-500/20 text-blue-300' : 'bg-white/5 text-neutral-500'}`}>
+                                                        <span className={`text-xs font-mono px-2 py-1 rounded transition-colors ${isActive ? 'bg-blue-500/20 text-blue-300' : 'bg-slate-950/5 text-neutral-500'}`}>
                                                             {integration.method}
                                                         </span>
                                                     )}
@@ -112,7 +111,7 @@ export default function IntegrationShowcase({
                                 );
                             })}
                         </div>
-                        
+
                         {/* Footer Docs CTA */}
                         {docsCta?.href && (
                             <div className="pt-8 mt-auto border-t border-white/10">
@@ -146,7 +145,7 @@ export default function IntegrationShowcase({
                                 className="rounded-2xl border border-white/10 bg-[#050505] overflow-hidden"
                             >
                                 {/* Terminal Header */}
-                                <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#0a0a0a]">
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-slate-950">
                                     <div className="flex gap-2">
                                         <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
                                         <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
