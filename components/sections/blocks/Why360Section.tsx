@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Database, Activity, Shield } from "lucide-react";
+import { PortableText } from '@portabletext/react';
 
 type DataLayer = {
   title: string;
@@ -23,7 +24,7 @@ type Why360SectionProps = {
   threatSurfaceTitle?: string;
   threatSurfaceBody?: string;
   conversionHeadline?: string;
-  conversionBody?: string;
+  conversionBody?: any;
   layers?: DataLayer[];
 };
 
@@ -75,18 +76,6 @@ export default function Why360Section(props: Why360SectionProps) {
       return () => clearInterval(interval);
   }, [layers]);
 
-  // A small helper to inject the styled spans for the conversion body
-  const renderConversionBody = (text: string) => {
-    // If it's the exact default text, we inject the rich styles the user designed
-    if (text.includes('paste-ready DNS records to close the gaps') && text.includes('360 Health Report')) {
-      const replaced = text
-        .replace(/360 Health Report/g, '<strong class="text-white">360 Health Report</strong>')
-        .replace(/paste-ready DNS records to close the gaps/g, '<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 font-bold">paste-ready DNS records to close the gaps</span>');
-      return <p className="text-slate-300 text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: replaced }} />;
-    }
-    // Otherwise render it normally
-    return <p className="text-slate-300 text-base leading-relaxed">{text}</p>;
-  };
 
   return (
     <section className="bg-slate-950 text-white py-24 px-6 lg:px-12 xl:px-16 border-t border-white/5 overflow-hidden font-sans">
@@ -169,12 +158,12 @@ export default function Why360Section(props: Why360SectionProps) {
         </div>
 
         {/* The 3-Part Layout - Desktop (360 Circle) */}
-        <div className="hidden lg:flex flex-col mx-auto w-[640px] h-[640px] my-8 relative">
+        <div className="hidden lg:flex flex-col mx-auto w-[800px] h-[800px] my-8 relative">
 
           {/* Top Half (180 degrees) - External */}
-          <div className="w-[640px] h-[320px] relative overflow-hidden bg-slate-950/40 border-2 border-white/5 border-b border-b-white/10 rounded-t-full flex flex-col items-center justify-start pt-10 group hover:border-blue-500/30 hover:bg-slate-950/60 transition-all duration-500 hover:shadow-[0_-20px_50px_rgba(59,130,246,0.1)] mb-1 z-10">
+          <div className="w-[800px] h-[400px] relative overflow-hidden bg-slate-900/50 border-2 border-white/5 border-b border-b-white/10 rounded-t-full flex flex-col items-center justify-start pt-14 group hover:border-blue-500/30 hover:bg-slate-900/80 transition-all duration-500 hover:shadow-[0_-20px_50px_rgba(59,130,246,0.1)] mb-1 z-10">
 
-            <div className="w-[360px] text-center relative z-10 space-y-4">
+            <div className="w-[500px] text-center relative z-10 space-y-4">
               <div className="font-mono text-xs text-blue-400 font-bold uppercase tracking-wider">
                 [ THE PHASE 1 DATA FEED ]
               </div>
@@ -192,11 +181,11 @@ export default function Why360Section(props: Why360SectionProps) {
           </div>
 
           {/* Bottom Half Row */}
-          <div className="flex justify-between w-[640px] h-[320px] z-10">
+          <div className="flex justify-between w-[800px] h-[400px] z-10">
             {/* Bottom-Left Wedge (90 degrees) - Trust Surface */}
-            <div className="w-[319px] h-[320px] relative overflow-hidden bg-slate-950/40 border-2 border-white/5 border-t-0 rounded-bl-full flex flex-col justify-start items-end p-12 pt-8 pr-8 group hover:border-cyan-500/30 hover:bg-slate-950/60 transition-all duration-500 hover:shadow-[-20px_20px_50px_rgba(34,211,238,0.1)]">
+            <div className="w-[399px] h-[400px] relative overflow-hidden bg-slate-900/50 border-2 border-white/5 border-t-0 rounded-bl-full flex flex-col justify-start items-end p-16 pt-10 pr-10 group hover:border-cyan-500/30 hover:bg-slate-900/80 transition-all duration-500 hover:shadow-[-20px_20px_50px_rgba(34,211,238,0.1)]">
 
-              <div className="w-[200px] text-right relative z-10 space-y-3">
+              <div className="w-[280px] text-right relative z-10 space-y-3">
                 <div className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-wider">
                   [ THE TRUST SURFACE ]
                 </div>
@@ -214,9 +203,9 @@ export default function Why360Section(props: Why360SectionProps) {
             </div>
 
             {/* Bottom-Right Wedge (90 degrees) - Threat Surface */}
-            <div className="w-[319px] h-[320px] relative overflow-hidden bg-slate-950/40 border-2 border-white/5 border-t-0 rounded-br-full flex flex-col justify-start items-start p-12 pt-8 pl-8 group hover:border-purple-500/30 hover:bg-slate-950/60 transition-all duration-500 hover:shadow-[20px_20px_50px_rgba(168,85,247,0.1)]">
+            <div className="w-[399px] h-[400px] relative overflow-hidden bg-slate-900/50 border-2 border-white/5 border-t-0 rounded-br-full flex flex-col justify-start items-start p-16 pt-10 pl-10 group hover:border-purple-500/30 hover:bg-slate-900/80 transition-all duration-500 hover:shadow-[20px_20px_50px_rgba(168,85,247,0.1)]">
 
-              <div className="w-[200px] text-left relative z-10 space-y-3">
+              <div className="w-[280px] text-left relative z-10 space-y-3">
                 <div className="font-mono text-xs text-purple-400 font-bold uppercase tracking-wider">
                   [ THE THREAT SURFACE ]
                 </div>
@@ -246,84 +235,25 @@ export default function Why360Section(props: Why360SectionProps) {
 
         </div>
 
-        {/* Internal View Graphic - 3D Stack */}
-        <div className="hidden lg:flex flex-col items-center justify-center w-full mt-8 pb-16 z-0">
-          <div className="relative h-[400px] w-full max-w-2xl flex items-center justify-center scale-75 origin-top pointer-events-none">
-              <AnimatePresence mode="wait">
-                  {layers.map((layer, idx) => {
-                      if (idx !== activeIndex) return null;
-                      const theme = layerThemes[idx % layerThemes.length];
-
-                      return (
-                          <motion.div
-                              key={idx}
-                              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: -50, scale: 0.9 }}
-                              transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-                              className={`absolute w-full max-w-md p-8 rounded-2xl bg-[#111] border ${theme.border} shadow-2xl backdrop-blur-xl pointer-events-auto`}
-                          >
-                              <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/10">
-                                  {theme.icon}
-                                  <h3 className="text-2xl font-bold text-white font-mono tracking-tight">
-                                      {layer.title}
-                                  </h3>
-                              </div>
-
-                              <div className="space-y-6">
-                                  <div>
-                                      <div className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Extracted Signals</div>
-                                      <div className="grid grid-cols-2 gap-3">
-                                          {layer.signals?.map((signal, sIdx) => (
-                                              <div key={sIdx} className="flex items-center gap-2 bg-black/50 rounded-lg p-3 border border-white/5">
-                                                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                                                  <span className="text-sm font-mono text-neutral-300 truncate">{signal}</span>
-                                              </div>
-                                          ))}
-                                      </div>
-                                  </div>
-
-                                  <div className="p-4 rounded-lg bg-slate-950/5 border border-white/10">
-                                      <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Intelligence Outcome</div>
-                                      <div className="text-white font-medium">{layer.outcome}</div>
-                                  </div>
-                              </div>
-                          </motion.div>
-                      );
-                  })}
-              </AnimatePresence>
-          </div>
-
-          {/* Indicators for the auto-rotating stack */}
-          <div className="flex gap-3 mt-[-60px] z-10">
-             {layers.map((_, idx) => (
-                 <button 
-                    key={idx} 
-                    onClick={() => setActiveIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${activeIndex === idx ? 'bg-purple-500 w-8' : 'bg-slate-950/20 hover:bg-slate-950/40'}`} 
-                    aria-label={`View layer ${idx + 1}`}
-                 />
-             ))}
-          </div>
-        </div>
-
         {/* The Conversion Engine Block */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-950 to-blue-950/30 border-2 border-purple-500/20 p-8 md:p-12 rounded-2xl shadow-xl shadow-purple-950/10">
+        <div className="relative mt-10 overflow-hidden bg-gradient-to-r from-slate-950 to-blue-950/30 border-2 border-purple-500/20 p-8 md:p-12 rounded-2xl shadow-xl shadow-purple-950/10">
 
-          <div className="max-w-4xl space-y-6 relative z-10">
-            <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 text-xs font-mono tracking-tight text-slate-400">
-              <span>External Platform Threat Report</span>
-              <span className="text-purple-400 font-bold">\u2192 add internal attack surface \u2192</span>
-              <span className="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">360 Health Report</span>
-            </div>
-
+          <div className="w-full space-y-6 relative z-10">
             {conversionHeadline && (
               <h3 className="text-2xl font-bold text-white tracking-tight">
                 {conversionHeadline}
               </h3>
             )}
 
-            {conversionBody && renderConversionBody(conversionBody)}
+            {conversionBody && (
+              <div className="space-y-4 prose prose-invert max-w-none prose-p:text-slate-300 prose-p:text-base prose-p:leading-relaxed prose-strong:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300">
+                {typeof conversionBody === 'string' ? (
+                  <p className="text-slate-300 text-base leading-relaxed">{conversionBody}</p>
+                ) : (
+                  <PortableText value={conversionBody} />
+                )}
+              </div>
+            )}
 
             <div className="pt-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               <button className="w-full sm:w-auto bg-purple-600 hover:bg-purple-500 text-white font-medium px-6 py-3.5 rounded-lg text-base shadow-lg shadow-purple-900/20 transition-all whitespace-nowrap">

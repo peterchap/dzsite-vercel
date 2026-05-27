@@ -18,6 +18,7 @@ type DataCorpusProps = {
     subheadline?: string;
     totalDomains: string;
     ingestionLatency: string;
+    falsePositiveRate?: string;
     dataFeatures?: DataFeature[];
     ctaLabel: string;
     ctaHref: string;
@@ -52,6 +53,7 @@ export default function DataCorpus({
     subheadline,
     totalDomains,
     ingestionLatency,
+    falsePositiveRate,
     dataFeatures = [],
     ctaLabel,
     ctaHref,
@@ -86,7 +88,7 @@ export default function DataCorpus({
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
 
                     {/* Left Column: Visuals & Metrics */}
-                    <div className="relative h-[500px] rounded-3xl border border-white/10 bg-black/40 overflow-hidden flex flex-col items-center justify-center backdrop-blur-sm">
+                    <div className="relative h-[500px] rounded-3xl border border-white/10 bg-black/40 overflow-hidden backdrop-blur-sm">
 
                         {/* Animated SVG Network Graph */}
                         {mounted && (
@@ -151,30 +153,38 @@ export default function DataCorpus({
                         )}
 
                         {/* Floating Metrics Overlay */}
-                        <div className="relative z-10 flex flex-col gap-6 items-center w-full max-w-sm px-6">
+                        <motion.div 
+                            className="absolute top-12 left-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-blue transition-all"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            <div className="text-cyan-400 font-mono text-[10px] uppercase tracking-widest mb-1">Live Corpus Size</div>
+                            <div className="text-3xl font-bold text-white tracking-tighter" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                {totalDomains || "330M+"}
+                            </div>
+                        </motion.div>
 
-                            <motion.div 
-                                className="w-full bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-neon-blue transition-all"
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                <div className="text-cyan-400 font-mono text-sm uppercase tracking-widest mb-2">Live Corpus Size</div>
-                                <div className="text-5xl font-bold text-white tracking-tighter" style={{ fontFamily: 'var(--font-outfit)' }}>
-                                    {totalDomains || "330M+"}
-                                </div>
-                            </motion.div>
+                        <motion.div 
+                            className="absolute top-1/2 -translate-y-1/2 right-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            <div className="text-purple-400 font-mono text-[10px] uppercase tracking-widest mb-1">False Positive Rate</div>
+                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                <Shield className="w-5 h-5 text-purple-400" />
+                                {falsePositiveRate || "<1%"}
+                            </div>
+                        </motion.div>
 
-                            <motion.div 
-                                className="w-full bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-neon-cyan transition-all"
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                <div className="text-blue-400 font-mono text-sm uppercase tracking-widest mb-2">Ingestion Latency</div>
-                                <div className="text-5xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
-                                    <Activity className="w-8 h-8 text-cyan-400 animate-pulse" />
-                                    {ingestionLatency || "<10s"}
-                                </div>
-                            </motion.div>
+                        <motion.div 
+                            className="absolute bottom-12 left-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-cyan transition-all"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            <div className="text-blue-400 font-mono text-[10px] uppercase tracking-widest mb-1">Ingestion Latency</div>
+                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
+                                {ingestionLatency || "<10s"}
+                            </div>
+                        </motion.div>
 
-                        </div>
                     </div>
 
                     {/* Right Column: Content & Features */}

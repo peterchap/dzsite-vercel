@@ -11,6 +11,7 @@ type DeliveryMode = {
   deliveredAs: string;
   leadBuyer: string;
   outputAnswers: string;
+  roleInDefensiveAI?: string;
   ctaLabel: string;
   ctaUrl: string;
   themeColor: "blue" | "purple" | "cyan";
@@ -68,6 +69,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             deliveredAs: "Shareable report",
             leadBuyer: "Organisation or MSSP for their client",
             outputAnswers: "\"Where am I exposed today?\"",
+            roleInDefensiveAI: "Baseline mapping",
             ctaLabel: "See sample report",
             ctaUrl: "#",
             themeColor: "blue" as const
@@ -79,6 +81,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             deliveredAs: "Feed into your security stack",
             leadBuyer: "SOC / IT operations",
             outputAnswers: "\"What's targeting me right now?\"",
+            roleInDefensiveAI: "Active threat detection",
             ctaLabel: "See alert format",
             ctaUrl: "#",
             themeColor: "cyan" as const
@@ -90,6 +93,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             deliveredAs: "Marketplace share, webhooks, API, white-label",
             leadBuyer: "Email security teams, data teams",
             outputAnswers: "\"How do I build with this data?\"",
+            roleInDefensiveAI: "Model training & automation",
             ctaLabel: "See marketplace listings",
             ctaUrl: "#",
             themeColor: "purple" as const
@@ -136,7 +140,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
                                     </div>
                                 </div>
 
-                                <div className="grid sm:grid-cols-3 gap-6 mb-8 pt-6 border-t border-white/10">
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 pt-6 border-t border-white/10">
                                     <div>
                                         <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Cadence</div>
                                         <div className="text-sm font-medium text-neutral-200">{mode.cadence}</div>
@@ -149,6 +153,12 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
                                         <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Lead Buyer</div>
                                         <div className="text-sm font-medium text-neutral-200">{mode.leadBuyer}</div>
                                     </div>
+                                    {mode.roleInDefensiveAI && (
+                                        <div>
+                                            <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Role in Defensive AI</div>
+                                            <div className="text-sm font-medium text-neutral-200">{mode.roleInDefensiveAI}</div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div>

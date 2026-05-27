@@ -42,6 +42,7 @@ export default defineType({
             { name: 'deliveredAs', title: 'Delivered As', type: 'string' },
             { name: 'leadBuyer', title: 'Lead Buyer', type: 'string' },
             { name: 'outputAnswers', title: 'Output Answers', type: 'string' },
+            { name: 'roleInDefensiveAI', title: 'Role in defensive AI', type: 'string' },
             { name: 'ctaLabel', title: 'CTA Label', type: 'string' },
             { name: 'ctaUrl', title: 'CTA URL', type: 'string' },
             {

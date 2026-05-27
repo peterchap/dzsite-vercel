@@ -69,8 +69,8 @@ export default defineType({
     defineField({
       name: 'conversionBody',
       title: 'Conversion Description Copy',
-      type: 'text',
-      rows: 4
+      type: 'array',
+      of: [{ type: 'block' }]
     }),
     defineField({
       name: 'layers',
