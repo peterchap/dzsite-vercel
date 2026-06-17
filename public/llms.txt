@@ -1,0 +1,31 @@
+# Datazag
+
+> Datazag is a UK-based cybersecurity intelligence platform for platform-impersonation defence. It detects attacker infrastructure — lookalike domains and spoofed SaaS/email platforms — at the moment of provisioning, before campaigns launch, and feeds the detections into customers' existing security stacks as data. Every detection ships with the reasoning that drove it.
+
+All intelligence runs on the Datazag Graph: a continuously refreshed graph of the internet's infrastructure (330M+ active domains, CertStream, BGP, DNS) with signal correlation, explainable risk scoring, real-time telemetry and routing-hygiene verification built in.
+
+## Core pages
+
+- [Homepage](https://www.datazag.com/): Catch the fake login page before your team receives it — the predictive layer alongside your security stack.
+- [How the Graph works](https://www.datazag.com/how-it-works): The Datazag Graph engine — signal correlation, explainable risk scoring, real-time telemetry, routing-hygiene verification, and the four named mechanisms (Platform Fingerprinting, Corpus Matching, Build-Time Detection, Pre-Arrival Blocking).
+- [Alerts](https://www.datazag.com/alerts): Real-time alerts for phishing, BEC, C2 and fraud infrastructure, detected during setup and delivered to your SIEM with forensic context.
+- [Data product (domain intelligence)](https://www.datazag.com/infrastructure-intelligence): JOIN-ready domain intelligence via cloud data shares, real-time API and webhooks across Snowflake, Databricks, AWS, Azure and GCP.
+- [Brand Protection](https://www.datazag.com/brand-protection): Brand impersonation monitoring and evidence packs for marketing, legal and trust teams.
+- [Pricing](https://www.datazag.com/pricing): Plans and tiers.
+
+## Partners
+
+- [MSSP partners](https://www.datazag.com/mssp-partners): White-labelled phishing and platform-impersonation protection across a client portfolio.
+- [ESP partners](https://www.datazag.com/esp-partners): Deliverability protection, compliance and a resale revenue stream for email service providers.
+- [Cyber insurers](https://www.datazag.com/cyber-risk-underwriting): External cyber-posture assessment for underwriting and portfolio monitoring.
+
+## Company
+
+- [About](https://www.datazag.com/about): About Datazag.
+- [Contact](https://www.datazag.com/contact): Get in touch.
+- [Trust](https://www.datazag.com/trust): Security, privacy and responsible disclosure.
+
+## Notes
+
+- Locked figures: 330M+ active domains; <10s ingestion latency from CertStream; ~1.23M BGP prefixes and ~78,600 autonomous systems monitored.
+- Threat-feed sources are described generically (independent abuse and routing intelligence), not named.
