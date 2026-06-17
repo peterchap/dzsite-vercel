@@ -14,7 +14,9 @@ export default {
     { name: 'subheadline', type: 'text', rows: 3 },
     { name: 'totalDomains', type: 'string', description: 'e.g., 330M+' },
     { name: 'ingestionLatency', type: 'string', description: 'e.g., <10s' },
-    { name: 'falsePositiveRate', type: 'string', description: 'e.g., <1%' },
+    { name: 'bgpPrefixes', type: 'string', description: 'e.g., 1.23M+ (BGP prefixes monitored)' },
+    { name: 'asnsMapped', type: 'string', description: 'e.g., 78,600+ (autonomous systems mapped)' },
+    { name: 'falsePositiveRate', type: 'string', description: 'Deprecated on homepage proof block; e.g., <1%' },
     {
       name: 'dataFeatures',
       type: 'array',

@@ -18,6 +18,8 @@ type DataCorpusProps = {
     subheadline?: string;
     totalDomains: string;
     ingestionLatency: string;
+    bgpPrefixes?: string;
+    asnsMapped?: string;
     falsePositiveRate?: string;
     dataFeatures?: DataFeature[];
     ctaLabel: string;
@@ -53,7 +55,8 @@ export default function DataCorpus({
     subheadline,
     totalDomains,
     ingestionLatency,
-    falsePositiveRate,
+    bgpPrefixes,
+    asnsMapped,
     dataFeatures = [],
     ctaLabel,
     ctaHref,
@@ -152,8 +155,8 @@ export default function DataCorpus({
                             </svg>
                         )}
 
-                        {/* Floating Metrics Overlay */}
-                        <motion.div 
+                        {/* Floating Metrics Overlay — four proof stats */}
+                        <motion.div
                             className="absolute top-12 left-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-blue transition-all"
                             whileHover={{ scale: 1.05 }}
                         >
@@ -163,25 +166,36 @@ export default function DataCorpus({
                             </div>
                         </motion.div>
 
-                        <motion.div 
-                            className="absolute top-1/2 -translate-y-1/2 right-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <div className="text-purple-400 font-mono text-[10px] uppercase tracking-widest mb-1">False Positive Rate</div>
-                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
-                                <Shield className="w-5 h-5 text-purple-400" />
-                                {falsePositiveRate || "<1%"}
-                            </div>
-                        </motion.div>
-
-                        <motion.div 
-                            className="absolute bottom-12 left-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-cyan transition-all"
+                        <motion.div
+                            className="absolute top-12 right-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-cyan transition-all"
                             whileHover={{ scale: 1.05 }}
                         >
                             <div className="text-blue-400 font-mono text-[10px] uppercase tracking-widest mb-1">Ingestion Latency</div>
                             <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
                                 <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
                                 {ingestionLatency || "<10s"}
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            className="absolute bottom-12 left-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-blue transition-all"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            <div className="text-cyan-400 font-mono text-[10px] uppercase tracking-widest mb-1">BGP Prefixes Monitored</div>
+                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                <Network className="w-5 h-5 text-cyan-400" />
+                                {bgpPrefixes || "1.23M+"}
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            className="absolute bottom-12 right-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-neon-cyan transition-all"
+                            whileHover={{ scale: 1.05 }}
+                        >
+                            <div className="text-blue-400 font-mono text-[10px] uppercase tracking-widest mb-1">Autonomous Systems Mapped</div>
+                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                <Globe className="w-5 h-5 text-cyan-400" />
+                                {asnsMapped || "78,600+"}
                             </div>
                         </motion.div>
 
