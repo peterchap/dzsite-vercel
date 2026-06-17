@@ -3,7 +3,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
+import { ButtonLink } from '@/components/ui/ButtonLink';
 
+type CtaProp = { label?: string; href?: string; variant?: string };
 
 type PredictiveLayerSectionProps = {
   _type?: string;
@@ -13,6 +15,9 @@ type PredictiveLayerSectionProps = {
   subheadline?: string;
   architectureDiagram?: any;
   substrateFoundations?: string[];
+  postDiagramBody?: string;
+  primaryCta?: CtaProp;
+  secondaryCta?: CtaProp;
 };
 
 
@@ -22,7 +27,10 @@ export default function PredictiveLayerSection(props: PredictiveLayerSectionProp
     headline = "Datazag is the predictive layer alongside your stack.",
     subheadline = "Datazag works with ASM, DRP, brand protection and threat intelligence \u2014 not against them. Where you've invested in any of these, Datazag is the layer that makes them work better. Where you haven't, it's the zero-input place to start.",
     architectureDiagram,
-    substrateFoundations = ['330M-domain corpus', 'CertStream', 'BGP (RouteViews & RIPE RIS)']
+    substrateFoundations = ['330M-domain corpus', 'CertStream', 'BGP (RouteViews & RIPE RIS)'],
+    postDiagramBody,
+    primaryCta,
+    secondaryCta
   } = props;
 
   return (
@@ -75,6 +83,31 @@ export default function PredictiveLayerSection(props: PredictiveLayerSectionProp
                         ))}
                     </div>
                 </div>
+
+                {/* Post-diagram body + CTAs */}
+                {(postDiagramBody || primaryCta?.label || secondaryCta?.label) && (
+                    <div className="w-full max-w-3xl mx-auto mt-12 text-center space-y-8">
+                        {postDiagramBody && (
+                            <p className="text-lg text-neutral-400 leading-relaxed">
+                                {postDiagramBody}
+                            </p>
+                        )}
+                        {(primaryCta?.label || secondaryCta?.label) && (
+                            <div className="flex flex-wrap items-center justify-center gap-3">
+                                {primaryCta?.label && primaryCta?.href && (
+                                    <ButtonLink href={primaryCta.href} variant={(primaryCta.variant as any) ?? "primary"} size="lg">
+                                        {primaryCta.label}
+                                    </ButtonLink>
+                                )}
+                                {secondaryCta?.label && secondaryCta?.href && (
+                                    <ButtonLink href={secondaryCta.href} variant={(secondaryCta.variant as any) ?? "secondary"} size="lg">
+                                        {secondaryCta.label}
+                                    </ButtonLink>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
 
             </div>
         </div>

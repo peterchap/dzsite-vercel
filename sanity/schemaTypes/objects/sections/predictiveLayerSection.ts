@@ -45,6 +45,23 @@ export default defineType({
       type: 'array',
       of: [{ type: 'string' }],
       initialValue: ['330M-domain corpus', 'CertStream', 'BGP (RouteViews & RIPE RIS)']
+    }),
+    defineField({
+      name: 'postDiagramBody',
+      title: 'Body (after diagram)',
+      description: 'Copy rendered beneath the diagram, before the CTAs.',
+      type: 'text',
+      rows: 4
+    }),
+    defineField({
+      name: 'primaryCta',
+      title: 'Primary CTA',
+      type: 'cta'
+    }),
+    defineField({
+      name: 'secondaryCta',
+      title: 'Secondary CTA',
+      type: 'cta'
     })
   ],
   preview: {
