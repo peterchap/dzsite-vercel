@@ -61,6 +61,7 @@ import integrationShowcase from "./objects/sections/integrationShowcase";
 import vendorThesisSection from "./objects/sections/vendorThesisSection";
 import threatReportCTA from "./objects/sections/threatReportCTA";
 import howItWorksSection from "./objects/sections/howItWorksSection";
+import howItWorksSteps from "./objects/sections/howItWorksSteps";
 import why360Conversion from "./objects/sections/why360Conversion";
 import deliveryModesSection from "./objects/sections/deliveryModesSection";
 import partnershipSegmentsSection from "./objects/sections/partnershipSegmentsSection";
@@ -134,6 +135,7 @@ export const schemaTypes = [
   vendorThesisSection,
   threatReportCTA,
   howItWorksSection,
+  howItWorksSteps,
   why360Conversion,
   deliveryModesSection,
   partnershipSegmentsSection,

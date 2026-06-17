@@ -95,6 +95,7 @@ export default {
                 { type: "section.vendorThesisSection" },
                 { type: "section.threatReportCTA" },
                 { type: "section.howItWorks" },
+                { type: "section.howItWorksSteps" },
                 { type: "section.why360Conversion" },
                 { type: "section.deliveryModesSection" },
                 { type: "section.partnershipSegmentsSection" },
