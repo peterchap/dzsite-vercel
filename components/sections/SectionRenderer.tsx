@@ -60,6 +60,7 @@ import Why360Section from "@/components/sections/blocks/Why360Section";
 import DeliveryModesSection from "@/components/sections/blocks/DeliveryModesSection";
 import PartnershipSegmentsSection from "@/components/sections/blocks/PartnershipSegmentsSection";
 import PredictiveLayerSection from "@/components/sections/blocks/PredictiveLayerSection";
+import HealthReportSelector from "@/components/sections/blocks/HealthReportSelector";
 
 type Section = {
   _type: string;
@@ -648,6 +649,15 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <PredictiveLayerSection
                   {...(section as unknown as React.ComponentProps<typeof PredictiveLayerSection>)}
+                />
+              </div>
+            );
+
+          case "section.healthReportSelector":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <HealthReportSelector
+                  {...(section as unknown as React.ComponentProps<typeof HealthReportSelector>)}
                 />
               </div>
             );

@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         destination: '/cyber-risk-underwriting',
         permanent: true,
       },
+      {
+        source: '/assess',
+        destination: '/health-report',
+        permanent: true,
+      },
     ];
   },
 };

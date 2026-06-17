@@ -96,6 +96,7 @@ export default {
                 { type: "section.threatReportCTA" },
                 { type: "section.howItWorks" },
                 { type: "section.howItWorksSteps" },
+                { type: "section.healthReportSelector" },
                 { type: "section.why360Conversion" },
                 { type: "section.deliveryModesSection" },
                 { type: "section.partnershipSegmentsSection" },
