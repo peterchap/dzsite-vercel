@@ -39,7 +39,7 @@ export function buildMetadata({
         ? urlForImage(ogImageSource).width(1200).height(630).fit("crop").url()
         : undefined;
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
     const canonical = new URL(pathname, siteUrl).toString();
 
     return {
