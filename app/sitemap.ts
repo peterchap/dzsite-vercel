@@ -8,6 +8,7 @@ const base = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
 const DENY = new Set([
   "home2",
   "contact-us", // duplicate of /contact
+  "domain-intelligence", // likely-stale duplicate of /infrastructure-intelligence (data product)
   "partner",
   "security-teams",
   "redundant",
