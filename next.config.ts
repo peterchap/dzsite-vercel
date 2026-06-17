@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/phishing-alerts',
+        destination: '/alerts',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
