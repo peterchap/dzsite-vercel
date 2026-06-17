@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         destination: '/alerts',
         permanent: true,
       },
+      {
+        source: '/insurer-partners',
+        destination: '/cyber-risk-underwriting',
+        permanent: true,
+      },
     ];
   },
 };
