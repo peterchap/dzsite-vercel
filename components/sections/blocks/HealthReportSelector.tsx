@@ -12,8 +12,8 @@ type Props = {
   eyebrow?: string;
   headline?: string;
   subheadline?: string;
-  personas?: Persona[];
-  languages?: Language[];
+  roles?: Persona[] | null;
+  languages?: Language[] | null;
   formatNote?: string;
   primaryCta?: Cta;
   secondaryCta?: Cta;
@@ -23,13 +23,15 @@ export default function HealthReportSelector({
   eyebrow,
   headline,
   subheadline,
-  personas = [],
-  languages = [],
+  roles,
+  languages,
   formatNote,
   primaryCta,
   secondaryCta,
 }: Props) {
   const [active, setActive] = useState(0);
+  const personas: Persona[] = Array.isArray(roles) ? roles : [];
+  const langs: Language[] = Array.isArray(languages) ? languages : [];
   const current = personas[active] ?? {};
 
   return (
@@ -72,11 +74,11 @@ export default function HealthReportSelector({
             {current.description && (
               <p className="mt-3 text-sm leading-relaxed text-slate-300">{current.description}</p>
             )}
-            {languages.length > 0 && (
+            {langs.length > 0 && (
               <div className="mt-6">
                 <label className="block text-xs font-mono uppercase tracking-widest text-slate-400 mb-2">Language</label>
                 <select className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-slate-200">
-                  {languages.map((l, i) => (
+                  {langs.map((l, i) => (
                     <option key={i} value={l.name} disabled={!l.available}>
                       {l.name}{l.available ? "" : " — coming soon"}
                     </option>

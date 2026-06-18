@@ -8,8 +8,8 @@ export default {
     { name: "headline", title: "Headline", type: "string" },
     { name: "subheadline", title: "Subheadline", type: "text", rows: 3 },
     {
-      name: "personas",
-      title: "Personas",
+      name: "roles",
+      title: "Personas (roles)",
       type: "array",
       of: [
         {
