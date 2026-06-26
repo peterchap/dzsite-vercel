@@ -106,6 +106,33 @@ export default function AlertsPage() {
         ],
         latency: "E2E latency: 3.923s | DNS resolution phase: -1ms",
       }}
+      secondaryExampleAlert={{
+        kicker: "Example brand alert",
+        title: "What a brand evidence-pack alert looks like.",
+        intro: "This placeholder shows the brand workflow. Unlike a platform alert, the recommended action can move beyond blocking into evidence capture, abuse reporting and takedown support when the customer owns or represents the affected brand.",
+        severity: "BRAND | RED",
+        status: "Brand Impersonation Escalated",
+        domain: "secure-examplebrand-login.com",
+        fields: [
+          { label: "Incident ID", value: "INC-placeholder-brand-001" },
+          { label: "Classification", value: "RED → EVIDENCE_PACK_READY" },
+          { label: "Match", value: "Brand — ExampleBrand" },
+          { label: "Customer", value: "ExampleBrand" },
+          { label: "Website status", value: "Live page detected" },
+          { label: "Screenshot", value: "Captured and attached to evidence pack" },
+          { label: "Abuse contact", value: "Hosting provider abuse mailbox identified" },
+          { label: "Recommended action", value: "Submit takedown notice or de-escalate" },
+        ],
+        reasons: [
+          "Brand impersonation targeting customer-owned brand",
+          "Domain not found in known 330M corpus",
+          "Brand term present with suspicious login/security wording",
+          "Candidate does not match known brand DNS or approved cloud footprint",
+          "Website content observed and screenshot captured",
+          "Hosting provider and abuse contact resolved for evidence pack",
+        ],
+        latency: "Evidence pack updated when website content appeared",
+      }}
       packagesTitle="Alert use cases."
       packages={[
         { title: "SOC and threat hunting", text: "Prioritise suspicious infrastructure before campaigns create incident volume." },
