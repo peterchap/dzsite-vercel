@@ -142,6 +142,21 @@ const applications: Card[] = [
   },
 ];
 
+const partnerAudiences: Card[] = [
+  {
+    title: "MSSPs and MDRs",
+    text: "Add pre-operational infrastructure intelligence to managed detection, threat hunting and customer reporting.",
+  },
+  {
+    title: "Email and messaging platforms",
+    text: "Use infrastructure relationships to improve link scoring, sender trust and platform impersonation defence.",
+  },
+  {
+    title: "Security vendors",
+    text: "Enrich products with campaign context, explainable risk and infrastructure evidence.",
+  },
+];
+
 function SignalField() {
   const nodes = [
     [6, 18, 2.8],
@@ -241,13 +256,33 @@ function SignalWeatherPanel() {
   );
 }
 
+function FlowTimeline() {
+  return (
+    <ol className="relative grid gap-5 md:grid-cols-5 md:gap-4">
+      <div className="pointer-events-none absolute left-[10%] right-[10%] top-[2.35rem] hidden h-px bg-gradient-to-r from-cyan-300/10 via-cyan-300/50 to-cyan-300/10 md:block" aria-hidden="true" />
+      {timelineSteps.map((step, index) => (
+        <li key={step.title} className="relative">
+          {index < timelineSteps.length - 1 ? (
+            <div className="absolute -right-3 top-[1.72rem] z-10 hidden h-5 w-5 rotate-45 border-r border-t border-cyan-300/50 md:block" aria-hidden="true" />
+          ) : null}
+          <article className="relative h-full rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200 shadow-lg shadow-cyan-950/30">{step.marker}</div>
+            <h3 className="text-sm font-semibold text-white">{step.title}</h3>
+            <p className="mt-3 text-xs leading-5 text-slate-400">{step.text}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function GraphPanel() {
   return (
     <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.03] p-4 shadow-2xl shadow-cyan-950/30 md:p-6">
       <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07102b] p-6">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_35%,rgba(55,222,245,0.12),transparent_28%),radial-gradient(circle_at_70%_60%,rgba(139,92,246,0.1),transparent_30%)]" />
         <div className="relative flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-400">
-          <span>Signal</span>
+          <span>Investigation path</span>
           <span>Confidence</span>
         </div>
         <div className="relative mt-8 space-y-4">
@@ -287,9 +322,10 @@ function EvidenceConstellation() {
   ];
 
   return (
-    <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+    <div className="relative min-h-[380px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(55,222,245,0.14),transparent_34%)]" />
-      <svg className="absolute inset-0 h-full w-full opacity-70" aria-hidden="true">
+      <div className="absolute inset-5 rounded-[1.5rem] border border-white/5" />
+      <svg className="absolute inset-0 h-full w-full opacity-80" aria-hidden="true">
         <line x1="12%" y1="32%" x2="34%" y2="18%" stroke="#37DEF5" strokeOpacity="0.2" />
         <line x1="34%" y1="18%" x2="54%" y2="38%" stroke="#37DEF5" strokeOpacity="0.28" />
         <line x1="54%" y1="38%" x2="78%" y2="24%" stroke="#37DEF5" strokeOpacity="0.2" />
@@ -300,17 +336,22 @@ function EvidenceConstellation() {
       {points.map((point, index) => (
         <div
           key={point.label}
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/30 bg-[#030619]/80 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100 shadow-lg shadow-cyan-950/40 backdrop-blur"
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/30 bg-[#030619]/85 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100 shadow-lg shadow-cyan-950/40 backdrop-blur"
           style={{ left: point.x, top: point.y }}
         >
           <span className="mr-2 inline-block h-2 w-2 rounded-full bg-cyan-300" style={{ opacity: 0.45 + index * 0.08 }} />
           {point.label}
         </div>
       ))}
-      <div className="absolute left-1/2 top-1/2 w-48 -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-cyan-300/25 bg-cyan-300/10 p-5 text-center backdrop-blur">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">cluster</p>
+      <div className="absolute left-1/2 top-1/2 w-52 -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-cyan-300/25 bg-cyan-300/10 p-5 text-center backdrop-blur">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">campaign cluster</p>
         <p className="mt-3 text-3xl font-semibold text-white">14</p>
         <p className="mt-2 text-xs leading-5 text-slate-300">related infrastructure observations</p>
+      </div>
+      <div className="absolute bottom-5 left-5 right-5 grid gap-2 text-xs text-slate-400 sm:grid-cols-3">
+        <div className="rounded-xl border border-white/10 bg-[#030619]/60 px-3 py-2">shared DNS</div>
+        <div className="rounded-xl border border-white/10 bg-[#030619]/60 px-3 py-2">certificate reuse</div>
+        <div className="rounded-xl border border-white/10 bg-[#030619]/60 px-3 py-2">hosting overlap</div>
       </div>
     </div>
   );
@@ -377,6 +418,16 @@ export default function HomepageAtmosphereConcept() {
         </Container>
       </section>
 
+      <Section kicker="The insight" title="Every attack changes the internet first.">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+          <div>
+            <p className="text-lg leading-8 text-slate-300">Before attackers can launch phishing, credential theft, malware, fraud or impersonation campaigns, they must create infrastructure.</p>
+            <p className="mt-5 text-lg leading-8 text-slate-300">Domains. Certificates. DNS. Hosting. Networks. Services. These changes leave evidence before the campaign reaches victims.</p>
+          </div>
+          <FlowTimeline />
+        </div>
+      </Section>
+
       <section className="relative border-t border-white/10 py-16 md:py-20">
         <Container>
           <div className="mb-8 max-w-3xl">
@@ -386,24 +437,6 @@ export default function HomepageAtmosphereConcept() {
           <SignalWeatherPanel />
         </Container>
       </section>
-
-      <Section kicker="The insight" title="Every attack changes the internet first.">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div>
-            <p className="text-lg leading-8 text-slate-300">Before attackers can launch phishing, credential theft, malware, fraud or impersonation campaigns, they must create infrastructure.</p>
-            <p className="mt-5 text-lg leading-8 text-slate-300">Domains. Certificates. DNS. Hosting. Networks. Services. These changes leave evidence before the campaign reaches victims.</p>
-          </div>
-          <ol className="grid gap-4 md:grid-cols-5 md:gap-3">
-            {timelineSteps.map((step) => (
-              <li key={step.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200">{step.marker}</div>
-                <h3 className="text-sm font-semibold text-white">{step.title}</h3>
-                <p className="mt-3 text-xs leading-5 text-slate-400">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </Section>
 
       <Section kicker="The platform" title="From signal to intelligence in seconds.">
         <div id="how-it-works" className="grid gap-10 lg:grid-cols-2 lg:items-center">
@@ -455,6 +488,23 @@ export default function HomepageAtmosphereConcept() {
               <p className="mt-3 text-sm leading-6 text-slate-400">{card.text}</p>
             </article>
           ))}
+        </div>
+      </Section>
+
+      <Section kicker="Partner ecosystem" title="Built for teams that protect others.">
+        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+          <div>
+            <p className="text-lg leading-8 text-slate-300">Partner audiences belong on this page, but as a concise proof of distribution and relevance rather than a full partner programme pitch.</p>
+            <p className="mt-5 text-lg leading-8 text-slate-300">Dedicated MSSP, MDR and ESP pages can go deeper into packaging, commercial model and workflows.</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {partnerAudiences.map((partner) => (
+              <article key={partner.title} className="rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-5">
+                <h3 className="text-base font-semibold text-white">{partner.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{partner.text}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </Section>
 
