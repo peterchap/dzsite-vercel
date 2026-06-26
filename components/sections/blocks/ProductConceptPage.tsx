@@ -58,6 +58,7 @@ type ProductConceptPageProps = {
   flow: Card[];
   alertTypeSection?: AlertTypeSection;
   exampleAlert?: ExampleAlert;
+  secondaryExampleAlert?: ExampleAlert;
   packagesTitle?: string;
   packages?: Card[];
   finalTitle: string;
@@ -201,7 +202,7 @@ function ExampleAlertPanel({ exampleAlert }: { exampleAlert: ExampleAlert }) {
           <p className="text-lg leading-8 text-slate-300">{exampleAlert.intro}</p>
           <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Why this matters</p>
-            <p className="mt-4 text-sm leading-6 text-slate-300">The alert is designed to show the domain, the matched platform, the infrastructure context, the confidence and the evidence trail in a form that can flow straight into operational channels.</p>
+            <p className="mt-4 text-sm leading-6 text-slate-300">The alert is designed to show the domain, the matched entity, the infrastructure context, the confidence and the evidence trail in a form that can flow straight into operational channels.</p>
           </div>
         </div>
         <div className="overflow-hidden rounded-[2rem] border border-red-400/25 bg-red-400/[0.04] shadow-2xl shadow-red-950/20">
@@ -252,6 +253,7 @@ export default function ProductConceptPage({
   flow,
   alertTypeSection,
   exampleAlert,
+  secondaryExampleAlert,
   packagesTitle,
   packages,
   finalTitle,
@@ -317,6 +319,7 @@ export default function ProductConceptPage({
       </Section>
 
       {exampleAlert ? <ExampleAlertPanel exampleAlert={exampleAlert} /> : null}
+      {secondaryExampleAlert ? <ExampleAlertPanel exampleAlert={secondaryExampleAlert} /> : null}
 
       {packages?.length ? (
         <Section kicker="Packaging" title={packagesTitle ?? "Ways to use Datazag."}>
