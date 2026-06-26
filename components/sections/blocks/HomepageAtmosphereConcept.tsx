@@ -221,6 +221,26 @@ function Section({ kicker, title, children }: { kicker: string; title: string; c
   );
 }
 
+function SignalWeatherPanel() {
+  return (
+    <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 md:p-6">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(55,222,245,0.14),transparent_30%),radial-gradient(circle_at_80%_70%,rgba(139,92,246,0.12),transparent_30%)]" />
+      <div className="relative grid gap-4 md:grid-cols-4">
+        {internetSignals.map((signal, index) => (
+          <article key={signal.title} className="rounded-2xl border border-white/10 bg-[#030619]/55 p-5 backdrop-blur">
+            <div className="mb-5 flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/80">0{index + 1}</span>
+              <span className="h-2 w-2 rounded-full bg-cyan-300 atmosphere-pulse" />
+            </div>
+            <h2 className="text-base font-semibold text-white">{signal.title}</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-400">{signal.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function GraphPanel() {
   return (
     <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.03] p-4 shadow-2xl shadow-cyan-950/30 md:p-6">
@@ -250,6 +270,75 @@ function GraphPanel() {
           <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
             <div className="h-full w-[82%] rounded-full bg-cyan-300" />
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EvidenceConstellation() {
+  const points = [
+    { label: "domain", x: "12%", y: "32%" },
+    { label: "cert", x: "34%", y: "18%" },
+    { label: "dns", x: "54%", y: "38%" },
+    { label: "asn", x: "78%", y: "24%" },
+    { label: "host", x: "28%", y: "70%" },
+    { label: "feed", x: "62%", y: "72%" },
+  ];
+
+  return (
+    <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(55,222,245,0.14),transparent_34%)]" />
+      <svg className="absolute inset-0 h-full w-full opacity-70" aria-hidden="true">
+        <line x1="12%" y1="32%" x2="34%" y2="18%" stroke="#37DEF5" strokeOpacity="0.2" />
+        <line x1="34%" y1="18%" x2="54%" y2="38%" stroke="#37DEF5" strokeOpacity="0.28" />
+        <line x1="54%" y1="38%" x2="78%" y2="24%" stroke="#37DEF5" strokeOpacity="0.2" />
+        <line x1="54%" y1="38%" x2="62%" y2="72%" stroke="#37DEF5" strokeOpacity="0.3" />
+        <line x1="28%" y1="70%" x2="62%" y2="72%" stroke="#37DEF5" strokeOpacity="0.18" />
+        <line x1="12%" y1="32%" x2="28%" y2="70%" stroke="#37DEF5" strokeOpacity="0.16" />
+      </svg>
+      {points.map((point, index) => (
+        <div
+          key={point.label}
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/30 bg-[#030619]/80 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100 shadow-lg shadow-cyan-950/40 backdrop-blur"
+          style={{ left: point.x, top: point.y }}
+        >
+          <span className="mr-2 inline-block h-2 w-2 rounded-full bg-cyan-300" style={{ opacity: 0.45 + index * 0.08 }} />
+          {point.label}
+        </div>
+      ))}
+      <div className="absolute left-1/2 top-1/2 w-48 -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-cyan-300/25 bg-cyan-300/10 p-5 text-center backdrop-blur">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">cluster</p>
+        <p className="mt-3 text-3xl font-semibold text-white">14</p>
+        <p className="mt-2 text-xs leading-5 text-slate-300">related infrastructure observations</p>
+      </div>
+    </div>
+  );
+}
+
+function DeliveryPipeline() {
+  const destinations = ["SIEM", "SOAR", "API", "Data Share", "Partner Platform", "AI Models"];
+
+  return (
+    <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(55,222,245,0.12),transparent_36%)]" />
+      <div className="relative grid gap-4 lg:grid-cols-[1fr_1.3fr_1fr] lg:items-center">
+        <div className="grid gap-3 text-sm text-slate-300">
+          {['Signals', 'Telemetry', 'Threat context'].map((item) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">{item}</div>
+          ))}
+        </div>
+        <div className="relative rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/10 p-8 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Datazag</p>
+          <p className="mt-4 text-3xl font-semibold text-white">One intelligence engine</p>
+          <p className="mt-4 text-sm leading-6 text-slate-300">Observe, correlate, score, cluster and deliver.</p>
+          <div className="absolute left-0 top-1/2 hidden h-px w-12 -translate-x-full bg-gradient-to-l from-cyan-300/70 to-transparent lg:block" />
+          <div className="absolute right-0 top-1/2 hidden h-px w-12 translate-x-full bg-gradient-to-r from-cyan-300/70 to-transparent lg:block" />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          {destinations.map((destination) => (
+            <div key={destination} className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4 text-sm font-medium text-white">{destination}</div>
+          ))}
         </div>
       </div>
     </div>
@@ -290,14 +379,11 @@ export default function HomepageAtmosphereConcept() {
 
       <section className="relative border-t border-white/10 py-16 md:py-20">
         <Container>
-          <div className="grid gap-4 md:grid-cols-4">
-            {internetSignals.map((signal) => (
-              <article key={signal.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                <h2 className="text-base font-semibold text-white">{signal.title}</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{signal.text}</p>
-              </article>
-            ))}
+          <div className="mb-8 max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Observable internet signals</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">The preparation phase is visible if you know where to look.</h2>
           </div>
+          <SignalWeatherPanel />
         </Container>
       </section>
 
@@ -337,19 +423,20 @@ export default function HomepageAtmosphereConcept() {
       </Section>
 
       <Section kicker="The living graph" title="Intelligence that evolves as the internet changes.">
-        <div className="grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-start">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
             <p className="max-w-3xl text-lg leading-8 text-slate-300">Attack infrastructure rarely appears all at once. As attackers register more domains, reuse hosting, change DNS, share certificates or activate services, the graph changes with them.</p>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">What starts as an early signal can become a confirmed campaign as evidence accumulates.</p>
+            <div className="mt-8 grid gap-3">
+              {graphEvidence.map((item) => (
+                <article key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{item.text}</p>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className="grid gap-3">
-            {graphEvidence.map((item) => (
-              <article key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                <h3 className="text-base font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{item.text}</p>
-              </article>
-            ))}
-          </div>
+          <EvidenceConstellation />
         </div>
       </Section>
 
@@ -359,14 +446,15 @@ export default function HomepageAtmosphereConcept() {
             <p className="text-lg leading-8 text-slate-300">Datazag is not another dashboard for analysts to monitor.</p>
             <p className="mt-5 text-lg leading-8 text-slate-300">The platform produces intelligence once and delivers it wherever your organisation already works.</p>
           </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {deliveryCards.map((card) => (
-              <article key={card.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                <h3 className="text-base font-semibold text-white">{card.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{card.text}</p>
-              </article>
-            ))}
-          </div>
+          <DeliveryPipeline />
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          {deliveryCards.map((card) => (
+            <article key={card.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <h3 className="text-base font-semibold text-white">{card.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{card.text}</p>
+            </article>
+          ))}
         </div>
       </Section>
 
