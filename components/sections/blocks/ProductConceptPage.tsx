@@ -7,6 +7,23 @@ type Card = {
   text: string;
 };
 
+type ExampleField = {
+  label: string;
+  value: string;
+};
+
+type ExampleAlert = {
+  kicker: string;
+  title: string;
+  intro: string;
+  severity: string;
+  status: string;
+  domain: string;
+  fields: ExampleField[];
+  reasons: string[];
+  latency?: string;
+};
+
 type ProductConceptPageProps = {
   eyebrow: string;
   title: string;
@@ -21,6 +38,7 @@ type ProductConceptPageProps = {
   };
   flowTitle: string;
   flow: Card[];
+  exampleAlert?: ExampleAlert;
   packagesTitle?: string;
   packages?: Card[];
   finalTitle: string;
@@ -109,6 +127,53 @@ function IntelligencePanel({ label }: { label: string }) {
   );
 }
 
+function ExampleAlertPanel({ exampleAlert }: { exampleAlert: ExampleAlert }) {
+  return (
+    <Section kicker={exampleAlert.kicker} title={exampleAlert.title}>
+      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <div>
+          <p className="text-lg leading-8 text-slate-300">{exampleAlert.intro}</p>
+          <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Why this matters</p>
+            <p className="mt-4 text-sm leading-6 text-slate-300">The alert is designed to show the domain, the matched platform, the infrastructure context, the confidence and the evidence trail in a form that can flow straight into operational channels.</p>
+          </div>
+        </div>
+        <div className="overflow-hidden rounded-[2rem] border border-red-400/25 bg-red-400/[0.04] shadow-2xl shadow-red-950/20">
+          <div className="border-b border-white/10 bg-[#07102b] p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-red-200">{exampleAlert.severity}</p>
+                <h3 className="mt-2 text-xl font-semibold text-white">{exampleAlert.status}</h3>
+              </div>
+              <div className="rounded-full border border-red-300/30 bg-red-300/10 px-4 py-2 text-sm font-semibold text-red-100">RED</div>
+            </div>
+            <p className="mt-4 font-mono text-sm text-cyan-100">{exampleAlert.domain}</p>
+          </div>
+          <div className="grid gap-4 p-5 sm:grid-cols-2">
+            {exampleAlert.fields.map((field) => (
+              <div key={field.label} className="rounded-2xl border border-white/10 bg-[#030619]/70 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{field.label}</p>
+                <p className="mt-2 break-words text-sm font-medium text-slate-100">{field.value}</p>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-white/10 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Reason codes</p>
+            <ul className="mt-4 grid gap-2">
+              {exampleAlert.reasons.map((reason) => (
+                <li key={reason} className="rounded-xl border border-white/10 bg-[#030619]/70 px-4 py-3 text-sm leading-6 text-slate-300">{reason}</li>
+              ))}
+            </ul>
+            {exampleAlert.latency ? (
+              <p className="mt-5 rounded-xl border border-cyan-300/20 bg-cyan-300/10 px-4 py-3 text-sm font-medium text-cyan-100">{exampleAlert.latency}</p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 export default function ProductConceptPage({
   eyebrow,
   title,
@@ -119,6 +184,7 @@ export default function ProductConceptPage({
   narrative,
   flowTitle,
   flow,
+  exampleAlert,
   packagesTitle,
   packages,
   finalTitle,
@@ -163,7 +229,7 @@ export default function ProductConceptPage({
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             {narrative.body.map((paragraph) => (
-              <p key={paragraph} className="mt-5 first:mt-0 text-lg leading-8 text-slate-300">{paragraph}</p>
+              <p key={paragraph} className="mt-5 text-lg leading-8 text-slate-300 first:mt-0">{paragraph}</p>
             ))}
           </div>
           <FlowVisual items={flow} />
@@ -180,6 +246,8 @@ export default function ProductConceptPage({
           </div>
         </div>
       </Section>
+
+      {exampleAlert ? <ExampleAlertPanel exampleAlert={exampleAlert} /> : null}
 
       {packages?.length ? (
         <Section kicker="Packaging" title={packagesTitle ?? "Ways to use Datazag."}>
