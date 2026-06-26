@@ -23,7 +23,7 @@ export default function IconList({ isDark, title, description, items }: IconList
         <div className="mx-auto mt-12 max-w-3xl">
           <ul className="space-y-4">
             {items?.map((item, i) => {
-              const hasImage = !!item.iconImage;
+              const hasImage = !!item.iconImage?.asset;
               const imgUrl = hasImage ? urlFor(item.iconImage).width(40).height(40).fit("crop").url() : undefined;
               return (
                 <li key={i} className="flex items-start gap-4">

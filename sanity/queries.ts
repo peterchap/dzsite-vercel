@@ -425,6 +425,50 @@ export const blogPostBySlugQuery = `
     }
   },
   tags,
-  seo
+}
+`;
+
+export const howItWorksHeroQuery = `
+*[_type == "howItWorksHero"][0] {
+  pageH1,
+  pageSubhead,
+  leftPanelHeader,
+  productLayers[] { phase, focus, bullets },
+  rightPanelHeader,
+  securityLayers[] { title, bullets },
+  outcomeLabel,
+  schematicFootnote
+}
+`;
+
+export const howItWorksPageDataQuery = `
+{
+  "hero": *[_type == "howItWorksHero"][0] {
+    pageH1,
+    pageSubhead,
+    leftPanelHeader,
+    productLayers[] { phase, focus, bullets },
+    rightPanelHeader,
+    securityLayers[] { title, bullets },
+    outcomeLabel,
+    schematicFootnote,
+    pipelineGrid {
+      sectionHeadline,
+      sectionSubhead,
+      pipelineStages[] { stageNumber, stageTitle, bodyText }
+    }
+  },
+  "pageSections": *[_type == "page" && slug.current == "how-it-works"][0].sections[]{
+    ...,
+    _type == "section.why360Conversion" => {
+      ...
+    },
+    _type == "section.vendorThesisSection" => {
+      ...
+    },
+    _type == "section.howItWorksSection" => {
+      ...
+    }
+  }
 }
 `;

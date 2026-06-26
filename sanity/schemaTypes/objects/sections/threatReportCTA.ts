@@ -21,6 +21,12 @@ export default {
       type: "text",
     },
     {
+      name: "body",
+      title: "Body (rich text, below subheadline)",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
       name: "placeholderText",
       title: "Input Placeholder text",
       type: "string",
@@ -58,6 +64,22 @@ export default {
       title: "Contact Link Anchor",
       type: "string",
       initialValue: "#contact"
+    },
+    {
+      name: "consentRequiredText",
+      title: "Required consent checkbox text",
+      description:
+        "Mandatory opt-in shown as a ticked-by-default checkbox; the user must keep it ticked to submit. Add a link to your Privacy Policy inline.",
+      type: "array",
+      of: [{ type: "block" }],
+    },
+    {
+      name: "consentOptionalText",
+      title: "Optional marketing consent checkbox text",
+      description:
+        "Optional opt-in shown as an unticked checkbox (e.g. marketing/newsletter). Not required to submit.",
+      type: "array",
+      of: [{ type: "block" }],
     }
   ],
   preview: {

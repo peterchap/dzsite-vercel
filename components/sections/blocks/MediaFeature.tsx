@@ -1,5 +1,4 @@
 import React from "react";
-import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
@@ -35,15 +34,19 @@ export function MediaFeature({
     const fitClass = imageFit === "contain" ? "object-contain" : "object-cover";
     return (
         <section className={cn("py-12", 'bg-slate-950')}>
-            <Container>
+            <div className="mx-auto w-full max-w-7xl px-6">
                 <div className={cn(
-                    "grid gap-12 lg:items-center",
-                    isBottom ? "grid-cols-1" : "lg:grid-cols-2",
-                    imagePosition === "left" ? "lg:direction-rtl" : ""
+                    "grid gap-12 lg:items-start",
+                    isBottom ? "grid-cols-1" : "lg:grid-cols-12"
                 )}>
                     <div className={cn(
                         "space-y-6",
-                        isBottom ? "text-center max-w-3xl mx-auto" : (imagePosition === "left" ? "lg:order-2 lg:text-left" : "lg:order-1")
+                        isBottom
+                            ? "text-center max-w-3xl mx-auto"
+                            : cn(
+                                  "text-left lg:col-span-5",
+                                  imagePosition === "left" ? "lg:order-2" : "lg:order-1"
+                              )
                     )}>
                         {title && (
                             <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -76,22 +79,22 @@ export function MediaFeature({
                     <div className={cn(
                         "relative w-full overflow-hidden",
                         !isPlain && "rounded-[2.5rem] border border-white/10 bg-slate-950 shadow-2xl",
-                        isBottom ? "aspect-video max-w-5xl mx-auto" : "aspect-[4/3]",
+                        isBottom ? "aspect-video max-w-5xl mx-auto" : "aspect-[4/3] lg:col-span-7",
                         imagePosition === "left" ? "lg:order-1" : "lg:order-2",
                         isPlain && "bg-transparent"
                     )}>
-                        {image && (
+                        {image?.asset && (
                             <Image
                                 src={urlFor(image).width(1600).url()}
                                 alt={title || "Feature image"}
                                 fill
                                 className={cn(fitClass)}
-                                sizes={isBottom ? "100vw" : "(max-width: 1024px) 100vw, 50vw"}
+                                sizes={isBottom ? "100vw" : "(max-width: 1024px) 100vw, 58vw"}
                             />
                         )}
                     </div>
                 </div>
-            </Container>
+            </div>
         </section>
     );
 }

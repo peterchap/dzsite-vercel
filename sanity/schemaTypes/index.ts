@@ -18,6 +18,7 @@ import heroSplitCta from "./objects/sections/heroSplitCta";
 import heroAttackTimeline from "./objects/sections/heroAttackTimeline";
 import simpleText from "./objects/sections/simpleText";
 import attackChainDiagram from "./objects/sections/attackChainDiagram";
+import attackChainComparison from "./objects/sections/attackChainComparison";
 import signalGroups from "./objects/sections/signalGroups";
 import globalCoverage from "./objects/sections/globalCoverage";
 import primaryUseCase from "./objects/sections/primaryUseCase";
@@ -66,6 +67,9 @@ import deliveryModesSection from "./objects/sections/deliveryModesSection";
 import partnershipSegmentsSection from "./objects/sections/partnershipSegmentsSection";
 import predictiveLayerSection from "./objects/sections/predictiveLayerSection";
 
+import howItWorksHero from "../schemas/howItWorksHero";
+import howItWorksPipeline from "./objects/sections/howItWorksPipeline";
+
 import gridContent from "./objects/sections/gridContent";
 import comparisonTable from "./objects/sections/comparisonTable";
 import comparisonGrid from "./objects/sections/comparisonGrid";
@@ -88,6 +92,7 @@ export const schemaTypes = [
   heroAttackTimeline,
   simpleText,
   attackChainDiagram,
+  attackChainComparison,
   benefitCards,
   signalGroups,
   globalCoverage,
@@ -138,4 +143,6 @@ export const schemaTypes = [
   deliveryModesSection,
   partnershipSegmentsSection,
   predictiveLayerSection,
+  howItWorksHero,
+  howItWorksPipeline,
 ];

@@ -41,7 +41,7 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
             </p>
           ) : null}
           {/* Optional Image */}
-          {props.image && (
+          {props.image?.asset && (
             <div className="mt-8 max-w-4xl mx-auto px-4">
               <Image
                 src={urlFor(props.image).url()}

@@ -2,9 +2,44 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { PortableText } from 'next-sanity';
 
 // Common free webmail domains to validate against
 const freeWebmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
+
+// Block-level rendering for the rich-text body below the subheadline
+const bodyComponents = {
+  block: {
+    normal: ({ children }: any) => <p className="mb-4 last:mb-0">{children}</p>,
+    h3: ({ children }: any) => <h3 className="text-xl font-bold text-white mb-3">{children}</h3>,
+    blockquote: ({ children }: any) => (
+      <blockquote className="border-l-4 border-blue-500/40 pl-4 italic mb-4">{children}</blockquote>
+    ),
+  },
+  marks: {
+    link: ({ children, value }: any) => (
+      <a
+        href={value?.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
+      >
+        {children}
+      </a>
+    ),
+  },
+};
+
+// Inline rendering for checkbox consent labels (no block margins)
+const consentComponents = {
+  block: { normal: ({ children }: any) => <>{children}</> },
+  marks: bodyComponents.marks,
+};
+
+const defaultConsentRequired =
+  'I agree that Datazag may process my email address and associated domain to generate and deliver my Domain Health Report. I have read the Privacy Policy.';
+const defaultConsentOptional =
+  "I'd like to receive occasional product updates, research, webinars and cybersecurity insights from Datazag. I understand I can unsubscribe at any time.";
 
 type ThreatReportCTAProps = {
   _type?: string;
@@ -12,6 +47,7 @@ type ThreatReportCTAProps = {
   eyebrow?: string;
   headline?: string;
   subheadline?: string;
+  body?: any[];
   placeholderText?: string;
   buttonText?: string;
   successMessage?: string;
@@ -19,6 +55,8 @@ type ThreatReportCTAProps = {
   footerSecondaryText?: string;
   contactLinkText?: string;
   contactLinkAnchor?: string;
+  consentRequiredText?: any[];
+  consentOptionalText?: any[];
 };
 
 export default function ThreatReportCTA(props: ThreatReportCTAProps) {
@@ -26,6 +64,7 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
     eyebrow = "PRIMARY CONVERSION PATH",
     headline = "Start free — the External Platform Threat Report",
     subheadline = "Enter your work email. We take the domain from your address, analyse its DNS and subdomains to map the platforms and vendors you actually run on — your email platform, your SaaS logins, your suppliers — then check our infrastructure feeds for spoofs targeting those exact platforms and your brand.",
+    body,
     placeholderText = "Enter your work email",
     buttonText = "Get my free report",
     successMessage = "[✓] Domain isolated. Mapping DNS infrastructure and footprint... Check your inbox shortly for your custom target report payload.",
@@ -33,11 +72,15 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
     footerSecondaryText = "The report tells you two things you probably can't see today: which platforms expose you to impersonation, and what's already been built to exploit them. Need a report on a domain that isn't your own — a client's, a subsidiary's, a vendor's? That's a quick conversation.",
     contactLinkText = "Talk to us.",
     contactLinkAnchor = "#contact",
+    consentRequiredText,
+    consentOptionalText,
   } = props;
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [agreedRequired, setAgreedRequired] = useState(true);
+  const [agreedOptional, setAgreedOptional] = useState(false);
 
   const handleValidateAndSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +98,13 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
       return;
     }
 
-    // Success state or trigger your Sanity/API webhook here
+    if (!agreedRequired) {
+      setError('Please confirm you agree to the processing of your email and domain to continue.');
+      return;
+    }
+
+    // Success state or trigger your Sanity/API webhook here.
+    // agreedOptional carries the marketing opt-in for your CRM/webhook.
     setIsSubmitted(true);
   };
 
@@ -85,6 +134,11 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
                 {subheadline}
               </p>
             )}
+            {body && body.length > 0 && (
+              <div className="text-slate-300 font-sans text-base max-w-3xl leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2">
+                <PortableText value={body} components={bodyComponents} />
+              </div>
+            )}
           </div>
 
           {/* Form Processing Terminal */}
@@ -107,6 +161,41 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
                 >
                   {buttonText}
                 </button>
+              </div>
+
+              {/* Opt-in consent checkboxes */}
+              <div className="space-y-3 pt-1">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreedRequired}
+                    onChange={(e) => setAgreedRequired(e.target.checked)}
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <span className="text-sm text-slate-300 leading-relaxed font-sans">
+                    {consentRequiredText && consentRequiredText.length > 0 ? (
+                      <PortableText value={consentRequiredText} components={consentComponents} />
+                    ) : (
+                      defaultConsentRequired
+                    )}
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreedOptional}
+                    onChange={(e) => setAgreedOptional(e.target.checked)}
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <span className="text-sm text-slate-300 leading-relaxed font-sans">
+                    {consentOptionalText && consentOptionalText.length > 0 ? (
+                      <PortableText value={consentOptionalText} components={consentComponents} />
+                    ) : (
+                      defaultConsentOptional
+                    )}
+                  </span>
+                </label>
               </div>
 
               {/* Client-Side Validation Message */}

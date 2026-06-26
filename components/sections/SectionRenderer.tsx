@@ -15,6 +15,7 @@ import ProductSplit from "@/components/sections/blocks/ProductSplit";
 import PrivacyCompliance from "@/components/sections/blocks/PrivacyCompliance";
 import { FinalCta } from "@/components/sections/blocks/FinalCta";
 import AttackChainDiagram from "@/components/sections/blocks/AttackChainDiagram";
+import AttackChainComparison from "@/components/sections/blocks/AttackChainComparison";
 import { CodeExample } from "@/components/sections/blocks/CodeExample";
 import { FaqList } from "@/components/sections/blocks/FaqList";
 import { FeatureGrid } from "@/components/sections/blocks/FeatureGrid";
@@ -210,6 +211,13 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
             return (
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <AttackChainDiagram isDark={isDark} {...section} />
+              </div>
+            );
+
+          case "section.attackChainComparison":
+            return (
+              <div id={anchorId} key={key} className="scroll-mt-24">
+                <AttackChainComparison isDark={isDark} {...section} />
               </div>
             );
 

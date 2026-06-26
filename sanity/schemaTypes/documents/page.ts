@@ -49,6 +49,7 @@ export default {
                 { type: "section.heroAttackTimeline" },
                 { type: "section.simpleText" },
                 { type: "section.attackChainDiagram" },
+                { type: "section.attackChainComparison" },
                 { type: "section.benefitCards" },
                 { type: "section.signalGroups" },
                 { type: "section.globalCoverage" },
