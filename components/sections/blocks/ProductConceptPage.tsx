@@ -24,6 +24,24 @@ type ExampleAlert = {
   latency?: string;
 };
 
+type AlertType = {
+  title: string;
+  subtitle: string;
+  coverage: string;
+  action: string;
+  text: string;
+  evidence: string[];
+};
+
+type AlertTypeSection = {
+  kicker: string;
+  title: string;
+  intro: string;
+  stats: Card[];
+  types: AlertType[];
+  note?: string;
+};
+
 type ProductConceptPageProps = {
   eyebrow: string;
   title: string;
@@ -38,6 +56,7 @@ type ProductConceptPageProps = {
   };
   flowTitle: string;
   flow: Card[];
+  alertTypeSection?: AlertTypeSection;
   exampleAlert?: ExampleAlert;
   packagesTitle?: string;
   packages?: Card[];
@@ -127,6 +146,53 @@ function IntelligencePanel({ label }: { label: string }) {
   );
 }
 
+function AlertTypeComparison({ section }: { section: AlertTypeSection }) {
+  return (
+    <Section kicker={section.kicker} title={section.title}>
+      <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div>
+          <p className="text-lg leading-8 text-slate-300">{section.intro}</p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            {section.stats.map((stat) => (
+              <div key={stat.title} className="rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-5">
+                <p className="text-2xl font-semibold text-cyan-100">{stat.title}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{stat.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {section.types.map((type) => (
+            <article key={type.title} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{type.subtitle}</p>
+              <h3 className="mt-3 text-2xl font-semibold text-white">{type.title}</h3>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{type.text}</p>
+              <div className="mt-6 grid gap-3">
+                <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Coverage</p>
+                  <p className="mt-2 text-sm font-medium text-slate-100">{type.coverage}</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Primary action</p>
+                  <p className="mt-2 text-sm font-medium text-slate-100">{type.action}</p>
+                </div>
+              </div>
+              <ul className="mt-6 grid gap-2">
+                {type.evidence.map((item) => (
+                  <li key={item} className="rounded-xl border border-white/10 bg-[#030619]/50 px-4 py-3 text-sm leading-6 text-slate-300">{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+      {section.note ? (
+        <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm leading-6 text-slate-300">{section.note}</div>
+      ) : null}
+    </Section>
+  );
+}
+
 function ExampleAlertPanel({ exampleAlert }: { exampleAlert: ExampleAlert }) {
   return (
     <Section kicker={exampleAlert.kicker} title={exampleAlert.title}>
@@ -184,6 +250,7 @@ export default function ProductConceptPage({
   narrative,
   flowTitle,
   flow,
+  alertTypeSection,
   exampleAlert,
   packagesTitle,
   packages,
@@ -235,6 +302,8 @@ export default function ProductConceptPage({
           <FlowVisual items={flow} />
         </div>
       </Section>
+
+      {alertTypeSection ? <AlertTypeComparison section={alertTypeSection} /> : null}
 
       <Section kicker="How it works" title={flowTitle}>
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
