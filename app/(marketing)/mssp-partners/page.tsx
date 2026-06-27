@@ -13,27 +13,27 @@ export default function MsspPartnersPage() {
     <ProductConceptPage
       eyebrow="MSSP Partners"
       title="Your brand. Our data. Less analyst time. New revenue."
-      intro="Datazag gives MSSPs two things: trusted early alerts with full reasoning so teams can automate or accelerate decisions, and a data layer for new partner-branded services such as brand protection, portfolio monitoring and client reporting."
+      intro="Datazag gives you two things: trusted early alerts with full reasoning so your teams can automate or accelerate decisions, and a data layer for new partner-branded services such as brand protection, portfolio monitoring and client reporting."
       primaryCta={{ label: "Partner with Datazag", href: "/contact" }}
       secondaryCta={{ label: "See alerts", href: "/alerts" }}
       proof={[
-        { title: "Reduce analyst time", text: "Early alerts include reason codes, infrastructure evidence and confidence context so teams can automate blocks or triage faster." },
-        { title: "Human or AI analysis", text: "Feed Datazag intelligence into analysts, SIEM/SOAR workflows, AI agents, scoring systems or partner portals." },
+        { title: "Reduce analyst time", text: "Early alerts include reason codes, infrastructure evidence and confidence context so your teams can automate blocks or triage faster." },
+        { title: "Human or AI analysis", text: "Feed Datazag intelligence into your analysts, SIEM/SOAR workflows, AI agents, scoring systems or partner portals." },
         { title: "New revenue lines", text: "Add brand protection, portfolio monitoring, executive reporting and customer-facing intelligence services." },
         { title: "Your brand, our data", text: "Deliver Datazag-powered intelligence under your service name, portal, reports and customer relationship." },
       ]}
       narrative={{
         kicker: "The MSSP opportunity",
-        title: "Datazag helps MSSPs improve margins on existing services and create new ones.",
+        title: "Improve margins on your existing services and create new ones.",
         body: [
-          "The first value is operational efficiency. Datazag alerts arrive early, with the reasoning attached: domain context, DNS, certificates, hosting, parking status, ASN risk, corpus novelty, brand or platform match, keyword signals and false-positive controls. That evidence creates the trust needed to automate blocks where appropriate or reduce analyst triage time where human review is required.",
-          "The second value is revenue expansion. MSSPs can use the same intelligence layer to launch partner-branded services: brand protection, portfolio risk reporting, customer-facing domain reports, evidence packs, remediation queues and SOC enrichment.",
-          "The partner proposition is simple: your brand, our data. Datazag supplies the external domain, DNS, certificate, hosting, platform, brand and infrastructure intelligence. The MSSP packages that intelligence into services their clients already understand and trust.",
+          "The first value is operational efficiency. Datazag alerts arrive early, with the reasoning attached: domain context, DNS, certificates, hosting, parking status, ASN risk, corpus novelty, brand or platform match, keyword signals and false-positive controls. That evidence creates the trust you need to automate blocks where appropriate or reduce analyst triage time where human review is required.",
+          "The second value is revenue expansion. You can use the same intelligence layer to launch partner-branded services: brand protection, portfolio risk reporting, customer-facing domain reports, evidence packs, remediation queues and SOC enrichment.",
+          "The partner proposition is simple: your brand, our data. Datazag supplies the external domain, DNS, certificate, hosting, platform, brand and infrastructure intelligence. You package that intelligence into services your clients already understand and trust.",
         ],
       }}
-      flowTitle="How MSSPs use Datazag intelligence."
+      flowTitle="How you use Datazag intelligence."
       flow={[
-        { title: "Ingest", text: "Use API, webhooks, data shares or reports to bring reasoned Datazag intelligence into partner systems." },
+        { title: "Ingest", text: "Use API, webhooks, data shares or reports to bring reasoned Datazag intelligence into your systems." },
         { title: "Decide", text: "Automate blocks, feed an AI agent, enrich cases or support human analysts with the evidence behind each alert." },
         { title: "Package", text: "Wrap the data as your branded reports, alerts, evidence packs, portal features or managed services." },
         { title: "Monetise", text: "Create attachable revenue lines across brand protection, portfolio monitoring, remediation and data enrichment." },
@@ -41,7 +41,7 @@ export default function MsspPartnersPage() {
       alertTypeSection={{
         kicker: "Two partner offers",
         title: "Reduce analyst time and create new service revenue."
-        ,intro: "The strongest MSSP proposition has two parts. Datazag reduces the cost of operating security services by making alerts earlier and more trustworthy. It also helps MSSPs launch higher-margin, partner-branded services using Datazag's intelligence layer.",
+        ,intro: "The strongest MSSP proposition has two parts. Datazag reduces the cost of operating your security services by making alerts earlier and more trustworthy. It also helps you launch higher-margin, partner-branded services using Datazag's intelligence layer.",
         stats: [
           { title: "Automate", text: "reasoned alerts support trusted blocking decisions." },
           { title: "Assist", text: "AI agents and analysts get evidence-rich context." },
@@ -53,7 +53,7 @@ export default function MsspPartnersPage() {
             subtitle: "Trusted early alerts",
             coverage: "Platform impersonation, brand impersonation, keyword infrastructure, DNS changes, certificates, parked domains, hosting context and ASN risk.",
             action: "Use Datazag as a reasoned alert feed for automated blocking, AI-agent workflows, SIEM/SOAR enrichment or human analyst triage.",
-            text: "MSSPs do not need more unexplained alerts. They need earlier signals with enough evidence to trust the decision. Datazag provides reason codes and context so partners can automate when confidence is high and focus analysts where judgement is needed.",
+            text: "You do not need more unexplained alerts. You need earlier signals with enough evidence to trust the decision. Datazag provides reason codes and context so you can automate when confidence is high and focus analysts where judgement is needed.",
             evidence: [
               "Reason codes and confidence context attached to each alert",
               "False-positive controls using DNS baselines, allowlists and de-escalation feedback",
@@ -66,19 +66,19 @@ export default function MsspPartnersPage() {
             subtitle: "Partner-branded services",
             coverage: "Customer brands, domains, subsidiaries, suppliers, portfolio risk, domain posture, platform footprint and evidence-pack workflows.",
             action: "Package Datazag intelligence into white-label reports, brand protection, portfolio monitoring, customer portals and managed remediation services.",
-            text: "Datazag gives MSSPs a data layer they can monetise. Partners can attach new recurring services to existing client relationships without building internet-scale collection, enrichment and evidence infrastructure themselves.",
+            text: "Datazag gives you a data layer you can monetise. You can attach new recurring services to existing client relationships without building internet-scale collection, enrichment and evidence infrastructure yourself.",
             evidence: [
               "Brand protection and takedown-ready evidence packs",
               "Portfolio monitoring and recurring client risk reports",
               "Customer portal data and executive account-review material",
-              "White-label or co-branded delivery under the partner's commercial model",
+              "White-label or co-branded delivery under your commercial model",
             ],
           },
           {
             title: "Integrate Datazag data",
             subtitle: "Systems and AI layer",
             coverage: "Domain risk, DNS history, certificate activity, hosting context, ASN risk, platform matches, brand matches and keyword infrastructure signals.",
-            action: "Embed Datazag in the partner's internal systems, customer products, AI workflows, data lake, case management or scoring engines.",
+            action: "Embed Datazag in your internal systems, customer products, AI workflows, data lake, case management or scoring engines.",
             text: "For mature MSSPs, the value is not a dashboard. It is the data. Datazag can feed agentic applications, automated decision systems and human workflows with structured intelligence and explicit reasoning.",
             evidence: [
               "API, webhook and data-share delivery",
@@ -93,7 +93,7 @@ export default function MsspPartnersPage() {
       exampleAlert={{
         kicker: "Example operational feed",
         title: "Reasoned alerts that can support automation."
-        ,intro: "This placeholder shows how an MSSP can use Datazag as an input to a block decision, an AI agent or a human analyst. The point is not only that the signal is early; it is that the reasoning is attached.",
+        ,intro: "This placeholder shows how you can use Datazag as an input to a block decision, an AI agent or a human analyst. The point is not only that the signal is early; it is that the reasoning is attached.",
         severity: "PARTNER | DECISION FEED",
         status: "Reasoned Block Candidate",
         domain: "suspicious-domain.example · platform + keyword + infrastructure context",
@@ -117,14 +117,14 @@ export default function MsspPartnersPage() {
       }}
       secondaryExampleAlert={{
         kicker: "Example white-label service",
-        title: "What an MSSP can sell under its own brand.",
-        intro: "This placeholder shows Datazag as the intelligence layer behind a partner-branded service. The client sees the MSSP's product, reports and portal; Datazag powers the data, evidence and monitoring underneath.",
+        title: "What you can sell under your brand.",
+        intro: "This placeholder shows Datazag as the intelligence layer behind your branded service. Your client sees your product, reports and portal; Datazag powers the data, evidence and monitoring underneath.",
         severity: "PARTNER | WHITE LABEL",
         status: "Your Brand · Datazag Intelligence",
         domain: "25 clients · 120 brands · partner portal · monthly reports",
         fields: [
           { label: "Partner offer", value: "Brand Risk Intelligence powered by Datazag" },
-          { label: "Client experience", value: "MSSP-branded report, portal, account review and remediation workflow" },
+          { label: "Client experience", value: "Your branded report, portal, account review and remediation workflow" },
           { label: "Data layer", value: "Domains, DNS, certificates, hosting, ASN, platform and impersonation intelligence" },
           { label: "Revenue lines", value: "Brand protection, portfolio reports, SOC enrichment and evidence packs" },
           { label: "Delivery", value: "API, webhook, data share, PDF/report export or portal integration" },
@@ -133,10 +133,10 @@ export default function MsspPartnersPage() {
           { label: "Commercial model", value: "Partner agreement with client, brand, data-volume and white-label scaling" },
         ],
         reasons: [
-          "Lets the MSSP add a differentiated service without building the data collection layer",
-          "Creates attachable recurring revenue across existing clients",
-          "Supports both executive reporting and operational SOC enrichment",
-          "Keeps the partner's brand and customer relationship at the centre",
+          "Add a differentiated service without building the data collection layer",
+          "Create attachable recurring revenue across existing clients",
+          "Support both executive reporting and operational SOC enrichment",
+          "Keep your brand and customer relationship at the centre",
         ],
         latency: "White-label package example — final scope depends on client estate, delivery model and SLA",
       }}
@@ -146,11 +146,11 @@ export default function MsspPartnersPage() {
         { title: "Brand protection", text: "Evidence-pack and takedown-ready workflows for clients with high-value brands." },
         { title: "White-label reports", text: "Partner-branded domain, brand, supplier and portfolio reports powered by Datazag intelligence." },
         { title: "SOC enrichment", text: "API, webhook or data-share intelligence for hunting, triage, scoring and correlation." },
-        { title: "Customer portal data", text: "Embed Datazag findings inside the partner's own portal, dashboards and account review workflows." },
+        { title: "Customer portal data", text: "Embed Datazag findings inside your own portal, dashboards and account review workflows." },
         { title: "Portfolio monitoring", text: "Recurring visibility across many client domains, subsidiaries, suppliers and brands." },
       ]}
       finalTitle="Reduce analyst time. Add new revenue lines."
-      finalBody="Datazag gives MSSPs trusted early intelligence and the data layer for white-label services. Partners decide how to automate it, package it, price it and deliver it to their clients."
+      finalBody="Datazag gives you trusted early intelligence and the data layer for white-label services. You decide how to automate it, package it, price it and deliver it to your clients."
     />
   );
 }
