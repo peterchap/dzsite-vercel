@@ -63,7 +63,7 @@ type CodeExample = {
   code: string;
 };
 
-type ProductConceptPageProps = {
+export type ProductConceptPageProps = {
   eyebrow: string;
   title: string;
   intro: string;
