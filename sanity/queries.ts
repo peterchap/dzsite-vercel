@@ -1,7 +1,7 @@
 export const productConceptPageBySlugQuery = `
 *[_type == "productConceptPage" && slug.current == $slug][0]{
   _id,
-  title,
+  "studioTitle": title,
   "slug": slug.current,
   seo{
     metaTitle,
