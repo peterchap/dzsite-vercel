@@ -49,8 +49,8 @@ export default function DomainIntelligencePage() {
       ]}
       alertTypeSection={{
         kicker: "Curated datasets",
-        title: "Use-case-specific datasets, not one undifferentiated feed."
-        ,intro: "The marketplace catalogue should make it easy for buyers to understand which package fits their workflow. Some customers need a full domain-risk table; others need ASN reputation, IP-to-ASN enrichment, brand impersonation data, cloud/CDN attribution or historical backtesting slices.",
+        title: "Use-case-specific datasets, not one undifferentiated feed.",
+        intro: "The marketplace catalogue should make it easy for buyers to understand which package fits their workflow. Some customers need a full domain-risk table; others need ASN reputation, IP-to-ASN enrichment, brand impersonation data, cloud/CDN attribution or historical backtesting slices.",
         stats: [
           { title: "Domain", text: "risk, DNS, mail and impersonation features." },
           { title: "Network", text: "ASN, prefix, BGP and IP attribution." },
@@ -158,17 +158,34 @@ export default function DomainIntelligencePage() {
       exampleQueries={[
         {
           title: "Enrich SMTP logs with domain risk",
-          code: "SELECT\n  l.sender_domain,\n  l.link_domain,\n  d.risk_score,\n  d.primary_asn,\n  d.reason_codes\nFROM smtp_logs l\nJOIN datazag_domain_intelligence d\n  ON l.link_domain = d.domain\nWHERE d.threat_level IN ('high', 'critical');",
+          code: `SELECT
+  l.sender_domain,
+  l.link_domain,
+  d.risk_score,
+  d.primary_asn,
+  d.reason_codes
+FROM smtp_logs l
+JOIN datazag_domain_intelligence d
+  ON l.link_domain = d.domain
+WHERE d.threat_level IN ('high', 'critical');`,
         },
         {
           title: "Find risky customer domains by mail posture",
-          code: "SELECT\n  domain,\n  has_dmarc,\n  primary_mx_host,\n  threat_level,\n  email_security_score\nFROM datazag_domain_intelligence\nWHERE has_dmarc = false\n  AND threat_level IN ('high', 'critical');",
+          code: `SELECT
+  domain,
+  has_dmarc,
+  primary_mx_host,
+  threat_level,
+  email_security_score
+FROM datazag_domain_intelligence
+WHERE has_dmarc = false
+  AND threat_level IN ('high', 'critical');`,
         },
       ]}
       exampleAlert={{
         kicker: "Methodology",
-        title: "How the data becomes trustworthy enough to operationalise."
-        ,intro: "The page should explain enough methodology to build buyer trust without exposing scoring internals. The important message is that Datazag does not just redistribute raw indicators; it normalises, joins, scores and explains internet infrastructure signals.",
+        title: "How the data becomes trustworthy enough to operationalise.",
+        intro: "The page should explain enough methodology to build buyer trust without exposing scoring internals. The important message is that Datazag does not just redistribute raw indicators; it normalises, joins, scores and explains internet infrastructure signals.",
         severity: "DATA | METHODOLOGY",
         status: "Derived Intelligence Pipeline",
         domain: "observe → normalise → enrich → score → publish",
