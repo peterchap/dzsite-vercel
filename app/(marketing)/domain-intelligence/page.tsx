@@ -38,6 +38,7 @@ export default function DomainIntelligencePage() {
         { title: "Score", text: "Generate risk scores, reason codes, posture findings, impersonation signals, infrastructure context and historical features." },
         { title: "Publish", text: "Export license-clean datasets through API, webhooks, Parquet, Iceberg, Delta, cloud data shares and marketplace listings." },
       ]}
+      wideFlowLayout
       audiencesTitle="Different buyers use the same evidence layer in different workflows."
       audiences={[
         { title: "SOC and threat-hunting teams", text: "Enrich alerts, investigate domains, prioritise infrastructure risk and add context to SIEM, SOAR and case-management workflows." },
