@@ -59,6 +59,7 @@ type ProductConceptPageProps = {
   alertTypeSection?: AlertTypeSection;
   exampleAlert?: ExampleAlert;
   secondaryExampleAlert?: ExampleAlert;
+  tertiaryExampleAlert?: ExampleAlert;
   packagesTitle?: string;
   packages?: Card[];
   finalTitle: string;
@@ -254,6 +255,7 @@ export default function ProductConceptPage({
   alertTypeSection,
   exampleAlert,
   secondaryExampleAlert,
+  tertiaryExampleAlert,
   packagesTitle,
   packages,
   finalTitle,
@@ -320,6 +322,7 @@ export default function ProductConceptPage({
 
       {exampleAlert ? <ExampleAlertPanel exampleAlert={exampleAlert} /> : null}
       {secondaryExampleAlert ? <ExampleAlertPanel exampleAlert={secondaryExampleAlert} /> : null}
+      {tertiaryExampleAlert ? <ExampleAlertPanel exampleAlert={tertiaryExampleAlert} /> : null}
 
       {packages?.length ? (
         <Section kicker="Packaging" title={packagesTitle ?? "Ways to use Datazag."}>
