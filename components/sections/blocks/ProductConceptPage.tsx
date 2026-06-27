@@ -95,9 +95,9 @@ function Section({ kicker, title, children }: { kicker: string; title: string; c
   return (
     <section className="relative border-t border-white/10 py-20 md:py-28">
       <Container>
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-7xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">{kicker}</p>
-          <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
+          <h2 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
           <div className="mt-8">{children}</div>
         </div>
       </Container>
@@ -151,42 +151,40 @@ function IntelligencePanel({ label }: { label: string }) {
 function AlertTypeComparison({ section }: { section: AlertTypeSection }) {
   return (
     <Section kicker={section.kicker} title={section.title}>
-      <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
-        <div>
-          <p className="text-lg leading-8 text-slate-300">{section.intro}</p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            {section.stats.map((stat) => (
-              <div key={stat.title} className="rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-5">
-                <p className="text-2xl font-semibold text-cyan-100">{stat.title}</p>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{stat.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {section.types.map((type) => (
-            <article key={type.title} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{type.subtitle}</p>
-              <h3 className="mt-3 text-2xl font-semibold text-white">{type.title}</h3>
-              <p className="mt-4 text-sm leading-6 text-slate-300">{type.text}</p>
-              <div className="mt-6 grid gap-3">
-                <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Coverage</p>
-                  <p className="mt-2 text-sm font-medium text-slate-100">{type.coverage}</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Primary action</p>
-                  <p className="mt-2 text-sm font-medium text-slate-100">{type.action}</p>
-                </div>
-              </div>
-              <ul className="mt-6 grid gap-2">
-                {type.evidence.map((item) => (
-                  <li key={item} className="rounded-xl border border-white/10 bg-[#030619]/50 px-4 py-3 text-sm leading-6 text-slate-300">{item}</li>
-                ))}
-              </ul>
-            </article>
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <p className="max-w-3xl text-lg leading-8 text-slate-300">{section.intro}</p>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {section.stats.map((stat) => (
+            <div key={stat.title} className="rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-5">
+              <p className="text-2xl font-semibold text-cyan-100">{stat.title}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">{stat.text}</p>
+            </div>
           ))}
         </div>
+      </div>
+      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {section.types.map((type) => (
+          <article key={type.title} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{type.subtitle}</p>
+            <h3 className="mt-3 text-2xl font-semibold text-white">{type.title}</h3>
+            <p className="mt-4 text-sm leading-6 text-slate-300">{type.text}</p>
+            <div className="mt-6 grid gap-3">
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Coverage</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{type.coverage}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Primary action</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{type.action}</p>
+              </div>
+            </div>
+            <ul className="mt-6 grid gap-2">
+              {type.evidence.map((item) => (
+                <li key={item} className="rounded-xl border border-white/10 bg-[#030619]/50 px-4 py-3 text-sm leading-6 text-slate-300">{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
       </div>
       {section.note ? (
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm leading-6 text-slate-300">{section.note}</div>
