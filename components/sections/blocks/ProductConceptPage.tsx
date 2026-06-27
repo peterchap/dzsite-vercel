@@ -149,6 +149,8 @@ function IntelligencePanel({ label }: { label: string }) {
 }
 
 function AlertTypeComparison({ section }: { section: AlertTypeSection }) {
+  const typeGridClass = section.types.length === 4 ? "md:grid-cols-2" : "md:grid-cols-2 xl:grid-cols-3";
+
   return (
     <Section kicker={section.kicker} title={section.title}>
       <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
@@ -162,7 +164,7 @@ function AlertTypeComparison({ section }: { section: AlertTypeSection }) {
           ))}
         </div>
       </div>
-      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className={`mt-8 grid gap-4 ${typeGridClass}`}>
         {section.types.map((type) => (
           <article key={type.title} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{type.subtitle}</p>
