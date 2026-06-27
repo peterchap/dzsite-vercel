@@ -77,6 +77,7 @@ type ProductConceptPageProps = {
   };
   flowTitle: string;
   flow: Card[];
+  wideFlowLayout?: boolean;
   alertTypeSection?: AlertTypeSection;
   audiencesTitle?: string;
   audiences?: Card[];
@@ -379,6 +380,7 @@ export default function ProductConceptPage({
   narrative,
   flowTitle,
   flow,
+  wideFlowLayout,
   alertTypeSection,
   audiencesTitle,
   audiences,
@@ -433,8 +435,8 @@ export default function ProductConceptPage({
       </section>
 
       <Section kicker={narrative.kicker} title={narrative.title}>
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div>
+        <div className={wideFlowLayout ? "grid gap-10" : "grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start"}>
+          <div className={wideFlowLayout ? "max-w-4xl" : undefined}>
             {narrative.body.map((paragraph) => (
               <p key={paragraph} className="mt-5 text-lg leading-8 text-slate-300 first:mt-0">{paragraph}</p>
             ))}
@@ -458,12 +460,12 @@ export default function ProductConceptPage({
       {exampleQueries?.length ? <CodeExamples examples={exampleQueries} /> : null}
 
       <Section kicker="How it works" title={flowTitle}>
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        <div className={wideFlowLayout ? "grid gap-10" : "grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start"}>
           <FlowVisual items={flow} />
-          <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.04] p-6">
+          <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.04] p-6 lg:p-8">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Decision-ready output</p>
             <p className="mt-4 text-2xl font-semibold text-white">Signals become evidence, evidence becomes confidence, confidence becomes action.</p>
-            <p className="mt-5 text-sm leading-6 text-slate-300">The purpose is not to show more data. The purpose is to reduce uncertainty at the point where a team, customer or system has to make a decision.</p>
+            <p className="mt-5 max-w-4xl text-sm leading-6 text-slate-300">The purpose is not to show more data. The purpose is to reduce uncertainty at the point where a team, customer or system has to make a decision.</p>
           </div>
         </div>
       </Section>
