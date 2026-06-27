@@ -15,7 +15,7 @@ export default function ReportsPage() {
       title="Get a free report on what the internet reveals about your domain."
       intro="Enter your work email and Datazag analyses the domain behind it. The report shows your external DNS and email posture, visible platforms and vendors, and early signs of impersonation risk around the infrastructure your organisation depends on."
       primaryCta={{ label: "Get my free report", href: "/#free-report" }}
-      secondaryCta={{ label: "See alerting", href: "/alerts" }}
+      secondaryCta={{ label: "See sample report", href: "/reports/sample" }}
       proof={[
         { title: "No asset list", text: "Start with a work email. We derive the domain and analyse what is externally visible." },
         { title: "DNS and email posture", text: "Review SPF, DKIM, DMARC, BIMI, MTA-STS, nameservers, MX providers and common configuration gaps." },
@@ -28,7 +28,7 @@ export default function ReportsPage() {
         body: [
           "A domain leaves a visible trail: DNS records, mail configuration, subdomains, providers, SaaS platforms, cloud footprints and infrastructure relationships. Attackers can inspect those signals. Most organisations do not review them often enough.",
           "The free report turns those external signals into a plain-language view of your domain. It shows what is visible, what looks weak, which platforms can be inferred, and whether there are early impersonation signals around the platforms and brands connected to your organisation.",
-          "It is also a demonstration of the Datazag dataset. The same intelligence that powers the report can be used for real-time alerts, portfolio reporting, cloud data shares and partner-delivered security services.",
+          "It is also a demonstration of the Datazag dataset. The same intelligence that powers the report can be used for real-time alerts, portfolio reporting, cloud data shares and partner-delivered security services. The sample report shows the structure before someone submits their own domain.",
         ],
       }}
       flowTitle="From one email address to a decision-ready report."
@@ -88,7 +88,7 @@ export default function ReportsPage() {
             ],
           },
         ],
-        note: "The free report is the fastest way to see the kind of intelligence Datazag provides. Paid reports add deeper evidence, historical context, portfolio coverage, executive summaries and technical remediation queues.",
+        note: "The free report is the fastest way to see the kind of intelligence Datazag provides. Paid reports add deeper evidence, historical context, portfolio coverage, executive summaries and technical remediation queues. The sample report shows a safe preview using fictional data.",
       }}
       exampleAlert={{
         kicker: "Example free report output",
@@ -142,15 +142,15 @@ export default function ReportsPage() {
       }}
       packagesTitle="Where the free report leads."
       packages={[
+        { title: "Sample report", text: "Preview the structure with fictional data before submitting your own domain." },
         { title: "Free external platform threat report", text: "Single-domain report covering DNS posture, visible platforms, impersonation context and first remediation steps." },
         { title: "Domain health report", text: "Deeper DNS, email, subdomain, provider and infrastructure posture reporting for one organisation." },
         { title: "Portfolio report", text: "Recurring reporting across many domains, clients, subsidiaries, suppliers, brands or acquisition targets." },
-        { title: "Executive summary", text: "Board-friendly summary of exposure, priority findings and movement since the last report." },
         { title: "Technical remediation queue", text: "Actionable findings for DNS, email, security and infrastructure owners." },
         { title: "Monitoring upgrade", text: "Move priority domains or brands from reporting into real-time alerts and evidence capture." },
       ]}
       finalTitle="Get the free report first."
-      finalBody="Use one domain to see the quality of the data, the clarity of the findings and the remediation value. Then decide whether to expand into domain health reporting, portfolio monitoring, real-time alerts or cloud data access."
+      finalBody="Use one domain to see the quality of the data, the clarity of the findings and the remediation value. Review the sample report first if you want to see the format before submitting your own work email."
     />
   );
 }
