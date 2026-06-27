@@ -17,7 +17,6 @@ const client = createClient({ projectId, dataset, apiVersion: '2024-01-01', toke
 async function run() {
   let site = await client.fetch('*[_type == "siteSettings"][0]{_id}')
   if (!site?._id) {
-    // Create a default Site Settings doc if one does not exist
     const created = await client.create({
       _type: 'siteSettings',
       _id: 'siteSettings.main',
@@ -28,14 +27,39 @@ async function run() {
   }
 
   const navLinks = [
-    { _type: 'navLink', label: 'Home', href: '/' },
-    { _type: 'navLink', label: 'Domain Intelligence', href: '/domain-intelligence' },
-    { _type: 'navLink', label: 'Documentation', href: '/docs' },
+    {
+      _type: 'navLink',
+      label: 'Products',
+      href: '#',
+      children: [
+        { _type: 'navLink', label: 'Reports', href: '/reports' },
+        { _type: 'navLink', label: 'Sample report', href: '/reports/sample' },
+        { _type: 'navLink', label: 'Threat Alerts', href: '/alerts' },
+        { _type: 'navLink', label: 'Infrastructure Intelligence', href: '/domain-intelligence' },
+      ],
+    },
+    {
+      _type: 'navLink',
+      label: 'Partners',
+      href: '#',
+      children: [
+        { _type: 'navLink', label: 'MSSP Partners', href: '/mssp-partners' },
+        { _type: 'navLink', label: 'ESP Partners', href: '/esp-partners' },
+      ],
+    },
     { _type: 'navLink', label: 'Pricing', href: '/pricing' },
-    { _type: 'navLink', label: 'Blog', href: '/blog' },
+    { _type: 'navLink', label: 'Trust', href: '/trust' },
+    { _type: 'navLink', label: 'Contact', href: '/contact' },
   ]
 
-  const footerLinks = navLinks
+  const footerLinks = [
+    { _type: 'navLink', label: 'Reports', href: '/reports' },
+    { _type: 'navLink', label: 'Threat Alerts', href: '/alerts' },
+    { _type: 'navLink', label: 'Infrastructure Intelligence', href: '/domain-intelligence' },
+    { _type: 'navLink', label: 'Pricing', href: '/pricing' },
+    { _type: 'navLink', label: 'Trust', href: '/trust' },
+    { _type: 'navLink', label: 'Contact', href: '/contact' },
+  ]
 
   await client.patch(site._id)
     .set({ navLinks, footerLinks })
