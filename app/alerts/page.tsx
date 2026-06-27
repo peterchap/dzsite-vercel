@@ -5,7 +5,7 @@ import ProductConceptPage from "@/components/sections/blocks/ProductConceptPage"
 export const metadata: Metadata = {
   title: "Threat Alerts — Datazag",
   description:
-    "Real-time alerts for emerging attack infrastructure, platform impersonation and phishing preparation.",
+    "Real-time alerts for emerging attack infrastructure, platform impersonation, brand impersonation and suspicious keyword-led infrastructure.",
 };
 
 export default function AlertsPage() {
@@ -17,35 +17,36 @@ export default function AlertsPage() {
       primaryCta={{ label: "Request alert access", href: "/#free-report" }}
       secondaryCta={{ label: "View report product", href: "/reports" }}
       proof={[
-        { title: "85 platforms", text: "High-value cloud, identity, email, storage, payment and collaboration platforms are monitored for abuse." },
-        { title: "Top 850 brands", text: "Brand impersonation coverage focuses on the world's most targeted brands and customer-specific brands." },
-        { title: ">85% platform-led", text: "Observed impersonation activity is dominated by platform abuse, despite brand coverage being ten times larger." },
+        { title: "Platform alerts", text: "High-value cloud, identity, email, storage, payment and collaboration platforms are monitored for abuse." },
+        { title: "Brand alerts", text: "Brand impersonation coverage focuses on the world's most targeted brands and customer-specific brands." },
+        { title: "Keyword infrastructure", text: "Suspicious subdomains can carry the lure even when the apex domain is parked, generic or otherwise low-value." },
         { title: "False-positive controls", text: "Candidate matches are filtered against known brand DNS, platform baselines, cloud allowlists and infrastructure evidence." },
       ]}
       narrative={{
         kicker: "The problem",
-        title: "Platform impersonation is the infrastructure layer behind many brand attacks.",
+        title: "Attack infrastructure is not always a clean platform or brand match.",
         body: [
           "Attackers do not only copy a company's brand. They reuse the platforms people already trust: login providers, cloud services, payment brands, email platforms, storage tools and collaboration suites.",
-          "That is why platform impersonation often appears before, or alongside, brand impersonation. Datazag separates the two alert types because the operational response is different.",
-          "The first pass finds suspicious candidates using brand or platform terms, DGA indicators and entropy signals. The second pass checks those candidates against known-good DNS, standard platform infrastructure, brand baselines and cloud allowlists so legitimate infrastructure is not treated like an attack.",
+          "They also use more generic infrastructure patterns: a parked or low-value apex domain with suspicious keywords pushed into subdomains such as login, secure, verify, billing, update or support.",
+          "Datazag separates these into different alert classes because the operational response is different: platform alerts are usually for blocking, brand alerts can support takedown, and keyword/subdomain infrastructure alerts are often for investigation, blocking and watchlisting.",
+          "The first pass finds suspicious candidates using brand terms, platform terms, keywords, DGA indicators and entropy signals. The second pass checks those candidates against known-good DNS, standard platform infrastructure, brand baselines and cloud allowlists so legitimate infrastructure is not treated like an attack.",
         ],
       }}
       flowTitle="From internet change to actionable alert."
       flow={[
-        { title: "Observe", text: "New domains, certs, DNS and infrastructure changes are captured." },
-        { title: "Classify", text: "Signals are separated into platform impersonation, brand impersonation and supporting infrastructure context." },
+        { title: "Observe", text: "New domains, subdomains, certs, DNS and infrastructure changes are captured." },
+        { title: "Classify", text: "Signals are separated into platform, brand, keyword/subdomain and supporting infrastructure context." },
         { title: "Filter", text: "Candidates are checked against known DNS, platform baselines, cloud allowlists and brand infrastructure." },
-        { title: "Act", text: "Clients receive the right action path: block, investigate, de-escalate or prepare takedown." },
+        { title: "Act", text: "Clients receive the right action path: block, investigate, watchlist, de-escalate or prepare takedown." },
       ]}
       alertTypeSection={{
         kicker: "Alert types",
-        title: "Platform and brand impersonation need different actions.",
-        intro: "Datazag currently checks 85 high-value platforms and the world's top 850 brands. Even with ten times more brand coverage, more than 85% of observed hits are platform-led. The message is not simply that brands are copied; it is that platform impersonation often leads the attack chain that later becomes brand abuse.",
+        title: "Three alert classes need different responses.",
+        intro: "Datazag currently checks high-value platforms, major global brands and suspicious keyword-led infrastructure. Platform hits dominate observed impersonation activity, but a third pattern is also important: the lure appears in the subdomain while the apex is parked, generic or not obviously malicious on its own.",
         stats: [
-          { title: "85", text: "monitored platforms across identity, cloud, email, payments, storage and collaboration." },
-          { title: "850", text: "top global brands monitored for direct brand impersonation patterns." },
-          { title: ">85%", text: "of observed impersonation hits are platform-led rather than brand-led." },
+          { title: "Platform", text: "trusted services and SaaS brands abused as the lure." },
+          { title: "Brand", text: "customer-owned or high-value brands targeted directly." },
+          { title: "Keyword", text: "suspicious subdomains on parked or low-value apex domains." },
         ],
         types: [
           {
@@ -76,8 +77,22 @@ export default function AlertsPage() {
               "Client de-escalate link for accepted or false-positive findings",
             ],
           },
+          {
+            title: "Keyword infrastructure alerts",
+            subtitle: "Investigate, block and watchlist",
+            coverage: "Suspicious subdomains using lure terms such as login, secure, verify, billing, update, wallet or support on parked, generic or low-reputation apex domains.",
+            action: "Investigate the subdomain, block if appropriate, monitor related infrastructure, and de-escalate if the customer recognises it.",
+            text: "These alerts do not necessarily match a monitored platform or owned brand. The risk sits in the combination of suspicious subdomain language, parked or low-value apex domain, new DNS activity, hosting context and related infrastructure behaviour.",
+            evidence: [
+              "Suspicious keyword in subdomain rather than apex domain",
+              "Parked, inactive or low-value apex domain context",
+              "Entropy, DGA, corpus novelty or fast-path infrastructure signals",
+              "DNS, hosting, ASN and certificate context for investigation",
+              "Client de-escalate link for known-good or accepted findings",
+            ],
+          },
         ],
-        note: "Both alert types support a client de-escalation action. The difference is the recommended response: platform impersonation is primarily a blocking and detection problem; brand impersonation can become an evidence and takedown workflow. False positives are controlled by treating name similarity as a candidate signal, then checking the candidate against known DNS, brand/platform baselines, cloud allowlists and infrastructure context before escalation.",
+        note: "All three alert classes support a client de-escalation action. The difference is the recommended response: platform impersonation is primarily a blocking and detection problem; brand impersonation can become an evidence and takedown workflow; keyword/subdomain infrastructure alerts are usually an investigation, blocking and watchlist workflow.",
       }}
       exampleAlert={{
         kicker: "Example platform alert",
@@ -133,15 +148,43 @@ export default function AlertsPage() {
         ],
         latency: "Evidence pack updated when website content appeared",
       }}
+      tertiaryExampleAlert={{
+        kicker: "Example keyword infrastructure alert",
+        title: "What a keyword/subdomain alert looks like.",
+        intro: "This placeholder shows the third alert class. The apex domain may be parked or generic, but the active subdomain carries suspicious lure language and starts to resolve through infrastructure that deserves investigation.",
+        severity: "KEYWORD | AMBER",
+        status: "Suspicious Subdomain Infrastructure",
+        domain: "verify-account.parking-example.net",
+        fields: [
+          { label: "Incident ID", value: "INC-placeholder-keyword-001" },
+          { label: "Classification", value: "AMBER → INVESTIGATE_OR_BLOCK" },
+          { label: "Keyword signal", value: "verify-account" },
+          { label: "Apex status", value: "Parked or inactive apex domain" },
+          { label: "Match", value: "No monitored platform or owned brand match" },
+          { label: "Detected hosting", value: "New DNS resolution observed" },
+          { label: "Recommended action", value: "Investigate, block or watchlist related infrastructure" },
+          { label: "De-escalation", value: "Available if recognised or accepted" },
+        ],
+        reasons: [
+          "Suspicious keyword present in subdomain",
+          "Apex domain appears parked, generic or low-value",
+          "Subdomain activity differs from apex-domain posture",
+          "Domain not found in known 330M corpus or has limited history",
+          "Infrastructure context requires investigation rather than takedown workflow",
+          "Related domains, certificates or DNS can be monitored for escalation",
+        ],
+        latency: "Alert generated when subdomain and infrastructure activity were observed",
+      }}
       packagesTitle="Alert use cases."
       packages={[
         { title: "SOC and threat hunting", text: "Prioritise suspicious infrastructure before campaigns create incident volume." },
         { title: "Brand and platform impersonation", text: "Separate blocking workflows from evidence-pack and takedown workflows." },
+        { title: "Keyword infrastructure", text: "Detect suspicious lure terms in subdomains, especially where the apex domain is parked or generic." },
         { title: "False-positive review", text: "Use DNS baselines, approved cloud infrastructure and de-escalation feedback to keep alerts operationally useful." },
         { title: "MSSP and MDR delivery", text: "Package early infrastructure intelligence into managed detection and customer reporting." },
       ]}
       finalTitle="See the infrastructure forming around your organisation."
-      finalBody="Start with an external platform threat report, then move into real-time alerting for platform abuse, brand impersonation and the infrastructure that connects them."
+      finalBody="Start with an external platform threat report, then move into real-time alerting for platform abuse, brand impersonation, suspicious keyword infrastructure and the signals that connect them."
     />
   );
 }
