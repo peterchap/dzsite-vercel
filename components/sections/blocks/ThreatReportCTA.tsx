@@ -78,38 +78,34 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [agreedRequired, setAgreedRequired] = useState(true);
   const [agreedOptional, setAgreedOptional] = useState(false);
 
-  const handleValidateAndSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const domain = email.split('@')[1]?.toLowerCase() || '';
+
+  const handleValidateAndSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setError('');
 
-    const domain = email.split('@')[1]?.toLowerCase();
-
     if (!domain) {
+      e.preventDefault();
       setError('Please enter a valid email address.');
       return;
     }
 
     if (freeWebmailDomains.includes(domain)) {
+      e.preventDefault();
       setError('Please use a corporate email address. To audit an external or free domain, use our contact path below.');
       return;
     }
 
     if (!agreedRequired) {
+      e.preventDefault();
       setError('Please confirm you agree to the processing of your email and domain to continue.');
-      return;
     }
-
-    // Success state or trigger your Sanity/API webhook here.
-    // agreedOptional carries the marketing opt-in for your CRM/webhook.
-    setIsSubmitted(true);
   };
 
   return (
-    <section className="bg-slate-950 text-white pt-0 pb-24 lg:pt-0 px-6 lg:px-12 xl:px-16">
+    <section id="free-report" className="bg-slate-950 text-white pt-0 pb-24 lg:pt-0 px-6 lg:px-12 xl:px-16">
       <div className="mx-auto w-full max-w-[1600px]">
         <div className="relative overflow-hidden bg-gradient-to-br from-slate-900/80 to-blue-950/20 border border-blue-500/20 p-8 md:p-12 lg:p-16 rounded-3xl shadow-[0_0_50px_rgba(37,99,235,0.1)]">
 
@@ -142,76 +138,80 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
           </div>
 
           {/* Form Processing Terminal */}
-          {!isSubmitted ? (
-            <form onSubmit={handleValidateAndSubmit} className="space-y-4 max-w-2xl">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={placeholderText}
-                    className="w-full bg-[#05070F] text-white placeholder-slate-500 font-sans border border-white/10 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-3.5 rounded-lg text-base shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center whitespace-nowrap"
-                >
-                  {buttonText}
-                </button>
+          <form action="/api/enquiry" method="post" onSubmit={handleValidateAndSubmit} className="space-y-4 max-w-2xl">
+            <input type="hidden" name="source" value="free_report_form" />
+            <input type="hidden" name="page" value="/#free-report" />
+            <input type="hidden" name="name" value="Free report request" />
+            <input type="hidden" name="company" value={domain || 'Domain from submitted email'} />
+            <input type="hidden" name="scope" value={domain} />
+            <input type="hidden" name="enquiry_type" value="Get a free domain report" />
+            <input type="hidden" name="message" value={domain ? `Free domain report requested for ${domain}` : 'Free domain report requested'} />
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={placeholderText}
+                  className="w-full bg-[#05070F] text-white placeholder-slate-500 font-sans border border-white/10 rounded-lg px-4 py-3.5 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                  required
+                />
               </div>
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-3.5 rounded-lg text-base shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center whitespace-nowrap"
+              >
+                {buttonText}
+              </button>
+            </div>
 
-              {/* Opt-in consent checkboxes */}
-              <div className="space-y-3 pt-1">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreedRequired}
-                    onChange={(e) => setAgreedRequired(e.target.checked)}
-                    className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                  />
-                  <span className="text-sm text-slate-300 leading-relaxed font-sans">
-                    {consentRequiredText && consentRequiredText.length > 0 ? (
-                      <PortableText value={consentRequiredText} components={consentComponents} />
-                    ) : (
-                      defaultConsentRequired
-                    )}
-                  </span>
-                </label>
+            {/* Opt-in consent checkboxes */}
+            <div className="space-y-3 pt-1">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="processing_authorisation"
+                  checked={agreedRequired}
+                  onChange={(e) => setAgreedRequired(e.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                  required
+                />
+                <span className="text-sm text-slate-300 leading-relaxed font-sans">
+                  {consentRequiredText && consentRequiredText.length > 0 ? (
+                    <PortableText value={consentRequiredText} components={consentComponents} />
+                  ) : (
+                    defaultConsentRequired
+                  )}
+                </span>
+              </label>
 
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreedOptional}
-                    onChange={(e) => setAgreedOptional(e.target.checked)}
-                    className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                  />
-                  <span className="text-sm text-slate-300 leading-relaxed font-sans">
-                    {consentOptionalText && consentOptionalText.length > 0 ? (
-                      <PortableText value={consentOptionalText} components={consentComponents} />
-                    ) : (
-                      defaultConsentOptional
-                    )}
-                  </span>
-                </label>
-              </div>
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="marketing_opt_in"
+                  checked={agreedOptional}
+                  onChange={(e) => setAgreedOptional(e.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
+                />
+                <span className="text-sm text-slate-300 leading-relaxed font-sans">
+                  {consentOptionalText && consentOptionalText.length > 0 ? (
+                    <PortableText value={consentOptionalText} components={consentComponents} />
+                  ) : (
+                    defaultConsentOptional
+                  )}
+                </span>
+              </label>
+            </div>
 
-              {/* Client-Side Validation Message */}
-              {error && (
-                <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-xs font-mono text-red-400">
-                  ⚠️ {error}
-                </motion.p>
-              )}
-            </form>
-          ) : (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-blue-500/10 border border-blue-500/30 p-6 rounded-lg max-w-2xl">
-              <p className="text-sm font-mono text-blue-300">
-                {successMessage}
-              </p>
-            </motion.div>
-          )}
+            {/* Client-Side Validation Message */}
+            {error && (
+              <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-xs font-mono text-red-400">
+                ⚠️ {error}
+              </motion.p>
+            )}
+          </form>
 
           {/* The Friction Eraser Copy */}
           <div className="border-t border-white/5 pt-6 max-w-3xl space-y-4">
@@ -223,6 +223,9 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
                 </a>
               )}
             </p>
+            <a href="/reports/sample" className="inline-flex text-sm font-medium text-blue-300 underline underline-offset-4 hover:text-blue-200">
+              See a sample report before submitting your own domain
+            </a>
           </div>
 
         </div>
