@@ -38,6 +38,15 @@ export default function DomainIntelligencePage() {
         { title: "Score", text: "Generate risk scores, reason codes, posture findings, impersonation signals, infrastructure context and historical features." },
         { title: "Publish", text: "Export license-clean datasets through API, webhooks, Parquet, Iceberg, Delta, cloud data shares and marketplace listings." },
       ]}
+      audiencesTitle="Different buyers use the same evidence layer in different workflows."
+      audiences={[
+        { title: "SOC and threat-hunting teams", text: "Enrich alerts, investigate domains, prioritise infrastructure risk and add context to SIEM, SOAR and case-management workflows." },
+        { title: "ESPs and messaging platforms", text: "Check signup domains, outbound campaign links, customer data quality and SMTP logs before abuse damages deliverability." },
+        { title: "MSSPs and MDRs", text: "Power white-label reports, portfolio monitoring, brand protection, SOC enrichment and client-facing account reviews." },
+        { title: "Security and fraud platforms", text: "Embed domain, ASN, DNS and infrastructure intelligence inside products, scoring systems, APIs and AI-agent workflows." },
+        { title: "Insurers, M&A and supplier-risk teams", text: "Assess domain posture, infrastructure hygiene, impersonation exposure and portfolio risk across many organisations." },
+        { title: "Researchers and AI teams", text: "Use point-in-time slices, labelled features and historical context for modelling, backtesting and investigation copilots." },
+      ]}
       alertTypeSection={{
         kicker: "Curated datasets",
         title: "Use-case-specific datasets, not one undifferentiated feed."
@@ -103,6 +112,59 @@ export default function DomainIntelligencePage() {
         ],
         note: "Licensing boundary matters. Derived intelligence is sellable: risk scores, DNS-derived features, ASN/prefix risk, IP-to-ASN lookup, technographics, provider attribution and abuse contacts. Sourced threat feeds and restricted popularity data can inform internal scoring, but must be excluded from marketplace exports.",
       }}
+      datasetCatalogue={[
+        { name: "Domain Intelligence & Risk", scale: "342M+ domains", cadence: "Daily", delivery: "API, Parquet, Iceberg, Delta, Snowflake/private shares", useCases: "SOC enrichment, ESP link scoring, fraud, brand protection, ASM", status: "Derived" },
+        { name: "Network / ASN Reputation", scale: "78K+ ASNs", cadence: "Hourly/daily", delivery: "Data share, API, warehouse tables", useCases: "Infrastructure risk, hosting due diligence, underwriting, threat hunting", status: "Derived" },
+        { name: "BGP / Prefix Hygiene", scale: "1M+ prefixes", cadence: "Hourly/daily", delivery: "Data share, Iceberg/Delta, analytics tables", useCases: "BGP security, RPKI monitoring, routing-risk analysis", status: "Derived" },
+        { name: "Native IP-to-ASN Lookup", scale: "1M+ IPv4 ranges", cadence: "Daily", delivery: "Flat enrichment table, API, data share", useCases: "IP attribution, analytics, security enrichment, fraud scoring", status: "Derived" },
+        { name: "Platform, Mail and Provider Intelligence", scale: "MX/NS/provider-level", cadence: "Weekly/daily by source", delivery: "Data share, API, report/portal enrichment", useCases: "Deliverability, provider mapping, false-positive reduction, takedown support", status: "Derived" },
+        { name: "Historical / Point-in-Time Bundles", scale: "Snapshot and slice based", cadence: "Snapshot-driven", delivery: "Backtest bundles, warehouse tables, private shares", useCases: "Model backtesting, research, underwriting, portfolio trend analysis", status: "Derived" },
+      ]}
+      flagshipFieldsTitle="The flagship view should feel like a usable schema, not a vague feed."
+      flagshipFields={[
+        { title: "Domain identity", text: "Domain, root domain, hostname context, resolution status and active-resolving filter for marketplace exports." },
+        { title: "DNS and mail posture", text: "A/AAAA, MX, NS, TXT-derived posture, SPF, DKIM, DMARC, primary MX/NS host and email-security indicators." },
+        { title: "Registrar and certificate context", text: "Registrar and RDAP facts, TLS issuer, certificate observations and date fields where collected." },
+        { title: "Hosting and provider attribution", text: "Primary ASN, prefix, cloud/CDN, hosting, mailbox provider, CNAME/provider fingerprints and infrastructure classification." },
+        { title: "Risk and reason fields", text: "Risk score, threat level, confidence context, reason codes, fast-flux/DGA/concentration indicators and weaponization signals." },
+        { title: "Impersonation context", text: "Platform, brand, typo and suspicious naming signals where available, with publish gates to keep marketplace views license-clean." },
+      ]}
+      licenseClean={{
+        title: "Marketplace exports are built from sellable derived intelligence.",
+        body: "The public data products should present licensing as a trust feature. Datazag can use internal-only sourced feeds to inform scoring and operations, but marketplace views should only expose derived intelligence, public infrastructure facts and redistributable provider context.",
+        included: [
+          "Domain, DNS and mail-posture derived features",
+          "Domain, ASN and prefix risk scores with reason codes",
+          "Native IP-to-ASN lookup and infrastructure attribution",
+          "Provider, cloud/CDN, MX/NS and technographic context",
+          "Registrar, ASN and abuse-contact enrichment from public sources",
+        ],
+        excluded: [
+          "Sourced threat-feed rows and raw feed membership",
+          "Restricted popularity data or derived popularity buckets",
+          "Internal-only investigative joins not cleared for redistribution",
+          "Signals not yet flowing into the lake or not ready for v1 export",
+        ],
+      }}
+      freshnessTitle="The value is not just scale. It is fresh state plus history."
+      freshness={[
+        { title: "Daily domain refresh", text: "The domain corpus, DNS-wide facts and domain-risk layer are designed for regular refresh and marketplace-friendly publication." },
+        { title: "Hourly/daily network context", text: "ASN and prefix intelligence can support more frequent updates where routing and infrastructure state changes matter." },
+        { title: "Point-in-time snapshots", text: "DuckLake snapshots allow buyers to ask what the data showed at a specific date, not only what it shows today." },
+        { title: "Backtesting and trend analysis", text: "Historical slices support model validation, underwriting research, portfolio change tracking and evidence-led reporting." },
+        { title: "Delta-ready delivery", text: "Parquet on R2 can be exported to Iceberg or Delta for cloud-native incremental consumption." },
+        { title: "Buyer-specific slices", text: "Datasets can be scoped by TLD, risk band, use case, portfolio, cloud marketplace package or private-offer agreement." },
+      ]}
+      exampleQueries={[
+        {
+          title: "Enrich SMTP logs with domain risk",
+          code: "SELECT\n  l.sender_domain,\n  l.link_domain,\n  d.risk_score,\n  d.primary_asn,\n  d.reason_codes\nFROM smtp_logs l\nJOIN datazag_domain_intelligence d\n  ON l.link_domain = d.domain\nWHERE d.threat_level IN ('high', 'critical');",
+        },
+        {
+          title: "Find risky customer domains by mail posture",
+          code: "SELECT\n  domain,\n  has_dmarc,\n  primary_mx_host,\n  threat_level,\n  email_security_score\nFROM datazag_domain_intelligence\nWHERE has_dmarc = false\n  AND threat_level IN ('high', 'critical');",
+        },
+      ]}
       exampleAlert={{
         kicker: "Methodology",
         title: "How the data becomes trustworthy enough to operationalise."
