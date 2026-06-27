@@ -5,47 +5,47 @@ import ProductConceptPage from "@/components/sections/blocks/ProductConceptPage"
 export const metadata: Metadata = {
   title: "ESP Partners — Datazag",
   description:
-    "Datazag intelligence for Email Service Providers: white-label brand protection, data cleaning, outbound link risk checks and SMTP log enrichment.",
+    "Datazag intelligence for Email Service Providers: detect bad actors, check outbound links, enrich SMTP logs and create white-label brand protection revenue.",
 };
 
 export default function EspPartnersPage() {
   return (
     <ProductConceptPage
       eyebrow="ESP Partners"
-      title="Protect deliverability. Reduce fraud exposure. Add new revenue lines."
-      intro="Datazag helps Email Service Providers turn domain and infrastructure intelligence into platform value: white-label brand protection, customer data cleaning, outbound link risk checks and enriched SMTP analytics."
+      title="Catch bad actors before they burn your sender reputation."
+      intro="Bad actors can sign up on free or low-cost tiers, look legitimate, use a real website, send a malicious campaign and disappear before your team sees the damage. Datazag helps you score accounts, links, domains and SMTP activity earlier."
       primaryCta={{ label: "Partner with Datazag", href: "/contact" }}
       secondaryCta={{ label: "See pricing", href: "/pricing" }}
       proof={[
-        { title: "Commodity pressure", text: "Differentiate beyond send volume, templates and automation by adding security and trust intelligence to your platform." },
-        { title: "Regulatory pressure", text: "Show stronger controls to reduce fraud, abuse and negligent platform use by bad actors." },
-        { title: "Deliverability pressure", text: "Support cleaner sender behaviour as inbox providers increase expectations around data quality and abuse prevention." },
+        { title: "Fast bad actors", text: "Abusive users can look legitimate at signup, send quickly and disappear before manual review catches up." },
+        { title: "Deliverability pressure", text: "Google, Microsoft and other inbox providers increasingly expect ESPs to control abuse and clean customer behaviour." },
+        { title: "Regulatory pressure", text: "Fraud prevention expectations are rising in the UK and Europe, especially where platforms can reduce predictable online harm." },
         { title: "New revenue", text: "Launch partner-branded protection, hygiene and analytics services powered by Datazag data." },
       ]}
       narrative={{
         kicker: "The ESP challenge",
-        title: "ESPs need to protect the platform while finding new ways to grow revenue.",
+        title: "The account can look legitimate until the campaign is already gone.",
         body: [
-          "The ESP market is crowded and price-sensitive. Many providers compete on volume, automation, templates and integrations, which makes it hard to create margin without adding new value around trust, security and data quality.",
-          "At the same time, regulators, customers and inbox providers expect ESPs to take stronger steps against online fraud, bad actors, poor list hygiene and malicious campaigns. Deliverability is no longer only a technical performance issue; it is also a trust and abuse-control issue.",
-          "Datazag gives ESPs a data layer they can embed into their platform: protect customer brands, clean risky customer data, check outbound campaign links and enrich SMTP logs with external domain and infrastructure intelligence.",
+          "The hardest ESP abuse problem is speed. A bad actor signs up on a free or low-cost tier, presents a plausible business, points to a real website and passes the obvious checks. Then they send a malicious or deceptive campaign and disappear before the ESP has enough evidence to act manually.",
+          "That creates a direct platform problem: damaged sender reputation, inbox-provider scrutiny, customer-support load, regulatory exposure and pressure from legitimate customers who need the platform to remain trusted.",
+          "Datazag gives ESPs an earlier intelligence layer. You can score signup domains, customer data, landing-page links, campaign URLs and SMTP logs against domain, DNS, certificate, hosting, platform, brand and infrastructure signals before the bad actor has finished exploiting the platform.",
         ],
       }}
-      flowTitle="How ESPs use Datazag intelligence."
+      flowTitle="How Datazag fits the ESP abuse lifecycle."
       flow={[
-        { title: "Ingest", text: "Bring Datazag intelligence into onboarding, list hygiene, campaign checks, SMTP logs and customer reporting." },
-        { title: "Score", text: "Assess domains, links, brands, platforms and infrastructure before campaigns create deliverability or abuse problems." },
-        { title: "Act", text: "Block, throttle, review, warn, clean data, enrich logs or create customer-facing reports." },
-        { title: "Monetise", text: "Package white-label brand protection, data cleaning and analytics as premium services under your brand." },
+        { title: "Signup", text: "Check the customer's domain, website, DNS, mail posture, hosting context and infrastructure history during onboarding or tier upgrades." },
+        { title: "Campaign", text: "Score outbound links, landing-page domains, redirect chains and suspicious subdomains before or during send." },
+        { title: "Send", text: "Use risk signals to allow, warn, throttle, block or route campaigns for review before reputation damage spreads." },
+        { title: "Analyse", text: "Enrich SMTP logs and campaign history so deliverability, abuse and customer-success teams can see what happened." },
       ]}
       alertTypeSection={{
         kicker: "Four ESP use cases",
-        title: "Datazag intelligence can sit inside your platform and your commercial model."
-        ,intro: "For ESPs, Datazag should not be positioned as a standalone phishing product. It is a data and intelligence layer that helps you reduce platform risk, improve deliverability controls and create new partner-branded services.",
+        title: "Use Datazag intelligence before, during and after the send."
+        ,intro: "For ESPs, Datazag is a platform intelligence layer. It helps detect bad actors using the service, improve data quality, support deliverability analytics and create partner-branded revenue lines without forcing customers into a separate Datazag product.",
         stats: [
-          { title: "Protect", text: "reduce fraud and abuse exposure." },
-          { title: "Improve", text: "support data quality and deliverability." },
-          { title: "Monetise", text: "launch branded security services." },
+          { title: "Signup", text: "spot risk before bad actors send." },
+          { title: "Send", text: "score links and campaigns in motion." },
+          { title: "Logs", text: "enrich analytics after delivery." },
         ],
         types: [
           {
@@ -62,24 +62,24 @@ export default function EspPartnersPage() {
             ],
           },
           {
-            title: "Customer data cleaning",
-            subtitle: "Hygiene service",
-            coverage: "Customer domains, email domains, landing-page domains, list-quality indicators, risky infrastructure and poor-quality data signals.",
-            action: "Build a premium data cleaning service that identifies risky, suspicious or low-quality data before it harms sender reputation.",
-            text: "Better customer data supports better deliverability and lower platform abuse risk. Datazag can help identify domains and infrastructure signals that indicate bad data, risky senders or weak customer posture.",
+            title: "Customer and list data cleaning",
+            subtitle: "Hygiene and onboarding",
+            coverage: "Signup domains, customer websites, email domains, landing-page domains, list-quality indicators, risky infrastructure and poor-quality data signals.",
+            action: "Build a premium data cleaning and risk-screening service that identifies suspicious, low-quality or risky customer data before it harms sender reputation.",
+            text: "Bad actors often look plausible because they have a real website and pass basic checks. Datazag adds external domain and infrastructure context so you can spot weak, new, suspicious or inconsistent signals earlier.",
             evidence: [
-              "Risk scoring for domains and links in customer data",
+              "Risk scoring for signup domains, websites and customer data",
               "Weak DNS and email posture indicators",
-              "Suspicious or newly observed infrastructure context",
+              "Newly observed, parked or suspicious infrastructure context",
               "Customer-facing hygiene and remediation recommendations",
             ],
           },
           {
             title: "Outbound link risk checks",
             subtitle: "Bad actor detection",
-            coverage: "Links, landing-page domains, redirect chains, newly observed domains, parked domains, suspicious subdomains and hosting context.",
+            coverage: "Campaign links, landing-page domains, redirect chains, newly observed domains, parked domains, suspicious subdomains and hosting context.",
             action: "Check links in outbound campaigns before or during send to detect malicious, suspicious or policy-breaking activity using your platform.",
-            text: "Bad actors can abuse ESP infrastructure by sending campaigns that link to malicious or deceptive destinations. Datazag gives ESPs a way to score those destinations and route risky sends for block, throttle or review.",
+            text: "A bad actor may look legitimate at account level, but the campaign destination can reveal the risk. Datazag scores those destinations so you can block, throttle, warn or route sends for review before the campaign is finished.",
             evidence: [
               "Domain risk and infrastructure context for outbound links",
               "Keyword, platform and brand impersonation signals",
@@ -101,12 +101,37 @@ export default function EspPartnersPage() {
             ],
           },
         ],
-        note: "The ESP opportunity is balanced: reduce platform abuse and regulatory exposure while creating new branded services. Datazag provides the intelligence layer; the ESP controls customer experience, pricing, enforcement policy and support model.",
+        note: "The ESP opportunity is balanced: stop fast bad actors before they damage your platform, show stronger fraud and abuse controls, and create branded services your customers will pay for. Datazag provides the intelligence layer; the ESP controls customer experience, pricing, enforcement policy and support model.",
       }}
       exampleAlert={{
+        kicker: "Example platform control",
+        title: "How you catch a bad actor before the campaign is gone."
+        ,intro: "This placeholder shows Datazag as an input to ESP platform controls. A customer can look legitimate at signup, but their links, domains, DNS and infrastructure may reveal risk before or during the send.",
+        severity: "ESP | ACCOUNT RISK",
+        status: "Outbound Campaign Review Candidate",
+        domain: "new-customer.example · real website · risky campaign links",
+        fields: [
+          { label: "Account path", value: "Free or low-cost signup with plausible website" },
+          { label: "Decision path", value: "Allow, warn, throttle, block or send to review" },
+          { label: "Campaign context", value: "Outbound links found in customer campaign content" },
+          { label: "Risk context", value: "New landing domain, suspicious DNS, hosting and corpus novelty indicators" },
+          { label: "Machine output", value: "Structured enrichment for scoring, policy or AI-agent workflow" },
+          { label: "Human output", value: "Readable reason codes for abuse, support and customer success teams" },
+          { label: "Deliverability impact", value: "Reduce abusive sends that can harm platform reputation" },
+          { label: "Analytics output", value: "Join SMTP logs with domain and infrastructure intelligence" },
+        ],
+        reasons: [
+          "Bad actor may look legitimate during basic onboarding checks",
+          "Campaign links can carry risk even when the sending account looks normal",
+          "Reason codes make enforcement decisions easier to explain",
+          "Policy thresholds remain under ESP control",
+        ],
+        latency: "Fast-abuse example — checks can run at signup, pre-send, near-real-time or in analytics pipelines",
+      }}
+      secondaryExampleAlert={{
         kicker: "Example ESP product line",
-        title: "What you can sell under your brand."
-        ,intro: "This placeholder shows Datazag as the intelligence layer behind an ESP-branded customer service. Your customer sees your product, your report and your support model; Datazag powers the monitoring and evidence underneath.",
+        title: "What you can sell under your brand.",
+        intro: "This placeholder shows Datazag as the intelligence layer behind an ESP-branded customer service. Your customer sees your product, your report and your support model; Datazag powers the monitoring and evidence underneath.",
         severity: "PARTNER | WHITE LABEL",
         status: "Brand Protection Add-On",
         domain: "Customer brands · impersonation alerts · evidence packs · reports",
@@ -128,42 +153,17 @@ export default function EspPartnersPage() {
         ],
         latency: "White-label service example — final packaging and customer pricing are partner-controlled",
       }}
-      secondaryExampleAlert={{
-        kicker: "Example platform control",
-        title: "How outbound campaign intelligence can reduce abuse risk.",
-        intro: "This placeholder shows Datazag as an input to ESP platform controls. A campaign link or landing-page domain can be enriched before the send, during the send or during post-send analysis.",
-        severity: "ESP | LINK RISK",
-        status: "Outbound Link Review Candidate",
-        domain: "campaign-link.example · newly observed · suspicious infrastructure",
-        fields: [
-          { label: "Decision path", value: "Allow, warn, throttle, block or send to review" },
-          { label: "Signal", value: "Newly observed landing-page domain with suspicious infrastructure context" },
-          { label: "Campaign context", value: "Outbound link found in customer campaign content" },
-          { label: "Risk context", value: "DNS, hosting, certificate, parking and corpus novelty indicators" },
-          { label: "Machine output", value: "Structured enrichment for scoring, policy or AI-agent workflow" },
-          { label: "Human output", value: "Readable reason codes for abuse, support and customer success teams" },
-          { label: "Deliverability impact", value: "Reduce abusive sends that can harm platform reputation" },
-          { label: "Analytics output", value: "Join SMTP logs with domain and infrastructure intelligence" },
-        ],
-        reasons: [
-          "Campaign links can carry risk even when the sending account looks normal",
-          "Reason codes make enforcement decisions easier to explain",
-          "Log enrichment supports deliverability, abuse analytics and customer reporting",
-          "Policy thresholds remain under ESP control",
-        ],
-        latency: "Link-risk example — final checks can run pre-send, near-real-time or in analytics pipelines",
-      }}
       packagesTitle="ESP partner motions."
       packages={[
-        { title: "White-label brand protection", text: "Sell customer-facing brand monitoring and evidence services under your own brand and pricing." },
-        { title: "Data cleaning service", text: "Identify risky, suspicious or low-quality customer data before it harms deliverability or trust." },
+        { title: "Signup risk checks", text: "Screen customer domains, websites and infrastructure before low-cost accounts can abuse the platform." },
         { title: "Outbound link checks", text: "Score campaign links and landing-page domains to detect bad actors using your platform." },
+        { title: "Data cleaning service", text: "Identify risky, suspicious or low-quality customer data before it harms deliverability or trust." },
         { title: "SMTP log enrichment", text: "Join send logs with domain, DNS, infrastructure and risk intelligence for deeper analytics." },
+        { title: "White-label brand protection", text: "Sell customer-facing brand monitoring and evidence services under your own brand and pricing." },
         { title: "Deliverability analytics", text: "Support reputation, customer success, abuse and compliance teams with better context." },
-        { title: "Customer portal data", text: "Embed Datazag-powered findings into your own reporting, dashboards and premium features." },
       ]}
-      finalTitle="Turn trust intelligence into platform value."
-      finalBody="Datazag gives ESPs the data layer for abuse prevention, deliverability analytics and partner-branded revenue. You decide how to package it, enforce it and sell it to your customers."
+      finalTitle="Stop fast abuse. Protect deliverability. Create new revenue."
+      finalBody="Datazag gives ESPs the data layer for account risk, campaign-link checks, SMTP analytics and partner-branded services. You decide how to package it, enforce it and sell it to your customers."
     />
   );
 }
