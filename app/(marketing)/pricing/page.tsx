@@ -5,139 +5,152 @@ import ProductConceptPage from "@/components/sections/blocks/ProductConceptPage"
 export const metadata: Metadata = {
   title: "Pricing — Datazag",
   description:
-    "Public starting prices for Datazag reports, real-time alerts, portfolio monitoring and cloud data products.",
+    "Transparent list pricing for Datazag Threat Alerts, Phishing Defence, Domain Intelligence API, Data Shares and Brand Protection.",
 };
 
 export default function PricingPage() {
   return (
     <ProductConceptPage
       eyebrow="Pricing"
-      title="Clear starting prices for reports, alerts and continuous intelligence."
-      intro="Start with a free report, move into paid reporting or real-time alerts, then scale into portfolio monitoring and cloud data as the scope grows. Larger enterprise and partner deals are scoped separately, but the entry points should be visible."
+      title="Transparent pricing for security intelligence."
+      intro="Datazag pricing is structured around how intelligence is consumed: early security signals, brand-scoped phishing incidents, domain enrichment, cloud data shares and evidence-led brand protection. Prices below are current enterprise list pricing and may change as packages evolve."
       primaryCta={{ label: "Get a free report", href: "/#free-report" }}
       secondaryCta={{ label: "See reports", href: "/reports" }}
       proof={[
-        { title: "£0", text: "Free external platform threat report for one work email domain." },
-        { title: "From £499/mo", text: "Real-time alerting entry tier for smaller teams and initial deployments." },
-        { title: "From £2,499/mo", text: "Professional alerting and monitoring for operational security teams." },
-        { title: "From £5,999/mo", text: "Scale tier for broader coverage, higher volume and enterprise workflows." },
+        { title: "$499/mo", text: "Domain Intelligence API Developer tier for evaluation and integration." },
+        { title: "$1,500/mo", text: "Security Signalling Foundation and Brand Defender entry points." },
+        { title: "$2,500/mo", text: "Single-brand Phishing Defence for brand-scoped incidents and evidence." },
+        { title: "$5,500/mo", text: "Operational Security Signalling for active SOC workflows." },
       ]}
       narrative={{
         kicker: "The pricing logic",
-        title: "Publish the entry points. Scope the larger deployments."
-        ,body: [
-          "Security buyers should not have to talk to sales just to understand whether a product is broadly in budget. Datazag should show credible starting prices for the common paths: reports, alerts and monitoring.",
-          "The larger conversations still need scoping because coverage depends on brands, domains, portfolios, alert volume, data delivery and support requirements. But the page can make the price ladder clear before that conversation starts.",
-          "Partner pricing is related but different. It needs to cover resale, white-label delivery, embedded intelligence, usage tiers, customer estates and revenue share. That should sit on the partner page rather than overload enterprise pricing.",
+        title: "Price by the way intelligence is consumed.",
+        body: [
+          "Security teams do not all consume intelligence in the same way. Some need near-real-time signals in a SIEM or SOAR workflow. Some need brand-specific phishing incidents with evidence. Others need API enrichment, cloud-native datasets or legal-ready evidence packs.",
+          "The current pricing structure separates those buying paths so a prospect can understand the starting point before speaking to Datazag. Larger deployments, cloud marketplace private offers and partner/MSSP agreements can still be scoped separately.",
+          "The free report remains the lead magnet and demonstration path. The paid pricing below starts where an organisation moves from one-domain visibility into production intelligence, monitoring, evidence or data delivery.",
         ],
       }}
-      flowTitle="A simple path from free report to enterprise coverage."
+      flowTitle="A simple path from free report to production intelligence."
       flow={[
-        { title: "Free", text: "Run a single-domain external report and identify visible DNS, platform and impersonation exposure." },
-        { title: "Report", text: "Buy a deeper domain health, executive, supplier-risk, M&A or portfolio report." },
-        { title: "Alert", text: "Move priority brands, domains or platforms into real-time monitoring and operational alerting." },
-        { title: "Scale", text: "Expand into portfolio monitoring, cloud data delivery, API enrichment or enterprise coverage." },
+        { title: "Report", text: "Start with a free domain report to see DNS posture, visible platforms and impersonation context." },
+        { title: "Signal", text: "Use Threat Alerts for early detection of suspicious domains, certificates, DNS and infrastructure." },
+        { title: "Defend", text: "Use Phishing Defence or Brand Protection when incidents require evidence, lifecycle tracking or takedown support." },
+        { title: "Integrate", text: "Use the Domain Intelligence API or Data Share when intelligence needs to live inside your systems." },
       ]}
       alertTypeSection={{
-        kicker: "Public tiers",
-        title: "A pricing ladder buyers can understand."
-        ,intro: "The public pricing should set expectations without pretending every deployment is identical. These tiers give buyers a starting point, then larger portfolios, cloud datasets and partner models can be priced against scope.",
+        kicker: "Main product lines",
+        title: "Choose the commercial path that matches the workflow.",
+        intro: "The current published pricing is best understood as five product lines: Threat Alerts, Phishing Defence, Domain Intelligence API, Domain Intelligence Data Share and Brand Protection. Partner and MSSP pricing remains separate from these enterprise list prices.",
         stats: [
-          { title: "£0", text: "Free report for one domain." },
-          { title: "£499+", text: "Entry alerting and monitoring." },
-          { title: "£2,499+", text: "Professional operational coverage." },
+          { title: "Alerts", text: "from $1,500/month for upstream security signalling." },
+          { title: "API", text: "from $499/month for domain intelligence enrichment." },
+          { title: "Brand", text: "from $2,500/month for brand-scoped phishing defence." },
         ],
         types: [
           {
-            title: "Reports",
-            subtitle: "Free and paid reports",
-            coverage: "Single domains, organisations, subsidiaries, suppliers, clients or acquisition targets.",
-            action: "Use reports for first value, remediation planning, executive visibility or due diligence.",
-            text: "Reports are the easiest way to start. The free report gives useful external visibility. Paid reports go deeper into DNS, email posture, platform exposure, impersonation context and remediation priorities.",
+            title: "Threat Alerts",
+            subtitle: "Security Signalling",
+            coverage: "Newly created domains, certificates, DNS changes, hosting context, parking detection and suspicious infrastructure signals.",
+            action: "Use when SOC, SIEM, SOAR, ESP abuse or MSSP teams need early warning before campaigns are fully operational.",
+            text: "Threat Alerts provide upstream security signals. Foundation is designed for integration and evaluation; Operational adds screenshot capture, lifecycle tracking, abuse contact details and higher-frequency polling; Enterprise handles scale and private offers.",
             evidence: [
-              "Free external platform threat report: £0",
-              "Domain health report: from £995 one-off",
-              "Portfolio report: from £2,500 one-off or recurring package",
-              "Custom pricing for large portfolios, recurring board reports or managed remediation support",
+              "Foundation: $1,500/month",
+              "Operational: $5,500/month",
+              "Enterprise: $10,500–$15,500/month",
+              "Includes structured JSON signals, DNS and infrastructure context, lifecycle updates and optional higher-support terms",
             ],
           },
           {
-            title: "Real-time alerts",
-            subtitle: "Monthly monitoring",
-            coverage: "Platform impersonation, brand impersonation, suspicious domains, certificates, DNS changes and related infrastructure.",
-            action: "Use alerts when teams need blocking, investigation, takedown evidence or managed detection workflows.",
-            text: "Alerts are priced as a monitoring product. The starting tiers let a buyer choose a sensible entry point before expanding coverage, volume, delivery channels or support.",
+            title: "Phishing Defence",
+            subtitle: "Brand-scoped incidents",
+            coverage: "Brand-specific phishing incidents enriched with DNS, hosting, lifecycle and evidence context.",
+            action: "Use when an enterprise, ESP or MSSP needs brand-specific incident creation, evidence and takedown-ready intelligence.",
+            text: "Phishing Defence converts upstream signals into brand-scoped incidents. It is the operational bridge between early infrastructure detection and actionable brand protection workflows.",
             evidence: [
-              "Developer: from £499/month",
-              "Professional: from £2,499/month",
-              "Scale: from £5,999/month",
-              "Custom enterprise pricing for larger coverage, high-volume alerting, SIEM/SOAR integration or managed review",
+              "Single Brand: $2,500/month",
+              "5 Brand Pack: $10,000/month",
+              "10 Brand Pack: $15,000/month",
+              "Includes early incident creation, live DNS/mail/hosting assessment, visual evidence and lifecycle tracking",
+            ],
+          },
+          {
+            title: "Domain Intelligence API",
+            subtitle: "Real-time enrichment",
+            coverage: "Low-latency domain enrichment for security, email, compliance, KYC/KYB, abuse and product workflows.",
+            action: "Use when domains need to be scored or enriched inside an existing product, workflow or platform.",
+            text: "The API gives teams direct access to domain intelligence without needing a full data share. It is useful for evaluation, production enrichment and higher-scale platform use cases.",
+            evidence: [
+              "Developer: $499/month — 100,000 API queries/month, 10 requests/sec, non-commercial evaluation",
+              "Business: $2,499/month — 1M API queries/month, 50 requests/sec, commercial use",
+              "Enterprise: $8,500/month — custom query volumes and additional DNS/risk fields",
+              "Usage upgrades are handled by plan adjustment rather than per-request overage billing",
             ],
           },
         ],
-        note: "Portfolio monitoring and cloud data usually become the larger enterprise conversations. Portfolio monitoring applies the report and alert model across many domains or organisations. Cloud data gives security and data teams direct access to Datazag intelligence through data shares, object storage or APIs.",
+        note: "Domain Intelligence Data Share and Brand Protection are larger or more specialised buying paths. Data Share starts from $5,000/month for Standard, $10,000/month for Advanced and $20,000/month for Enterprise. Brand Protection starts at $1,500/month for Brand Defender, $4,900/month for Corporate Guardian and $12,000/month for Global Enterprise.",
       }}
       exampleAlert={{
-        kicker: "Example paid packages",
-        title: "What buyers can choose without a long sales cycle.",
-        intro: "The page should make the main paid routes visible. Exact inclusions can be refined, but showing starting prices helps buyers self-qualify and reduces friction.",
-        severity: "PRICING | PUBLIC",
-        status: "Published Starting Prices",
-        domain: "Reports · Alerts · Portfolio · Cloud Data",
+        kicker: "Published price card",
+        title: "Current enterprise list pricing snapshot.",
+        intro: "This section mirrors the existing published pricing structure. The exact package names and prices can change, but it gives the pricing page a concrete starting point rather than a generic contact-us message.",
+        severity: "PRICING | LIST",
+        status: "Current Published Pricing",
+        domain: "Threat Alerts · Phishing Defence · Domain Intelligence · Brand Protection",
         fields: [
-          { label: "Free report", value: "£0 · one submitted work email domain" },
-          { label: "Domain health report", value: "From £995 one-off" },
-          { label: "Portfolio report", value: "From £2,500 one-off or recurring" },
-          { label: "Developer alerts", value: "From £499/month" },
-          { label: "Professional alerts", value: "From £2,499/month" },
-          { label: "Scale alerts", value: "From £5,999/month" },
-          { label: "Cloud data", value: "From £3,000/month or annual data-share agreement" },
-          { label: "Enterprise", value: "Custom where scope, data access or support requirements are large" },
+          { label: "Threat Alerts Foundation", value: "$1,500/month" },
+          { label: "Threat Alerts Operational", value: "$5,500/month" },
+          { label: "Threat Alerts Enterprise", value: "$10,500–$15,500/month" },
+          { label: "Phishing Defence", value: "$2,500/month single brand · $10,000/month 5 brands · $15,000/month 10 brands" },
+          { label: "Domain Intelligence API", value: "$499/month Developer · $2,499/month Business · $8,500/month Enterprise" },
+          { label: "Domain Intelligence Data Share", value: "from $5,000/month Standard · $10,000/month Advanced · $20,000/month Enterprise" },
+          { label: "Brand Protection", value: "$1,500/month Brand Defender · $4,900/month Corporate Guardian · $12,000/month Global Enterprise" },
+          { label: "Partner and MSSP pricing", value: "Separate agreements" },
         ],
         reasons: [
-          "Gives buyers enough pricing information to self-qualify",
-          "Keeps the free report as the low-friction entry point",
-          "Separates simple entry tiers from genuinely scoped enterprise deployments",
-          "Leaves partner pricing for a dedicated commercial page",
+          "Shows public pricing instead of forcing every buyer into a sales conversation",
+          "Keeps enterprise list pricing distinct from partner, MSSP and private-offer pricing",
+          "Separates signal, incident, API, data-share and evidence-pack buying paths",
+          "Leaves room for the package names and prices to change as the offer matures",
         ],
-        latency: "Indicative public pricing — final scope can adjust limits, coverage and delivery terms",
+        latency: "Current published pricing snapshot — subject to package and commercial updates",
       }}
       secondaryExampleAlert={{
-        kicker: "What affects price",
-        title: "Clear prices, with scope-based limits."
-        ,intro: "The visible prices should be paired with a plain explanation of what changes the final package: monitored entities, alert volume, cadence, delivery model, data access and support level.",
-        severity: "PRICING | DRIVERS",
+        kicker: "What affects final scope",
+        title: "List prices set expectations; scope defines the final package.",
+        intro: "Most buyers should be able to self-qualify from the published prices. The final quote may still depend on coverage, volume, delivery method, evidence requirements, marketplace route and support needs.",
+        severity: "PRICING | SCOPE",
         status: "Scope-Based Adjustments",
-        domain: "Brands · domains · portfolios · data access · support",
+        domain: "Brands · domains · signals · API volume · data delivery · support",
         fields: [
           { label: "Monitored entities", value: "Brands, domains, subsidiaries, suppliers, clients or acquisition targets" },
-          { label: "Coverage", value: "Platform monitoring, brand monitoring, DNS posture, infrastructure context" },
-          { label: "Cadence", value: "One-off, monthly, continuous or real-time" },
-          { label: "Delivery", value: "Report, dashboard, Slack, webhook, API, SIEM/SOAR, cloud data" },
-          { label: "Data volume", value: "Hourly/daily updates, historical access, enrichment volume" },
-          { label: "Workflow", value: "Blocking, remediation, evidence pack, takedown, portfolio governance" },
-          { label: "Support", value: "Onboarding, tuning, quarterly reviews, managed reporting" },
-          { label: "Contract", value: "Monthly plan, pilot, annual plan or enterprise agreement" },
+          { label: "Signal volume", value: "New domains, certificates, DNS changes, alert volume and investigation window" },
+          { label: "Evidence level", value: "Screenshots, lifecycle tracking, HTML capture, abuse contacts, PDF or API evidence packages" },
+          { label: "API volume", value: "Query allowance, request rate, commercial use and custom fields" },
+          { label: "Data delivery", value: "API, webhooks, SIEM/SOAR, cloud marketplace, Iceberg, Delta or private data share" },
+          { label: "Refresh cadence", value: "Standard polling, 5-minute polling, daily refreshes, hourly updates or custom cadence" },
+          { label: "Support", value: "Community/docs, email/chat, onboarding, tuning, SLAs or dedicated support" },
+          { label: "Commercial model", value: "Monthly plan, annual agreement, private offer, partner agreement or service-provider terms" },
         ],
         reasons: [
           "Published prices create confidence and reduce friction",
-          "Scope-based limits prevent underpricing large or data-heavy deployments",
-          "Procurement can map price to coverage, cadence and delivery requirements",
-          "Partner economics can be handled separately without confusing enterprise buyers",
+          "Scope-based adjustments protect large or data-heavy deployments",
+          "Cloud marketplace and partner agreements can be handled separately",
+          "The free report remains the low-friction entry point before paid production use",
         ],
-        latency: "Use this as the public pricing explanation before the final price card design is built",
+        latency: "Use list pricing for buyer orientation and scope-based terms for final contracts",
       }}
       packagesTitle="Pricing paths."
       packages={[
-        { title: "Free Report — £0", text: "Single-domain external report for first value, lead capture and initial remediation discussion." },
-        { title: "Domain Health — from £995", text: "Paid domain health, executive, supplier-risk or M&A report for one organisation or target." },
-        { title: "Portfolio Report — from £2,500", text: "One-off or recurring visibility across clients, subsidiaries, suppliers, vendors or brands." },
-        { title: "Alerts — from £499/mo", text: "Real-time platform and brand impersonation alerts for operational security teams." },
-        { title: "Cloud Data — from £3,000/mo", text: "Structured intelligence delivered through cloud data shares, object storage or APIs." },
-        { title: "Partner Pricing — separate", text: "Separate commercial track for MSSPs, MDRs, ESPs, security vendors and white-label delivery." },
+        { title: "Threat Alerts", text: "Foundation $1,500/mo, Operational $5,500/mo, Enterprise $10,500–$15,500/mo for upstream security signalling." },
+        { title: "Phishing Defence", text: "Single Brand $2,500/mo, 5 Brand Pack $10,000/mo, 10 Brand Pack $15,000/mo for brand-scoped phishing incidents." },
+        { title: "Domain Intelligence API", text: "Developer $499/mo, Business $2,499/mo, Enterprise $8,500/mo for real-time domain enrichment." },
+        { title: "Domain Intelligence Data Share", text: "Standard from $5,000/mo, Advanced from $10,000/mo, Enterprise from $20,000/mo for cloud-native datasets." },
+        { title: "Brand Protection", text: "Brand Defender $1,500/mo, Corporate Guardian $4,900/mo, Global Enterprise $12,000/mo for evidence packages." },
+        { title: "Partner Pricing", text: "Separate agreements for MSSPs, MDRs, ESPs, security vendors, private offers and white-label delivery." },
       ]}
-      finalTitle="Show the price. Scope the edge cases."
-      finalBody="The pricing page should give buyers enough information to decide whether Datazag is worth evaluating, while reserving custom pricing for large portfolios, cloud data, embedded partner models and complex enterprise deployments."
+      finalTitle="Show the price. Scope the deployment."
+      finalBody="The pricing page should give buyers enough information to decide whether Datazag fits their budget, while reserving custom terms for large enterprise deployments, cloud marketplace delivery and partner agreements."
     />
   );
 }
