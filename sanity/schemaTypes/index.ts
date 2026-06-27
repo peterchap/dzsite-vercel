@@ -1,6 +1,7 @@
 // Documents
 import siteSettings from "./documents/siteSettings";
 import page from "./documents/page";
+import productConceptPage from "./documents/productConceptPage";
 import useCase from "./documents/useCase";
 import pricingPage from "./documents/pricingPage";
 import blogPost from "./documents/blogPost";
@@ -77,6 +78,7 @@ import comparisonGrid from "./objects/sections/comparisonGrid";
 export const schemaTypes = [
   siteSettings,
   page,
+  productConceptPage,
   useCase,
   pricingPage,
   blogPost,
