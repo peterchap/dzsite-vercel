@@ -42,6 +42,27 @@ type AlertTypeSection = {
   note?: string;
 };
 
+type DatasetSpec = {
+  name: string;
+  scale: string;
+  cadence: string;
+  delivery: string;
+  useCases: string;
+  status: string;
+};
+
+type LicenseCleanSection = {
+  title: string;
+  body: string;
+  included: string[];
+  excluded: string[];
+};
+
+type CodeExample = {
+  title: string;
+  code: string;
+};
+
 type ProductConceptPageProps = {
   eyebrow: string;
   title: string;
@@ -57,6 +78,15 @@ type ProductConceptPageProps = {
   flowTitle: string;
   flow: Card[];
   alertTypeSection?: AlertTypeSection;
+  audiencesTitle?: string;
+  audiences?: Card[];
+  datasetCatalogue?: DatasetSpec[];
+  flagshipFieldsTitle?: string;
+  flagshipFields?: Card[];
+  licenseClean?: LicenseCleanSection;
+  freshnessTitle?: string;
+  freshness?: Card[];
+  exampleQueries?: CodeExample[];
   exampleAlert?: ExampleAlert;
   secondaryExampleAlert?: ExampleAlert;
   tertiaryExampleAlert?: ExampleAlert;
@@ -107,21 +137,23 @@ function Section({ kicker, title, children }: { kicker: string; title: string; c
 
 function FlowVisual({ items }: { items: Card[] }) {
   return (
-    <ol className="relative grid gap-5 md:grid-cols-4 md:gap-4">
+    <div className="relative">
       <div className="pointer-events-none absolute left-[10%] right-[10%] top-[2.35rem] hidden h-px bg-gradient-to-r from-cyan-300/10 via-cyan-300/50 to-cyan-300/10 md:block" aria-hidden="true" />
-      {items.map((item, index) => (
-        <li key={item.title} className="relative">
-          {index < items.length - 1 ? (
-            <div className="absolute -right-3 top-[1.72rem] z-10 hidden h-5 w-5 rotate-45 border-r border-t border-cyan-300/50 md:block" aria-hidden="true" />
-          ) : null}
-          <article className="relative h-full rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200 shadow-lg shadow-cyan-950/30">0{index + 1}</div>
-            <h3 className="text-base font-semibold text-white">{item.title}</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
-          </article>
-        </li>
-      ))}
-    </ol>
+      <ol className="grid gap-5 md:grid-cols-4 md:gap-4">
+        {items.map((item, index) => (
+          <li key={item.title} className="relative">
+            {index < items.length - 1 ? (
+              <div className="absolute -right-3 top-[1.72rem] z-10 hidden h-5 w-5 rotate-45 border-r border-t border-cyan-300/50 md:block" aria-hidden="true" />
+            ) : null}
+            <article className="relative h-full rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200 shadow-lg shadow-cyan-950/30">0{index + 1}</div>
+              <h3 className="text-base font-semibold text-white">{item.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+            </article>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
@@ -195,6 +227,101 @@ function AlertTypeComparison({ section }: { section: AlertTypeSection }) {
   );
 }
 
+function CardGridSection({ kicker, title, items }: { kicker: string; title: string; items: Card[] }) {
+  return (
+    <Section kicker={kicker} title={title}>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {items.map((item) => (
+          <article key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+            <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+            <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function DatasetCatalogue({ datasets }: { datasets: DatasetSpec[] }) {
+  return (
+    <Section kicker="Dataset catalogue" title="A product-shaped catalogue for marketplace and data-share buyers.">
+      <div className="grid gap-4 lg:grid-cols-2">
+        {datasets.map((dataset) => (
+          <article key={dataset.name} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <h3 className="text-xl font-semibold text-white">{dataset.name}</h3>
+              <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100">{dataset.status}</span>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Scale</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{dataset.scale}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Cadence</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{dataset.cadence}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Delivery</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{dataset.delivery}</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Best fit</p>
+                <p className="mt-2 text-sm font-medium text-slate-100">{dataset.useCases}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function LicenseCleanPanel({ section }: { section: LicenseCleanSection }) {
+  return (
+    <Section kicker="License-clean by design" title={section.title}>
+      <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <p className="text-lg leading-8 text-slate-300">{section.body}</p>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-[2rem] border border-emerald-300/20 bg-emerald-300/[0.04] p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-100">Included in sellable views</p>
+            <ul className="mt-5 grid gap-2">
+              {section.included.map((item) => (
+                <li key={item} className="rounded-xl border border-white/10 bg-[#030619]/60 px-4 py-3 text-sm leading-6 text-slate-300">{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-[2rem] border border-red-300/20 bg-red-300/[0.04] p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-red-100">Excluded from marketplace exports</p>
+            <ul className="mt-5 grid gap-2">
+              {section.excluded.map((item) => (
+                <li key={item} className="rounded-xl border border-white/10 bg-[#030619]/60 px-4 py-3 text-sm leading-6 text-slate-300">{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function CodeExamples({ examples }: { examples: CodeExample[] }) {
+  return (
+    <Section kicker="Example queries" title="What buyers can do once the data is in their stack.">
+      <div className="grid gap-4 lg:grid-cols-2">
+        {examples.map((example) => (
+          <article key={example.title} className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04]">
+            <div className="border-b border-white/10 bg-[#07102b] px-5 py-4">
+              <h3 className="text-base font-semibold text-white">{example.title}</h3>
+            </div>
+            <pre className="overflow-x-auto p-5 text-sm leading-6 text-slate-300"><code>{example.code}</code></pre>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 function ExampleAlertPanel({ exampleAlert }: { exampleAlert: ExampleAlert }) {
   return (
     <Section kicker={exampleAlert.kicker} title={exampleAlert.title}>
@@ -253,6 +380,15 @@ export default function ProductConceptPage({
   flowTitle,
   flow,
   alertTypeSection,
+  audiencesTitle,
+  audiences,
+  datasetCatalogue,
+  flagshipFieldsTitle,
+  flagshipFields,
+  licenseClean,
+  freshnessTitle,
+  freshness,
+  exampleQueries,
   exampleAlert,
   secondaryExampleAlert,
   tertiaryExampleAlert,
@@ -307,7 +443,19 @@ export default function ProductConceptPage({
         </div>
       </Section>
 
+      {audiences?.length ? <CardGridSection kicker="Who uses this" title={audiencesTitle ?? "Who uses this intelligence?"} items={audiences} /> : null}
+
       {alertTypeSection ? <AlertTypeComparison section={alertTypeSection} /> : null}
+
+      {datasetCatalogue?.length ? <DatasetCatalogue datasets={datasetCatalogue} /> : null}
+
+      {flagshipFields?.length ? <CardGridSection kicker="Flagship dataset" title={flagshipFieldsTitle ?? "What is in the flagship dataset?"} items={flagshipFields} /> : null}
+
+      {licenseClean ? <LicenseCleanPanel section={licenseClean} /> : null}
+
+      {freshness?.length ? <CardGridSection kicker="Freshness and history" title={freshnessTitle ?? "Fresh data with historical context."} items={freshness} /> : null}
+
+      {exampleQueries?.length ? <CodeExamples examples={exampleQueries} /> : null}
 
       <Section kicker="How it works" title={flowTitle}>
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
