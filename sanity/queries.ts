@@ -1,3 +1,45 @@
+export const productConceptPageBySlugQuery = `
+*[_type == "productConceptPage" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  seo{
+    metaTitle,
+    metaDescription,
+    ogTitle,
+    ogDescription,
+    ogImage
+  },
+  eyebrow,
+  "title": headline,
+  intro,
+  primaryCta,
+  secondaryCta,
+  proof,
+  narrative,
+  flowTitle,
+  flow,
+  wideFlowLayout,
+  alertTypeSection,
+  audiencesTitle,
+  audiences,
+  datasetCatalogue,
+  flagshipFieldsTitle,
+  flagshipFields,
+  licenseClean,
+  freshnessTitle,
+  freshness,
+  exampleQueries,
+  exampleAlert,
+  secondaryExampleAlert,
+  tertiaryExampleAlert,
+  packagesTitle,
+  packages,
+  finalTitle,
+  finalBody
+}
+`;
+
 export const pageBySlugQuery = `
 *[_type in ["page", "useCase"] && slug.current == $slug][0]{
   _id,
