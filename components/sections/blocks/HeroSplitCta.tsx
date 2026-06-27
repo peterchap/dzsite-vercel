@@ -8,10 +8,16 @@ import { DataDictionaryModal } from "@/components/ui/DataDictionaryModal";
 import { Sparkles, ShieldCheck, FileText } from "lucide-react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+
+function hasSanityAsset(image: SectionHeroSplitCta["image"]) {
+  return typeof image === "object" && image !== null && "asset" in image && Boolean(image.asset);
+}
+
 export function HeroSplitCta(props: SectionHeroSplitCta) {
   const { eyebrow, headline, subheadline, badge, primaryCta, secondaryCta, dataDictionary } = props;
   const hasPrimary = !!(primaryCta && primaryCta.label && primaryCta.href)
   const hasSecondary = !!(secondaryCta && secondaryCta.label && secondaryCta.href)
+  const hasHeroImage = hasSanityAsset(props.image);
   return (
     <section className="relative overflow-hidden border-b border-white/10">
       {/* Background */}
@@ -41,7 +47,7 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
             </p>
           ) : null}
           {/* Optional Image */}
-          {props.image?.asset && (
+          {hasHeroImage && props.image ? (
             <div className="mt-8 max-w-4xl mx-auto px-4">
               <Image
                 src={urlFor(props.image).url()}
@@ -52,7 +58,7 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
                 priority
               />
             </div>
-          )}
+          ) : null}
           {/* Badge / trust line */}
           {badge ? (
             <div className="mx-auto mt-6 flex max-w-2xl justify-center">
