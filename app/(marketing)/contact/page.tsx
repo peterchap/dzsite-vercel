@@ -53,6 +53,14 @@ const nextSteps = [
   },
 ];
 
+const errorMessages: Record<string, string> = {
+  name_required: "Please add your name.",
+  valid_email_required: "Please add a valid work email address.",
+  company_required: "Please add your company name.",
+  enquiry_type_required: "Please choose an enquiry type.",
+  processing_authorisation_required: "Please authorise Datazag to process your enquiry so we can respond.",
+};
+
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="grid gap-2">
@@ -65,7 +73,15 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 const inputClass =
   "w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:bg-white/[0.06] focus:ring-2 focus:ring-cyan-300/20";
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ submitted?: string; error?: string }>;
+}) {
+  const params = searchParams ? await searchParams : {};
+  const submitted = params.submitted === "1";
+  const errorMessage = params.error ? errorMessages[params.error] ?? "Please check the form and try again." : null;
+
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -100,6 +116,18 @@ export default function ContactPage() {
                   This form posts to the Datazag enquiry endpoint. It can later be connected to email, CRM, HubSpot, Sanity or the customer portal.
                 </p>
               </div>
+
+              {submitted ? (
+                <div className="mt-6 rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.08] p-4 text-sm leading-6 text-emerald-100" role="status">
+                  Thanks — your enquiry has been received. We will route it by the selected enquiry type.
+                </div>
+              ) : null}
+
+              {errorMessage ? (
+                <div className="mt-6 rounded-2xl border border-red-300/20 bg-red-300/[0.08] p-4 text-sm leading-6 text-red-100" role="alert">
+                  {errorMessage}
+                </div>
+              ) : null}
 
               <form className="mt-6 grid gap-4" action="/api/enquiry" method="post">
                 <input type="hidden" name="source" value="contact_form" />
