@@ -3,167 +3,167 @@ import type { Metadata } from "next";
 import ProductConceptPage from "@/components/sections/blocks/ProductConceptPage";
 
 export const metadata: Metadata = {
-  title: "Domain Intelligence API & Data Shares — Datazag",
+  title: "Infrastructure Intelligence API & Data Shares — Datazag",
   description:
-    "Domain, DNS, certificate, hosting, ASN and impersonation intelligence delivered through API, cloud data shares and marketplace-ready datasets.",
+    "Domain, DNS, ASN, prefix, hosting, mail, platform and impersonation intelligence delivered through API, cloud data shares and marketplace datasets.",
 };
 
 export default function DomainIntelligencePage() {
   return (
     <ProductConceptPage
-      eyebrow="Domain Intelligence"
-      title="Internet intelligence built to live inside your systems."
-      intro="Datazag turns domains, DNS, certificates, hosting, ASN context, platform matches, brand signals and suspicious infrastructure into structured intelligence you can query, join, enrich and operationalise."
+      eyebrow="Infrastructure Intelligence"
+      title="Internet infrastructure intelligence built to live inside your systems."
+      intro="Datazag turns domains, DNS, certificates, hosting, ASN and prefix context, mail posture, platform fingerprints and impersonation signals into structured datasets you can query, join, enrich and operationalise."
       primaryCta={{ label: "Get a free report", href: "/#free-report" }}
       secondaryCta={{ label: "See pricing", href: "/pricing" }}
       proof={[
-        { title: "API", text: "Low-latency domain enrichment for scoring, triage, onboarding, campaign checks and product workflows." },
-        { title: "Data shares", text: "Cloud-native datasets for teams that want to join Datazag intelligence directly to their own logs and tables." },
-        { title: "Marketplaces", text: "Package intelligence for Snowflake, Databricks, AWS, Azure, Google Cloud and private data-share routes." },
-        { title: "Explainable risk", text: "Risk scores are paired with reason codes, infrastructure evidence and context for human or automated decisions." },
+        { title: "342M+ domains", text: "Domain corpus, DNS posture and risk features from Datazag's own collection and enrichment pipeline." },
+        { title: "78K+ ASNs", text: "ASN risk and reputation built from native BGP, RIR, RPKI, PeeringDB and infrastructure context." },
+        { title: "1M+ prefixes", text: "Prefix and BGP-hygiene intelligence for routing risk, origin context and infrastructure attribution." },
+        { title: "Sellable datasets", text: "Marketplace exports are built from derived intelligence and exclude sourced feeds that are internal-only." },
       ]}
       narrative={{
-        kicker: "The data problem",
-        title: "Security teams do not need another flat feed. They need intelligence they can join to their own data.",
+        kicker: "What we collect",
+        title: "Datazag observes the internet infrastructure behind domains, platforms and attacks.",
         body: [
-          "Most domain intelligence arrives as disconnected indicators: a domain, a score, a category or a feed match. That is useful, but it often leaves the consuming team to reconstruct the evidence, context and relationship graph themselves.",
-          "Datazag is designed as a systems layer. It provides structured domain and infrastructure intelligence that can enrich SIEM events, SMTP logs, signup flows, case management, customer portals, threat-hunting notebooks, AI-agent workflows and cloud analytics environments.",
-          "The same intelligence can be consumed in different ways: API for low-latency lookups, webhooks for operational events, data shares for bulk analytics, and marketplace delivery for procurement-friendly cloud adoption.",
+          "The core lake contains domain, DNS, certificate, registrar, hosting, mail, ASN, prefix, cloud/CDN, platform and impersonation intelligence. Those signals are normalised into entities that buyers can join to their own logs, customer records, campaigns, alerts and portfolios.",
+          "The flagship product is the domain intelligence and risk dataset: a wide, one-row-per-domain view that combines DNS facts, mail posture, registrar context, hosting attribution, primary ASN/prefix, platform signals, impersonation context and explainable risk scoring.",
+          "The wider catalogue extends beyond domains into infrastructure reputation: ASN risk, prefix hygiene, native IP-to-ASN lookup, MX/NS host intelligence, abuse-contact directories, cloud/CDN ranges, technographics and point-in-time historical slices.",
         ],
       }}
-      flowTitle="From internet signal to integrated intelligence."
+      flowTitle="From raw observation to marketplace-ready intelligence."
       flow={[
-        { title: "Collect", text: "Continuously observe domains, DNS, certificates, hosting, parking, ASN context, platform patterns and threat signals." },
-        { title: "Enrich", text: "Attach risk scores, reason codes, infrastructure context, brand/platform matches and historical relationships." },
-        { title: "Deliver", text: "Expose the intelligence through API, webhooks, cloud data shares, object storage or marketplace listings." },
-        { title: "Join", text: "Use Datazag inside your logs, dashboards, scoring systems, AI agents and security workflows." },
+        { title: "Observe", text: "Collect domains, DNS, certificates, RDAP, hosting, ASN/BGP, RPKI, cloud/CDN ranges, mail posture and platform fingerprints." },
+        { title: "Normalise", text: "Resolve entities such as domains, hostnames, IPs, prefixes, ASNs, providers, platforms, registrars and abuse contacts." },
+        { title: "Score", text: "Generate risk scores, reason codes, posture findings, impersonation signals, infrastructure context and historical features." },
+        { title: "Publish", text: "Export license-clean datasets through API, webhooks, Parquet, Iceberg, Delta, cloud data shares and marketplace listings." },
       ]}
       alertTypeSection={{
-        kicker: "Delivery paths",
-        title: "Choose the consumption model that fits your architecture."
-        ,intro: "Datazag can be used as an operational enrichment API, a cloud-native dataset, a marketplace product or a partner intelligence layer. The right route depends on whether you need live decisions, bulk analytics, procurement simplicity or embedded product intelligence.",
+        kicker: "Curated datasets",
+        title: "Use-case-specific datasets, not one undifferentiated feed."
+        ,intro: "The marketplace catalogue should make it easy for buyers to understand which package fits their workflow. Some customers need a full domain-risk table; others need ASN reputation, IP-to-ASN enrichment, brand impersonation data, cloud/CDN attribution or historical backtesting slices.",
         stats: [
-          { title: "Live", text: "API and webhooks for decisions in motion." },
-          { title: "Bulk", text: "data shares and object storage for analytics." },
-          { title: "Embedded", text: "partner and product integrations." },
+          { title: "Domain", text: "risk, DNS, mail and impersonation features." },
+          { title: "Network", text: "ASN, prefix, BGP and IP attribution." },
+          { title: "Platform", text: "technographics, provider and abuse context." },
         ],
         types: [
           {
-            title: "Domain Intelligence API",
-            subtitle: "Real-time enrichment",
-            coverage: "Domain risk, DNS context, certificates, hosting, ASN risk, platform matches, brand matches and suspicious infrastructure signals.",
-            action: "Use the API inside signup checks, campaign screening, enrichment workflows, case triage, product features and AI-agent decisions.",
-            text: "The API is the best route when a system needs an answer during a workflow. It turns a domain or link into a structured decision input with risk, reasons and supporting context.",
+            title: "Domain Intelligence & Risk",
+            subtitle: "Flagship dataset",
+            coverage: "Domain corpus, DNS facts, MX/NS, SPF/DMARC/DKIM, TLS issuer, registrar, CNAME, parking flags, ASN/prefix attribution and domain risk scoring.",
+            action: "Use for SOC enrichment, ESP link scoring, signup checks, brand protection, fraud workflows, ASM enrichment and domain reputation products.",
+            text: "This is the headline marketplace product: a wide, flat, one-row-per-domain dataset built from Datazag's own scans and derived risk features. It is designed to be joined directly to logs, customer domains, links, alerts and portfolios.",
             evidence: [
-              "Low-latency lookup and enrichment",
-              "Risk score, reason codes and confidence context",
-              "Machine-readable output for scoring and automation",
-              "Useful for ESPs, MSSPs, SOC teams, platforms and fraud workflows",
+              "342M+ domain corpus with DNS and risk context",
+              "Risk score, threat band and decomposed reason signals",
+              "Mail, registrar, TLS, hosting, cloud/CDN and provider attribution",
+              "Publish view designed for Snowflake, Databricks and Iceberg/Delta delivery",
             ],
           },
           {
-            title: "Cloud data shares",
-            subtitle: "JOIN-ready datasets",
-            coverage: "Domain corpus, DNS facts, certificate observations, hosting context, risk scores, platform mappings and infrastructure relationships.",
-            action: "Join Datazag intelligence to your SIEM logs, SMTP logs, customer domains, threat-hunting data, fraud records or internal analytics tables.",
-            text: "Data shares are for teams that want the intelligence in their warehouse or lakehouse. Instead of making repeated API calls, they can query and join the data directly where their analysts and pipelines already work.",
+            title: "Network and ASN Reputation",
+            subtitle: "Infrastructure risk",
+            coverage: "ASN risk, prefix hygiene, MOAS state, RPKI invalidity, origin context, IP-to-ASN lookup, abuse contacts and hosting classification.",
+            action: "Use for network reputation, infrastructure due diligence, bad-neighbourhood analysis, KYC for infrastructure, cyber underwriting and threat hunting.",
+            text: "This package moves beyond domain-level signals into the infrastructure layer. It gives buyers a native view of ASNs, prefixes, routing posture and IP attribution without depending on third-party IP-intelligence resale.",
             evidence: [
-              "Snowflake, Databricks, AWS, Azure and Google Cloud delivery paths",
-              "Hourly, daily or scoped refresh models",
-              "Historical context and time-aware analysis",
-              "Designed for security engineering, data teams and platform analytics",
+              "78K+ ASNs with composite risk and reason codes",
+              "1M+ prefixes with BGP and RPKI hygiene context",
+              "Native IPv4-to-ASN range table for enrichment",
+              "Derived from BGP, RIR, RPKI, PeeringDB and public infrastructure sources",
             ],
           },
           {
-            title: "Marketplace datasets",
-            subtitle: "Procurement-friendly delivery",
-            coverage: "Curated domain, risk, DNS, platform, brand, infrastructure and alert datasets packaged for cloud marketplace buyers.",
-            action: "Use marketplace listings or private offers when buyers need cloud-native procurement, vendor onboarding and data delivery in the same motion.",
-            text: "Marketplaces make Datazag easier to buy and easier to consume. They are suitable for customers who want cloud-native access, committed-spend procurement or private data-share agreements.",
+            title: "Platform, Mail and Abuse Context",
+            subtitle: "Provider intelligence",
+            coverage: "MX and NS host intelligence, cloud/CDN ranges, provider fingerprints, registrar and ASN abuse contacts, platform attribution and technographic signals.",
+            action: "Use for deliverability analytics, platform-risk mapping, takedown workflows, customer data cleaning, supplier visibility and false-positive reduction.",
+            text: "Provider context helps buyers understand what infrastructure a domain depends on. It can support ESP analytics, MSSP reporting, abuse workflows, brand protection and customer-facing remediation output.",
             evidence: [
-              "Public or private marketplace offers",
-              "Curated packages for SOC, ESP, MSSP, brand and platform use cases",
-              "Cloud-native data access without file-transfer friction",
-              "Annual and enterprise data-share commercial models",
+              "MX and NS provider intelligence",
+              "Cloud/CDN ranges and CNAME/provider attribution",
+              "Registrar and ASN abuse-contact directories",
+              "Platform and technographic fingerprints from DNS and public infrastructure patterns",
             ],
           },
           {
-            title: "Embedded partner intelligence",
-            subtitle: "Your product, our data",
-            coverage: "Domain and infrastructure intelligence embedded inside partner portals, dashboards, reports, scoring systems and customer-facing services.",
-            action: "Use Datazag behind partner-branded services such as brand protection, portfolio reporting, data cleaning, abuse prevention and SOC enrichment.",
-            text: "For partners, the data should disappear into the product experience. Datazag supplies the intelligence layer; the partner controls the packaging, workflow, pricing and customer relationship.",
+            title: "Impersonation and Historical Slices",
+            subtitle: "Threat and backtesting",
+            coverage: "Platform impersonation rollups, brand/typosquat context, point-in-time snapshots, trend datasets and historical risk slices.",
+            action: "Use for brand protection, phishing detection, portfolio monitoring, model backtesting, AI-agent workflows and research into infrastructure change over time.",
+            text: "Time-travel is a major differentiator. DuckLake snapshots allow buyers to ask what Datazag knew at a point in time, build trend views and backtest risk models without relying only on current-state data.",
             evidence: [
-              "White-label or co-branded output",
-              "API, webhook, report or data-share integration",
-              "Reasoning fields for customer trust and explainability",
-              "Supports new partner revenue lines",
+              "Platform and brand impersonation rollups",
+              "Historical snapshots and point-in-time slices",
+              "Trend and velocity products for portfolios and models",
+              "Backtesting support for scoring, underwriting and research use cases",
             ],
           },
         ],
-        note: "The same underlying intelligence can support multiple products: free reports, operational alerts, ESP platform controls, MSSP services, brand protection, security enrichment and cloud datasets. The delivery model changes; the evidence layer stays consistent.",
+        note: "Licensing boundary matters. Derived intelligence is sellable: risk scores, DNS-derived features, ASN/prefix risk, IP-to-ASN lookup, technographics, provider attribution and abuse contacts. Sourced threat feeds and restricted popularity data can inform internal scoring, but must be excluded from marketplace exports.",
       }}
       exampleAlert={{
-        kicker: "Example API output",
-        title: "What a domain enrichment response should explain."
-        ,intro: "The point of the API is not only to return a score. It should explain why a domain, link or infrastructure signal is relevant so downstream systems can automate, escalate or display the result with confidence.",
-        severity: "API | ENRICHMENT",
-        status: "Domain Risk Context Returned",
-        domain: "secure-login-example.net",
+        kicker: "Methodology",
+        title: "How the data becomes trustworthy enough to operationalise."
+        ,intro: "The page should explain enough methodology to build buyer trust without exposing scoring internals. The important message is that Datazag does not just redistribute raw indicators; it normalises, joins, scores and explains internet infrastructure signals.",
+        severity: "DATA | METHODOLOGY",
+        status: "Derived Intelligence Pipeline",
+        domain: "observe → normalise → enrich → score → publish",
         fields: [
-          { label: "Risk score", value: "High · reasoned score available for thresholding" },
-          { label: "Domain context", value: "Newly observed domain with limited corpus history" },
-          { label: "DNS context", value: "Recent A record and nameserver activity" },
-          { label: "Certificate context", value: "Recent certificate observation with suspicious naming" },
-          { label: "Infrastructure", value: "Hosting, ASN and IP context attached" },
-          { label: "Classification", value: "Platform, brand or keyword infrastructure signals" },
-          { label: "Machine use", value: "Scoring, blocking, routing, AI-agent or case enrichment" },
-          { label: "Human use", value: "Readable reasons for analyst or customer explanation" },
+          { label: "Collection", value: "Domains, DNS, TLS/certificates, RDAP, BGP/RIR/RPKI, PeeringDB, cloud/CDN ranges and platform fingerprints" },
+          { label: "Normalisation", value: "Domains, hostnames, IPs, prefixes, ASNs, providers, platforms, registrars and abuse contacts" },
+          { label: "Enrichment", value: "Mail posture, parking, wildcard DNS, hosting, provider, ASN, prefix, platform and impersonation context" },
+          { label: "Scoring", value: "Risk scores, threat bands, reason codes, posture findings and confidence context" },
+          { label: "False-positive controls", value: "Provider attribution, known-good infrastructure, cloud/CDN mapping and licensing-clean publish gates" },
+          { label: "History", value: "DuckLake snapshots for point-in-time analysis, trend reporting and model backtesting" },
+          { label: "Delivery", value: "API, webhooks, Parquet, Iceberg, Delta, Snowflake, Databricks and cloud marketplace delivery" },
+          { label: "Licensing", value: "Derived intelligence is publishable; sourced feeds and restricted popularity data are internal-only" },
         ],
         reasons: [
-          "Risk score is accompanied by explainable reason codes",
-          "Infrastructure context reduces blind trust in a simple category label",
-          "Output can be used by automated systems or human analysts",
-          "The same enrichment can power ESP, MSSP, SOC, fraud and platform workflows",
+          "Derived datasets are built from Datazag collection and enrichment rather than simple resale of third-party feeds",
+          "Risk scores are paired with reason codes and infrastructure context",
+          "Publish views should enforce a licensing gate before marketplace export",
+          "Time-travel snapshots support historical analysis and honest backtesting",
         ],
-        latency: "Example enrichment output — final fields depend on plan, endpoint and delivery model",
+        latency: "Methodology summary — final product pages can expose dataset-specific schemas and refresh cadences",
       }}
       secondaryExampleAlert={{
-        kicker: "Example data share use",
-        title: "What cloud-native buyers can do with the dataset.",
-        intro: "Data shares make sense when the customer wants to analyse many domains, join intelligence to internal logs, build dashboards or train internal scoring and agentic workflows on structured evidence.",
-        severity: "DATA | SHARE",
-        status: "JOIN-Ready Intelligence",
-        domain: "customer_logs JOIN datazag_domain_intelligence",
+        kicker: "Example marketplace product",
+        title: "What the flagship publish view can look like.",
+        intro: "The marketplace domain intelligence product should be a wide, flat, one-row-per-domain table assembled from the lake's DNS, risk, scenario and provider-attribution tables, then exported into Iceberg/Delta and listed through Snowflake or other cloud marketplaces.",
+        severity: "DATA | MARKETPLACE",
+        status: "Complete Domain Intelligence",
+        domain: "gold.marketplace_domain_intelligence",
         fields: [
-          { label: "Input table", value: "SMTP logs, SIEM events, signup domains, customer URLs or threat-hunting tables" },
-          { label: "Join key", value: "Domain, root domain, hostname, link domain, IP or ASN depending on package" },
-          { label: "Output", value: "Risk, reasons, DNS, hosting, certificate, platform and infrastructure context" },
-          { label: "Refresh", value: "Hourly, daily or scoped update cadence" },
-          { label: "Consumer", value: "Security engineering, data science, SOC, ESP abuse, MSSP platform or fraud team" },
-          { label: "Procurement", value: "Cloud marketplace, private offer, annual agreement or enterprise data share" },
-          { label: "Analytics", value: "Trend reporting, portfolio views, customer risk, model features and dashboards" },
-          { label: "Action", value: "Block, enrich, prioritise, report, investigate or alert" },
+          { label: "Base", value: "DNS-wide domain record with A/AAAA, MX, NS, TXT, TLS, registrar and provider context" },
+          { label: "Risk", value: "Domain risk score, threat level, reason context and scenario features" },
+          { label: "Intent", value: "Weaponization score, live status and suspicious infrastructure context" },
+          { label: "Mail posture", value: "MX intelligence, SPF, DMARC, DKIM and email-security indicators" },
+          { label: "Impersonation", value: "Platform, brand, typo and suspicious naming context where available" },
+          { label: "Provider attribution", value: "Hosting, cloud, CDN, mailbox and platform fingerprints" },
+          { label: "Export", value: "Parquet on R2, Iceberg/Delta for marketplace and warehouse-native access" },
+          { label: "License gate", value: "No sourced threat feeds and no restricted popularity buckets in sellable views" },
         ],
         reasons: [
-          "Cloud data shares avoid repeated API calls for high-volume analytics",
-          "JOIN-ready fields let teams add context to their own records",
-          "Marketplace delivery simplifies procurement and cloud adoption",
-          "Historical and refreshable data supports trend and portfolio analysis",
+          "Buyers get a single table that is easy to JOIN to their own logs and records",
+          "The publish view separates sellable derived intelligence from internal-only sourced data",
+          "Snowflake secure views can sit on top of the exported Iceberg table for sharing and masking",
+          "The same model can be sliced by buyer, use case, risk band, TLD or delivery channel",
         ],
-        latency: "Data-share example — cadence and schema depend on package scope",
+        latency: "Publish-view example — implementation depends on the marketplace export builder and package scope",
       }}
-      packagesTitle="Domain intelligence packages."
+      packagesTitle="Infrastructure intelligence packages."
       packages={[
-        { title: "API enrichment", text: "Real-time domain and link intelligence for scoring, routing, automation and product workflows." },
-        { title: "Cloud data share", text: "JOIN-ready domain, DNS, risk and infrastructure datasets for warehouse and lakehouse analytics." },
-        { title: "Marketplace dataset", text: "Curated data packages for Snowflake, Databricks, AWS, Azure, Google Cloud and private offers." },
-        { title: "Partner integration", text: "Datazag intelligence embedded behind partner-branded services, reports, portals and scoring systems." },
-        { title: "Threat hunting enrichment", text: "Domain and infrastructure context for SOC, SIEM, SOAR, notebooks and investigation workflows." },
-        { title: "Platform intelligence", text: "Data layer for ESPs, MSSPs, security vendors, fraud teams and customer-facing products." },
+        { title: "Domain Risk Score Feed", text: "Full corpus or slices by risk band, TLD, customer use case or delivery model." },
+        { title: "Domain Intelligence Dataset", text: "Wide one-row-per-domain table with DNS, mail, registrar, hosting, risk and provider context." },
+        { title: "ASN and Prefix Reputation", text: "Network and routing-risk datasets for infrastructure due diligence and threat hunting." },
+        { title: "Native IP-to-ASN Lookup", text: "Clean IPv4 range table for attribution, analytics, fraud, security and enrichment use cases." },
+        { title: "Brand and Platform Impersonation", text: "Platform, brand, typo and impersonation context for detection, reports and monitoring." },
+        { title: "Abuse and Provider Intelligence", text: "MX/NS provider intelligence, abuse contacts, cloud/CDN ranges and takedown support context." },
       ]}
-      finalTitle="Bring Datazag intelligence into your own stack."
-      finalBody="Use the API for live decisions, data shares for bulk analytics, marketplaces for procurement-friendly access and partner integrations for white-label services."
+      finalTitle="Bring infrastructure intelligence into your own stack."
+      finalBody="Use the API for live decisions, data shares for bulk analytics, marketplaces for procurement-friendly access and curated datasets for specific security, fraud, ESP, MSSP and platform workflows."
     />
   );
 }
