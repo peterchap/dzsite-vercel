@@ -1,3 +1,40 @@
+export const homepageAtmosphereQuery = `
+*[_type == "homepageAtmosphere"][0]{
+  _id,
+  title,
+  seo{
+    metaTitle,
+    metaDescription,
+    ogTitle,
+    ogDescription,
+    ogImage
+  },
+  heroEyebrow,
+  heroTitle,
+  heroIntro,
+  heroStatement,
+  primaryCta,
+  secondaryCta,
+  heroPills,
+  insight,
+  signals,
+  platform,
+  graph,
+  delivery,
+  partners,
+  applicationsSection,
+  finalCta,
+  finalButton,
+  internetSignals,
+  timelineSteps,
+  proofPoints,
+  graphEvidence,
+  deliveryCards,
+  partnerAudiences,
+  applications
+}
+`;
+
 export const productConceptPageBySlugQuery = `
 *[_type == "productConceptPage" && slug.current == $slug][0]{
   _id,
