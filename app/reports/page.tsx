@@ -5,82 +5,95 @@ import ProductConceptPage from "@/components/sections/blocks/ProductConceptPage"
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "External platform threat reports, domain health checks and portfolio reporting for security teams, partners and executives.",
+    "Free external platform threat reports, domain health checks and portfolio reporting for security teams, partners and executives.",
 };
 
 export default function ReportsPage() {
   return (
     <ProductConceptPage
-      eyebrow="Health and Portfolio Reports"
-      title="Show what the internet already reveals about an organisation."
-      intro="Datazag reports turn external infrastructure, DNS posture, platform exposure and impersonation signals into clear findings for security teams, executives, customers and portfolio owners."
-      primaryCta={{ label: "Get a free report", href: "/#free-report" }}
+      eyebrow="Free Domain Report"
+      title="Get a free report on what the internet reveals about your domain."
+      intro="Enter your work email and Datazag analyses the domain behind it. The report shows your external DNS and email posture, visible platforms and vendors, and early signs of impersonation risk around the infrastructure your organisation depends on."
+      primaryCta={{ label: "Get my free report", href: "/#free-report" }}
       secondaryCta={{ label: "See alerting", href: "/alerts" }}
       proof={[
-        { title: "Free entry point", text: "A single-domain report gives prospects immediate value without an asset list, scoping call or questionnaire." },
-        { title: "DNS and email posture", text: "Assess SPF, DKIM, DMARC, BIMI, MTA-STS, nameservers, MX providers and related configuration weaknesses." },
-        { title: "Platform exposure", text: "Identify visible platforms, SaaS vendors, email systems, cloud providers and supplier infrastructure from the domain footprint." },
-        { title: "Portfolio view", text: "Extend the same report logic across clients, subsidiaries, suppliers, acquisition targets or managed customer estates." },
+        { title: "No asset list", text: "Start with a work email. We derive the domain and analyse what is externally visible." },
+        { title: "DNS and email posture", text: "Review SPF, DKIM, DMARC, BIMI, MTA-STS, nameservers, MX providers and common configuration gaps." },
+        { title: "Platform footprint", text: "Identify visible email, cloud, SaaS, CDN, hosting and vendor infrastructure from public records." },
+        { title: "Impersonation exposure", text: "See whether suspicious infrastructure is forming around the platforms and brands your organisation relies on." },
       ]}
       narrative={{
-        kicker: "The problem",
-        title: "Most organisations cannot see the external trust signals attackers use against them.",
+        kicker: "Why get the report",
+        title: "It is a useful security check and a live demonstration of Datazag intelligence.",
         body: [
-          "A company may know its main domain, but not all of the DNS, subdomains, mail controls, platforms, suppliers and infrastructure signals that shape its real external risk.",
-          "The report is designed to answer two practical questions: what can attackers see from the outside, and what has already been built to exploit the platforms and brands an organisation depends on?",
-          "The free report creates a useful first view. The paid reports go deeper into remediation, evidence, historical context and portfolio-wide prioritisation.",
+          "A domain leaves a visible trail: DNS records, mail configuration, subdomains, providers, SaaS platforms, cloud footprints and infrastructure relationships. Attackers can inspect those signals. Most organisations do not review them often enough.",
+          "The free report turns those external signals into a plain-language view of your domain. It shows what is visible, what looks weak, which platforms can be inferred, and whether there are early impersonation signals around the platforms and brands connected to your organisation.",
+          "It is also a demonstration of the Datazag dataset. The same intelligence that powers the report can be used for real-time alerts, portfolio reporting, cloud data shares and partner-delivered security services.",
         ],
       }}
-      flowTitle="From domain to decision-ready report."
+      flowTitle="From one email address to a decision-ready report."
       flow={[
-        { title: "Discover", text: "Start from a domain, portfolio, client list, subsidiary group, vendor set or acquisition target." },
-        { title: "Map", text: "Resolve DNS, mail, subdomains, platforms, providers, cloud footprints and exposed infrastructure." },
-        { title: "Assess", text: "Check posture, impersonation exposure, infrastructure risk, configuration gaps and remediation priority." },
-        { title: "Report", text: "Deliver findings for technical remediation, executive visibility, customer reporting or portfolio governance." },
+        { title: "Enter email", text: "Submit a work email. No asset list, questionnaire or scoping call is needed for the free report." },
+        { title: "Map domain", text: "Resolve DNS, mail, subdomains, providers, visible platforms, cloud footprints and exposed infrastructure." },
+        { title: "Check risk", text: "Assess DNS and email posture, platform exposure, impersonation context and obvious remediation priorities." },
+        { title: "Get report", text: "Receive a practical report that shows findings, evidence, remediation steps and upgrade paths." },
       ]}
       alertTypeSection={{
-        kicker: "Report types",
-        title: "One intelligence base, three report products.",
-        intro: "The reports should create a simple path: a useful free report for one domain, a deeper domain health report for one organisation, and portfolio reporting for teams responsible for many domains, clients, suppliers or companies.",
+        kicker: "What the free report includes",
+        title: "A practical snapshot of your external security posture.",
+        intro: "The free report is designed to be useful on its own. It does not try to replace a full audit, but it gives a clear first view of the signals attackers can see from outside your organisation.",
         stats: [
-          { title: "1 domain", text: "Free report for lead capture and immediate external visibility." },
-          { title: "1 organisation", text: "Deeper domain health report with remediation and evidence." },
-          { title: "Many domains", text: "Portfolio reporting across customers, subsidiaries, vendors or acquisition targets." },
+          { title: "DNS", text: "records, nameservers, MX and visible configuration." },
+          { title: "Platforms", text: "inferred email, cloud, SaaS, CDN and vendor footprint." },
+          { title: "Threat", text: "impersonation and suspicious infrastructure context." },
         ],
         types: [
           {
-            title: "Free external platform threat report",
-            subtitle: "Lead report",
-            coverage: "One submitted work email domain, external DNS and visible platform footprint.",
-            action: "Show immediate findings, collect consent, and create a clear path to remediation or monitoring.",
-            text: "This is the low-friction entry point. The user gives a work email, Datazag derives the domain, analyses the external posture and shows the issues that are visible without asking for an asset list.",
+            title: "DNS and email posture",
+            subtitle: "Trust controls",
+            coverage: "SPF, DKIM, DMARC, BIMI, MTA-STS, MX records, nameservers and related configuration signals.",
+            action: "Use this section to identify obvious weaknesses and prioritise remediation with the right technical owner.",
+            text: "Email and DNS controls are often the first external trust signals a security team needs to fix. The report explains the issue, the evidence and the practical next step.",
             evidence: [
-              "DNS and mail posture summary",
-              "Detected platforms and visible vendor footprint",
-              "Initial impersonation exposure around those platforms",
-              "Priority remediation steps for obvious weaknesses",
+              "DMARC enforcement status and policy posture",
+              "SPF and DKIM presence and alignment checks",
+              "MX provider and mail platform inference",
+              "Suggested remediation steps for weak or missing controls",
             ],
           },
           {
-            title: "Domain health report",
-            subtitle: "Organisation report",
-            coverage: "One organisation, its core domains, subdomains, DNS, mail posture, platforms and infrastructure exposure.",
-            action: "Provide technical remediation, executive summary and a baseline for ongoing alerts.",
-            text: "This report goes deeper than the free report. It gives the security or IT team a more complete view of their external posture and turns findings into a prioritised remediation queue.",
+            title: "Platform and vendor footprint",
+            subtitle: "Visible dependencies",
+            coverage: "Email platforms, SaaS providers, cloud services, hosting providers, CDNs, nameservers and supplier infrastructure inferred from public records.",
+            action: "Use this section to understand which third-party platforms are externally visible and could become impersonation lures.",
+            text: "Attackers often impersonate the platforms an organisation already uses. Mapping the visible platform footprint helps explain which lures are more relevant to that organisation.",
             evidence: [
-              "SPF, DKIM, DMARC, BIMI and MTA-STS posture",
-              "Subdomain and exposed service findings",
-              "Provider, platform and cloud footprint mapping",
-              "Risk-ranked remediation backlog",
+              "Detected mail, cloud, CDN and hosting providers",
+              "SaaS and platform indicators from DNS and infrastructure patterns",
+              "Vendor and supplier infrastructure signals",
+              "Context for platform-led impersonation monitoring",
+            ],
+          },
+          {
+            title: "Impersonation and remediation",
+            subtitle: "Threat context",
+            coverage: "Suspicious infrastructure around detected platforms, customer brand terms, keyword-led subdomains and related hosting or certificate activity.",
+            action: "Use this section to decide whether to remediate DNS, investigate suspicious infrastructure or move into continuous alerting.",
+            text: "The report connects posture findings with external threat context. It shows not only what is misconfigured, but also what attackers may already be preparing around the platforms and brands in scope.",
+            evidence: [
+              "Platform or brand impersonation context",
+              "Suspicious domain, certificate, DNS or hosting signals",
+              "Risk-ranked remediation recommendations",
+              "Suggested upgrade path into real-time alerts or portfolio monitoring",
             ],
           },
         ],
-        note: "The portfolio report is the same intelligence model applied at scale: many domains, many owners and a recurring view of what changed. That makes it suitable for MSSPs, agencies, insurers, portfolio companies, supplier-risk teams and M&A due diligence.",
+        note: "The free report is the fastest way to see the kind of intelligence Datazag provides. Paid reports add deeper evidence, historical context, portfolio coverage, executive summaries and technical remediation queues.",
       }}
       exampleAlert={{
-        kicker: "Example report finding",
-        title: "What a single report finding can look like.",
-        intro: "The report should not overwhelm the reader with raw DNS records. It should turn records and infrastructure context into a finding that explains the issue, the evidence and the next step.",
+        kicker: "Example free report output",
+        title: "A finding should explain the issue, evidence and next step.",
+        intro: "The report should not overwhelm the reader with raw DNS records. It should turn records and infrastructure context into findings that are clear enough for a business owner and specific enough for a technical owner.",
         severity: "REPORT | HIGH",
         status: "Email Authentication Gap",
         domain: "examplebrand.com",
@@ -103,41 +116,41 @@ export default function ReportsPage() {
         latency: "Report finding generated from external DNS and platform analysis",
       }}
       secondaryExampleAlert={{
-        kicker: "Example portfolio view",
-        title: "What portfolio reporting adds.",
-        intro: "Portfolio reporting is not just many PDFs. It is a recurring view of which domains, clients or companies need attention first, and which issues are changing over time.",
-        severity: "PORTFOLIO | PRIORITY",
-        status: "Remediation Queue Generated",
-        domain: "120 monitored domains",
+        kicker: "Example data demonstration",
+        title: "The report shows the data layers behind Datazag.",
+        intro: "The free report is also a controlled sample of the intelligence layer: public DNS, platform mapping, infrastructure relationships, impersonation signals and remediation logic in one output.",
+        severity: "DATA | SAMPLE",
+        status: "External Footprint Mapped",
+        domain: "examplebrand.com",
         fields: [
-          { label: "Scope", value: "Clients, subsidiaries, suppliers or acquisition targets" },
-          { label: "High priority", value: "Domains with mail-authentication gaps or live impersonation evidence" },
-          { label: "Medium priority", value: "Domains with weak DNS posture, exposed services or platform-risk signals" },
-          { label: "Trend", value: "New, resolved and recurring findings separated" },
-          { label: "Output", value: "Executive summary and technical remediation queue" },
-          { label: "Cadence", value: "One-off, monthly or continuous" },
-          { label: "Audience", value: "Security, IT, compliance, account teams or portfolio owners" },
-          { label: "Next step", value: "Move high-risk domains into alerting or remediation workflow" },
+          { label: "DNS layer", value: "A, AAAA, MX, TXT, NS and related records" },
+          { label: "Mail layer", value: "Mail platform, SPF, DKIM, DMARC and authentication posture" },
+          { label: "Platform layer", value: "Visible SaaS, cloud, CDN, hosting and supplier indicators" },
+          { label: "Threat layer", value: "Platform, brand and keyword infrastructure context" },
+          { label: "Remediation layer", value: "Prioritised next steps with technical owner guidance" },
+          { label: "Upgrade path", value: "Real-time alerts, portfolio monitoring or cloud data access" },
+          { label: "Audience", value: "Security, IT, compliance, executives or account teams" },
+          { label: "Scope", value: "Single domain first, portfolio later" },
         ],
         reasons: [
-          "Shows which domains need attention first",
-          "Separates posture weaknesses from active impersonation evidence",
-          "Supports customer, board, insurer, supplier-risk and M&A reporting",
-          "Creates a path from static report into continuous monitoring",
+          "Shows the external signals available without internal access",
+          "Demonstrates how Datazag maps platforms and infrastructure from public data",
+          "Connects technical posture to impersonation and remediation context",
+          "Creates a natural path from a free report into paid reporting, alerts or data products",
         ],
-        latency: "Portfolio findings updated as the external footprint changes",
+        latency: "Free report output acts as a sample of the wider Datazag intelligence graph",
       }}
-      packagesTitle="Report products."
+      packagesTitle="Where the free report leads."
       packages={[
-        { title: "Free external platform threat report", text: "Single-domain entry report covering DNS posture, visible platforms and early impersonation exposure." },
+        { title: "Free external platform threat report", text: "Single-domain report covering DNS posture, visible platforms, impersonation context and first remediation steps." },
         { title: "Domain health report", text: "Deeper DNS, email, subdomain, provider and infrastructure posture reporting for one organisation." },
         { title: "Portfolio report", text: "Recurring reporting across many domains, clients, subsidiaries, suppliers, brands or acquisition targets." },
         { title: "Executive summary", text: "Board-friendly summary of exposure, priority findings and movement since the last report." },
         { title: "Technical remediation queue", text: "Actionable findings for DNS, email, security and infrastructure owners." },
         { title: "Monitoring upgrade", text: "Move priority domains or brands from reporting into real-time alerts and evidence capture." },
       ]}
-      finalTitle="Start with one domain. Expand to the whole portfolio."
-      finalBody="The free report gives a fast view of one organisation. Portfolio reporting extends the same intelligence across customers, companies, subsidiaries, suppliers, vendors or brands."
+      finalTitle="Get the free report first."
+      finalBody="Use one domain to see the quality of the data, the clarity of the findings and the remediation value. Then decide whether to expand into domain health reporting, portfolio monitoring, real-time alerts or cloud data access."
     />
   );
 }
