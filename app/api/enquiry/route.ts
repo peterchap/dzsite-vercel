@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   const honeypot = clean(formData.get("website"));
   if (honeypot) {
-    return NextResponse.redirect(new URL("/contact?submitted=1", request.url), 303);
+    return NextResponse.redirect(new URL("/contact/thanks", request.url), 303);
   }
 
   const payload = {
@@ -47,7 +47,5 @@ export async function POST(request: NextRequest) {
 
   console.info("Datazag enquiry received", payload);
 
-  const redirectUrl = new URL("/contact", request.url);
-  redirectUrl.searchParams.set("submitted", "1");
-  return NextResponse.redirect(redirectUrl, 303);
+  return NextResponse.redirect(new URL("/contact/thanks", request.url), 303);
 }
