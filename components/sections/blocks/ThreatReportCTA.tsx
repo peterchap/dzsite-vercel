@@ -6,6 +6,7 @@ import { PortableText } from 'next-sanity';
 
 // Common free webmail domains to validate against
 const freeWebmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
+const portalReportUrl = process.env.NEXT_PUBLIC_PORTAL_REPORT_URL || 'https://app.datazag.com/threat-report';
 
 // Block-level rendering for the rich-text body below the subheadline
 const bodyComponents = {
@@ -67,7 +68,6 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
     body,
     placeholderText = "Enter your work email",
     buttonText = "Get my free report",
-    successMessage = "[✓] Domain isolated. Mapping DNS infrastructure and footprint... Check your inbox shortly for your custom target report payload.",
     footerPrimaryText = "No asset list, no scoping call, no questionnaire.",
     footerSecondaryText = "The report tells you two things you probably can't see today: which platforms expose you to impersonation, and what's already been built to exploit them. Need a report on a domain that isn't your own — a client's, a subsidiary's, a vendor's? That's a quick conversation.",
     contactLinkText = "Talk to us.",
@@ -138,14 +138,10 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
           </div>
 
           {/* Form Processing Terminal */}
-          <form action="/api/enquiry" method="post" onSubmit={handleValidateAndSubmit} className="space-y-4 max-w-2xl">
-            <input type="hidden" name="source" value="free_report_form" />
-            <input type="hidden" name="page" value="/#free-report" />
-            <input type="hidden" name="name" value="Free report request" />
-            <input type="hidden" name="company" value={domain || 'Domain from submitted email'} />
-            <input type="hidden" name="scope" value={domain} />
-            <input type="hidden" name="enquiry_type" value="Get a free domain report" />
-            <input type="hidden" name="message" value={domain ? `Free domain report requested for ${domain}` : 'Free domain report requested'} />
+          <form action={portalReportUrl} method="get" onSubmit={handleValidateAndSubmit} className="space-y-4 max-w-2xl">
+            <input type="hidden" name="domain" value={domain} />
+            <input type="hidden" name="consentReport" value={agreedRequired ? '1' : '0'} />
+            <input type="hidden" name="consentMarketing" value={agreedOptional ? '1' : '0'} />
 
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
@@ -172,7 +168,6 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
-                  name="processing_authorisation"
                   checked={agreedRequired}
                   onChange={(e) => setAgreedRequired(e.target.checked)}
                   className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
@@ -190,7 +185,6 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
-                  name="marketing_opt_in"
                   checked={agreedOptional}
                   onChange={(e) => setAgreedOptional(e.target.checked)}
                   className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-[#05070F] text-blue-600 focus:ring-1 focus:ring-blue-500 cursor-pointer"
