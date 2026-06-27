@@ -97,23 +97,25 @@ export default function ContactPage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Enquiry intake</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">Start with the route, then the details.</h2>
                 <p className="mt-4 text-sm leading-6 text-slate-300">
-                  This form is the front-end concept. It can later be connected to email, CRM, HubSpot, Sanity or the customer portal.
+                  This form posts to the Datazag enquiry endpoint. It can later be connected to email, CRM, HubSpot, Sanity or the customer portal.
                 </p>
               </div>
 
-              <form className="mt-6 grid gap-4" action="#" method="post">
+              <form className="mt-6 grid gap-4" action="/api/enquiry" method="post">
+                <input type="hidden" name="source" value="contact_form" />
+                <input type="hidden" name="page" value="/contact" />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Name">
-                    <input className={inputClass} name="name" type="text" placeholder="Your name" />
+                    <input className={inputClass} name="name" type="text" placeholder="Your name" required />
                   </Field>
                   <Field label="Work email">
-                    <input className={inputClass} name="email" type="email" placeholder="you@company.com" />
+                    <input className={inputClass} name="email" type="email" placeholder="you@company.com" required />
                   </Field>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Company">
-                    <input className={inputClass} name="company" type="text" placeholder="Company name" />
+                    <input className={inputClass} name="company" type="text" placeholder="Company name" required />
                   </Field>
                   <Field label="Domain or portfolio size">
                     <input className={inputClass} name="scope" type="text" placeholder="example.com, 50 domains, 1M links/month" />
@@ -121,7 +123,7 @@ export default function ContactPage() {
                 </div>
 
                 <Field label="What do you want to do?">
-                  <select className={inputClass} name="enquiry_type" defaultValue="">
+                  <select className={inputClass} name="enquiry_type" defaultValue="" required>
                     <option value="" disabled>
                       Choose an enquiry type
                     </option>
@@ -143,7 +145,7 @@ export default function ContactPage() {
 
                 <div className="grid gap-3 rounded-2xl border border-white/10 bg-[#030619]/60 p-4 text-sm leading-6 text-slate-300">
                   <label className="flex gap-3">
-                    <input className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10" name="processing_authorisation" type="checkbox" />
+                    <input className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10" name="processing_authorisation" type="checkbox" required />
                     <span>
                       I authorise Datazag to process the information I submit so you can respond to this enquiry, assess the relevant domain or use case, and provide the requested follow-up.
                     </span>
@@ -161,7 +163,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="text-xs leading-5 text-slate-500">
-                  This concept form is not yet wired to a backend in this page. Once connected, the processing checkbox should be required for submission; the marketing opt-in should remain optional.
+                  Processing authorisation is required so Datazag can respond to the enquiry. Marketing opt-in is optional and is not required to receive a response.
                 </p>
               </form>
             </div>
@@ -210,9 +212,9 @@ export default function ContactPage() {
         <Container>
           <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 text-center md:p-8">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Privacy note</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Processing should be explicit. Marketing should be optional.</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Processing is explicit. Marketing is optional.</h2>
             <p className="mt-5 text-sm leading-6 text-slate-300">
-              For the live version, the processing authorisation should cover responding to the enquiry and producing any requested domain report. Marketing consent should be separate, optional and not required to receive the report or response.
+              Processing authorisation covers responding to the enquiry and producing any requested domain report. Marketing consent is separate, optional and not required to receive the report or response.
             </p>
           </div>
         </Container>
