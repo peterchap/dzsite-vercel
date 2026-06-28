@@ -36,7 +36,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
       <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
       <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
       <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
-      <StoryProof data={{ ...c.applicationsSection, items: c.applications }} />
+      <StoryProof />
       <StoryAudiences data={{ ...c.partners, audiences: c.partnerAudiences }} />
       <StoryReportCta
         data={{
