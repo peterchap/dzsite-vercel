@@ -20,16 +20,39 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
 
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
-      <StoryHero content={c} />
-      <StoryInsight content={c} />
-      <StorySignals content={c} />
-      <StoryTimeline content={c} />
-      <StoryEngine content={c} />
-      <StoryProducts content={c} />
-      <StoryProof content={c} />
-      <StoryAudiences content={c} />
-      <StoryReportCta content={c} />
-      <StoryObservatory />
+      <StoryHero
+        data={{
+          eyebrow: c.heroEyebrow,
+          title: c.heroTitle,
+          intro: c.heroIntro,
+          statement: c.heroStatement,
+          primaryCta: c.primaryCta,
+          secondaryCta: c.secondaryCta,
+          pills: c.heroPills,
+        }}
+      />
+      <StoryInsight data={c.insight} />
+      <StorySignals data={{ ...c.signals, items: c.internetSignals }} />
+      <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
+      <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
+      <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
+      <StoryProof data={{ ...c.applicationsSection, items: c.applications }} />
+      <StoryAudiences data={{ ...c.partners, audiences: c.partnerAudiences }} />
+      <StoryReportCta
+        data={{
+          ...c.finalCta,
+          button: c.finalButton,
+          checklist: ["DNS posture", "Visible platforms", "Subdomain discovery", "External threats", "Recommendations", "Returnable report link"],
+        }}
+      />
+      <StoryObservatory
+        data={{
+          kicker: "Coming soon",
+          title: "Datazag Observatory",
+          body: "Explore aggregated internet infrastructure trends from Datazag's intelligence lake: domains, DNS, certificates, hosting, ASNs, platforms and impersonation patterns.",
+          items: ["Internet pulse", "Platform trends", "Certificate activity", "ASN movement", "Report builder"],
+        }}
+      />
     </main>
   );
 }
