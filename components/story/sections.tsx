@@ -7,6 +7,7 @@ import { ObservatoryPreview } from "@/components/diagrams/ObservatoryPreview/Obs
 import { RelationshipIntelligence } from "@/components/diagrams/RelationshipIntelligence/RelationshipIntelligence";
 import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
+import { ContinueExploring } from "./ContinueExploring";
 import { StoryButton, StoryCardGrid, StoryParagraphs, StorySection } from "./primitives";
 import { LivingInternetBackdrop } from "./diagrams/LivingInternetBackdrop";
 
@@ -50,7 +51,7 @@ export function StoryHero({ data }: { data: HeroProps }) {
   );
 }
 
-export function StoryInsight() {
+export function StoryInsight({ data }: { data: CopySection }) {
   return (
     <section className="relative border-t border-white/10 py-20 md:py-28">
       <Container>
@@ -121,6 +122,11 @@ export function StoryEngine({ data }: { data: EngineProps }) {
           <IntelligenceEngine />
         </div>
       </div>
+      <ContinueExploring
+        title="How It Works"
+        description="Understand how Datazag builds an internet infrastructure graph from public signals."
+        href="/how-it-works"
+      />
     </StorySection>
   );
 }
@@ -129,6 +135,11 @@ export function StoryProducts({ data }: { data: ProductsProps }) {
   return (
     <StorySection section={data}>
       <DeliveryMethods />
+      <ContinueExploring
+        title="Domain Intelligence"
+        description="Explore the datasets, formats and infrastructure coverage behind the platform."
+        href="/domain-intelligence"
+      />
     </StorySection>
   );
 }
@@ -138,6 +149,11 @@ export function StoryProof() {
     <section className="relative border-t border-white/10 py-20 md:py-28">
       <Container>
         <LiveInternetIntelligence />
+        <ContinueExploring
+          title="Threat Alerts"
+          description="See how infrastructure intelligence becomes alerts, evidence and workflow actions."
+          href="/alerts"
+        />
       </Container>
     </section>
   );
@@ -149,6 +165,18 @@ export function StoryAudiences({ data }: { data: AudiencesProps }) {
       <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
         <StoryParagraphs body={data.body} />
         <StoryCardGrid items={data.audiences} columns="md:grid-cols-2" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ContinueExploring
+          title="MSSP Partners"
+          description="See how partners use Datazag to create customer-facing intelligence services."
+          href="/mssp-partners"
+        />
+        <ContinueExploring
+          title="ESP Partners"
+          description="See how email platforms can use infrastructure intelligence for safer decisions."
+          href="/esp-partners"
+        />
       </div>
     </StorySection>
   );
