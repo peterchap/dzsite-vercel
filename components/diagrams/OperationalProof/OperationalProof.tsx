@@ -56,9 +56,9 @@ export function OperationalProof() {
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Datazag in operation</p>
-            <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-5xl">Evidence from a live infrastructure intelligence system.</h3>
+            <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-5xl">Built on live internet infrastructure data.</h3>
             <p className="mt-5 text-sm leading-6 text-slate-300 md:text-base">
-              The homepage should not rely only on claims. These operating metrics frame Datazag as a continuously running intelligence layer, ready to become live counters later.
+              Datazag continuously observes domains, DNS, certificates, hosting and network relationships, then turns those signals into explainable intelligence for reports, alerts, APIs and cloud datasets.
             </p>
           </div>
 
