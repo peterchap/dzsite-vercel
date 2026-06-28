@@ -4,6 +4,7 @@ import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { LiveInternetIntelligence } from "@/components/diagrams/LiveInternetIntelligence/LiveInternetIntelligence";
 import { ObservatoryPreview } from "@/components/diagrams/ObservatoryPreview/ObservatoryPreview";
+import { RelationshipIntelligence } from "@/components/diagrams/RelationshipIntelligence/RelationshipIntelligence";
 import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
 import { StoryButton, StoryCardGrid, StoryParagraphs, StorySection } from "./primitives";
@@ -49,11 +50,13 @@ export function StoryHero({ data }: { data: HeroProps }) {
   );
 }
 
-export function StoryInsight({ data }: { data: CopySection }) {
+export function StoryInsight() {
   return (
-    <StorySection section={data}>
-      <StoryParagraphs body={data.body} />
-    </StorySection>
+    <section className="relative border-t border-white/10 py-20 md:py-28">
+      <Container>
+        <RelationshipIntelligence />
+      </Container>
+    </section>
   );
 }
 
