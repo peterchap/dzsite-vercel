@@ -1,6 +1,7 @@
 import { DeliveryMethods } from "@/components/diagrams/DeliveryMethods/DeliveryMethods";
 import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline/EarlyWarningTimeline";
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
+import { OperationalProof } from "@/components/diagrams/OperationalProof/OperationalProof";
 import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
 import { StoryButton, StoryCardGrid, StoryParagraphs, StorySection } from "./primitives";
@@ -132,7 +133,7 @@ export function StoryProducts({ data }: { data: ProductsProps }) {
 export function StoryProof({ data }: { data: ProofProps }) {
   return (
     <StorySection section={data}>
-      <StoryCardGrid items={data.items} columns="md:grid-cols-3" />
+      <OperationalProof />
     </StorySection>
   );
 }
