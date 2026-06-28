@@ -31,7 +31,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
           pills: c.heroPills,
         }}
       />
-      <StoryInsight data={c.insight} />
+      <StoryInsight />
       <StorySignals data={{ ...c.signals, items: c.internetSignals }} />
       <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
       <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
@@ -45,14 +45,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
           checklist: ["DNS posture", "Visible platforms", "Subdomain discovery", "External threats", "Recommendations", "Returnable report link"],
         }}
       />
-      <StoryObservatory
-        data={{
-          kicker: "Coming soon",
-          title: "Datazag Observatory",
-          body: "Explore aggregated internet infrastructure trends from Datazag's intelligence lake: domains, DNS, certificates, hosting, ASNs, platforms and impersonation patterns.",
-          items: ["Internet pulse", "Platform trends", "Certificate activity", "ASN movement", "Report builder"],
-        }}
-      />
+      <StoryObservatory />
     </main>
   );
 }
