@@ -107,10 +107,10 @@ export function StoryTimeline({ data }: { data: TimelineProps }) {
 export function StoryEngine({ data }: { data: EngineProps }) {
   return (
     <StorySection id="how-it-works" section={data}>
-      <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-        <div>
+      <div className="grid gap-14 lg:grid-cols-[minmax(260px,0.58fr)_minmax(0,1.42fr)] lg:items-center xl:gap-20">
+        <div className="max-w-md">
           <StoryParagraphs body={data.body} />
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             {data.proofPoints.map((point) => (
               <div key={point.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
                 <p className="text-lg font-semibold text-cyan-100">{point.title}</p>
@@ -119,7 +119,9 @@ export function StoryEngine({ data }: { data: EngineProps }) {
             ))}
           </div>
         </div>
-        <IntelligenceEngine />
+        <div className="min-w-0 lg:-mr-6 xl:-mr-10">
+          <IntelligenceEngine />
+        </div>
       </div>
     </StorySection>
   );
