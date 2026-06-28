@@ -1,3 +1,4 @@
+import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
 import { StoryButton, StoryCardGrid, StoryParagraphs, StorySection } from "./primitives";
@@ -106,10 +107,10 @@ export function StoryTimeline({ data }: { data: TimelineProps }) {
 export function StoryEngine({ data }: { data: EngineProps }) {
   return (
     <StorySection id="how-it-works" section={data}>
-      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+      <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
         <div>
           <StoryParagraphs body={data.body} />
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             {data.proofPoints.map((point) => (
               <div key={point.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
                 <p className="text-lg font-semibold text-cyan-100">{point.title}</p>
@@ -118,19 +119,7 @@ export function StoryEngine({ data }: { data: EngineProps }) {
             ))}
           </div>
         </div>
-        <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.03] p-6">
-          <div className="grid gap-4">
-            {data.evidence.map((item, index) => (
-              <div key={item.title} className="flex gap-4 rounded-2xl border border-white/10 bg-[#07102b] p-5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200">0{index + 1}</div>
-                <div>
-                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <IntelligenceEngine />
       </div>
     </StorySection>
   );
