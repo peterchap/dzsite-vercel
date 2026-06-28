@@ -2,13 +2,13 @@ const infrastructureNodes = [
   { id: "dns", label: "DNS", x: 16, y: 28, r: 3.2, tone: "primary" },
   { id: "cert", label: "CERT", x: 34, y: 18, r: 2.7, tone: "secondary" },
   { id: "domain", label: "DOMAIN", x: 50, y: 34, r: 4.4, tone: "core" },
-  { id: "host", label: "HOSTING", x: 70, y: 24, r: 3.1, tone: "primary" },
-  { id: "asn", label: "ASN", x: 84, y: 44, r: 2.9, tone: "secondary" },
-  { id: "platform", label: "PLATFORM", x: 62, y: 62, r: 4.1, tone: "core" },
+  { id: "host", label: "HOSTING", x: 68, y: 24, r: 3.1, tone: "primary" },
+  { id: "asn", label: "ASN", x: 78, y: 44, r: 2.9, tone: "secondary" },
+  { id: "platform", label: "PLATFORM", x: 60, y: 62, r: 4.1, tone: "core" },
   { id: "threat", label: "THREAT", x: 36, y: 68, r: 3, tone: "alert" },
   { id: "intel", label: "INTEL", x: 52, y: 82, r: 3.6, tone: "core" },
   { id: "mx", label: "MX", x: 20, y: 58, r: 2.5, tone: "secondary" },
-  { id: "sub", label: "SUBDOMAIN", x: 78, y: 76, r: 2.6, tone: "primary" },
+  { id: "sub", label: "SUBDOMAIN", x: 72, y: 76, r: 2.6, tone: "primary" },
 ];
 
 const edges = [
@@ -41,7 +41,7 @@ export function LivingInternetBackdrop() {
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(55,222,245,0.18),transparent_28%),radial-gradient(circle_at_78%_22%,rgba(86,168,245,0.14),transparent_30%),radial-gradient(circle_at_48%_78%,rgba(93,73,255,0.16),transparent_34%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30" />
-      <div className="absolute -right-24 top-16 hidden h-[680px] w-[760px] opacity-80 lg:block">
+      <div className="absolute right-0 top-16 hidden h-[660px] w-[680px] opacity-80 lg:block xl:right-12 2xl:right-28">
         <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
           <defs>
             <radialGradient id="dz-node-glow" cx="50%" cy="50%" r="50%">
