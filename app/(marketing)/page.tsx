@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import HomepageAtmosphereConcept, { type HomepageAtmosphereContent } from "@/components/sections/blocks/HomepageAtmosphereConcept";
+import StoryPage, { type StoryContent } from "@/components/story/StoryPage";
 import { sanityFetch } from "@/sanity/fetch";
 import { homepageAtmosphereQuery } from "@/sanity/queries";
 
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const content = await sanityFetch<Partial<HomepageAtmosphereContent> | null>(homepageAtmosphereQuery, {});
+  const content = await sanityFetch<Partial<StoryContent> | null>(homepageAtmosphereQuery, {});
 
-  return <HomepageAtmosphereConcept content={content} />;
+  return <StoryPage content={content} />;
 }
