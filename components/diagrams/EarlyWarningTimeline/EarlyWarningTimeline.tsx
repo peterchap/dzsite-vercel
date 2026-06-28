@@ -3,28 +3,24 @@ const detectionMarkers = [
     label: "SSL certificate published",
     time: "0s",
     detail: "New attack infrastructure becomes visible in public certificate streams.",
-    position: "left-[6%]",
     tone: "start",
   },
   {
     label: "Datazag alert",
     time: "~10s",
     detail: "Certificate, domain, DNS and platform signals are correlated and scored.",
-    position: "left-[20%]",
     tone: "datazag",
   },
   {
     label: "Campaign live",
     time: "minutes → hours",
     detail: "Infrastructure is connected to pages, redirects, mail flows or other campaign assets.",
-    position: "left-[48%]",
     tone: "attack",
   },
   {
     label: "Other tools",
     time: "hours → days",
     detail: "Many controls react after crawling, user exposure, abuse reports or blacklist publication.",
-    position: "left-[74%]",
     tone: "late",
   },
 ];
@@ -57,29 +53,31 @@ export function EarlyWarningTimeline() {
           </div>
         </div>
 
-        <div className="relative hidden min-h-[21rem] md:block">
-          <div className="absolute left-[7%] right-[7%] top-[8.3rem] h-2 rounded-full bg-gradient-to-r from-cyan-300 via-cyan-300/70 via-[24%] via-amber-300/45 to-slate-400/25" />
-          <div className="absolute left-[7%] right-[7%] top-[8.05rem] h-3 rounded-full bg-white/[0.035]" />
-          <div className="absolute left-[7%] top-[7.05rem] h-8 w-[18%] rounded-full border border-cyan-300/35 bg-cyan-300/[0.08]" />
-          <p className="absolute left-[8%] top-[5.1rem] rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+        <div className="relative hidden md:block">
+          <div className="absolute left-[6%] right-[6%] top-[5.6rem] h-3 rounded-full bg-white/[0.035]" />
+          <div className="absolute left-[6%] right-[6%] top-[5.7rem] h-2 rounded-full bg-gradient-to-r from-cyan-300 via-cyan-300/70 via-[24%] via-amber-300/45 to-slate-400/25" />
+          <div className="absolute left-[6%] top-[4.65rem] h-8 w-[22%] rounded-full border border-cyan-300/35 bg-cyan-300/[0.08]" />
+          <p className="absolute left-[7%] top-[2.7rem] rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-100">
             Datazag window
           </p>
-          <p className="absolute right-[7%] top-[5.1rem] rounded-full border border-slate-400/20 bg-white/[0.04] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-300">
+          <p className="absolute right-[6%] top-[2.7rem] rounded-full border border-slate-400/20 bg-white/[0.04] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-300">
             Conventional window
           </p>
 
-          {detectionMarkers.map((marker) => (
-            <article key={marker.label} className={`absolute top-[7.1rem] w-[11.5rem] -translate-x-1/2 ${marker.position}`}>
-              <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#07102b] text-xs font-semibold text-white shadow-xl shadow-black/20">
-                <span className={marker.tone === "datazag" ? "text-cyan-200" : marker.tone === "attack" ? "text-amber-200" : "text-slate-200"}>{marker.time}</span>
-              </div>
-              <div className={`min-h-[10.5rem] rounded-2xl border p-4 shadow-xl ${markerClasses(marker.tone)}`}>
-                <h4 className="text-sm font-semibold text-white">{marker.label}</h4>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{marker.time}</p>
-                <p className="mt-3 text-xs leading-5 text-slate-300">{marker.detail}</p>
-              </div>
-            </article>
-          ))}
+          <div className="grid grid-cols-4 gap-4 pt-20">
+            {detectionMarkers.map((marker) => (
+              <article key={marker.label} className="relative min-w-0">
+                <div className="absolute left-1/2 top-[-3.35rem] z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-[#07102b] text-xs font-semibold text-white shadow-xl shadow-black/20">
+                  <span className={marker.tone === "datazag" ? "text-cyan-200" : marker.tone === "attack" ? "text-amber-200" : "text-slate-200"}>{marker.time}</span>
+                </div>
+                <div className={`min-h-[11rem] rounded-2xl border p-4 shadow-xl ${markerClasses(marker.tone)}`}>
+                  <h4 className="text-sm font-semibold text-white">{marker.label}</h4>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{marker.time}</p>
+                  <p className="mt-3 text-xs leading-5 text-slate-300">{marker.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
 
         <div className="grid gap-3 md:hidden">
