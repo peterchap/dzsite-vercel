@@ -32,6 +32,13 @@ function markerClasses(tone: string) {
   return "border-sky-300/20 bg-sky-300/[0.05] text-sky-100";
 }
 
+function markerTextClasses(tone: string) {
+  if (tone === "datazag") return "text-cyan-200";
+  if (tone === "attack") return "text-amber-200";
+  if (tone === "late") return "text-slate-200";
+  return "text-sky-200";
+}
+
 export function EarlyWarningTimeline() {
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 shadow-2xl shadow-black/20 md:p-8">
@@ -53,28 +60,38 @@ export function EarlyWarningTimeline() {
           </div>
         </div>
 
-        <div className="relative hidden md:block">
-          <div className="absolute left-[6%] right-[6%] top-[5.6rem] h-3 rounded-full bg-white/[0.035]" />
-          <div className="absolute left-[6%] right-[6%] top-[5.7rem] h-2 rounded-full bg-gradient-to-r from-cyan-300 via-cyan-300/70 via-[24%] via-amber-300/45 to-slate-400/25" />
-          <div className="absolute left-[6%] top-[4.65rem] h-8 w-[22%] rounded-full border border-cyan-300/35 bg-cyan-300/[0.08]" />
-          <p className="absolute left-[7%] top-[2.7rem] rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+        <div className="hidden md:grid md:grid-cols-4 md:grid-rows-[auto_auto_auto_1fr] md:gap-x-4 md:gap-y-4">
+          <div className="col-span-1 rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-center text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-100">
             Datazag window
-          </p>
-          <p className="absolute right-[6%] top-[2.7rem] rounded-full border border-slate-400/20 bg-white/[0.04] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-300">
+          </div>
+          <div className="col-span-1" />
+          <div className="col-span-2 rounded-full border border-slate-400/20 bg-white/[0.04] px-3 py-1 text-center text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-300">
             Conventional window
-          </p>
+          </div>
 
-          <div className="grid grid-cols-4 gap-4 pt-20">
+          <div className="col-span-4 grid grid-cols-4 gap-4">
+            <div className="col-span-1 h-8 rounded-full border border-cyan-300/35 bg-cyan-300/[0.08]" />
+            <div className="col-span-3 h-8" />
+          </div>
+
+          <div className="col-span-4 grid grid-cols-4 gap-4">
             {detectionMarkers.map((marker) => (
-              <article key={marker.label} className="relative min-w-0">
-                <div className="absolute left-1/2 top-[-3.35rem] z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-[#07102b] text-xs font-semibold text-white shadow-xl shadow-black/20">
-                  <span className={marker.tone === "datazag" ? "text-cyan-200" : marker.tone === "attack" ? "text-amber-200" : "text-slate-200"}>{marker.time}</span>
+              <div key={`${marker.label}-dot`} className="relative flex h-11 items-center justify-center">
+                <div className="absolute left-0 right-0 top-1/2 h-3 -translate-y-1/2 rounded-full bg-white/[0.035]" />
+                <div className="absolute left-0 right-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-gradient-to-r from-cyan-300 via-cyan-300/70 to-slate-400/25" />
+                <div className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#07102b] text-xs font-semibold text-white shadow-xl shadow-black/20">
+                  <span className={markerTextClasses(marker.tone)}>{marker.time}</span>
                 </div>
-                <div className={`min-h-[11rem] rounded-2xl border p-4 shadow-xl ${markerClasses(marker.tone)}`}>
-                  <h4 className="text-sm font-semibold text-white">{marker.label}</h4>
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{marker.time}</p>
-                  <p className="mt-3 text-xs leading-5 text-slate-300">{marker.detail}</p>
-                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="col-span-4 grid grid-cols-4 gap-4">
+            {detectionMarkers.map((marker) => (
+              <article key={marker.label} className={`grid min-h-[12rem] grid-rows-[auto_auto_1fr] rounded-2xl border p-4 shadow-xl ${markerClasses(marker.tone)}`}>
+                <h4 className="text-sm font-semibold text-white">{marker.label}</h4>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{marker.time}</p>
+                <p className="mt-3 self-start text-xs leading-5 text-slate-300">{marker.detail}</p>
               </article>
             ))}
           </div>
