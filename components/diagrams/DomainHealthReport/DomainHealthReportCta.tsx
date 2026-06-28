@@ -8,15 +8,15 @@ const trustSignals = [
 const analysisSteps = [
   "DNS analysed",
   "Platforms mapped",
+  "Subdomains reviewed",
   "Certificates checked",
-  "Infrastructure reviewed",
   "Risk calculated",
 ];
 
 const reportSections = [
   { label: "Platform exposure", value: "Microsoft 365 · Cloudflare · Google Workspace" },
   { label: "DNS health", value: "SPF ✓ · DMARC ⚠ · MTA-STS ✓" },
-  { label: "External threat", value: "Platform impersonation opportunities" },
+  { label: "Subdomain health", value: "Ownership · exposure · stale services · takeover signals" },
 ];
 
 function ReportPreview() {
@@ -26,7 +26,7 @@ function ReportPreview() {
       <div className="relative">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Preview</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Multi-page preview</p>
             <h3 className="mt-2 text-xl font-semibold text-white">Domain Health Report</h3>
             <p className="mt-1 text-sm text-slate-400">example.com</p>
           </div>
@@ -77,7 +77,7 @@ export function DomainHealthReportCta({ buttonHref = "/#free-report" }: { button
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Domain Health Report</p>
               <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Analyse your domain in under two minutes.</h2>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                See your organisation the way an attacker does. Datazag reviews public DNS, visible platforms, subdomains, certificates and impersonation exposure, then sends a report you can share with technical and executive teams.
+                See your organisation the way an attacker does. Datazag reviews public DNS, visible platforms, subdomains, certificates and infrastructure exposure, then sends a detailed multi-page report for technical and executive teams.
               </p>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-[#030619]/65 p-3 md:p-4">
@@ -111,7 +111,7 @@ export function DomainHealthReportCta({ buttonHref = "/#free-report" }: { button
               <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Generated analysis</p>
                 <h3 className="mt-3 text-xl font-semibold text-white">What happens next</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">The report is generated from live checks, platform fingerprints and infrastructure intelligence.</p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">The report is generated from live checks, platform fingerprints, subdomain review and infrastructure intelligence.</p>
                 <div className="mt-5">
                   <AnalysisProgress />
                 </div>
