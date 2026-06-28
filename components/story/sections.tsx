@@ -1,3 +1,4 @@
+import { DeliveryMethods } from "@/components/diagrams/DeliveryMethods/DeliveryMethods";
 import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline/EarlyWarningTimeline";
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { Container } from "@/components/ui/Container";
@@ -123,10 +124,7 @@ export function StoryEngine({ data }: { data: EngineProps }) {
 export function StoryProducts({ data }: { data: ProductsProps }) {
   return (
     <StorySection section={data}>
-      <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-        <StoryParagraphs body={data.body} />
-        <StoryCardGrid items={data.products} columns="md:grid-cols-3" />
-      </div>
+      <DeliveryMethods />
     </StorySection>
   );
 }
