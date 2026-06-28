@@ -1,3 +1,4 @@
+import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline/EarlyWarningTimeline";
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
@@ -84,21 +85,13 @@ export function StorySignals({ data }: { data: SignalsProps }) {
 export function StoryTimeline({ data }: { data: TimelineProps }) {
   return (
     <StorySection section={data}>
-      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-        <StoryParagraphs body={data.body} />
-        <ol className="relative grid gap-5 md:grid-cols-5 md:gap-4">
-          <div className="pointer-events-none absolute left-[10%] right-[10%] top-[2.35rem] hidden h-px bg-gradient-to-r from-cyan-300/10 via-cyan-300/50 to-cyan-300/10 md:block" aria-hidden="true" />
-          {data.steps.map((step, index) => (
-            <li key={step.title} className="relative">
-              {index < data.steps.length - 1 ? <div className="absolute -right-3 top-[1.72rem] z-10 hidden h-5 w-5 rotate-45 border-r border-t border-cyan-300/50 md:block" aria-hidden="true" /> : null}
-              <article className="relative h-full rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200">{step.marker}</div>
-                <h3 className="text-sm font-semibold text-white">{step.title}</h3>
-                <p className="mt-3 text-xs leading-5 text-slate-400">{step.text}</p>
-              </article>
-            </li>
-          ))}
-        </ol>
+      <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr] lg:items-center xl:gap-16">
+        <div className="max-w-md">
+          <StoryParagraphs body={data.body} />
+        </div>
+        <div className="min-w-0 lg:-mr-4 xl:-mr-8">
+          <EarlyWarningTimeline />
+        </div>
       </div>
     </StorySection>
   );
