@@ -1,0 +1,30 @@
+export type Card = { title: string; text: string };
+export type TimelineStep = Card & { marker: string };
+export type Cta = { label: string; href: string };
+export type CopySection = { kicker: string; title: string; body?: string[] };
+
+export type StoryContent = {
+  heroEyebrow: string;
+  heroTitle: string;
+  heroIntro: string;
+  heroStatement: string;
+  primaryCta: Cta;
+  secondaryCta: Cta;
+  heroPills: string[];
+  insight: CopySection;
+  signals: CopySection;
+  platform: CopySection;
+  graph: CopySection;
+  delivery: CopySection;
+  partners: CopySection;
+  applicationsSection: CopySection;
+  finalCta: CopySection;
+  finalButton: Cta;
+  internetSignals: Card[];
+  timelineSteps: TimelineStep[];
+  proofPoints: Card[];
+  graphEvidence: Card[];
+  deliveryCards: Card[];
+  partnerAudiences: Card[];
+  applications: Card[];
+};
