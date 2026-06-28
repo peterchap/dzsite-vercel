@@ -131,11 +131,13 @@ export function StoryProducts({ data }: { data: ProductsProps }) {
   );
 }
 
-export function StoryProof({ data }: { data: ProofProps }) {
+export function StoryProof() {
   return (
-    <StorySection section={data}>
-      <OperationalProof />
-    </StorySection>
+    <section className="relative border-t border-white/10 py-20 md:py-28">
+      <Container>
+        <OperationalProof />
+      </Container>
+    </section>
   );
 }
 
