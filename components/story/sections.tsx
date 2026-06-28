@@ -1,4 +1,5 @@
 import { DeliveryMethods } from "@/components/diagrams/DeliveryMethods/DeliveryMethods";
+import { DomainHealthReportCta } from "@/components/diagrams/DomainHealthReport/DomainHealthReportCta";
 import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline/EarlyWarningTimeline";
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { OperationalProof } from "@/components/diagrams/OperationalProof/OperationalProof";
@@ -150,25 +151,7 @@ export function StoryAudiences({ data }: { data: AudiencesProps }) {
 }
 
 export function StoryReportCta({ data }: { data: ReportCtaProps }) {
-  return (
-    <section id="free-report" className="relative border-t border-white/10 py-24 md:py-32">
-      <Container>
-        <div className="grid gap-10 rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.04] p-6 md:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">{data.kicker}</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">{data.title}</h2>
-            {data.body?.[0] ? <p className="mt-6 text-lg leading-8 text-slate-300">{data.body[0]}</p> : null}
-            <div className="mt-8"><StoryButton href={data.button.href}>{data.button.label}</StoryButton></div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {data.checklist.map((item) => (
-              <div key={item} className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4 text-sm font-medium text-slate-100">{item}</div>
-            ))}
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
+  return <DomainHealthReportCta buttonHref={data.button.href} />;
 }
 
 export function StoryObservatory({ data }: { data: ObservatoryProps }) {
