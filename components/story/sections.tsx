@@ -35,7 +35,7 @@ export function StoryHero({ data }: { data: HeroProps }) {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative max-w-4xl">
           <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{data.eyebrow}</p>
-          <h1 className="mt-8 text-5xl font-semibold tracking-tight text-white md:text-7xl lg:text-8xl">{data.title}</h1>
+          <h1 className="mt-8 text-5xl font-semibold tracking-tight text-white md:text-6xl lg:text-7xl">{data.title}</h1>
           <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">{data.intro}</p>
           <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-white">{data.statement}</p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
