@@ -54,7 +54,7 @@ export function CampaignAdvantageSection() {
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Early insight</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">More insight reveals the campaign, not just one domain.</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">More insight reveals the campaign, not just one domain.</h2>
           </div>
           <p className="max-w-3xl text-lg leading-8 text-slate-300">
             Seeing infrastructure before it goes live gives Datazag time to map the surrounding campaign surface: related domains, IPs, certificates, providers and history. That wider view helps defenders block more of the campaign and improves the next detection.
