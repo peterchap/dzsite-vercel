@@ -10,9 +10,9 @@ const outcomes = [
     steps: ["Domain", "Policy", "Gateway", "Blocked"],
   },
   {
-    title: "Map the blast area",
-    text: "The first signal becomes a pivot point. Datazag analyses the surrounding domains, IPs, certificates, providers and history to identify the wider campaign surface.",
-    steps: ["Signal", "Pivots", "Related", "Blast area"],
+    title: "Reveal the campaign surface",
+    text: "The first signal becomes a pivot point. Datazag analyses surrounding domains, IPs, certificates, providers and history to identify the wider attacker infrastructure.",
+    steps: ["Signal", "Pivots", "Related", "Campaign"],
     highlight: true,
   },
   {
@@ -53,11 +53,11 @@ export function CampaignAdvantageSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Why early matters</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Early detection lets you defend against the campaign, not just one domain.</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Early insight</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">More insight reveals the campaign, not just one domain.</h2>
           </div>
           <p className="max-w-3xl text-lg leading-8 text-slate-300">
-            Seeing infrastructure before it goes live gives Datazag time to map the surrounding blast area: related domains, IPs, certificates, providers and history. That wider view helps defenders block more of the campaign and improves the next detection.
+            Seeing infrastructure before it goes live gives Datazag time to map the surrounding campaign surface: related domains, IPs, certificates, providers and history. That wider view helps defenders block more of the campaign and improves the next detection.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export function CampaignAdvantageSection() {
         </div>
 
         <div className="mt-8 rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/[0.06] p-5 text-center">
-          <p className="text-xl font-semibold tracking-tight text-white md:text-2xl">The earlier the first signal arrives, the more time there is to map the relationships around it.</p>
+          <p className="text-xl font-semibold tracking-tight text-white md:text-2xl">Earlier visibility creates better intelligence.</p>
         </div>
       </div>
     </section>
