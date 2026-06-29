@@ -8,6 +8,7 @@ import {
   StoryObservatory,
   StoryProducts,
   StoryProof,
+  StoryRelationshipIntelligence,
   StoryReportCta,
   StorySignals,
   StoryTimeline,
@@ -35,6 +36,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
       <StorySignals data={{ ...c.signals, items: c.internetSignals }} />
       <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
       <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
+      <StoryRelationshipIntelligence />
       <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
       <StoryProof />
       <StoryAudiences data={{ ...c.partners, audiences: c.partnerAudiences }} />
