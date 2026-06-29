@@ -261,7 +261,7 @@ function PortfolioGraphic() {
 
 function DataDictionary({ entries }: { entries: { field: string; meaning: string }[] }) {
   return (
-    <div className="mt-5 rounded-2xl border border-white/10 bg-[#030619]/70 p-4 opacity-100 transition md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
+    <div className="mt-5 rounded-2xl border border-white/10 bg-[#030619]/70 p-4">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Data dictionary preview</p>
       <div className="mt-3 grid gap-2">
         {entries.map((entry) => (
@@ -384,18 +384,20 @@ export default async function InfrastructureIntelligencePage() {
           <SectionHeader
             eyebrow="Choose what you need to understand"
             title="Five intelligence products. Inspect what is inside each one."
-            body="Each product is a dataset family, not just a label. Hover or focus a card to see example fields and decide which dataset matches your workflow."
+            body="Each product is a dataset family, not just a label. The cards show example fields so a buyer can quickly see which dataset matches their workflow."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
             {intelligenceProducts.map((product) => (
-              <article key={product.title} tabIndex={0} className={`group flex min-h-[30rem] flex-col rounded-[1.5rem] border p-5 outline-none transition focus:border-cyan-300/45 ${product.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
+              <article key={product.title} tabIndex={0} className={`flex h-full min-h-[34rem] flex-col rounded-[1.5rem] border p-5 outline-none transition focus:border-cyan-300/45 ${product.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
                 <h3 className="text-xl font-semibold text-white">{product.title}</h3>
                 <p className="mt-4 text-base font-semibold leading-6 text-cyan-100">{product.outcome}</p>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{product.detail}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {product.items.map((item) => <Pill key={item}>{item}</Pill>)}
                 </div>
-                <DataDictionary entries={product.dictionary} />
+                <div className="mt-auto pt-5">
+                  <DataDictionary entries={product.dictionary} />
+                </div>
               </article>
             ))}
           </div>
