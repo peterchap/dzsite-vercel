@@ -23,15 +23,15 @@ export const defaultStoryContent: StoryContent = {
     title: "The preparation phase is visible if you know where to look.",
   },
   platform: {
-    kicker: "The intelligence engine",
-    title: "Signals become evidence. Evidence becomes intelligence.",
+    kicker: "Turning intelligence into action",
+    title: "Intelligence becomes evidence. Evidence becomes action.",
     body: [
-      "Datazag treats every new observation as the start of an investigation. Signals are correlated, enriched, scored and explained before they are delivered as reports, alerts or data products.",
+      "Datazag packages relationship intelligence into reports, alerts, APIs and data products so teams can block, investigate, prioritise and explain decisions before campaigns reach users.",
     ],
   },
   graph: {
-    kicker: "Why earlier matters",
-    title: "Earlier visibility creates more response options.",
+    kicker: "Early detection",
+    title: "Earlier visibility creates better intelligence.",
     body: [
       "Traditional controls usually see the threat when it reaches a user, inbox, browser or endpoint. Datazag looks earlier, at the infrastructure attackers need before campaigns become operational.",
     ],
