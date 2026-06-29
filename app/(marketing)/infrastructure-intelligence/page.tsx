@@ -63,47 +63,70 @@ const fallbackStatus: Required<StatusSnapshot> = {
 
 const audiences = ["SOC teams", "Threat intelligence", "Fraud teams", "Data platforms", "Security vendors", "MSSPs"];
 
-const intelligenceProducts = [
+const datasetFamilies = [
   {
-    title: "Domain Intelligence",
-    outcome: "Understand domains, DNS and email infrastructure.",
-    detail: "Use this when you need to enrich domains, hosts, email infrastructure or DNS activity with current posture and explainable risk.",
-    answers: ["What is this domain?", "Who hosts it?", "How is email configured?", "Is the domain risky?"],
-    uses: ["DNS log enrichment", "Email security", "Fraud screening"],
-    dictionary: ["domain", "dns_profile", "mail_posture", "risk_reason_codes"],
+    title: "Domain & DNS",
+    summary: "Domains, hosts, DNS posture, mail configuration and domain-level risk features.",
+    categories: ["Domain identity", "DNS records", "Mail posture", "Provider attribution", "Risk features", "Change flags"],
+    freshness: "Hourly snapshots with live signal ingestion",
+    gaps: "Not every domain exposes every record type; nulls are explicit where evidence is absent.",
+    pricing: "API credits, reports or cloud data share",
   },
   {
-    title: "Network Intelligence",
-    outcome: "Understand the infrastructure behind internet services.",
-    detail: "Use this when you need to understand the IPs, ASNs, prefixes, routing context and hosting relationships behind domains and platforms.",
-    answers: ["What network is this on?", "Who owns the ASN?", "Is the prefix stable?", "Is infrastructure concentrated?"],
-    uses: ["Threat hunting", "Network risk", "Provider analysis"],
-    dictionary: ["ip_address", "asn", "prefix", "network_risk"],
+    title: "Network & Routing",
+    summary: "IPs, ASNs, prefixes, route context, hosting relationships and network risk indicators.",
+    categories: ["IP context", "ASN profile", "Prefix context", "Routing changes", "Hosting signals", "Concentration features"],
+    freshness: "Hourly infrastructure refresh",
+    gaps: "Ownership and routing visibility depends on available public internet infrastructure signals.",
+    pricing: "Cloud data share or API enrichment",
   },
   {
-    title: "Platform Intelligence",
-    outcome: "Understand the platforms your organisation depends on.",
-    detail: "Use this when you need to map cloud, SaaS, email, CDN, DNS and provider exposure across your organisation, suppliers or campaigns.",
-    answers: ["Which platforms are exposed?", "Which provider is behind it?", "Is this a trusted service?", "What is being impersonated?"],
-    uses: ["Platform exposure", "Supplier review", "Impersonation detection"],
-    dictionary: ["provider", "platform_category", "service_fingerprint", "exposure"],
+    title: "Platform & Provider",
+    summary: "Cloud, SaaS, email, CDN, DNS, hosting and technographic platform intelligence.",
+    categories: ["Provider", "Platform category", "Service fingerprint", "Email platform", "Cloud/CDN", "Exposure evidence"],
+    freshness: "Hourly where DNS/platform evidence changes",
+    gaps: "Provider attribution is evidence-led and may be conservative where signals are ambiguous.",
+    pricing: "Reports, alerts, API or cloud data share",
   },
   {
-    title: "Relationship Intelligence",
-    outcome: "Reveal the campaign, not just the first indicator.",
-    detail: "Use this when you need to expand one signal into related domains, IPs, certificates, providers, historical observations and campaign context.",
-    answers: ["What else is connected?", "How concentrated is it?", "What changed recently?", "What should we block next?"],
-    uses: ["Campaign discovery", "SOC triage", "Evidence packs"],
-    dictionary: ["pivot_entity", "shared_infrastructure", "concentration_score", "campaign_context"],
+    title: "Relationship Graph",
+    summary: "Pivots, shared infrastructure, campaign surface, concentration analysis and evidence paths.",
+    categories: ["Pivot entity", "Shared IPs", "Shared certificates", "Related domains", "Campaign context", "Evidence paths"],
+    freshness: "Updated as new domains, certificates and infrastructure changes are observed",
+    gaps: "Relationship strength varies with available evidence; confidence is surfaced rather than hidden.",
+    pricing: "Alerts, evidence packs, API or data share",
     highlight: true,
   },
   {
-    title: "Historical Intelligence",
-    outcome: "Understand how infrastructure changes over time.",
-    detail: "Use this when you need point-in-time context, deltas, trend analysis or historical evidence for investigations, models and reports.",
-    answers: ["When did this appear?", "What changed?", "Was this present before?", "Is velocity abnormal?"],
-    uses: ["Time travel", "Backtesting", "Portfolio trend analysis"],
-    dictionary: ["snapshot_at", "first_seen", "change_flags", "velocity_features"],
+    title: "Historical & Deltas",
+    summary: "Point-in-time snapshots, deltas, first-seen dates, change velocity and trend features.",
+    categories: ["Snapshots", "First seen", "DNS deltas", "Provider changes", "Velocity features", "Trend flags"],
+    freshness: "Hourly deltas and retained snapshots",
+    gaps: "Historical depth varies by source, observation date and dataset family.",
+    pricing: "Cloud data share or portfolio reports",
+  },
+];
+
+const curatedDatasets = [
+  {
+    title: "Domain Risk Enrichment",
+    text: "A practical starting table for joining domains from logs, forms, emails or fraud workflows to risk, DNS, provider and reason-code context.",
+    includes: ["Domain & DNS", "Platform", "Risk", "History"],
+  },
+  {
+    title: "Campaign Discovery",
+    text: "A curated pack for expanding one indicator into related domains, IPs, certificates, providers and historical context.",
+    includes: ["Relationship Graph", "Network", "Certificates", "Historical"],
+  },
+  {
+    title: "Platform Exposure",
+    text: "A focused dataset for mapping cloud, SaaS, email, CDN and provider exposure across a domain, supplier or portfolio.",
+    includes: ["Platform", "DNS", "Mail", "Provider evidence"],
+  },
+  {
+    title: "Portfolio Intelligence",
+    text: "A report-ready pack for comparing domains, subsidiaries, clients or suppliers across posture, exposure, change and risk.",
+    includes: ["Domain", "Platform", "Historical", "Relationship"],
   },
 ];
 
@@ -258,37 +281,31 @@ function PortfolioGraphic() {
   );
 }
 
-function ProductCard({ product }: { product: (typeof intelligenceProducts)[number] }) {
+function DatasetFamilyCard({ family }: { family: (typeof datasetFamilies)[number] }) {
   return (
-    <article className={`flex h-full flex-col rounded-[1.5rem] border p-5 ${product.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
-      <h3 className="text-xl font-semibold text-white">{product.title}</h3>
-      <p className="mt-4 text-base font-semibold leading-6 text-cyan-100">{product.outcome}</p>
-      <p className="mt-3 text-sm leading-6 text-slate-400">{product.detail}</p>
-
-      <div className="mt-5 grid gap-3">
-        <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Questions</p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {product.answers.map((answer) => (
-              <div key={answer} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs leading-5 text-slate-300">{answer}</div>
-            ))}
-          </div>
+    <article className={`flex h-full flex-col rounded-[1.5rem] border p-5 ${family.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
+      <h3 className="text-xl font-semibold text-white">{family.title}</h3>
+      <p className="mt-3 text-sm leading-6 text-slate-400">{family.summary}</p>
+      <div className="mt-5 rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Data categories</p>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {family.categories.map((category) => (
+            <div key={category} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs leading-5 text-slate-300">{category}</div>
+          ))}
         </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Used for</p>
-            <div className="mt-3 grid gap-2">
-              {product.uses.map((item) => <div key={item} className="rounded-lg bg-white/[0.035] px-2.5 py-1.5 text-xs text-slate-300">{item}</div>)}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Fields</p>
-            <div className="mt-3 grid gap-2">
-              {product.dictionary.map((field) => <code key={field} className="rounded-lg bg-white/[0.035] px-2.5 py-1.5 text-xs text-cyan-100">{field}</code>)}
-            </div>
-          </div>
+      </div>
+      <div className="mt-4 grid gap-3">
+        <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Freshness</p>
+          <p className="mt-2 text-xs leading-5 text-slate-300">{family.freshness}</p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Gaps / caveats</p>
+          <p className="mt-2 text-xs leading-5 text-slate-300">{family.gaps}</p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Pricing route</p>
+          <p className="mt-2 text-xs leading-5 text-slate-300">{family.pricing}</p>
         </div>
       </div>
     </article>
@@ -360,7 +377,7 @@ export default async function InfrastructureIntelligencePage() {
                 Datazag transforms domains, networks, platforms and relationships into explainable intelligence products that help security, fraud and data teams detect risk earlier, investigate faster and build better products.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="#products" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Explore products</a>
+                <a href="#products" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Explore datasets</a>
                 <a href="#start" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Find your next step</a>
               </div>
             </div>
@@ -416,11 +433,30 @@ export default async function InfrastructureIntelligencePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="What do I get?"
-            title="Choose the intelligence product that answers your question."
-            body="Each product is a dataset family with questions it answers, common use cases and example fields. Relationship context carries across the portfolio."
+            title="See whether the data qualifies before you go deeper."
+            body="A buyer usually wants to know four things first: what categories of data exist, how fresh it is, where there may be gaps, and how it is priced. The full schema is deliberately not exposed on the public site, but the categories below show enough to qualify interest."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-            {intelligenceProducts.map((product) => <ProductCard key={product.title} product={product} />)}
+            {datasetFamilies.map((family) => <DatasetFamilyCard key={family.title} family={family} />)}
+          </div>
+
+          <div className="mt-12 rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Curated datasets</p>
+              <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white md:text-4xl">Start with a pack, not a hundred-column table.</h3>
+              <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">Datazag can expose broad infrastructure tables, but most teams should start with curated datasets that match a common workflow and make SQL easier to write.</p>
+            </div>
+            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {curatedDatasets.map((dataset) => (
+                <article key={dataset.title} className="rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
+                  <h4 className="text-lg font-semibold text-white">{dataset.title}</h4>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{dataset.text}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {dataset.includes.map((item) => <Pill key={item}>{item}</Pill>)}
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
