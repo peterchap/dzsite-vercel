@@ -124,13 +124,6 @@ const relationshipMethods = [
   { title: "Context scoring", example: "A neutral-looking domain inherits risk from its neighbours", text: "Use graph context to score domains that may not look suspicious in isolation but share infrastructure with higher-risk activity." },
 ];
 
-const rawFeedBenefits = [
-  { title: "Pre-enriched", text: "DNS, hosting, provider, network and historical context is already connected before delivery." },
-  { title: "Pre-scored", text: "Risk scores, classifications and reason codes are computed against the wider infrastructure graph." },
-  { title: "Explainable", text: "Every score is supported by the signals and relationships that contributed to the decision." },
-  { title: "Continuously updated", text: "Hourly infrastructure updates and live signal ingestion keep teams close to today's internet." },
-];
-
 const deliveryOptions = [
   {
     title: "Reports",
@@ -272,23 +265,30 @@ function ProductCard({ product }: { product: (typeof intelligenceProducts)[numbe
       <p className="mt-4 text-base font-semibold leading-6 text-cyan-100">{product.outcome}</p>
       <p className="mt-3 text-sm leading-6 text-slate-400">{product.detail}</p>
 
-      <div className="mt-5 rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Questions it answers</p>
-        <div className="mt-3 grid gap-2">
-          {product.answers.map((answer) => (
-            <div key={answer} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs leading-5 text-slate-300">{answer}</div>
-          ))}
+      <div className="mt-5 grid gap-3">
+        <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Questions</p>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {product.answers.map((answer) => (
+              <div key={answer} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs leading-5 text-slate-300">{answer}</div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        {product.uses.map((item) => <Pill key={item}>{item}</Pill>)}
-      </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Used for</p>
+            <div className="mt-3 grid gap-2">
+              {product.uses.map((item) => <div key={item} className="rounded-lg bg-white/[0.035] px-2.5 py-1.5 text-xs text-slate-300">{item}</div>)}
+            </div>
+          </div>
 
-      <div className="mt-auto pt-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Example fields</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {product.dictionary.map((field) => <code key={field} className="rounded-lg border border-white/10 bg-[#030619]/70 px-2.5 py-1.5 text-xs text-cyan-100">{field}</code>)}
+          <div className="rounded-2xl border border-white/10 bg-[#030619]/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Fields</p>
+            <div className="mt-3 grid gap-2">
+              {product.dictionary.map((field) => <code key={field} className="rounded-lg bg-white/[0.035] px-2.5 py-1.5 text-xs text-cyan-100">{field}</code>)}
+            </div>
+          </div>
         </div>
       </div>
     </article>
@@ -390,14 +390,19 @@ export default async function InfrastructureIntelligencePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="The challenge"
-            title="Most teams see the alert before they understand the infrastructure behind it."
-            body="Every investigation starts with missing context: what is this domain, who hosts it, what else is connected, how risky is it and has it changed before? Infrastructure Intelligence gives that context back to the team before they lose time collecting it manually."
+            title="Stop chasing context. Start solving alerts."
+            body="Every second counts during an investigation. Infrastructure Intelligence automatically delivers the domain, hosting and risk history your team needs before they waste time hunting for it."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {["One suspicious domain", "Many manual lookups", "Delayed decision"].map((item, index) => (
-              <div key={item} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 text-center">
+            {[
+              { title: "Alert arrives", text: "A domain, host, URL or provider signal appears in your workflow." },
+              { title: "Context is already attached", text: "History, hosting, network, platform and relationship evidence is ready to inspect." },
+              { title: "Decision happens faster", text: "Analysts can block, escalate, enrich or investigate without rebuilding context manually." },
+            ].map((item, index) => (
+              <div key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 text-center">
                 <p className="mx-auto flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-sm font-semibold text-cyan-100">{index + 1}</p>
-                <h3 className="mt-4 text-lg font-semibold text-white">{item}</h3>
+                <h3 className="mt-4 text-lg font-semibold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{item.text}</p>
               </div>
             ))}
           </div>
