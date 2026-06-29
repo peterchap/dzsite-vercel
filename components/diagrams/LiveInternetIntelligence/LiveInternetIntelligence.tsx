@@ -1,62 +1,124 @@
-const coverage = {
+type CoverageSnapshot = {
+  domains?: number;
+  ips?: number;
+  threat_ips?: number;
+  infrastructure_ips?: number;
+  certificates?: number;
+  asns?: number;
+  prefixes?: number;
+  updated?: string;
+};
+
+type ActivitySnapshot = {
+  certificates?: number | null;
+  new_domains?: number | null;
+  san_domains?: number | null;
+  alerts?: number | null;
+  routing_changes?: number | null;
+  window?: string;
+  updated?: string;
+};
+
+type StatusSnapshot = {
+  certstream?: string;
+  dns?: string;
+  scores?: string;
+  graph_updated?: string;
+  snapshot?: string;
+  updated?: string;
+};
+
+const fallbackCoverage: Required<CoverageSnapshot> = {
   domains: 342010111,
-  internetIps: 3210567890,
-  infrastructureIps: 10543210,
+  ips: 3210567890,
+  threat_ips: 10543210,
+  infrastructure_ips: 10543210,
   certificates: 428341,
   asns: 184532,
   prefixes: 1322123,
   updated: "2026-06-28T11:00:00+00:00",
 };
 
-const activity = {
-  certificates: null as number | null,
-  newDomains: 412,
-  sanDomains: null as number | null,
+const fallbackActivity: Required<ActivitySnapshot> = {
+  certificates: null,
+  new_domains: 412,
+  san_domains: null,
   alerts: 83,
-  routingChanges: 17,
+  routing_changes: 17,
   window: "1h",
   updated: "2026-06-28T11:00:00+00:00",
 };
 
-const status = {
+const fallbackStatus: Required<StatusSnapshot> = {
   certstream: "live",
   dns: "live",
   scores: "live",
-  graphUpdated: "2026-06-28T06:12:00+00:00",
+  graph_updated: "2026-06-28T06:12:00+00:00",
   snapshot: "06:00 UTC",
   updated: "2026-06-28T11:03:00+00:00",
 };
 
-function formatCompact(value: number | null, suffix = "") {
-  if (value === null) return "—";
+async function fetchJson<T>(baseUrl: string | undefined, path: string, fallback: T): Promise<T> {
+  if (!baseUrl) return fallback;
+
+  try {
+    const response = await fetch(`${baseUrl.replace(/\/$/, "")}/${path}`, {
+      next: { revalidate: 900 },
+    });
+
+    if (!response.ok) return fallback;
+    return { ...fallback, ...(await response.json()) };
+  } catch {
+    return fallback;
+  }
+}
+
+function formatCompact(value: number | null | undefined, suffix = "") {
+  if (value === null || value === undefined) return "—";
   if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B${suffix}`;
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(value >= 100_000_000 ? 0 : 1)}M${suffix}`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(value >= 10_000 ? 0 : 1)}k${suffix}`;
   return `${value.toLocaleString()}${suffix}`;
 }
 
-const coverageMetrics = [
-  { value: formatCompact(coverage.domains), label: "Domains monitored", detail: "Continuously correlated against DNS, certificates and infrastructure history." },
-  { value: formatCompact(coverage.infrastructureIps), label: "Infrastructure IPs", detail: "Active IP relationships mapped from the domain corpus." },
-  { value: formatCompact(coverage.asns), label: "ASN profiles", detail: "Network ownership and routing context for infrastructure intelligence." },
-  { value: formatCompact(coverage.prefixes), label: "Prefixes tracked", detail: "Routing-level context updated from infrastructure snapshots." },
-];
+function formatUpdatedLabel(value?: string) {
+  if (!value) return "Updated hourly";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Updated hourly";
+  return `Updated ${date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })} UTC`;
+}
 
-const activityMetrics = [
-  { value: formatCompact(activity.newDomains), label: "New domains", detail: "Not yet in the main corpus." },
-  { value: formatCompact(activity.alerts), label: "Alert candidates", detail: "Signals queued for scoring or review." },
-  { value: formatCompact(activity.routingChanges), label: "Routing changes", detail: "Network movement observed in the latest window." },
-  { value: status.snapshot, label: "Latest snapshot", detail: "Hourly infrastructure update." },
-];
+export async function LiveInternetIntelligence() {
+  const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_STATS_URL;
+  const [coverage, activity, status] = await Promise.all([
+    fetchJson<CoverageSnapshot>(baseUrl, "coverage.json", fallbackCoverage),
+    fetchJson<ActivitySnapshot>(baseUrl, "activity.json", fallbackActivity),
+    fetchJson<StatusSnapshot>(baseUrl, "status.json", fallbackStatus),
+  ]);
 
-const platformStatus = [
-  { label: "Certificate stream", value: status.certstream },
-  { label: "DNS intelligence", value: status.dns },
-  { label: "Risk scores", value: status.scores },
-  { label: "Infrastructure graph", value: "updated" },
-];
+  const domainLinkedIps = coverage.infrastructure_ips ?? coverage.threat_ips;
 
-export function LiveInternetIntelligence() {
+  const coverageMetrics = [
+    { value: formatCompact(coverage.domains), label: "Domains monitored", detail: "Continuously correlated against DNS, certificates and infrastructure history." },
+    { value: formatCompact(domainLinkedIps), label: "IPs hosting domains", detail: "IP addresses currently linked to domains in the Datazag corpus." },
+    { value: formatCompact(coverage.ips), label: "IPv4 addresses indexed", detail: "Total IP space indexed for context and infrastructure correlation." },
+    { value: formatCompact(coverage.asns), label: "Networks profiled", detail: "ASN ownership and routing context for infrastructure intelligence." },
+  ];
+
+  const activityMetrics = [
+    { value: formatCompact(activity.certificates), label: "Certificates observed", detail: "Certificate activity in the latest window." },
+    { value: formatCompact(activity.new_domains), label: "New domains", detail: "Domains not yet in the main corpus." },
+    { value: formatCompact(activity.alerts), label: "Alert candidates", detail: "Signals queued for scoring or review." },
+    { value: formatCompact(activity.routing_changes), label: "Routing changes", detail: "Network movement observed in the latest window." },
+  ];
+
+  const platformStatus = [
+    { label: "Certificate stream", value: status.certstream ?? "live" },
+    { label: "DNS intelligence", value: status.dns ?? "live" },
+    { label: "Risk scores", value: status.scores ?? "live" },
+    { label: "Infrastructure graph", value: status.snapshot ?? "updated" },
+  ];
+
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 shadow-2xl shadow-black/20 md:p-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(55,222,245,0.15),transparent_30%),radial-gradient(circle_at_82%_78%,rgba(16,185,129,0.11),transparent_32%)]" />
@@ -73,7 +135,7 @@ export function LiveInternetIntelligence() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {platformStatus.map((item) => (
-              <div key={item.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3">
+              <div key={item.label} className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3">
                 <span className="text-sm text-slate-300">{item.label}</span>
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[0.08] px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-100">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
@@ -98,10 +160,10 @@ export function LiveInternetIntelligence() {
           <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
             <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Last hour</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Last {activity.window ?? "1h"}</p>
                 <h4 className="mt-2 text-xl font-semibold text-white">Infrastructure activity</h4>
               </div>
-              <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">Updated {status.snapshot}</p>
+              <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">{formatUpdatedLabel(activity.updated ?? status.updated)}</p>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {activityMetrics.map((metric) => (
