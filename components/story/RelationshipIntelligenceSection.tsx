@@ -68,7 +68,7 @@ export function RelationshipIntelligenceSection() {
         <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Relationship Intelligence</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Signals reveal relationships. Relationships become intelligence.</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Signals reveal relationships. Relationships become intelligence.</h2>
             <p className="mt-6 text-lg leading-8 text-slate-300">
               A certificate, DNS change or routing event is only the first clue. Datazag uses it as a pivot into related domains, IPs, certificates, providers, networks and historical observations.
             </p>
