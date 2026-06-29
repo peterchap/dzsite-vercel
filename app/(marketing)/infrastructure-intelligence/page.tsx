@@ -69,18 +69,36 @@ const intelligenceProducts = [
     outcome: "Understand domains, DNS and email infrastructure.",
     detail: "Enrich domains with DNS posture, mail infrastructure, hosting context, subdomains, risk signals and explainable reason codes.",
     items: ["Domains", "DNS", "Mail", "Subdomains", "Risk"],
+    dictionary: [
+      { field: "domain", meaning: "Root domain, observed hostname and normalised identity." },
+      { field: "dns_profile", meaning: "A, AAAA, MX, NS, TXT and resolution posture." },
+      { field: "mail_posture", meaning: "MX provider, SPF, DKIM, DMARC, BIMI, MTA-STS and TLS-RPT context." },
+      { field: "risk_reason_codes", meaning: "Explainable signals behind risk score and threat band." },
+    ],
   },
   {
     title: "Network Intelligence",
     outcome: "Understand the infrastructure behind internet services.",
     detail: "Profile IPs, ASNs, prefixes, routing context, ownership signals and hosting relationships behind domains and platforms.",
     items: ["IPs", "ASNs", "Prefixes", "Routing", "Hosting"],
+    dictionary: [
+      { field: "ip_address", meaning: "Observed IPv4/IPv6 address linked to domains or providers." },
+      { field: "asn", meaning: "Origin ASN, network owner, country and provider classification." },
+      { field: "prefix", meaning: "Announced prefix, route origin and routing hygiene context." },
+      { field: "network_risk", meaning: "ASN, prefix, concentration and routing risk indicators." },
+    ],
   },
   {
     title: "Platform Intelligence",
     outcome: "Understand the platforms your organisation depends on.",
     detail: "Map cloud, SaaS, email, CDN, provider and technographic exposure across domains, suppliers and trusted services.",
     items: ["Cloud", "SaaS", "Email", "CDN", "Providers"],
+    dictionary: [
+      { field: "provider", meaning: "Cloud, CDN, hosting, DNS, email or SaaS provider attribution." },
+      { field: "platform_category", meaning: "Email, identity, collaboration, ecommerce, CRM or cloud category." },
+      { field: "service_fingerprint", meaning: "CNAME, MX, NS, certificate or DNS-derived platform evidence." },
+      { field: "exposure", meaning: "Where the organisation, supplier or campaign depends on the platform." },
+    ],
   },
   {
     title: "Relationship Intelligence",
@@ -88,13 +106,42 @@ const intelligenceProducts = [
     detail: "Connect domains, IPs, certificates, providers and historical observations to identify related infrastructure and campaign surface.",
     items: ["Graph", "Pivots", "Campaigns", "Evidence", "Context"],
     highlight: true,
+    dictionary: [
+      { field: "pivot_entity", meaning: "The first domain, certificate, IP, ASN, provider or pattern used to expand context." },
+      { field: "shared_infrastructure", meaning: "Domains connected by shared IPs, certificates, providers or DNS patterns." },
+      { field: "concentration_score", meaning: "How unusually clustered the infrastructure is around a provider, IP, ASN or prefix." },
+      { field: "campaign_context", meaning: "The wider infrastructure surface that may belong to the same activity." },
+    ],
   },
   {
     title: "Historical Intelligence",
     outcome: "Understand how infrastructure changes over time.",
     detail: "Use snapshots, deltas, trend analysis and point-in-time context to track change, backtest models and support investigations.",
     items: ["Snapshots", "Deltas", "Trends", "History", "Backtests"],
+    dictionary: [
+      { field: "snapshot_at", meaning: "Point-in-time view of what Datazag knew at a specific moment." },
+      { field: "first_seen", meaning: "Earliest observation of a domain, host, certificate or relationship." },
+      { field: "change_flags", meaning: "DNS, provider, route, certificate or hosting changes over time." },
+      { field: "velocity_features", meaning: "Rates of change used for trend analysis, backtesting and detection." },
+    ],
   },
+];
+
+const relationshipContext = [
+  { label: "Certificate", detail: "New issuance, SAN expansion, issuer patterns and certificate reuse become early pivots." },
+  { label: "Domain", detail: "The observed name is treated as a starting point, not the whole investigation." },
+  { label: "Related domains", detail: "Shared SAN entries, naming patterns, co-hosting and timing reveal nearby infrastructure." },
+  { label: "Shared IPs", detail: "Domains concentrated on the same IP or small IP set can expose operational reuse." },
+  { label: "Providers", detail: "Hosting, DNS, CDN, cloud and mail providers add attribution and false-positive context." },
+  { label: "History", detail: "Previous DNS, hosting and routing changes show whether behaviour is new, stable or anomalous." },
+  { label: "Campaign surface", detail: "Relationship analysis expands from one indicator to the wider infrastructure footprint." },
+  { label: "Evidence", detail: "Risk, confidence, reason codes and relationship paths are packaged for action." },
+];
+
+const relationshipMethods = [
+  { title: "Concentration analysis", text: "Detect when domains, certificates or infrastructure cluster unusually around a small set of IPs, ASNs, prefixes or providers." },
+  { title: "Infrastructure linkages", text: "Connect domains through shared certificates, DNS, CNAME chains, MX/NS providers, IPs, ASNs and historical observations." },
+  { title: "Context scoring", text: "Use graph context to score domains that may not look suspicious in isolation but share infrastructure with higher-risk activity." },
 ];
 
 const rawFeedBenefits = [
@@ -105,10 +152,26 @@ const rawFeedBenefits = [
 ];
 
 const deliveryOptions = [
-  { title: "Reports", text: "Executive and technical reports for domains, portfolios, partners and client estates." },
-  { title: "Alerts", text: "Platform, keyword and brand intelligence delivered through portal, webhook or workflow integrations." },
-  { title: "API", text: "Credit-based lookup and enrichment for products, portals, scoring engines and internal tools." },
-  { title: "Cloud Data Shares", text: "Flat-rate cloud-native access for analytics, threat hunting, modelling and marketplace procurement." },
+  {
+    title: "Reports",
+    text: "Executive and technical reports for domains, portfolios, partners and client estates.",
+    uses: ["Domain", "Platform", "Relationship", "Historical"],
+  },
+  {
+    title: "Alerts",
+    text: "Platform, keyword and brand intelligence delivered through portal, webhook or workflow integrations.",
+    uses: ["Domain", "Platform", "Relationship", "Network"],
+  },
+  {
+    title: "API",
+    text: "Credit-based lookup and enrichment for products, portals, scoring engines and internal tools.",
+    uses: ["Domain", "Network", "Platform", "Relationship"],
+  },
+  {
+    title: "Cloud Data Shares",
+    text: "Flat-rate cloud-native access for analytics, threat hunting, modelling and marketplace procurement.",
+    uses: ["All products", "Historical", "Network", "Domain"],
+  },
 ];
 
 const formats = ["Snowflake", "Databricks", "Azure", "AWS", "Google Cloud", "Iceberg", "Delta", "Parquet", "JSON API"];
@@ -196,17 +259,34 @@ function PortfolioGraphic() {
   );
 }
 
-function RelationshipVisual() {
-  const nodes = ["Certificate", "Domain", "Related domains", "Shared IPs", "Providers", "History", "Campaign surface", "Evidence"];
+function DataDictionary({ entries }: { entries: { field: string; meaning: string }[] }) {
+  return (
+    <div className="mt-5 rounded-2xl border border-white/10 bg-[#030619]/70 p-4 opacity-100 transition md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">Data dictionary preview</p>
+      <div className="mt-3 grid gap-2">
+        {entries.map((entry) => (
+          <div key={entry.field} className="rounded-xl border border-white/10 bg-white/[0.035] p-3">
+            <code className="text-xs font-semibold text-cyan-100">{entry.field}</code>
+            <p className="mt-1 text-xs leading-5 text-slate-400">{entry.meaning}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
+function RelationshipVisual() {
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(55,222,245,0.14),transparent_30%),radial-gradient(circle_at_82%_82%,rgba(16,185,129,0.1),transparent_32%)]" />
       <div className="relative grid gap-3">
-        {nodes.map((node, index) => (
-          <div key={node} className="flex items-center gap-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-            <div className={`flex-1 rounded-2xl border px-4 py-3 text-sm font-semibold ${index >= 6 ? "border-emerald-300/25 bg-emerald-300/[0.08] text-emerald-50" : "border-white/10 bg-[#030619]/65 text-slate-200"}`}>{node}</div>
+        {relationshipContext.map((node, index) => (
+          <div key={node.label} className="group/context relative flex items-start gap-3">
+            <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
+            <div className={`flex-1 rounded-2xl border px-4 py-3 ${index >= 6 ? "border-emerald-300/25 bg-emerald-300/[0.08]" : "border-white/10 bg-[#030619]/65"}`}>
+              <p className="text-sm font-semibold text-white">{node.label}</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400 opacity-100 transition md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover/context:max-h-24 md:group-hover/context:opacity-100 md:group-focus-within/context:max-h-24 md:group-focus-within/context:opacity-100">{node.detail}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -303,18 +383,19 @@ export default async function InfrastructureIntelligencePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Choose what you need to understand"
-            title="Five intelligence products. One infrastructure graph."
-            body="Start with the product that matches your problem. Each product is powered by the same relationship intelligence layer, so context carries across reports, alerts, APIs and data shares."
+            title="Five intelligence products. Inspect what is inside each one."
+            body="Each product is a dataset family, not just a label. Hover or focus a card to see example fields and decide which dataset matches your workflow."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
             {intelligenceProducts.map((product) => (
-              <article key={product.title} className={`flex min-h-[24rem] flex-col rounded-[1.5rem] border p-5 ${product.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
+              <article key={product.title} tabIndex={0} className={`group flex min-h-[30rem] flex-col rounded-[1.5rem] border p-5 outline-none transition focus:border-cyan-300/45 ${product.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
                 <h3 className="text-xl font-semibold text-white">{product.title}</h3>
                 <p className="mt-4 text-base font-semibold leading-6 text-cyan-100">{product.outcome}</p>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{product.detail}</p>
-                <div className="mt-auto flex flex-wrap gap-2 pt-6">
+                <div className="mt-5 flex flex-wrap gap-2">
                   {product.items.map((item) => <Pill key={item}>{item}</Pill>)}
                 </div>
+                <DataDictionary entries={product.dictionary} />
               </article>
             ))}
           </div>
@@ -328,11 +409,16 @@ export default async function InfrastructureIntelligencePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Relationship Intelligence</p>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Reveal the campaign, not just the first indicator.</h2>
               <p className="mt-6 text-lg leading-8 text-slate-300">
-                Most tools analyse indicators in isolation. Datazag uses every signal as a pivot into surrounding infrastructure, exposing related domains, shared IPs, certificates, providers and historical context that would otherwise remain hidden.
+                Relationship Intelligence is where the platform becomes more than a collection of datasets. It measures concentration, follows linkages and uses context to score infrastructure that may not look suspicious on first view.
               </p>
-              <p className="mt-4 text-base leading-7 text-slate-400">
-                The result is intelligence your team can act on: block more of the campaign, enrich investigations with context, and explain why a decision was made.
-              </p>
+              <div className="mt-6 grid gap-3">
+                {relationshipMethods.map((method) => (
+                  <div key={method.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                    <h3 className="text-sm font-semibold text-white">{method.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-400">{method.text}</p>
+                  </div>
+                ))}
+              </div>
             </div>
             <RelationshipVisual />
           </div>
@@ -362,13 +448,19 @@ export default async function InfrastructureIntelligencePage() {
           <SectionHeader
             eyebrow="Delivery"
             title="Choose how you consume Infrastructure Intelligence."
-            body="Use the same intelligence layer as reports, alerts, API enrichment or cloud-native data products inside your own analytics environment."
+            body="Each delivery route uses a different slice of the intelligence portfolio. Reports and alerts package decisions; APIs and data shares expose the underlying datasets for your own systems."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {deliveryOptions.map((option) => (
               <article key={option.title} className="rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
                 <h3 className="text-xl font-semibold text-white">{option.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{option.text}</p>
+                <div className="mt-5 border-t border-white/10 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Uses</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {option.uses.map((item) => <Pill key={item}>{item}</Pill>)}
+                  </div>
+                </div>
               </article>
             ))}
           </div>
