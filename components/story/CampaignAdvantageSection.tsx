@@ -5,20 +5,20 @@ const outcomes = [
     steps: ["Prep", "Detect", "Prepare", "Launch"],
   },
   {
-    title: "Stop attacks before they start",
-    text: "Domains, certificates and infrastructure can be blocked before the first phishing email is delivered or the first credential page goes live.",
+    title: "Block before go-live",
+    text: "Domains, certificates, IPs and hostnames can be pushed into defensive controls before the first phishing email is delivered or credential page goes live.",
     steps: ["Domain", "Policy", "Gateway", "Blocked"],
   },
   {
-    title: "Reveal the wider campaign",
-    text: "Early detection gives Datazag time to analyse related domains, certificates, IPs, providers and history, exposing infrastructure that may not look suspicious in isolation.",
-    steps: ["Signal", "Pivots", "Related", "Campaign"],
+    title: "Map the blast area",
+    text: "The first signal becomes a pivot point. Datazag analyses the surrounding domains, IPs, certificates, providers and history to identify the wider campaign surface.",
+    steps: ["Signal", "Pivots", "Related", "Blast area"],
     highlight: true,
   },
   {
-    title: "Expand defensive coverage",
-    text: "Instead of blocking one indicator, defenders can identify related domains and IPs associated with the same infrastructure and protect against more of the campaign.",
-    steps: ["One IOC", "Graph", "More IOCs", "Coverage"],
+    title: "Improve the next detection",
+    text: "Every relationship adds context. Related infrastructure makes future signals easier to score, helping detections become faster, smarter and more complete over time.",
+    steps: ["Context", "Score", "Detect", "Improve"],
   },
 ];
 
@@ -28,7 +28,7 @@ function OutcomeCard({ outcome }: { outcome: (typeof outcomes)[number] }) {
       <div>
         <div className="flex items-center justify-between gap-4">
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.08] text-sm font-semibold text-cyan-100">●</span>
-          {outcome.highlight ? <span className="rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100">Campaign view</span> : null}
+          {outcome.highlight ? <span className="rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100">Campaign surface</span> : null}
         </div>
         <h3 className="mt-5 text-xl font-semibold tracking-tight text-white">{outcome.title}</h3>
         <p className="mt-3 text-sm leading-6 text-slate-300">{outcome.text}</p>
@@ -54,10 +54,10 @@ export function CampaignAdvantageSection() {
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Why early matters</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Why seeing infrastructure first changes the outcome.</h2>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Early detection lets you defend against the campaign, not just one domain.</h2>
           </div>
           <p className="max-w-3xl text-lg leading-8 text-slate-300">
-            Detecting suspicious infrastructure within seconds does not just create an earlier alert. It gives defenders—and Datazag—time to understand the campaign, widen the evidence and act before the attack becomes active.
+            Seeing infrastructure before it goes live gives Datazag time to map the surrounding blast area: related domains, IPs, certificates, providers and history. That wider view helps defenders block more of the campaign and improves the next detection.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export function CampaignAdvantageSection() {
         </div>
 
         <div className="mt-8 rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/[0.06] p-5 text-center">
-          <p className="text-xl font-semibold tracking-tight text-white md:text-2xl">Early detection gives defenders something they rarely have: time to understand the campaign before responding to it.</p>
+          <p className="text-xl font-semibold tracking-tight text-white md:text-2xl">The earlier the first signal arrives, the more time there is to map the relationships around it.</p>
         </div>
       </div>
     </section>
