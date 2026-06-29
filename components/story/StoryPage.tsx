@@ -32,13 +32,13 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
           pills: c.heroPills,
         }}
       />
-      <StoryInsight data={c.insight} />
-      <StorySignals data={{ ...c.signals, items: c.internetSignals }} />
       <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
-      <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
+      <StoryInsight data={c.insight} />
       <StoryRelationshipIntelligence />
+      <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />
       <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
       <StoryProof />
+      <StorySignals data={{ ...c.signals, items: c.internetSignals }} />
       <StoryAudiences data={{ ...c.partners, audiences: c.partnerAudiences }} />
       <StoryReportCta
         data={{
