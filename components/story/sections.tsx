@@ -4,10 +4,10 @@ import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { LiveInternetIntelligence } from "@/components/diagrams/LiveInternetIntelligence/LiveInternetIntelligence";
 import { ObservatoryPreview } from "@/components/diagrams/ObservatoryPreview/ObservatoryPreview";
-import { RelationshipIntelligence } from "@/components/diagrams/RelationshipIntelligence/RelationshipIntelligence";
-import { Container } from "@/components/ui/Container";
 import type { Card, CopySection, Cta, TimelineStep } from "./types";
+import { CampaignAdvantageSection } from "./CampaignAdvantageSection";
 import { ContinueExploring } from "./ContinueExploring";
+import { RelationshipIntelligenceSection } from "./RelationshipIntelligenceSection";
 import { StoryButton, StoryCardGrid, StoryParagraphs, StorySection } from "./primitives";
 import { LivingInternetBackdrop } from "./diagrams/LivingInternetBackdrop";
 
@@ -32,7 +32,7 @@ export function StoryHero({ data }: { data: HeroProps }) {
   return (
     <section className="relative min-h-[92vh] overflow-hidden py-24 md:flex md:items-center md:py-32">
       <LivingInternetBackdrop />
-      <Container>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative max-w-4xl">
           <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{data.eyebrow}</p>
           <h1 className="mt-8 text-5xl font-semibold tracking-tight text-white md:text-7xl lg:text-8xl">{data.title}</h1>
@@ -46,25 +46,19 @@ export function StoryHero({ data }: { data: HeroProps }) {
             {data.pills.map((pill) => <div key={pill} className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">{pill}</div>)}
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
 
 export function StoryInsight({ data }: { data: CopySection }) {
-  return (
-    <section className="relative border-t border-white/10 py-20 md:py-28">
-      <Container>
-        <RelationshipIntelligence />
-      </Container>
-    </section>
-  );
+  return <CampaignAdvantageSection />;
 }
 
 export function StorySignals({ data }: { data: SignalsProps }) {
   return (
     <section className="relative border-t border-white/10 py-16 md:py-20">
-      <Container>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">{data.kicker}</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">{data.title}</h2>
@@ -83,7 +77,7 @@ export function StorySignals({ data }: { data: SignalsProps }) {
             ))}
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
@@ -131,6 +125,10 @@ export function StoryEngine({ data }: { data: EngineProps }) {
   );
 }
 
+export function StoryRelationshipIntelligence() {
+  return <RelationshipIntelligenceSection />;
+}
+
 export function StoryProducts({ data }: { data: ProductsProps }) {
   return (
     <StorySection section={data}>
@@ -147,14 +145,14 @@ export function StoryProducts({ data }: { data: ProductsProps }) {
 export function StoryProof() {
   return (
     <section className="relative border-t border-white/10 py-20 md:py-28">
-      <Container>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <LiveInternetIntelligence />
         <ContinueExploring
           title="Threat Alerts"
           description="See how infrastructure intelligence becomes alerts, evidence and workflow actions."
           href="/alerts"
         />
-      </Container>
+      </div>
     </section>
   );
 }
