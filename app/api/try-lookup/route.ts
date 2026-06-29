@@ -110,6 +110,8 @@ function buildStubResult(domain: string): LookupResult {
           { name: "Registrar", tier: 1, value: "—" },
           { name: "Registration date", tier: 1, value: "—" },
           { name: "Expiry date", tier: 1, value: "—" },
+          { name: "Last registrar change date (RDAP)", tier: 1, value: "—" },
+          { name: "Recent registrar transfer (180d)", tier: 1, value: "yes / no" },
           { name: "WHOIS contact obfuscation status", tier: 2, value: "obfuscated / transparent" },
           locked("Full WHOIS contact details"),
           locked("Registrar reputation classification"),
