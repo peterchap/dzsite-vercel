@@ -1,9 +1,11 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "installCommand": "npm ci --legacy-peer-deps"
+  "installCommand": "npm ci --legacy-peer-deps",
+  "rewrites": [
+    {
+      "source": "/stats/:file",
+      "destination": "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/stats/:file"
+    }
+  ]
 }
-{ "rewrites": [
-  { "source": "/stats/:file", 
-  "destination": "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/stats/:file" }
-] }
