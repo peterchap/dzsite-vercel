@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Brand Protection", href: "/brand-protection" },
-  { name: "Domain Intelligence", href: "/domain-intelligence" },
+  { name: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
   { name: "Pricing", href: "/pricing" },
   { name: "How it Works", href: "/how-it-works" },
   { name: "Use Cases", href: "/use-cases" },
