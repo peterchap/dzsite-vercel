@@ -4,6 +4,6 @@
   "installCommand": "npm ci --legacy-peer-deps"
 }
 { "rewrites": [
-  { "source": "/:file", 
-  "destination": "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/:file" }
+  { "source": "/stats/:file", 
+  "destination": "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/stats/:file" }
 ] }
