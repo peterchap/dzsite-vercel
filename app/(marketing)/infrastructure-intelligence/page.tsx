@@ -4,251 +4,167 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "Infrastructure Intelligence — Datazag",
   description:
-    "Infrastructure intelligence to power security, fraud and analytics applications with domains, DNS, infrastructure, certificates, relationships, risk and historical changes.",
+    "Cloud-native cyber intelligence datasets for domains, DNS, certificates, infrastructure, risk, history and relationship analysis.",
 };
 
-type CoverageSnapshot = {
-  domains?: number;
-  ips?: number;
-  threat_ips?: number;
-  infrastructure_ips?: number;
-  asns?: number;
-  prefixes?: number;
-  certificates?: number;
-  updated?: string;
-};
-
-type ActivitySnapshot = {
-  alerts?: number | null;
-  new_domains?: number | null;
-  routing_changes?: number | null;
-  certificates?: number | null;
-  window?: string;
-  updated?: string;
-};
-
-type StatusSnapshot = {
-  certstream?: string;
-  dns?: string;
-  scores?: string;
-  snapshot?: string;
-  updated?: string;
-};
-
-const fallbackCoverage: Required<CoverageSnapshot> = {
-  domains: 342010111,
-  ips: 3210567890,
-  threat_ips: 10543210,
-  infrastructure_ips: 10543210,
-  certificates: 428341,
-  asns: 184532,
-  prefixes: 1322123,
-  updated: "2026-06-28T11:00:00+00:00",
-};
-
-const fallbackActivity: Required<ActivitySnapshot> = {
-  alerts: 83,
-  new_domains: 412,
-  routing_changes: 17,
-  certificates: null,
-  window: "1h",
-  updated: "2026-06-28T11:00:00+00:00",
-};
-
-const fallbackStatus: Required<StatusSnapshot> = {
-  certstream: "live",
-  dns: "live",
-  scores: "live",
-  snapshot: "06:00 UTC",
-  updated: "2026-06-28T11:03:00+00:00",
-};
-
-const dataCategories = [
+const outcomes = [
   {
-    title: "Email and domain hygiene",
-    description: "Clean mailing data, classify domains and understand email posture.",
-    fields: ["Mailbox provider", "Disposable", "Parked", "SPF", "DMARC", "BIMI", "MTA-STS", "TLS-RPT", "MX", "Domain risk"],
+    title: "Bring intelligence to your warehouse",
+    text: "Use Datazag datasets directly in cloud analytics, SIEM enrichment, threat hunting, fraud systems and data science workflows.",
   },
   {
-    title: "DNS intelligence",
-    description: "Resolve what a domain exposes and how its DNS changes over time.",
-    fields: ["A / AAAA", "MX", "NS", "TXT", "SOA", "TTL", "DNSSEC", "Wildcard DNS", "PTR", "Change flags"],
+    title: "Skip the raw-data engineering",
+    text: "DNS, certificates, hosting, ASN, provider labels, risk scores, reason codes and relationships are already joined into usable views.",
   },
   {
-    title: "Infrastructure labels",
-    description: "Label records with network, provider and geography context.",
-    fields: ["IP", "ASN", "ASN name", "Country", "Prefix", "Cloud", "Hosting", "CDN", "DNS provider", "Registrar"],
+    title: "Query current and historical state",
+    text: "Use snapshots, deltas and point-in-time context to understand what changed, when it changed and how infrastructure evolved.",
   },
   {
-    title: "Certificate intelligence",
-    description: "Use certificate issuance as an early signal and relationship pivot.",
-    fields: ["Issuer", "SANs", "Fingerprint", "Validity", "New issuance", "Reuse", "Platform hints", "Related domains"],
-  },
-  {
-    title: "Relationship graph",
-    description: "Move from one indicator to the infrastructure around it.",
-    fields: ["Shared IPs", "Shared certs", "Shared DNS", "Related domains", "Infrastructure reuse", "Campaign surface", "Evidence paths"],
-  },
-  {
-    title: "History and time travel",
-    description: "Query what changed and reproduce investigations using historical snapshots.",
-    fields: ["Snapshots", "Deltas", "First seen", "Last seen", "DNS changes", "Provider changes", "Risk trends", "Time travel"],
+    title: "Evaluate as a product, not a feed",
+    text: "Start with sample schemas, small extracts or curated views before moving into full cloud data shares or marketplace delivery.",
   },
 ];
 
-const buildSteps = [
-  { verb: "Observe", title: "Internet observations", text: "Domains, DNS, certificates, routing and platform signals." },
-  { verb: "Expand", title: "Infrastructure expansion", text: "IPs, providers, certificates, routes and surrounding infrastructure." },
-  { verb: "Identify", title: "Platform identification", text: "Cloud, hosting, CDN, DNS, email and SaaS platforms." },
-  { verb: "Connect", title: "Relationship analysis", text: "Clusters, campaigns and connected assets." },
-  { verb: "Compare", title: "Historical comparison", text: "Snapshots, deltas and unusual change patterns." },
-  { verb: "Explain", title: "Evidence generation", text: "Reason codes, confidence and evidence-backed assessments." },
+const datasetFamilies = [
+  {
+    title: "Domain Intelligence",
+    sell: "Domain posture, risk, provider footprint, DNS state, email controls, history and relationship fields for enrichment and scoring.",
+    fields: ["Domain", "First seen", "DNS posture", "Email posture", "Provider labels", "Risk score", "Reason codes"],
+  },
+  {
+    title: "DNS and Mail Posture",
+    sell: "Expanded DNS, MX, NS, TXT and email-authentication context for reporting, hygiene, compliance and portfolio analysis.",
+    fields: ["A / AAAA", "MX", "NS", "TXT", "SPF", "DKIM", "DMARC", "BIMI", "MTA-STS"],
+  },
+  {
+    title: "Certificate Intelligence",
+    sell: "Certificate Transparency events, SAN expansion, issuer context, platform hints and relationship pivots for early infrastructure discovery.",
+    fields: ["Issuer", "SANs", "Fingerprint", "Not before", "Not after", "New issuance", "Related domains"],
+  },
+  {
+    title: "Infrastructure Labels",
+    sell: "IP, ASN, prefix, cloud, hosting, CDN, country and provider attribution for logs, flows, customer records and security events.",
+    fields: ["IP", "ASN", "Prefix", "Country", "Cloud", "Hosting", "CDN", "DNS provider", "Registrar"],
+  },
+  {
+    title: "Relationship Graph",
+    sell: "Shared infrastructure, related domains, shared certificates, DNS relationships and evidence paths for campaign discovery and investigation.",
+    fields: ["Related domains", "Shared IPs", "Shared certs", "Shared DNS", "Clusters", "Evidence paths"],
+  },
+  {
+    title: "Risk and History",
+    sell: "Risk scores, threat bands, reasons, confidence context, snapshots, deltas and change indicators for model validation and time-aware analysis.",
+    fields: ["Risk score", "Threat band", "Reasons", "Confidence", "Snapshots", "Deltas", "Time travel"],
+  },
 ];
 
-const curatedProducts = [
+const dataProducts = [
   {
-    title: "Mail Hygiene View",
-    value: "Clean and classify email domains without writing joins across DNS, MX, risk and provider tables.",
-    fields: ["Mailbox provider", "Disposable", "Parked", "SPF", "DMARC", "BIMI", "MTA-STS", "Domain risk"],
-    available: "API · Cloud share · Custom view",
-    featured: true,
+    title: "Domain Risk Dataset",
+    text: "A joinable domain-level table for SOC enrichment, fraud scoring, ESP controls, customer hygiene and portfolio monitoring.",
+    available: "Iceberg · Delta · Parquet · API",
   },
   {
-    title: "Infrastructure Labels View",
-    value: "Add stable labels to logs, flows, customer records or asset inventories using a compact enrichment table.",
-    fields: ["ASN", "ASN organisation", "Country", "Cloud", "Hosting", "CDN", "DNS provider", "Registrar"],
-    available: "API · Cloud share",
-    featured: true,
+    title: "DNS Posture Dataset",
+    text: "Expanded DNS and email-authentication findings for remediation reporting, domain hygiene and systemic portfolio-risk analysis.",
+    available: "Iceberg · Delta · Reports",
   },
   {
-    title: "New Domains Feed",
-    value: "Monitor newly observed domains with enough context to triage quickly rather than processing raw registrations yourself.",
-    fields: ["First seen", "DNS", "Certificate", "Provider", "Platform", "Risk", "Relationships"],
-    available: "Alerts · API · Cloud share",
+    title: "Infrastructure Reputation Dataset",
+    text: "IP, ASN, prefix, provider and relationship context for investigating suspicious hosting, related assets and infrastructure reuse.",
+    available: "Iceberg · Delta · Cloud share",
   },
   {
-    title: "Campaign Discovery View",
-    value: "Expand one signal into related infrastructure and evidence paths for investigation and blocking decisions.",
-    fields: ["Related domains", "Shared IPs", "Shared certs", "Concentration", "Campaign surface", "Evidence"],
-    available: "Alerts · Cloud share · Custom view",
+    title: "Certificate and New Domain Dataset",
+    text: "Certificate and newly observed domain intelligence for early alerting, platform impersonation discovery and watchlist monitoring.",
+    available: "Alerts · Iceberg · Delta",
   },
   {
     title: "Portfolio Intelligence View",
-    value: "Assess domains, subsidiaries, suppliers or client estates without building a reporting model from scratch.",
-    fields: ["DNS posture", "Email posture", "Infrastructure", "Platforms", "History", "Risk trends"],
+    text: "Curated views for domains, subsidiaries, suppliers, client estates and acquisition targets, with posture and trend context included.",
     available: "Reports · Cloud share · Custom view",
   },
 ];
 
-const deliveryOptions = [
+const deliveryRoutes = [
   {
-    title: "Reports",
-    badge: "We analyse it for you",
-    text: "Executive and technical reports for domains, portfolios, suppliers and client estates.",
-    href: "/#free-report",
-    cta: "Start with a report",
-  },
-  {
-    title: "Alerts",
-    badge: "We notify you",
-    text: "Platform, keyword and brand impersonation alerts delivered through portal, webhook or workflow integrations.",
-    href: "/alerts",
-    cta: "View alert products",
-  },
-  {
-    title: "API",
-    badge: "You enrich in real time",
-    text: "Cached lookups, live refresh and build-on-demand enrichment for products, fraud systems and SIEM pipelines.",
-    href: "/pricing",
-    cta: "See API pricing",
-  },
-  {
-    title: "Cloud Data Shares",
+    title: "Cloud data shares",
     badge: "Primary data product",
-    text: "Native Iceberg and Delta datasets with flat-rate access, time travel, incremental updates and SQL-ready joins.",
-    href: "/pricing",
-    cta: "View data shares",
+    text: "Native cloud-native datasets for analytical teams that want to join Datazag intelligence with their own logs, assets, alerts and customer records.",
+    href: "/contact",
+    cta: "Request data share access",
     highlight: true,
-    benefits: ["Native Iceberg + Delta", "Time travel", "Incremental updates", "Flat-rate access", "Bring your own compute", "Ready to JOIN"],
+    benefits: ["Iceberg", "Delta", "Parquet", "Incremental updates", "Snapshots", "Time travel", "Bring your own compute", "SQL-ready joins"],
+  },
+  {
+    title: "Marketplace delivery",
+    badge: "For cloud buyers",
+    text: "Marketplace-ready packaging for teams buying through Snowflake, Databricks, Azure, AWS or Google Cloud procurement routes.",
+    href: "/contact",
+    cta: "Discuss marketplace access",
+  },
+  {
+    title: "API enrichment",
+    badge: "For products and workflows",
+    text: "Real-time lookup and enrichment for portals, fraud systems, SIEM workflows, policy engines and partner platforms.",
+    href: "/pricing",
+    cta: "View API pricing",
+  },
+  {
+    title: "Reports and alerts",
+    badge: "For evaluation and operations",
+    text: "Start with reports, then move priority domains, brands, platforms or infrastructure into operational alerting.",
+    href: "/reports",
+    cta: "View reports",
   },
 ];
 
 const workDone = [
-  ["Raw DNS records", "Expanded DNS, mail posture and provider context"],
-  ["Raw IP address", "ASN, country, prefix, hosting and cloud classification"],
-  ["Single domain", "Related domains, shared infrastructure and campaign surface"],
-  ["Certificate event", "SAN expansion, reuse, platform hints and relationship pivots"],
-  ["Daily snapshot", "Hourly updates plus Iceberg / Delta time travel"],
-  ["Opaque score", "Reason codes, confidence and evidence-backed assessment"],
+  ["Raw DNS records", "Expanded DNS, mail posture, provider labels and remediation context"],
+  ["Raw IP address", "ASN, prefix, country, cloud, hosting and infrastructure risk"],
+  ["Single domain", "Related domains, shared certificates, provider footprint and relationship paths"],
+  ["Certificate event", "SAN expansion, platform hints, issuer context and early infrastructure pivots"],
+  ["Point-in-time label", "Snapshots, deltas, first-seen, last-seen and change indicators"],
+  ["Opaque score", "Risk score, threat band, confidence and reason codes"],
 ];
 
-const reasons = [
-  { title: "Pre-enriched", text: "DNS, certificates, provider, network and history are already joined." },
-  { title: "Ready to JOIN", text: "Designed for SQL, SIEM enrichment, analytics and ML workflows." },
-  { title: "Relationship-aware", text: "Find the campaign, not just the domain." },
-  { title: "Explainable", text: "Risk comes with reasons, evidence and confidence." },
-  { title: "Historical", text: "See how infrastructure changed over time." },
-  { title: "Cloud native", text: "Iceberg and Delta shares support time travel and incremental processing." },
+const useCases = [
+  {
+    title: "Threat hunting and SOC enrichment",
+    text: "Join domains, IPs and alerts with provider labels, relationships, reasons and historical context.",
+  },
+  {
+    title: "ESP and platform abuse controls",
+    text: "Score customer domains, links, landing pages and infrastructure using explainable domain and provider intelligence.",
+  },
+  {
+    title: "Portfolio and supplier risk",
+    text: "Analyse posture and exposure across many domains, subsidiaries, suppliers, clients or acquisition targets.",
+  },
+  {
+    title: "Cyber insurance and diligence",
+    text: "Use historical and portfolio-wide evidence for underwriting, renewal, exposure analysis and M&A security review.",
+  },
+  {
+    title: "Data science and AI workflows",
+    text: "Use stable features, historical slices and reason fields for modelling, agents, analytics and decision support.",
+  },
 ];
 
-const enrichedOutput = [
-  ["risk_score", "94"],
-  ["hosting_provider", "Bulletproof Hosting Ltd"],
-  ["mailbox_provider", "Unknown / suspicious"],
-  ["primary_asn", "AS64500"],
-  ["related_domain_count", "15"],
-  ["reason_codes", "new_domain, shared_infra, risky_asn"],
+const evaluationPaths = [
+  ["Sample schema", "Inspect the columns, keys, refresh model and example joins before committing to a full data share."],
+  ["Small extract", "Test a bounded sample in your warehouse, lakehouse or enrichment workflow."],
+  ["Curated view", "Start with a purpose-built table for one use case, such as domain risk, DNS posture or infrastructure labels."],
+  ["Pilot data share", "Run a short evaluation with current and historical slices, then decide scope and commercial packaging."],
 ];
 
-const startPaths = [
-  { title: "Download sample schema", text: "Inspect the fields and decide whether the data fits your workflow.", href: "/contact" },
-  { title: "Request sample dataset", text: "Try a small sample before committing to a full data share.", href: "/contact" },
-  { title: "Browse API pricing", text: "Use credits for real-time lookup, enrichment and live refresh.", href: "/pricing" },
-  { title: "View cloud data shares", text: "Flat-rate datasets for analytics, hunting and modelling.", href: "/pricing" },
+const sourceAndGovernance = [
+  ["Observation layers", "Active DNS, Certificate Transparency, routing, ASN, provider, mail posture, platform and historical observations."],
+  ["Derived intelligence", "Published datasets expose derived Datazag fields, public infrastructure facts and product-approved context."],
+  ["Restricted inputs", "Internal-only validation signals and raw third-party feed membership are not published as standalone resale fields by default."],
+  ["Schema discipline", "Field scope, refresh cadence, snapshot policy, historical coverage and permitted use are controlled per product."],
 ];
-
-const sourceGroups = [
-  "Active DNS resolution",
-  "DNS record expansion",
-  "Certificate Transparency",
-  "Internet routing",
-  "ASN and prefix analysis",
-  "RPKI validation",
-  "Platform fingerprinting",
-  "Cloud and hosting identification",
-  "Historical observations",
-  "External reputation validation signals",
-];
-
-async function fetchJson<T>(baseUrl: string | undefined, path: string, fallback: T): Promise<T> {
-  if (!baseUrl) return fallback;
-
-  try {
-    const response = await fetch(`${baseUrl.replace(/\/$/, "")}/${path}`, {
-      next: { revalidate: 900 },
-    });
-
-    if (!response.ok) return fallback;
-    return { ...fallback, ...(await response.json()) };
-  } catch {
-    return fallback;
-  }
-}
-
-function formatCompact(value: number | null | undefined) {
-  if (value === null || value === undefined) return "—";
-  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(value >= 100_000_000 ? 0 : 1)}M`;
-  if (value >= 1_000) return `${(value / 1_000).toFixed(value >= 10_000 ? 0 : 1)}k`;
-  return value.toLocaleString();
-}
-
-function formatUpdated(value?: string) {
-  if (!value) return "Updated hourly";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Updated hourly";
-  return `Updated ${date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })} UTC`;
-}
 
 function FieldName({ children }: { children: React.ReactNode }) {
   return <span className="font-mono text-[12px] leading-6 text-slate-300">{children}</span>;
@@ -256,6 +172,10 @@ function FieldName({ children }: { children: React.ReactNode }) {
 
 function Pill({ children }: { children: React.ReactNode }) {
   return <span className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1.5 font-mono text-[11px] text-slate-300">{children}</span>;
+}
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
 }
 
 function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
@@ -268,24 +188,22 @@ function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: strin
   );
 }
 
-function PipelineGraphic() {
+function DataStackPanel() {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.14),transparent_32%),radial-gradient(circle_at_82%_82%,rgba(16,185,129,0.1),transparent_32%)]" />
-      <div className="relative grid gap-3 lg:grid-cols-6 lg:gap-2">
-        {buildSteps.map((step, index) => (
-          <div key={step.title} className="relative">
-            <div className="h-full rounded-2xl border border-white/10 bg-[#030619]/70 p-4">
-              <div className="flex items-center justify-between gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-                {index < buildSteps.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
-              </div>
-              <p className="mt-4 text-lg font-semibold text-white">{step.verb}</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{step.title}</p>
-              <p className="mt-3 text-xs leading-5 text-slate-400">{step.text}</p>
-            </div>
-          </div>
-        ))}
+    <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
+      <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Cloud-native data product</p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">Infrastructure intelligence, ready to join.</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Curated datasets for teams that want enriched domain, DNS, certificate, provider, relationship and risk intelligence in their own environment.</p>
+      </div>
+      <div className="mx-auto h-8 w-px bg-cyan-300/30" />
+      <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Delivery formats</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {["Iceberg", "Delta", "Parquet", "Cloud shares", "Marketplace", "API", "Snapshots", "Deltas"].map((item) => (
+            <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -296,88 +214,78 @@ function CodeBlock() {
     <pre className="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-[#020512] p-5 text-sm leading-6 text-slate-300"><code>{`SELECT
   logs.domain,
   dz.risk_score,
+  dz.threat_band,
   dz.hosting_provider,
-  dz.mailbox_provider,
   dz.primary_asn,
   dz.related_domain_count,
   dz.reason_codes
-FROM dns_logs logs
-LEFT JOIN datazag.infrastructure_intelligence dz
+FROM security_logs logs
+LEFT JOIN datazag.domain_risk dz
   ON logs.domain = dz.domain
 WHERE dz.risk_score >= 80;`}</code></pre>
   );
 }
 
-export default async function InfrastructureIntelligencePage() {
-  const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_STATS_URL;
-  const [coverage, activity, status] = await Promise.all([
-    fetchJson<CoverageSnapshot>(baseUrl, "coverage.json", fallbackCoverage),
-    fetchJson<ActivitySnapshot>(baseUrl, "activity.json", fallbackActivity),
-    fetchJson<StatusSnapshot>(baseUrl, "status.json", fallbackStatus),
-  ]);
-
-  const linkedIps = coverage.infrastructure_ips ?? coverage.threat_ips;
-  const coverageMetrics = [
-    { value: formatCompact(coverage.domains), label: "Domains monitored" },
-    { value: formatCompact(linkedIps), label: "IPs linked to domains" },
-    { value: formatCompact(coverage.asns), label: "Networks profiled" },
-    { value: "Live", label: "Certificate monitoring" },
-    { value: "Hourly", label: "Priority refresh" },
-    { value: status.snapshot ?? formatUpdated(status.updated ?? coverage.updated), label: "Latest snapshot" },
-  ];
-  const cloudShare = deliveryOptions.find((option) => option.highlight) ?? deliveryOptions[3];
-  const secondaryDelivery = deliveryOptions.filter((option) => option.title !== cloudShare.title);
+export default function InfrastructureIntelligencePage() {
+  const primaryDelivery = deliveryRoutes.find((route) => route.highlight) ?? deliveryRoutes[0];
+  const secondaryDelivery = deliveryRoutes.filter((route) => route.title !== primaryDelivery.title);
 
   return (
     <main className="overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.13),transparent_34%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
+          <div>
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Infrastructure Intelligence</p>
-            <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Intelligence to power your applications.</h1>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Cloud-native cyber intelligence datasets.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Domains, DNS, infrastructure, certificates, relationships and risk delivered as reports, APIs and cloud-native data shares. Built for teams that need reliable enrichment for security, fraud, analytics and data products without building the infrastructure graph themselves.
+              Datazag delivers enriched domains, DNS, certificates, infrastructure, risk, relationships and history as cloud data shares, marketplace-ready datasets, APIs and curated views.
+            </p>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
+              Use the data in your own lakehouse, warehouse, SIEM, analytics platform or product without building the infrastructure graph yourself.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="#data" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Explore the data</a>
+              <a href="#datasets" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Explore datasets</a>
               <a href="#evaluate" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Start evaluating</a>
             </div>
           </div>
+          <DataStackPanel />
         </div>
       </section>
 
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Coverage" title="Built at internet scale. Refreshed continuously." body={`Live catalogue metadata from Datazag's production snapshots. ${formatUpdated(activity.updated ?? status.updated)}.`} />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {coverageMetrics.map((metric) => (
-              <article key={metric.label} className="rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
-                <p className="text-4xl font-semibold tracking-tight text-white">{metric.value}</p>
-                <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-cyan-100/80">{metric.label}</p>
+          <SectionHeader
+            eyebrow="Data product value"
+            title="Useful intelligence, already joined and ready to query."
+            body="The value is not a raw list of domains or IPs. It is the enriched context, relationship mapping, risk reasoning and historical state that make the data usable inside real workflows."
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {outcomes.map((outcome) => (
+              <article key={outcome.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                <h2 className="text-lg font-semibold text-white">{outcome.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{outcome.text}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="data" className="border-t border-white/10 py-20 md:py-28">
+      <section id="datasets" className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="What is included?"
-            title="Find the fields your workflow already needs."
-            body="Datazag maintains a broad Infrastructure Intelligence model. The public catalogue shows the categories most technical buyers ask about first; sample schemas and curated views expose the exact fields during evaluation."
+            eyebrow="Dataset families"
+            title="The field groups technical buyers ask for first."
+            body="Each dataset family can be delivered as a full table, curated view, sample extract, API-backed enrichment path or product-specific schema."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {dataCategories.map((category, index) => (
-              <div key={category.title} className={`grid gap-5 p-5 md:grid-cols-[0.7fr_1.3fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <div>
-                  <h3 className="text-xl font-semibold text-white">{category.title}</h3>
-                  <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">{category.description}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2 rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {category.fields.map((field) => <FieldName key={field}>{field}</FieldName>)}
+            {datasetFamilies.map((family, index) => (
+              <div key={family.title} className={`grid gap-5 p-5 md:grid-cols-[0.28fr_0.42fr_0.3fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-xl font-semibold text-white">{family.title}</h3>
+                <p className="text-sm leading-6 text-slate-300">{family.sell}</p>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 rounded-2xl border border-white/10 bg-white/[0.025] p-4">
+                  {family.fields.map((field) => <FieldName key={field}>{field}</FieldName>)}
                 </div>
               </div>
             ))}
@@ -389,8 +297,8 @@ export default async function InfrastructureIntelligencePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Already engineered"
-            title="Less raw data. More usable intelligence."
-            body="The value is not just the data we collect. It is the expansion, labelling, history and evidence Datazag adds before the data reaches your warehouse or application."
+            title="Less raw collection. More usable intelligence."
+            body="Datazag packages expansion, labelling, relationship analysis, history and evidence before the data reaches your warehouse or application."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             <div className="hidden grid-cols-[0.45fr_auto_0.55fr] border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70 md:grid">
@@ -412,43 +320,18 @@ export default async function InfrastructureIntelligencePage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="How is it built?"
-            title="We do the enrichment before you receive the data."
-            body="Datazag is not a repackaged threat feed. We continuously observe internet infrastructure, expand what we find, build relationships, compare history and generate evidence-backed intelligence."
+            eyebrow="Curated products"
+            title="Start with the table that matches the workflow."
+            body="Curated products reduce engineering effort by packaging the right fields for common security, fraud, platform, portfolio and analytics use cases."
           />
-          <div className="mt-12">
-            <PipelineGraphic />
-          </div>
-          <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-center">
-            <p className="text-sm leading-6 text-slate-300">External reputation and abuse signals are used only as supporting validation where appropriate. They are not the primary source of detection and are not exposed as feed-membership flags in datasets.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Curated intelligence products"
-            title="Fewer joins. Faster queries. Better fit for the application."
-            body="Curated products are not entry-level versions of the data. They are purpose-built views that save engineering time by packaging the right fields for a specific workflow."
-          />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-6">
-            {curatedProducts.map((dataset) => (
-              <article key={dataset.title} className={`flex flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 ${dataset.featured ? "xl:col-span-3" : "xl:col-span-2"}`}>
-                <h3 className="text-xl font-semibold text-white">{dataset.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{dataset.value}</p>
-                <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 rounded-2xl border border-white/10 bg-[#050b22] p-4">
-                  {dataset.fields.map((item) => <FieldName key={item}>{item}</FieldName>)}
-                </div>
-                <p className="mt-5 border-t border-white/10 pt-4 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{dataset.available}</p>
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+            {dataProducts.map((product) => (
+              <article key={product.title} className="flex min-h-[16rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{product.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{product.text}</p>
+                <p className="mt-auto border-t border-white/10 pt-4 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{product.available}</p>
               </article>
             ))}
-          </div>
-          <div className="mt-8 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:p-8">
-            <h3 className="text-2xl font-semibold text-white">Need something more specific?</h3>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300 md:text-base">
-              We can publish curated data views that combine multiple intelligence products into one table tailored to your workflow. This is a paid option for teams that want fewer columns, simpler SQL and only the data they need.
-            </p>
           </div>
         </div>
       </section>
@@ -458,14 +341,14 @@ export default async function InfrastructureIntelligencePage() {
           <SectionHeader
             eyebrow="Ready to JOIN"
             title="Turn one log value into context, evidence and action."
-            body="Other vendors hand you raw attributes and leave interpretation to your team. Datazag returns infrastructure context, provider labels, relationships, risk and reason codes in one join."
+            body="The data is designed for SQL joins, enrichment pipelines, SIEM workflows, notebook analysis and data science features."
           />
           <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
             <CodeBlock />
             <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/70">Example output</p>
               <div className="mt-5 grid gap-3">
-                {enrichedOutput.map(([key, value]) => (
+                {[["risk_score", "94"], ["threat_band", "critical"], ["hosting_provider", "Bulletproof Hosting Ltd"], ["primary_asn", "AS64500"], ["related_domain_count", "15"], ["reason_codes", "new_domain, shared_infra, risky_asn"]].map(([key, value]) => (
                   <div key={key} className="grid grid-cols-[0.45fr_0.55fr] gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
                     <code className="text-xs text-cyan-100">{key}</code>
                     <p className="text-sm font-semibold text-white">{value}</p>
@@ -474,53 +357,45 @@ export default async function InfrastructureIntelligencePage() {
               </div>
             </div>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {reasons.map((reason) => (
-              <article key={reason.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                <h3 className="text-lg font-semibold text-white">{reason.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{reason.text}</p>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
       <section id="delivery" className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Access"
-            title="Choose how you want to consume the data."
-            body="Start with a report or API sample, then move to alerts or full cloud data shares when you are ready to operationalise."
+            eyebrow="Delivery"
+            title="Use the route that matches your buying and engineering model."
+            body="Teams can evaluate with samples and curated views, then move into cloud data shares, marketplace delivery, API enrichment or operational reports and alerts."
           />
           <div className="mt-12 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:p-8">
             <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">{cloudShare.badge}</p>
-                <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">{cloudShare.title}</h3>
-                <p className="mt-4 text-base leading-7 text-slate-300">{cloudShare.text}</p>
-                <a href={cloudShare.href} className="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{cloudShare.cta}</a>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">{primaryDelivery.badge}</p>
+                <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">{primaryDelivery.title}</h3>
+                <p className="mt-4 text-base leading-7 text-slate-300">{primaryDelivery.text}</p>
+                <a href={primaryDelivery.href} className="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{primaryDelivery.cta}</a>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
-                {(cloudShare.benefits ?? []).map((benefit) => (
+                {(primaryDelivery.benefits ?? []).map((benefit) => (
                   <div key={benefit} className="rounded-xl border border-cyan-300/20 bg-[#030619]/70 px-4 py-3 text-sm font-semibold text-cyan-50">{benefit}</div>
                 ))}
               </div>
             </div>
           </div>
           <div className="mt-5 grid gap-5 md:grid-cols-3">
-            {secondaryDelivery.map((option) => (
-              <article key={option.title} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">{option.badge}</p>
-                <h3 className="mt-3 text-xl font-semibold text-white">{option.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{option.text}</p>
-                <a href={option.href} className="mt-auto pt-5 text-sm font-semibold text-cyan-100 hover:text-white">{option.cta} →</a>
+            {secondaryDelivery.map((route) => (
+              <article key={route.title} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">{route.badge}</p>
+                <h3 className="mt-3 text-xl font-semibold text-white">{route.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{route.text}</p>
+                <a href={route.href} className="mt-auto pt-5 text-sm font-semibold text-cyan-100 hover:text-white">{route.cta} →</a>
               </article>
             ))}
           </div>
           <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Supported delivery</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Supported formats and destinations</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["Iceberg", "Delta", "Snowflake", "Databricks", "Azure", "AWS", "Google Cloud", "JSON API"].map((format) => <Pill key={format}>{format}</Pill>)}
+              {["Iceberg", "Delta", "Parquet", "Snowflake", "Databricks", "Azure", "AWS", "Google Cloud", "JSON API"].map((format) => <Pill key={format}>{format}</Pill>)}
             </div>
           </div>
         </div>
@@ -529,25 +404,38 @@ export default async function InfrastructureIntelligencePage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Sources and cadence"
-            title="Transparent enough to evaluate. Simple enough to scan."
-            body="Infrastructure Intelligence is built from observation, expansion and analysis. Supporting reputation signals are used for validation, not as the core product."
+            eyebrow="Use cases"
+            title="One intelligence layer, several data workflows."
+            body="The same cloud-native datasets can support security operations, ESP abuse controls, portfolio reporting, diligence and analytical modelling."
           />
-          <div className="mt-12 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-              <h3 className="text-xl font-semibold text-white">Core observation layers</h3>
-              <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2">
-                {sourceGroups.map((item) => <FieldName key={item}>{item}</FieldName>)}
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+            {useCases.map((useCase) => (
+              <article key={useCase.title} className="flex min-h-[14rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{useCase.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{useCase.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Sources and governance"
+            title="Transparent enough to evaluate. Controlled enough to license."
+            body="The Trust page covers the full governance model. This data-product page summarises the points technical and marketplace buyers usually need first."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {sourceAndGovernance.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
               </div>
-            </div>
-            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-              <h3 className="text-xl font-semibold text-white">Freshness model</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {["Certificates: live", "Priority infrastructure: hourly", "Full internet: ~40 hours", "Routing: every 2 hours", "RPKI: every 8 hours", "Snapshots: continuous"].map((item) => (
-                  <div key={item} className="rounded-xl border border-white/10 bg-[#030619]/60 px-3 py-2 text-sm text-slate-300">{item}</div>
-                ))}
-              </div>
-            </div>
+            ))}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <a href="/trust" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View trust and governance</a>
           </div>
         </div>
       </section>
@@ -557,14 +445,14 @@ export default async function InfrastructureIntelligencePage() {
           <SectionHeader
             eyebrow="Evaluate"
             title="Try the data before you commit."
-            body="The goal is simple: let a technical buyer spend 15 minutes deciding whether Datazag is useful. Start with the route that fits your evaluation style."
+            body="A technical buyer should be able to inspect the schema, run a few joins and decide whether the data improves the workflow."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {startPaths.map((path) => (
-              <article key={path.title} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
-                <h3 className="text-xl font-semibold text-white">{path.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{path.text}</p>
-                <a href={path.href} className="mt-auto inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start here</a>
+            {evaluationPaths.map(([title, text]) => (
+              <article key={title} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
+                <h3 className="text-xl font-semibold text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{text}</p>
+                <a href="/contact" className="mt-auto inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start here</a>
               </article>
             ))}
           </div>
