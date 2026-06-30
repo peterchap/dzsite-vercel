@@ -1,39 +1,43 @@
 import type { Metadata } from "next";
+import type React from "react";
 
 import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Contact — Datazag",
   description:
-    "Contact Datazag about free reports, threat alerts, infrastructure intelligence, API access, data shares, MSSP partnerships, ESP partnerships and marketplace private offers.",
+    "Contact Datazag about reports, alerts, brand protection, infrastructure intelligence, API access, cloud data products, partnerships and marketplace private offers.",
 };
 
 const enquiryRoutes = [
   {
-    title: "Get a free domain report",
-    text: "Use a work email to see DNS, email, subdomain, platform and external threat findings for one domain.",
+    title: "Report request",
+    text: "Start with a free Domain Health Report or discuss a paid portfolio report for multiple domains, subsidiaries, suppliers or clients.",
   },
   {
-    title: "Discuss threat alerts",
-    text: "Scope monitoring for platform, brand or keyword-led suspicious infrastructure with evidence and de-escalation paths.",
+    title: "Alerts and brand protection",
+    text: "Scope platform alerts, keyword alerts or staged brand-protection alerts with evidence packs, abuse contacts and de-escalation controls.",
   },
   {
-    title: "Explore Infrastructure Intelligence",
-    text: "Talk about API enrichment, data shares, cloud marketplace datasets, schemas, cadence and licensing.",
+    title: "API and data products",
+    text: "Discuss API enrichment, sample schemas, cloud data shares, marketplace routes, refresh cadence and permitted use.",
   },
   {
-    title: "Partner with Datazag",
-    text: "Discuss MSSP, MDR, ESP, platform or white-label services powered by Datazag intelligence.",
+    title: "Partner route",
+    text: "Discuss MSSP, MDR, ESP, platform or partner-branded services powered by Datazag Infrastructure Intelligence.",
   },
 ];
 
 const enquiryTypes = [
-  "Get a free domain report",
-  "Discuss threat alerts",
-  "Infrastructure Intelligence / data shares",
-  "API enrichment",
-  "MSSP partnership",
-  "ESP partnership",
+  "Free Domain Health Report",
+  "Portfolio Risk Report",
+  "Platform Alerts",
+  "Keyword Alerts",
+  "Brand Protection Alerts",
+  "Intelligence API",
+  "Cloud Data Products",
+  "MSSP / MDR partnership",
+  "ESP / platform partnership",
   "Marketplace / private offer",
   "Other",
 ];
@@ -41,16 +45,23 @@ const enquiryTypes = [
 const nextSteps = [
   {
     title: "We route the enquiry",
-    text: "The selected enquiry type tells us whether this is a report, alerting, data, API, partner or marketplace conversation.",
+    text: "The enquiry type tells us whether this is a report, alerts, brand protection, API, data product, partner or marketplace conversation.",
   },
   {
     title: "We check the scope",
-    text: "Domain, portfolio size, delivery preference and use case help us avoid a generic sales call.",
+    text: "Domain, portfolio size, delivery preference and use case help us suggest a practical next step rather than a generic conversation.",
   },
   {
-    title: "We suggest the next action",
-    text: "That may be a free report, sample schema, pilot scope, partner discussion, alert trial or private marketplace offer.",
+    title: "We suggest the right path",
+    text: "That may be a free report, sample report, sample schema, alert scope, API evaluation, partner discussion or private marketplace offer.",
   },
+];
+
+const helpfulContext = [
+  ["For reports", "Share the domain, number of domains, portfolio type or whether the request is for your organisation, a client, supplier or acquisition target."],
+  ["For alerts", "Share the platforms, brands, keywords or customer workflows you want monitored and where alerts should be delivered."],
+  ["For API or data", "Share expected volume, desired fields, delivery format, warehouse/lakehouse environment and refresh requirements."],
+  ["For partners", "Share the service model, customer segment, rough client count and whether you need white-label, API, alerts or data-share delivery."],
 ];
 
 const errorMessages: Record<string, string> = {
@@ -94,16 +105,19 @@ export default async function ContactPage({
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Contact Datazag</p>
-              <h1 className="mt-8 max-w-4xl text-5xl font-semibold tracking-tight text-white md:text-7xl">Tell us what you need.</h1>
+              <h1 className="mt-8 max-w-4xl text-5xl font-semibold tracking-tight text-white md:text-7xl">Tell us which route fits your use case.</h1>
               <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-                Choose the closest enquiry type and share enough context for us to route you to the right report, alerting, data, API, partner or marketplace path.
+                Use this page for report requests, alerting, brand protection, API access, cloud data products, marketplace access or partner discussions.
+              </p>
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
+                The more context you provide, the easier it is to suggest the right next step: a free report, sample report, alert scope, API evaluation, sample schema or partner conversation.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a href="/#free-report" className="inline-flex items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
                   Get a free report
                 </a>
-                <a href="/reports/sample" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-                  See sample report
+                <a href="/pricing" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                  View pricing
                 </a>
               </div>
             </div>
@@ -113,7 +127,7 @@ export default async function ContactPage({
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Enquiry intake</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">Start with the route, then the details.</h2>
                 <p className="mt-4 text-sm leading-6 text-slate-300">
-                  This form posts to the Datazag enquiry endpoint. It can later be connected to email, CRM, HubSpot, Sanity or the customer portal.
+                  Choose the closest enquiry type and add the domain, portfolio, platform, integration, dataset or partner context that will help us respond usefully.
                 </p>
               </div>
 
@@ -145,7 +159,7 @@ export default async function ContactPage({
                   <Field label="Company">
                     <input className={inputClass} name="company" type="text" placeholder="Company name" required />
                   </Field>
-                  <Field label="Domain or portfolio size">
+                  <Field label="Domain, portfolio or volume">
                     <input className={inputClass} name="scope" type="text" placeholder="example.com, 50 domains, 1M links/month" />
                   </Field>
                 </div>
@@ -167,7 +181,7 @@ export default async function ContactPage({
                   <textarea
                     className={`${inputClass} min-h-36 resize-y`}
                     name="message"
-                    placeholder="Example: We are an MSSP with 120 customer domains and want a white-label domain health and impersonation report."
+                    placeholder="Example: We are an MSSP with 120 customer domains and want staged brand-protection alerts plus evidence packs for client reporting."
                   />
                 </Field>
 
@@ -181,7 +195,7 @@ export default async function ContactPage({
                   <label className="flex gap-3">
                     <input className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10" name="marketing_opt_in" type="checkbox" />
                     <span>
-                      I would also like to receive occasional Datazag updates about reports, alerts, infrastructure intelligence and related services. I can opt out later.
+                      I would also like to receive occasional Datazag updates about reports, alerts, Infrastructure Intelligence and related services. I can opt out later.
                     </span>
                   </label>
                 </div>
@@ -203,7 +217,7 @@ export default async function ContactPage({
         <Container>
           <div className="mx-auto max-w-7xl">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Choose the closest path</p>
-            <h2 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight text-white md:text-5xl">Your enquiry decides the route.</h2>
+            <h2 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight text-white md:text-5xl">One form, several routes.</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               {enquiryRoutes.map((route) => (
                 <article key={route.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
@@ -220,8 +234,27 @@ export default async function ContactPage({
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Useful context</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">What to include in the message.</h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {helpfulContext.map(([title, text]) => (
+                <article key={title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+                  <h3 className="text-lg font-semibold text-white">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="relative border-t border-white/10 py-16 md:py-20">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">What happens next</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">A short route to the right conversation.</h2>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">A short route to the right next step.</h2>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               {nextSteps.map((step, index) => (
@@ -242,7 +275,7 @@ export default async function ContactPage({
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Privacy note</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Processing is explicit. Marketing is optional.</h2>
             <p className="mt-5 text-sm leading-6 text-slate-300">
-              Processing authorisation covers responding to the enquiry and producing any requested domain report. Marketing consent is separate, optional and not required to receive the report or response.
+              Processing authorisation covers responding to the enquiry and, where requested, assessing the relevant domain, portfolio or use case. Marketing consent is separate, optional and not required to receive a response.
             </p>
           </div>
         </Container>
