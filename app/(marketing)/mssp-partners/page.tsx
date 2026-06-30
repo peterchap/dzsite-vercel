@@ -101,6 +101,12 @@ const marginLevers = [
   ["Package premium services", "Sell evidence, monitoring, remediation and reporting rather than raw data access."],
 ];
 
+const usageRights = [
+  ["Included", "Use Datazag intelligence to power partner-led managed services, reports, alerts, enrichment workflows and portal features for your own end clients."],
+  ["Not standalone resale", "Raw data, API access, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default."],
+  ["Downstream partners", "Services sold through your own resellers, franchisees or channel partners require written approval, pass-through terms and a separate commercial model."],
+];
+
 const delivery = [
   {
     title: "API",
@@ -290,6 +296,23 @@ export default function MsspPartnersPage() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="mt-8 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            <div className="grid gap-5 border-b border-white/10 bg-white/[0.025] p-5 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/70">Usage rights</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Built for services, not raw data resale.</h3>
+              </div>
+              <p className="text-sm leading-6 text-slate-300">
+                The principle is simple: partners can package Datazag intelligence into their own managed services; Datazag data itself remains a licensed intelligence layer. Detailed terms sit in the partner agreement.
+              </p>
+            </div>
+            {usageRights.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
