@@ -2,11 +2,11 @@ import type { StoryContent } from "./types";
 
 export const defaultStoryContent: StoryContent = {
   heroEyebrow: "Internet Infrastructure Intelligence",
-  heroTitle: "Detect and block malicious infrastructure up to 48 hours before traditional blacklists.",
+  heroTitle: "Detect malicious infrastructure up to 48 hours before traditional blacklists.",
   heroIntro:
-    "Datazag delivers annotated internet infrastructure intelligence within 10 seconds of staging, giving MSSPs and enterprise teams the speed to stop threats before they go live.",
+    "Datazag detects malicious domains within ~10s of certificate issuance and pipes annotated intelligence straight into your SIEM and controls — up to 48 hours ahead of traditional blacklists.",
   heroStatement:
-    "Every signal is connected to DNS, certificate, hosting, ASN, platform and threat context so analysts can see what changed, why it matters and what action to take next.",
+    "",
   primaryCta: { label: "Get your free report", href: "/#free-report" },
   secondaryCta: { label: "See how it works", href: "#how-it-works" },
   heroPills: ["Detect earlier", "Block with evidence", "Act before launch"],
