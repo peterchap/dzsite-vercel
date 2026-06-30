@@ -22,7 +22,7 @@ const outcomes = [
   },
   {
     title: "Deliver into workflows",
-    text: "Send reasoned alerts to SOC queues, partner portals, Slack, SIEM, webhooks, APIs or data shares.",
+    text: "Send reasoned alerts to SOC queues, partner portals, Palo Alto, Microsoft Sentinel, Splunk, webhooks, APIs or data shares.",
   },
 ];
 
@@ -47,9 +47,9 @@ const alertClasses = [
   },
   {
     title: "Infrastructure anomalies",
-    response: "Escalate sudden certificate, DNS, hosting, ASN or relationship changes that make a candidate more risky.",
-    text: "Infrastructure context helps distinguish routine naming collisions from candidates that are becoming operationally relevant.",
-    signals: ["Certificate events", "DNS changes", "ASN context", "Hosting shifts", "Risk reasons"],
+    response: "Escalate suspicious domains and IPs discovered around bad actor infrastructure before they appear in conventional lists.",
+    text: "When a candidate is linked to risky infrastructure, Datazag checks related IPs, prefixes, ASNs, DNS relationships and hosted domains to uncover other connected assets that may not yet have been detected elsewhere.",
+    signals: ["Related domains", "Related IPs", "Shared hosting", "Prefix changes", "BGP/MOAS signals"],
   },
   {
     title: "Customer watchlists",
@@ -67,9 +67,40 @@ const pipeline = [
   { title: "Deliver", text: "Alerts are sent to the operational route that fits the team: webhook, API, SIEM, portal, report or data share." },
 ];
 
+const alertExampleFields = [
+  ["Incident ID", "INC-1782384515-13ec9b"],
+  ["Classification", "RED → ISSUE_BLOCK_NOTICE"],
+  ["Match", "Platform — exchange"],
+  ["Customer", "Generic"],
+  ["ASN Risk Score", "1.00 · critical"],
+  ["ASN", "AS14618 Amazon AES"],
+  ["Registration", "—"],
+  ["Detected Hosting Infrastructure", "52.20.84.62 (behind aws)"],
+  ["Confidence", "48/100"],
+];
+
+const alertExampleReasons = [
+  "Platform impersonation targeting 'exchange' (Category: Microsoft 365)",
+  "Domain not found in known 330M corpus",
+  "infra: ELEVATED_NETWORK_TYPE",
+  "infra: CERTSTREAM_ANOMALY",
+  "infra: MALICIOUS_IP_DENSITY",
+  "infra: PREFIX:BGP_MOAS_SPECIFIC_NEW_ORIGIN",
+  "infra: ASN:critical",
+  "infra: CDN_FRONTED:aws",
+];
+
+const alertAnnotations = [
+  ["Classification", "RED → ISSUE_BLOCK_NOTICE tells the receiving workflow this is a block-notice candidate rather than a general observation."],
+  ["Match", "The alert identifies the platform lure and category, here an Exchange/Microsoft 365-themed platform signal."],
+  ["Infrastructure risk", "ASN score, hosting IP, CDN/fronting context and BGP/MOAS signals explain why the infrastructure is higher risk."],
+  ["Reason codes", "Analysts and automations can see the individual signals that caused escalation instead of treating the alert as a black box."],
+  ["Latency", "E2E latency shows how quickly the alert moved through the detection pipeline; DNS resolution phase is reported separately."],
+];
+
 const evidence = [
   ["Reason codes", "Why the candidate escalated: brand term, platform term, suspicious keyword, DNS activity, certificate event or infrastructure risk."],
-  ["Infrastructure context", "Hosting provider, ASN, DNS, certificate, related domains, novelty and relationship signals."],
+  ["Infrastructure context", "Hosting provider, ASN, DNS, certificate, related domains, related IPs, novelty and relationship signals."],
   ["Known-good checks", "Comparison against approved customer infrastructure, brand DNS, platform baselines and cloud footprints."],
   ["Recommended action", "Block, investigate, watchlist, prepare evidence, route for review, de-escalate or monitor for content."],
   ["Feedback path", "Customer or analyst feedback can de-escalate accepted findings and improve future routing."],
@@ -101,7 +132,7 @@ const useCases = [
 const delivery = [
   {
     title: "Webhooks",
-    text: "Push alert events into Slack, ticketing, SOAR, enrichment or customer portal workflows.",
+    text: "Push alert events into launch integrations for Palo Alto, Microsoft Sentinel and Splunk, or into custom ticketing, SOAR and portal workflows.",
   },
   {
     title: "API",
@@ -109,7 +140,7 @@ const delivery = [
   },
   {
     title: "SIEM and SOC tools",
-    text: "Route alerts and reason fields into detection, investigation and response workflows.",
+    text: "Route alerts and reason fields into detection, investigation and response workflows, including Sentinel and Splunk environments.",
   },
   {
     title: "Reports and evidence packs",
@@ -252,6 +283,49 @@ export default function AlertsPage() {
                   <h3 className="mt-4 text-xl font-semibold text-white">{step.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
                 </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Annotated example"
+            title="What a reasoned alert looks like."
+            body="A useful alert is not just a domain and a severity. It shows the action path, the matched lure, the infrastructure context, the reason codes and how quickly the signal moved through the pipeline."
+          />
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+              <div className="border-b border-white/10 bg-white/[0.035] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/70">PLATFORM | RED</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Platform Risk Escalated | exchange.ws</h3>
+              </div>
+              <div className="grid gap-3 p-5 sm:grid-cols-2">
+                {alertExampleFields.map(([label, value]) => (
+                  <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
+                    <p className="mt-2 text-sm font-semibold text-slate-200">{value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-white/10 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Reason codes</p>
+                <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-300">
+                  {alertExampleReasons.map((reason) => <li key={reason}>• {reason}</li>)}
+                </ul>
+              </div>
+              <div className="border-t border-white/10 bg-cyan-300/[0.06] p-5">
+                <p className="text-sm font-semibold text-cyan-100">E2E Latency: 4.415s | DNS Resolution Phase: -1ms</p>
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
+              {alertAnnotations.map(([title, text], index) => (
+                <div key={title} className={`p-5 ${index > 0 ? "border-t border-white/10" : ""}`}>
+                  <h3 className="text-lg font-semibold text-white">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+                </div>
               ))}
             </div>
           </div>
