@@ -1,150 +1,347 @@
 import type { Metadata } from "next";
-
-import ProductConceptPage, { type ProductConceptPageProps } from "@/components/sections/blocks/ProductConceptPage";
-import { sanityFetch } from "@/sanity/fetch";
-import { productConceptPageBySlugQuery } from "@/sanity/queries";
+import type React from "react";
 
 export const metadata: Metadata = {
   title: "Threat Alerts — Datazag",
   description:
-    "Real-time alerts for emerging attack infrastructure, platform impersonation, brand impersonation and suspicious keyword-led infrastructure.",
+    "Early alerts for platform abuse, brand impersonation, suspicious subdomains and emerging attack infrastructure, with reason codes and evidence for operational workflows.",
 };
 
-const fallbackContent: ProductConceptPageProps = {
-  eyebrow: "Real-time Threat Alerts",
-  title: "Catch attack infrastructure before it reaches users.",
-  intro: "Datazag monitors the changing internet for early signs of phishing, impersonation and malicious infrastructure. New signals are investigated, filtered against known-good infrastructure, correlated and delivered as actionable alerts into the workflows your team already uses.",
-  primaryCta: { label: "Request alert access", href: "/#free-report" },
-  secondaryCta: { label: "View report product", href: "/reports" },
-  proof: [
-    { title: "Platform alerts", text: "High-value cloud, identity, email, storage, payment and collaboration platforms are monitored for abuse." },
-    { title: "Brand alerts", text: "Brand impersonation coverage focuses on the world's most targeted brands and customer-specific brands." },
-    { title: "Keyword infrastructure", text: "Suspicious subdomains can carry the lure even when the apex domain is parked, generic or otherwise low-value." },
-    { title: "False-positive controls", text: "Candidate matches are filtered against known brand DNS, platform baselines, cloud allowlists and infrastructure evidence." },
-  ],
-  narrative: {
-    kicker: "The problem",
-    title: "Attack infrastructure is not always a clean platform or brand match.",
-    body: [
-      "Attackers do not only copy a company's brand. They reuse the platforms people already trust: login providers, cloud services, payment brands, email platforms, storage tools and collaboration suites.",
-      "They also use more generic infrastructure patterns: a parked or low-value apex domain with suspicious keywords pushed into subdomains such as login, secure, verify, billing, update or support.",
-      "Datazag separates these into different alert classes because the operational response is different: platform alerts are usually for blocking, brand alerts can support takedown, and keyword/subdomain infrastructure alerts are often for investigation, blocking and watchlisting.",
-      "The first pass finds suspicious candidates using brand terms, platform terms, keywords, DGA indicators and entropy signals. The second pass checks those candidates against known-good DNS, standard platform infrastructure, brand baselines and cloud allowlists so legitimate infrastructure is not treated like an attack.",
-    ],
+const outcomes = [
+  {
+    title: "See infrastructure earlier",
+    text: "Monitor domains, DNS, certificates and hosting changes before suspicious infrastructure becomes a full incident.",
   },
-  flowTitle: "From internet change to actionable alert.",
-  flow: [
-    { title: "Observe", text: "New domains, subdomains, certs, DNS and infrastructure changes are captured." },
-    { title: "Classify", text: "Signals are separated into platform, brand, keyword/subdomain and supporting infrastructure context." },
-    { title: "Filter", text: "Candidates are checked against known DNS, platform baselines, cloud allowlists and brand infrastructure." },
-    { title: "Act", text: "Clients receive the right action path: block, investigate, watchlist, de-escalate or prepare takedown." },
-  ],
-  alertTypeSection: {
-    kicker: "Alert types",
-    title: "Three alert classes need different responses.",
-    intro: "Datazag checks high-value platforms, major global brands and suspicious keyword-led infrastructure. Platform hits dominate observed impersonation activity, but a third pattern is also important: the lure appears in the subdomain while the apex is parked, generic or not obviously malicious on its own.",
-    stats: [
-      { title: "Platform", text: "trusted services and SaaS brands abused as the lure." },
-      { title: "Brand", text: "customer-owned or high-value brands targeted directly." },
-      { title: "Keyword", text: "suspicious subdomains on parked or low-value apex domains." },
-    ],
-    types: [
-      {
-        title: "Platform impersonation alerts",
-        subtitle: "Block and reduce exposure",
-        coverage: "Cloud, identity, email, collaboration, storage, payment and SaaS platforms.",
-        action: "Block, investigate related infrastructure, monitor for brand crossover, or de-escalate if approved.",
-        text: "A customer usually does not have standing to request takedown for a fake platform they do not own. The practical action is to block, enrich detection, and watch whether the same infrastructure begins targeting the customer's own brands or users.",
-        evidence: ["Matched platform pattern and category", "DGA, entropy and suspicious naming signals", "Comparison against standard platform DNS and known-good infrastructure", "Cloud allowlist checks to reduce legitimate platform and customer infrastructure matches", "Client de-escalate link for known-good or low-risk findings"],
-      },
-      {
-        title: "Brand impersonation alerts",
-        subtitle: "Evidence pack and takedown",
-        coverage: "Top global brands, customer-owned brands, subsidiaries, domains and known aliases.",
-        action: "Prepare takedown evidence when a website appears, including screenshot and abuse contact, or de-escalate if approved.",
-        text: "When the alert targets a brand the customer owns or represents, Datazag can update the alert with evidence suitable for takedown or abuse reporting once a live website appears.",
-        evidence: ["Brand match and affected domain", "DGA, entropy and suspicious naming signals", "Comparison against known brand DNS, standard infrastructure and approved cloud footprints", "Website screenshot and abuse contact when content appears", "Client de-escalate link for accepted or false-positive findings"],
-      },
-      {
-        title: "Keyword infrastructure alerts",
-        subtitle: "Investigate, block and watchlist",
-        coverage: "Suspicious subdomains using lure terms such as login, secure, verify, billing, update, wallet or support on parked, generic or low-reputation apex domains.",
-        action: "Investigate the subdomain, block if appropriate, monitor related infrastructure, and de-escalate if the customer recognises it.",
-        text: "These alerts do not necessarily match a monitored platform or owned brand. The risk sits in the combination of suspicious subdomain language, parked or low-value apex domain, new DNS activity, hosting context and related infrastructure behaviour.",
-        evidence: ["Suspicious keyword in subdomain rather than apex domain", "Parked, inactive or low-value apex domain context", "Entropy, DGA, corpus novelty or fast-path infrastructure signals", "DNS, hosting, ASN and certificate context for investigation", "Client de-escalate link for known-good or accepted findings"],
-      },
-    ],
-    note: "All three alert classes support a client de-escalation action. The difference is the recommended response: platform impersonation is primarily a blocking and detection problem; brand impersonation can become an evidence and takedown workflow; keyword/subdomain infrastructure alerts are usually an investigation, blocking and watchlist workflow.",
+  {
+    title: "Separate the response",
+    text: "Platform abuse, brand impersonation and suspicious keyword infrastructure need different operational actions.",
   },
-  exampleAlert: {
-    kicker: "Example platform alert",
-    title: "What an operational platform alert looks like.",
-    intro: "This example is based on a platform-risk alert flowing into a Slack channel. The format is intentionally compact: enough context for a first decision, with reason codes that explain why the alert escalated.",
-    severity: "PLATFORM | RED",
-    status: "Platform Risk Escalated",
-    domain: "www.apple-du.ph",
-    fields: [
-      { label: "Incident ID", value: "INC-1782484980-55c8ca" },
-      { label: "Classification", value: "RED → ISSUE_BLOCK_NOTICE" },
-      { label: "Match", value: "Platform — apple" },
-      { label: "Customer", value: "Microsoft" },
-      { label: "ASN risk score", value: "0.95 · medium" },
-      { label: "ASN", value: "AS63949 Linode AS63949" },
-      { label: "Detected hosting", value: "45.79.222.138" },
-      { label: "Confidence", value: "48/100" },
-    ],
-    reasons: ["Platform impersonation targeting 'apple'", "Domain not found in known 330M corpus", "infra: ELEVATED_NETWORK_TYPE", "infra: CERTSTREAM_ANOMALY", "infra: ASN:medium", "infra: FAST_PATH_DENSITY_SURGE"],
-    latency: "E2E latency: 3.923s",
+  {
+    title: "Reduce noisy matches",
+    text: "Candidate alerts are checked against known-good infrastructure, brand baselines, platform patterns and cloud footprints.",
   },
-  secondaryExampleAlert: {
-    kicker: "Example brand alert",
-    title: "What a brand evidence-pack alert looks like.",
-    intro: "This fictional example shows the brand workflow. Unlike a platform alert, the recommended action can move beyond blocking into evidence capture, abuse reporting and takedown support when the customer owns or represents the affected brand.",
-    severity: "BRAND | RED",
-    status: "Brand Impersonation Escalated",
-    domain: "secure-brand-login.test",
-    fields: [
-      { label: "Classification", value: "RED → EVIDENCE_PACK_READY" },
-      { label: "Match", value: "Customer-owned brand" },
-      { label: "Website status", value: "Live page detected" },
-      { label: "Screenshot", value: "Captured and attached to evidence pack" },
-      { label: "Abuse contact", value: "Hosting provider abuse mailbox identified" },
-      { label: "Recommended action", value: "Submit takedown notice or de-escalate" },
-    ],
-    reasons: ["Brand term present with suspicious login/security wording", "Candidate does not match known brand DNS or approved cloud footprint", "Website content observed and screenshot captured", "Hosting provider and abuse contact resolved for evidence pack"],
-    latency: "Evidence pack updated when website content appeared",
+  {
+    title: "Deliver into workflows",
+    text: "Send reasoned alerts to SOC queues, partner portals, Slack, SIEM, webhooks, APIs or data shares.",
   },
-  tertiaryExampleAlert: {
-    kicker: "Example keyword infrastructure alert",
-    title: "What a keyword/subdomain alert looks like.",
-    intro: "This fictional example shows the third alert class. The apex domain may be parked or generic, but the active subdomain carries suspicious lure language and starts to resolve through infrastructure that deserves investigation.",
-    severity: "KEYWORD | AMBER",
-    status: "Suspicious Subdomain Infrastructure",
-    domain: "verify-account.parking-domain.test",
-    fields: [
-      { label: "Classification", value: "AMBER → INVESTIGATE_OR_BLOCK" },
-      { label: "Keyword signal", value: "verify-account" },
-      { label: "Apex status", value: "Parked or inactive apex domain" },
-      { label: "Match", value: "No monitored platform or owned brand match" },
-      { label: "Detected hosting", value: "New DNS resolution observed" },
-      { label: "Recommended action", value: "Investigate, block or watchlist related infrastructure" },
-    ],
-    reasons: ["Suspicious keyword present in subdomain", "Apex domain appears parked, generic or low-value", "Subdomain activity differs from apex-domain posture", "Infrastructure context requires investigation rather than takedown workflow"],
-    latency: "Alert generated when subdomain and infrastructure activity were observed",
-  },
-  packagesTitle: "Alert use cases.",
-  packages: [
-    { title: "SOC and threat hunting", text: "Prioritise suspicious infrastructure before campaigns create incident volume." },
-    { title: "Brand and platform impersonation", text: "Separate blocking workflows from evidence-pack and takedown workflows." },
-    { title: "Keyword infrastructure", text: "Detect suspicious lure terms in subdomains, especially where the apex domain is parked or generic." },
-    { title: "False-positive review", text: "Use DNS baselines, approved cloud infrastructure and de-escalation feedback to keep alerts operationally useful." },
-    { title: "MSSP and MDR delivery", text: "Package early infrastructure intelligence into managed detection and customer reporting." },
-  ],
-  finalTitle: "See the infrastructure forming around your organisation.",
-  finalBody: "Start with an external platform threat report, then move into real-time alerting for platform abuse, brand impersonation, suspicious keyword infrastructure and the signals that connect them.",
-};
+];
 
-export default async function AlertsPage() {
-  const cmsContent = await sanityFetch<ProductConceptPageProps | null>(productConceptPageBySlugQuery, { slug: "alerts" });
-  return <ProductConceptPage {...(cmsContent ?? fallbackContent)} />;
+const alertClasses = [
+  {
+    title: "Platform impersonation",
+    response: "Block, enrich detections, watch related infrastructure and de-escalate known-good findings.",
+    text: "Attackers often borrow trust from cloud, identity, email, payment, storage and collaboration platforms. The practical response is usually blocking and detection rather than takedown unless the customer owns the affected brand.",
+    signals: ["Platform terms", "Login lures", "Known-good comparison", "Cloud allowlists", "Related infrastructure"],
+  },
+  {
+    title: "Brand impersonation",
+    response: "Prepare evidence, capture website state, identify abuse contacts and support takedown workflows.",
+    text: "When the alert targets a brand the customer owns or represents, the workflow can move beyond blocking into evidence capture, abuse reporting and remediation tracking.",
+    signals: ["Owned brands", "Aliases", "Suspicious wording", "Website evidence", "Abuse contacts"],
+  },
+  {
+    title: "Keyword and subdomain infrastructure",
+    response: "Investigate, block or watchlist suspicious lure terms that do not cleanly match a monitored brand.",
+    text: "The apex domain may be parked or generic while the active subdomain carries the lure: login, secure, verify, billing, wallet, update or support.",
+    signals: ["Suspicious subdomains", "Parked apex", "DNS activation", "Novelty", "Hosting context"],
+  },
+  {
+    title: "Infrastructure anomalies",
+    response: "Escalate sudden certificate, DNS, hosting, ASN or relationship changes that make a candidate more risky.",
+    text: "Infrastructure context helps distinguish routine naming collisions from candidates that are becoming operationally relevant.",
+    signals: ["Certificate events", "DNS changes", "ASN context", "Hosting shifts", "Risk reasons"],
+  },
+  {
+    title: "Customer watchlists",
+    response: "Monitor customer-specific brands, suppliers, platforms, domains and high-risk terms with tailored thresholds.",
+    text: "Customer context changes how alerts are interpreted. A term that is harmless for one organisation may be important for another.",
+    signals: ["Customer brands", "Suppliers", "Terms", "Domains", "Approved baselines"],
+  },
+];
+
+const pipeline = [
+  { title: "Observe", text: "New domains, subdomains, certificates, DNS and infrastructure changes are captured." },
+  { title: "Match", text: "Candidates are matched against platforms, brands, keywords, watchlists and suspicious naming patterns." },
+  { title: "Filter", text: "Known-good DNS, platform baselines, cloud allowlists and approved customer footprints reduce false positives." },
+  { title: "Explain", text: "Reason codes, confidence context, infrastructure evidence and suggested action are attached to the alert." },
+  { title: "Deliver", text: "Alerts are sent to the operational route that fits the team: webhook, API, SIEM, portal, report or data share." },
+];
+
+const evidence = [
+  ["Reason codes", "Why the candidate escalated: brand term, platform term, suspicious keyword, DNS activity, certificate event or infrastructure risk."],
+  ["Infrastructure context", "Hosting provider, ASN, DNS, certificate, related domains, novelty and relationship signals."],
+  ["Known-good checks", "Comparison against approved customer infrastructure, brand DNS, platform baselines and cloud footprints."],
+  ["Recommended action", "Block, investigate, watchlist, prepare evidence, route for review, de-escalate or monitor for content."],
+  ["Feedback path", "Customer or analyst feedback can de-escalate accepted findings and improve future routing."],
+];
+
+const useCases = [
+  {
+    title: "SOC and threat hunting",
+    text: "Prioritise emerging infrastructure before campaigns create incident volume.",
+  },
+  {
+    title: "MSSP and MDR delivery",
+    text: "Package early alerting, evidence and customer reporting into managed detection services.",
+  },
+  {
+    title: "Brand protection",
+    text: "Separate blocking workflows from evidence-pack and takedown workflows for owned brands.",
+  },
+  {
+    title: "ESP abuse workflows",
+    text: "Score suspicious links, domains and infrastructure flowing through email platforms.",
+  },
+  {
+    title: "Data-driven security teams",
+    text: "Join alerts with lakehouse, SIEM, ticketing and case-management workflows.",
+  },
+];
+
+const delivery = [
+  {
+    title: "Webhooks",
+    text: "Push alert events into Slack, ticketing, SOAR, enrichment or customer portal workflows.",
+  },
+  {
+    title: "API",
+    text: "Score, enrich and retrieve alert context inside products, review queues and case-management tools.",
+  },
+  {
+    title: "SIEM and SOC tools",
+    text: "Route alerts and reason fields into detection, investigation and response workflows.",
+  },
+  {
+    title: "Reports and evidence packs",
+    text: "Package findings for executives, customers, takedown workflows and account reviews.",
+  },
+  {
+    title: "Cloud data shares",
+    text: "Use Iceberg or Delta datasets for analytics, hunting, enrichment and historical review.",
+  },
+];
+
+const falsePositiveControls = [
+  ["Approved baselines", "Customer domains, brand DNS, known cloud footprints and recognised platform infrastructure are used to avoid obvious false positives."],
+  ["Context before severity", "A naming match alone is not enough. DNS, certificates, hosting, novelty and relationship signals change routing and severity."],
+  ["De-escalation feedback", "Accepted findings and known-good infrastructure can be de-escalated so teams are not forced to handle the same noise repeatedly."],
+];
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
+}
+
+function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{eyebrow}</p>
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
+      {body ? <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">{body}</p> : null}
+    </div>
+  );
+}
+
+function AlertStackPanel() {
+  return (
+    <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
+      <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Alert workflow</p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">From signal to action</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Observe internet changes, filter known-good infrastructure, attach reasons and deliver alerts into the workflow that can act.</p>
+      </div>
+      <div className="mx-auto h-8 w-px bg-cyan-300/30" />
+      <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Alert ingredients</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {["Domains", "DNS", "Certificates", "Infrastructure", "Brands", "Platforms", "Keywords", "Evidence"].map((item) => (
+            <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function AlertsPage() {
+  return (
+    <main className="overflow-hidden bg-[#030619] text-white">
+      <section className="relative py-24 md:py-32">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.13),transparent_34%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
+          <div>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Threat Alerts</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Catch suspicious infrastructure before it reaches users.</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              Datazag monitors domains, DNS, certificates and infrastructure changes for early signs of platform abuse, brand impersonation and suspicious keyword-led infrastructure.
+            </p>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
+              Each alert is delivered with reason codes, infrastructure context and a recommended action path so teams can block, investigate, watchlist, escalate or de-escalate with evidence.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Request alert access</a>
+              <a href="#alert-types" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Explore alert types</a>
+            </div>
+          </div>
+          <AlertStackPanel />
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Operational value"
+            title="Earlier signals. Clearer actions. Less alert noise."
+            body="Alerts are only useful when the receiving team knows what changed, why it matters and what action is appropriate."
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {outcomes.map((outcome) => (
+              <article key={outcome.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                <h2 className="text-lg font-semibold text-white">{outcome.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{outcome.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="alert-types" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Alert classes"
+            title="Different infrastructure patterns need different responses."
+            body="A platform lure, an owned-brand impersonation and a suspicious subdomain on a parked apex domain should not be routed in the same way."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {alertClasses.map((alertClass, index) => (
+              <div key={alertClass.title} className={`grid gap-5 p-5 md:grid-cols-[0.26fr_0.36fr_0.38fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">{alertClass.title}</h3>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Response</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{alertClass.response}</p>
+                </div>
+                <div>
+                  <p className="text-sm leading-6 text-slate-400">{alertClass.text}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {alertClass.signals.map((signal) => <Tag key={signal}>{signal}</Tag>)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Signal pipeline"
+            title="From internet change to operational alert."
+            body="The alert is the output of collection, matching, filtering, explanation and delivery. Each stage is designed to make the signal more usable."
+          />
+          <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
+            <div className="grid gap-3 lg:grid-cols-5">
+              {pipeline.map((step, index) => (
+                <article key={step.title} className="relative rounded-2xl border border-white/10 bg-[#030619]/70 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
+                    {index < pipeline.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold text-white">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Evidence"
+            title="Every alert should explain itself."
+            body="The goal is not to send more alerts. The goal is to give teams enough context to make a decision quickly and consistently."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {evidence.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="False-positive controls"
+            title="Filtering happens before the alert reaches the team."
+            body="Brand and platform terms collide with legitimate infrastructure every day. The alerting layer needs evidence, allowlists and feedback paths to stay operationally useful."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {falsePositiveControls.map(([title, text]) => (
+              <article key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Use cases"
+            title="One alert layer, multiple operational motions."
+            body="The same infrastructure signal can support internal SOC work, managed services, brand protection, ESP abuse workflows and data-driven security operations."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+            {useCases.map((item) => (
+              <article key={item.title} className="flex min-h-[14rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Delivery"
+            title="Use the route that fits the workflow."
+            body="Alerts can be consumed as live operational events, enrichment calls, evidence packs or analytical datasets depending on the team using them."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+            {delivery.map((item) => (
+              <article key={item.title} className="flex min-h-[16rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-24 md:py-32">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Start with the alert classes that match your workflow.</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            Begin with platform abuse, brand impersonation, keyword infrastructure, infrastructure anomalies or customer-specific watchlists, then route the alerts into the workflow that can act on them.
+          </p>
+          <div className="mt-10 flex justify-center">
+            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Request alert access</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
