@@ -17,8 +17,8 @@ const outcomes = [
     text: "Add alert feeds, brand protection, portfolio monitoring, customer reports and SOC enrichment without building the intelligence layer yourself.",
   },
   {
-    title: "Keep your brand",
-    text: "Datazag works behind your service, portal, reports, alerts and commercial model. You own the client relationship.",
+    title: "Deliver under your brand",
+    text: "Keep the service experience inside your own portal, reports, alerts, account reviews and commercial model.",
   },
   {
     title: "Integrate into your stack",
@@ -69,11 +69,11 @@ const flow = [
   { verb: "Enrich", text: "Signals are expanded with hosting, ASN, platform, relationship and historical context." },
   { verb: "Explain", text: "Outputs include reason codes, evidence and confidence so alerts and decisions are easier to trust." },
   { verb: "Deliver", text: "You receive alerts, API responses, webhook events, reports or data shares through the route that fits your service model." },
-  { verb: "Monetise", text: "You package it as your managed alerting, reporting, enrichment, portal or detection workflow." },
+  { verb: "Monetise", text: "You package it as managed alerting, reporting, enrichment, portal intelligence or detection workflows." },
 ];
 
 const roleSplit = [
-  ["Client relationship", "Partner owns", "Datazag supports behind the scenes"],
+  ["Client relationship", "Partner owns the relationship", "Datazag supports behind the scenes"],
   ["Commercial packaging", "Partner defines offer, pricing and SLA", "Datazag supplies intelligence and delivery options"],
   ["Internet-scale collection", "Partner avoids building this", "Datazag observes and enriches the infrastructure graph"],
   ["Reports and portal", "Partner brands the experience", "Datazag powers findings, alerts, evidence and data exports"],
@@ -87,7 +87,7 @@ const commercialModel = [
   },
   {
     title: "Datazag is the wholesale layer",
-    text: "We price the intelligence layer by scope: client estate, domains, brands, data volume, delivery route, white-label needs and SLA.",
+    text: "The intelligence layer is priced by scope: client estate, domains, brands, data volume, delivery route, white-label needs and SLA.",
   },
   {
     title: "Designed for service margin",
@@ -95,7 +95,7 @@ const commercialModel = [
   },
   {
     title: "No channel conflict by design",
-    text: "For partner-led accounts, the client relationship stays with the MSSP. Datazag is infrastructure behind your managed service, not a competing front-end service.",
+    text: "For partner-led accounts, the client relationship stays with the MSSP. Datazag remains infrastructure behind the managed service.",
   },
 ];
 
@@ -203,7 +203,7 @@ export default function MsspPartnersPage() {
               Datazag gives MSSPs the domain, DNS, certificate, infrastructure and early alert layer behind managed detection, brand protection, portfolio monitoring and client reporting services.
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              Your brand owns the client relationship. Datazag powers the data, alerts, evidence and monitoring underneath.
+              Keep the client relationship and service experience under your brand while Datazag powers the data, alerts, evidence and monitoring underneath.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start a partner pilot</a>
@@ -219,7 +219,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Partner value"
             title="Reduce costs. Increase recurring revenue."
-            body="The page story starts here: use Datazag to reduce the cost of operating security services, then package the same intelligence into new client-facing revenue lines."
+            body="Use Datazag to reduce the cost of operating security services, then package the same intelligence into new client-facing revenue lines."
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {outcomes.map((outcome) => (
@@ -237,7 +237,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Partner service catalogue"
             title="Create services your clients already understand."
-            body="Datazag is the intelligence layer. You decide how to package it: early alerts, managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services."
+            body="Choose the first commercial motion: early alerts, managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {serviceCatalogue.map((service, index) => (
@@ -260,7 +260,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="How Datazag fits"
             title="Your service in front. Our intelligence behind it."
-            body="The partner model is deliberately simple: you own the client, packaging and operational decisions; Datazag supplies the external intelligence layer, early alerts and delivery routes."
+            body="You own the client, packaging and operational decisions. Datazag supplies the external intelligence, early alerts and delivery routes."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             <div className="hidden grid-cols-[0.28fr_0.36fr_0.36fr] border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70 md:grid">
@@ -284,7 +284,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Commercial model"
             title="Built for partner margin, not channel conflict."
-            body="Datazag's perspective is that the MSSP should own the customer relationship, commercial packaging and service margin. We provide the intelligence infrastructure as a predictable wholesale layer behind your offer."
+            body="The model is designed so the MSSP owns the customer relationship, commercial packaging and service margin. Datazag provides the intelligence infrastructure as a predictable wholesale layer behind the offer."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {commercialModel.map((item) => (
@@ -299,7 +299,7 @@ export default function MsspPartnersPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Margin principle</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">Partner price minus Datazag platform cost equals the service margin you control.</h3>
               <p className="mt-4 text-sm leading-6 text-slate-300">
-                We do not publish a fixed partner margin because it depends on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. The goal is to make Datazag a predictable input cost so the partner can build repeatable recurring revenue around it. Specific discounts and margin targets are discussed privately as part of the partner agreement.
+                Partner economics depend on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it. Specific discounts and margin targets are handled privately in the partner agreement.
               </p>
             </div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
@@ -318,7 +318,7 @@ export default function MsspPartnersPage() {
                 <h3 className="mt-3 text-2xl font-semibold text-white">Built for services, not raw data resale.</h3>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                The principle is simple: partners can package Datazag intelligence into their own managed services; Datazag data itself remains a licensed intelligence layer. Detailed terms sit in the partner agreement.
+                Partners can package Datazag intelligence into their own managed services; Datazag data itself remains a licensed intelligence layer. Detailed terms are handled in the partner agreement.
               </p>
             </div>
             {usageRights.map(([title, text], index) => (
