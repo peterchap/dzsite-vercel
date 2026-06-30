@@ -84,7 +84,7 @@ export function Header({
     const navLinks: NavLink[] = isOldDefaultNav(passedNavLinks) ? coreNavLinks : passedNavLinks ?? coreNavLinks;
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition hover:bg-slate-950">
+        <header className="relative z-50 w-full border-b border-white/10 bg-[#030619]">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
                 <Link href="/" className="group flex items-center">
                     <BrandingLogo className="text-3xl group-hover:scale-[1.02]" />
@@ -107,7 +107,7 @@ export function Header({
 
                                     <DropdownMenu.Portal>
                                         <DropdownMenu.Content
-                                            className="z-[60] min-w-[220px] rounded-xl border border-white/10 bg-slate-950 p-2 shadow-xl animate-in fade-in zoom-in duration-200"
+                                            className="z-[60] min-w-[220px] rounded-xl border border-white/10 bg-[#030619] p-2 shadow-xl animate-in fade-in zoom-in duration-200"
                                             align="start"
                                             sideOffset={8}
                                         >
@@ -165,14 +165,14 @@ export function Header({
                     <div className="flex items-center gap-2 md:hidden">
                         <CurrencySelector className="h-9 w-[100px] text-xs" />
                         <DropdownMenu.Root>
-                            <DropdownMenu.Trigger className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-white/5 p-2 text-slate-300 transition hover:bg-white/10">
+                            <DropdownMenu.Trigger className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/10">
                                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                                 </svg>
                             </DropdownMenu.Trigger>
                             <DropdownMenu.Portal>
                                 <DropdownMenu.Content
-                                    className="z-[60] mr-4 min-w-[240px] rounded-xl border border-white/10 bg-slate-950 p-2 shadow-xl animate-in fade-in zoom-in duration-200"
+                                    className="z-[60] mr-4 min-w-[240px] rounded-xl border border-white/10 bg-[#030619] p-2 shadow-xl animate-in fade-in zoom-in duration-200"
                                     align="end"
                                     sideOffset={8}
                                 >
