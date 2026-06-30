@@ -2,14 +2,14 @@ import type { StoryContent } from "./types";
 
 export const defaultStoryContent: StoryContent = {
   heroEyebrow: "Internet Infrastructure Intelligence",
-  heroTitle: "The internet never stands still.",
+  heroTitle: "Detect and block malicious infrastructure up to 48 hours before traditional blacklists.",
   heroIntro:
-    "Every second, domains are registered, certificates are issued, DNS changes propagate and infrastructure evolves. Most of these changes are routine. Some become tomorrow's attacks.",
+    "Datazag delivers annotated internet infrastructure intelligence within 10 seconds of staging, giving MSSPs and enterprise teams the speed to stop threats before they go live.",
   heroStatement:
-    "Datazag continuously observes the changing internet and transforms those signals into explainable intelligence.",
+    "Every signal is connected to DNS, certificate, hosting, ASN, platform and threat context so analysts can see what changed, why it matters and what action to take next.",
   primaryCta: { label: "Get your free report", href: "/#free-report" },
   secondaryCta: { label: "See how it works", href: "#how-it-works" },
-  heroPills: ["Observe earlier", "Connect infrastructure", "Deliver intelligence"],
+  heroPills: ["Detect earlier", "Block with evidence", "Act before launch"],
   insight: {
     kicker: "Why it matters",
     title: "Every attack changes the internet first.",
