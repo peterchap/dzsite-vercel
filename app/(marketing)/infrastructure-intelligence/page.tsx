@@ -97,12 +97,12 @@ const dataCategories = [
 ];
 
 const buildSteps = [
-  { title: "Internet observations", text: "We observe domains, DNS, certificates, routing and platform signals as the internet changes." },
-  { title: "Infrastructure expansion", text: "A single domain is expanded into its IPs, providers, certificates, routing context and surrounding infrastructure." },
-  { title: "Platform identification", text: "We classify cloud, hosting, CDN, DNS, email and SaaS platforms using infrastructure evidence." },
-  { title: "Relationship analysis", text: "Shared infrastructure exposes clusters, campaigns and connected assets that isolated indicators miss." },
-  { title: "Historical comparison", text: "Snapshots and deltas show what changed, when it changed and whether the pattern is unusual." },
-  { title: "Evidence generation", text: "Scores are supported by reason codes, confidence and observable evidence rather than opaque labels." },
+  { verb: "Observe", title: "Internet observations", text: "Domains, DNS, certificates, routing and platform signals." },
+  { verb: "Expand", title: "Infrastructure expansion", text: "IPs, providers, certificates, routes and surrounding infrastructure." },
+  { verb: "Identify", title: "Platform identification", text: "Cloud, hosting, CDN, DNS, email and SaaS platforms." },
+  { verb: "Connect", title: "Relationship analysis", text: "Clusters, campaigns and connected assets." },
+  { verb: "Compare", title: "Historical comparison", text: "Snapshots, deltas and unusual change patterns." },
+  { verb: "Explain", title: "Evidence generation", text: "Reason codes, confidence and evidence-backed assessments." },
 ];
 
 const curatedProducts = [
@@ -111,12 +111,14 @@ const curatedProducts = [
     value: "Clean and classify email domains without writing joins across DNS, MX, risk and provider tables.",
     fields: ["Mailbox provider", "Disposable", "Parked", "SPF", "DMARC", "BIMI", "MTA-STS", "Domain risk"],
     available: "API · Cloud share · Custom view",
+    featured: true,
   },
   {
     title: "Infrastructure Labels View",
     value: "Add stable labels to logs, flows, customer records or asset inventories using a compact enrichment table.",
     fields: ["ASN", "ASN organisation", "Country", "Cloud", "Hosting", "CDN", "DNS provider", "Registrar"],
     available: "API · Cloud share",
+    featured: true,
   },
   {
     title: "New Domains Feed",
@@ -162,11 +164,12 @@ const deliveryOptions = [
   },
   {
     title: "Cloud Data Shares",
-    badge: "You analyse everything",
+    badge: "Primary data product",
     text: "Native Iceberg and Delta datasets with flat-rate access, time travel, incremental updates and SQL-ready joins.",
     href: "/pricing",
     cta: "View data shares",
     highlight: true,
+    benefits: ["Native Iceberg + Delta", "Time travel", "Incremental updates", "Flat-rate access", "Bring your own compute", "Ready to JOIN"],
   },
 ];
 
@@ -186,6 +189,15 @@ const reasons = [
   { title: "Explainable", text: "Risk comes with reasons, evidence and confidence." },
   { title: "Historical", text: "See how infrastructure changed over time." },
   { title: "Cloud native", text: "Iceberg and Delta shares support time travel and incremental processing." },
+];
+
+const enrichedOutput = [
+  ["risk_score", "94"],
+  ["hosting_provider", "Bulletproof Hosting Ltd"],
+  ["mailbox_provider", "Unknown / suspicious"],
+  ["primary_asn", "AS64500"],
+  ["related_domain_count", "15"],
+  ["reason_codes", "new_domain, shared_infra, risky_asn"],
 ];
 
 const startPaths = [
@@ -238,6 +250,10 @@ function formatUpdated(value?: string) {
   return `Updated ${date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })} UTC`;
 }
 
+function FieldName({ children }: { children: React.ReactNode }) {
+  return <span className="font-mono text-[12px] leading-6 text-slate-300">{children}</span>;
+}
+
 function Pill({ children }: { children: React.ReactNode }) {
   return <span className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1.5 font-mono text-[11px] text-slate-300">{children}</span>;
 }
@@ -256,13 +272,17 @@ function PipelineGraphic() {
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.14),transparent_32%),radial-gradient(circle_at_82%_82%,rgba(16,185,129,0.1),transparent_32%)]" />
-      <div className="relative grid gap-3">
+      <div className="relative grid gap-3 lg:grid-cols-6 lg:gap-2">
         {buildSteps.map((step, index) => (
-          <div key={step.title} className="flex items-start gap-3">
-            <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-            <div className="flex-1 rounded-2xl border border-white/10 bg-[#030619]/65 px-4 py-3">
-              <p className="text-sm font-semibold text-white">{step.title}</p>
-              <p className="mt-2 text-xs leading-5 text-slate-400">{step.text}</p>
+          <div key={step.title} className="relative">
+            <div className="h-full rounded-2xl border border-white/10 bg-[#030619]/70 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
+                {index < buildSteps.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
+              </div>
+              <p className="mt-4 text-lg font-semibold text-white">{step.verb}</p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{step.title}</p>
+              <p className="mt-3 text-xs leading-5 text-slate-400">{step.text}</p>
             </div>
           </div>
         ))}
@@ -305,6 +325,8 @@ export default async function InfrastructureIntelligencePage() {
     { value: "Hourly", label: "Priority refresh" },
     { value: status.snapshot ?? formatUpdated(status.updated ?? coverage.updated), label: "Latest snapshot" },
   ];
+  const cloudShare = deliveryOptions.find((option) => option.highlight) ?? deliveryOptions[3];
+  const secondaryDelivery = deliveryOptions.filter((option) => option.title !== cloudShare.title);
 
   return (
     <main className="overflow-hidden bg-[#030619] text-white">
@@ -347,15 +369,15 @@ export default async function InfrastructureIntelligencePage() {
             title="Find the fields your workflow already needs."
             body="Datazag maintains a broad Infrastructure Intelligence model. The public catalogue shows the categories most technical buyers ask about first; sample schemas and curated views expose the exact fields during evaluation."
           />
-          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {dataCategories.map((category, index) => (
-              <div key={category.title} className={`grid gap-4 p-5 md:grid-cols-[0.75fr_1.25fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+              <div key={category.title} className={`grid gap-5 p-5 md:grid-cols-[0.7fr_1.3fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
                 <div>
                   <h3 className="text-xl font-semibold text-white">{category.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{category.description}</p>
+                  <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">{category.description}</p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {category.fields.map((field) => <Pill key={field}>{field}</Pill>)}
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2 rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {category.fields.map((field) => <FieldName key={field}>{field}</FieldName>)}
                 </div>
               </div>
             ))}
@@ -370,15 +392,17 @@ export default async function InfrastructureIntelligencePage() {
             title="Less raw data. More usable intelligence."
             body="The value is not just the data we collect. It is the expansion, labelling, history and evidence Datazag adds before the data reaches your warehouse or application."
           />
-          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
-            <div className="grid grid-cols-2 border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            <div className="hidden grid-cols-[0.45fr_auto_0.55fr] border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70 md:grid">
               <div>Traditional input</div>
+              <div />
               <div>Datazag output</div>
             </div>
             {workDone.map(([input, output]) => (
-              <div key={input} className="grid grid-cols-2 border-b border-white/10 px-5 py-4 last:border-b-0">
+              <div key={input} className="grid gap-3 border-b border-white/10 px-5 py-5 last:border-b-0 md:grid-cols-[0.45fr_auto_0.55fr] md:items-center">
                 <div className="text-sm text-slate-400">{input}</div>
-                <div className="text-sm font-semibold text-white">{output}</div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-sm text-cyan-100">→</div>
+                <div className="text-sm font-semibold leading-6 text-white">{output}</div>
               </div>
             ))}
           </div>
@@ -387,18 +411,16 @@ export default async function InfrastructureIntelligencePage() {
 
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">How is it built?</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">We do the enrichment before you receive the data.</h2>
-              <p className="mt-6 text-lg leading-8 text-slate-300">
-                Datazag is not a repackaged threat feed. We continuously observe internet infrastructure, expand what we find, build relationships, compare history and generate evidence-backed intelligence.
-              </p>
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                <p className="text-sm leading-6 text-slate-300">External reputation and abuse signals are used only as supporting validation where appropriate. They are not the primary source of detection and are not exposed as feed-membership flags in datasets.</p>
-              </div>
-            </div>
+          <SectionHeader
+            eyebrow="How is it built?"
+            title="We do the enrichment before you receive the data."
+            body="Datazag is not a repackaged threat feed. We continuously observe internet infrastructure, expand what we find, build relationships, compare history and generate evidence-backed intelligence."
+          />
+          <div className="mt-12">
             <PipelineGraphic />
+          </div>
+          <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-center">
+            <p className="text-sm leading-6 text-slate-300">External reputation and abuse signals are used only as supporting validation where appropriate. They are not the primary source of detection and are not exposed as feed-membership flags in datasets.</p>
           </div>
         </div>
       </section>
@@ -410,15 +432,15 @@ export default async function InfrastructureIntelligencePage() {
             title="Fewer joins. Faster queries. Better fit for the application."
             body="Curated products are not entry-level versions of the data. They are purpose-built views that save engineering time by packaging the right fields for a specific workflow."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-6">
             {curatedProducts.map((dataset) => (
-              <article key={dataset.title} className="flex min-h-[25rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+              <article key={dataset.title} className={`flex flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 ${dataset.featured ? "xl:col-span-3" : "xl:col-span-2"}`}>
                 <h3 className="text-xl font-semibold text-white">{dataset.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{dataset.value}</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {dataset.fields.map((item) => <Pill key={item}>{item}</Pill>)}
+                <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 rounded-2xl border border-white/10 bg-[#050b22] p-4">
+                  {dataset.fields.map((item) => <FieldName key={item}>{item}</FieldName>)}
                 </div>
-                <p className="mt-auto border-t border-white/10 pt-4 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{dataset.available}</p>
+                <p className="mt-5 border-t border-white/10 pt-4 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">{dataset.available}</p>
               </article>
             ))}
           </div>
@@ -433,25 +455,32 @@ export default async function InfrastructureIntelligencePage() {
 
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-start">
-            <div>
-              <SectionHeader
-                eyebrow="Ready to JOIN"
-                title="Turn one log value into context, evidence and action."
-                body="Other vendors hand you raw attributes and leave interpretation to your team. Datazag returns infrastructure context, provider labels, relationships, risk and reason codes in one join."
-              />
-              <div className="mt-8">
-                <CodeBlock />
+          <SectionHeader
+            eyebrow="Ready to JOIN"
+            title="Turn one log value into context, evidence and action."
+            body="Other vendors hand you raw attributes and leave interpretation to your team. Datazag returns infrastructure context, provider labels, relationships, risk and reason codes in one join."
+          />
+          <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+            <CodeBlock />
+            <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/70">Example output</p>
+              <div className="mt-5 grid gap-3">
+                {enrichedOutput.map(([key, value]) => (
+                  <div key={key} className="grid grid-cols-[0.45fr_0.55fr] gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
+                    <code className="text-xs text-cyan-100">{key}</code>
+                    <p className="text-sm font-semibold text-white">{value}</p>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="grid gap-4">
-              {reasons.map((reason) => (
-                <article key={reason.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                  <h3 className="text-lg font-semibold text-white">{reason.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{reason.text}</p>
-                </article>
-              ))}
-            </div>
+          </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {reasons.map((reason) => (
+              <article key={reason.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-lg font-semibold text-white">{reason.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{reason.text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -463,9 +492,24 @@ export default async function InfrastructureIntelligencePage() {
             title="Choose how you want to consume the data."
             body="Start with a report or API sample, then move to alerts or full cloud data shares when you are ready to operationalise."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {deliveryOptions.map((option) => (
-              <article key={option.title} className={`flex min-h-[19rem] flex-col rounded-[1.5rem] border p-5 ${option.highlight ? "border-cyan-300/35 bg-cyan-300/[0.08]" : "border-white/10 bg-white/[0.035]"}`}>
+          <div className="mt-12 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:p-8">
+            <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">{cloudShare.badge}</p>
+                <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">{cloudShare.title}</h3>
+                <p className="mt-4 text-base leading-7 text-slate-300">{cloudShare.text}</p>
+                <a href={cloudShare.href} className="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{cloudShare.cta}</a>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {(cloudShare.benefits ?? []).map((benefit) => (
+                  <div key={benefit} className="rounded-xl border border-cyan-300/20 bg-[#030619]/70 px-4 py-3 text-sm font-semibold text-cyan-50">{benefit}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
+            {secondaryDelivery.map((option) => (
+              <article key={option.title} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/70">{option.badge}</p>
                 <h3 className="mt-3 text-xl font-semibold text-white">{option.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{option.text}</p>
@@ -492,8 +536,8 @@ export default async function InfrastructureIntelligencePage() {
           <div className="mt-12 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
               <h3 className="text-xl font-semibold text-white">Core observation layers</h3>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {sourceGroups.map((item) => <Pill key={item}>{item}</Pill>)}
+              <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2">
+                {sourceGroups.map((item) => <FieldName key={item}>{item}</FieldName>)}
               </div>
             </div>
             <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
