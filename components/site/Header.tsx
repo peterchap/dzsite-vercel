@@ -15,10 +15,11 @@ const coreNavLinks: NavLink[] = [
         label: "Products",
         href: "#",
         children: [
+            { label: "How It Works", href: "/how-it-works" },
             { label: "Reports", href: "/reports" },
-            { label: "Sample report", href: "/reports/sample" },
             { label: "Threat Alerts", href: "/alerts" },
-            { label: "Infrastructure Intelligence", href: "/domain-intelligence" },
+            { label: "Brand Protection", href: "/brand-protection" },
+            { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
         ],
     },
     {
@@ -29,16 +30,42 @@ const coreNavLinks: NavLink[] = [
             { label: "ESP Partners", href: "/esp-partners" },
         ],
     },
+    {
+        label: "Resources",
+        href: "#",
+        children: [
+            { label: "Sample Reports", href: "/reports/sample" },
+            { label: "Blog", href: "/blog" },
+            { label: "Documentation", href: "/docs" },
+        ],
+    },
     { label: "Pricing", href: "/pricing" },
-    { label: "Trust", href: "/trust" },
-    { label: "Contact", href: "/contact" },
+    {
+        label: "Company",
+        href: "#",
+        children: [
+            { label: "About", href: "/about" },
+            { label: "Trust", href: "/trust" },
+            { label: "Contact", href: "/contact" },
+        ],
+    },
 ];
+
+function flattenLabels(navLinks?: NavLink[]): string {
+    if (!navLinks?.length) return "";
+    return navLinks.flatMap((link) => [link.label, ...(link.children?.map((child) => child.label) ?? [])]).join("|").toLowerCase();
+}
 
 function isOldDefaultNav(navLinks?: NavLink[]) {
     if (!navLinks?.length) return true;
 
-    const labels = navLinks.map((link) => link.label).join("|").toLowerCase();
-    return labels.includes("domain intelligence") && labels.includes("documentation") && labels.includes("blog");
+    const labels = flattenLabels(navLinks);
+    return (
+        labels.includes("domain intelligence") ||
+        labels.includes("documentation") && labels.includes("blog") && !labels.includes("brand protection") ||
+        !labels.includes("infrastructure intelligence") ||
+        !labels.includes("how it works")
+    );
 }
 
 export function Header({
