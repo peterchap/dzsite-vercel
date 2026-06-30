@@ -1,0 +1,40 @@
+export const marketingPageCopyBySlugQuery = `
+*[_type == "marketingPageCopy" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  seo{
+    metaTitle,
+    metaDescription,
+    ogTitle,
+    ogDescription,
+    ogImage
+  },
+  sections[]{
+    sectionKey,
+    eyebrow,
+    title,
+    body,
+    secondaryBody,
+    primaryCta{
+      label,
+      href
+    },
+    secondaryCta{
+      label,
+      href
+    },
+    items[]{
+      itemKey,
+      title,
+      text,
+      trigger,
+      delivered,
+      status,
+      href,
+      cta,
+      tags
+    }
+  }
+}
+`;
