@@ -4,25 +4,56 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "Brand Protection — Datazag",
   description:
-    "Brand impersonation detection with updateable incidents, evidence packs, abuse contacts, de-escalation and customer-managed response workflows.",
+    "Brand impersonation detection with staged alerts, updateable incidents, evidence packs, abuse contacts, de-escalation and customer-managed response workflows.",
 };
 
 const outcomes = [
   {
-    title: "A live incident, not a static alert",
-    text: "Each brand impersonation finding can become an updateable incident with status, evidence, lifecycle changes, recommended action and response history.",
+    title: "Alert before DNS exists",
+    text: "Datazag can raise an early brand-protection incident from DGA-style patterns, entropy and suspicious naming signals even before DNS records appear.",
   },
   {
-    title: "Evidence ready for your team",
-    text: "Datazag provides the evidence pack and abuse contacts so the organisation, partner or authorised provider can manage the response itself.",
+    title: "Update as infrastructure appears",
+    text: "If there are no DNS records, the incident stays under polling. When records appear, DNS and infrastructure are scored and the incident is updated.",
   },
   {
-    title: "Clear owner and next step",
-    text: "Separate monitor, investigate, block, evidence-pack, abuse-contact and de-escalation paths so teams know what to do next.",
+    title: "Evidence when a site appears",
+    text: "Datazag keeps checking for a website, then adds screenshot, computer-vision logo checks and any detected T&Cs or privacy-policy evidence.",
   },
   {
-    title: "Reports customers can understand",
-    text: "Turn incident activity into executive summaries, client updates, portfolio views and remediation records.",
+    title: "De-escalate at any point",
+    text: "Customers can mark legitimate partner sites, approved campaigns, known-good infrastructure or irrelevant findings without waiting for the incident to mature.",
+  },
+];
+
+const alertStages = [
+  {
+    step: "1",
+    title: "Pre-DNS alert",
+    trigger: "Suspicious brand match, DGA-style pattern or high-entropy naming signal before DNS records exist.",
+    delivered: "An early incident is opened with the observed domain, matched brand or watchlist, naming signals, classification and polling status.",
+    status: "New / monitoring",
+  },
+  {
+    step: "2",
+    title: "DNS and infrastructure update",
+    trigger: "DNS records appear after polling, or DNS changes expose hosting, mail, nameserver, IP, ASN or provider context.",
+    delivered: "The incident is rescored using DNS and infrastructure context to rule the finding in or out, update severity and attach reason codes.",
+    status: "Monitoring / investigating / block notice",
+  },
+  {
+    step: "3",
+    title: "Website and evidence-pack update",
+    trigger: "A website appears, redirects activate or page content becomes available for capture and review.",
+    delivered: "The incident is updated with screenshot evidence, computer-vision page analysis, brand-logo checks and T&Cs or privacy-policy capture where present.",
+    status: "Evidence pack",
+  },
+  {
+    step: "4",
+    title: "Customer de-escalation",
+    trigger: "The customer recognises the finding as legitimate, authorised, duplicate, irrelevant or known-good.",
+    delivered: "The incident can be de-escalated at any point. The reason is retained so partner sites and approved campaigns reduce future noise.",
+    status: "De-escalated",
   },
 ];
 
@@ -32,36 +63,9 @@ const incidentFields = [
   ["Current status", "New, monitoring, investigating, evidence captured, action requested, resolved or de-escalated."],
   ["Customer / brand", "The protected brand, subsidiary, client, product, executive, supplier or platform context."],
   ["Observed asset", "Domain, subdomain, IP, certificate, hosting provider, ASN and related infrastructure where available."],
-  ["Reason codes", "The signals that explain why the incident escalated."],
-  ["Evidence", "DNS, certificate, hosting, website, screenshot, redirect, abuse-contact and relationship context."],
+  ["Reason codes", "The signals that explain why the incident escalated, including naming, DNS, infrastructure, website and visual evidence."],
+  ["Evidence", "DNS, certificate, hosting, website, screenshot, brand-logo check, redirect, abuse-contact and relationship context."],
   ["Recommended action", "Monitor, investigate, block, prepare evidence, use supplied abuse contacts, or de-escalate if legitimate."],
-];
-
-const incidentJourney = [
-  {
-    status: "Detected",
-    text: "A suspicious domain, certificate, DNS change, hosting pattern or related infrastructure signal is matched to a protected brand, platform or watchlist.",
-  },
-  {
-    status: "Classified",
-    text: "The finding is assigned an incident class and response path: monitor, investigate, block notice, evidence pack, abuse-contact workflow or de-escalation.",
-  },
-  {
-    status: "Enriched",
-    text: "Datazag adds reason codes, infrastructure context, DNS state, certificate data, provider attribution, related assets and confidence context.",
-  },
-  {
-    status: "Evidence captured",
-    text: "Where relevant, the incident includes content state, screenshot or website presence, redirect behaviour, abuse contacts and supporting records.",
-  },
-  {
-    status: "Customer action",
-    text: "Datazag is not the takedown service. The customer or authorised partner uses the evidence pack and abuse contacts to manage provider, registrar, legal or internal response.",
-  },
-  {
-    status: "Updated or resolved",
-    text: "The incident remains updateable as DNS changes, hosting changes, content appears, related infrastructure is found, or the issue is resolved or de-escalated.",
-  },
 ];
 
 const deliveredObjects = [
@@ -72,13 +76,13 @@ const deliveredObjects = [
   },
   {
     title: "Evidence pack",
-    text: "A response-ready bundle of DNS, certificate, hosting, website, screenshot, abuse-contact and relationship evidence where available.",
+    text: "A response-ready bundle of DNS, certificate, hosting, website, screenshot, logo-check, abuse-contact and relationship evidence where available.",
     tags: ["DNS", "Certificate", "Screenshot", "Abuse contacts"],
   },
   {
     title: "Lifecycle updates",
-    text: "Updates when infrastructure activates, resolves, moves provider, gains content, redirects, links to related assets or is remediated.",
-    tags: ["Activated", "Moved", "Content", "Resolved"],
+    text: "Updates when DNS records appear, infrastructure activates, content appears, provider context changes or related assets are found.",
+    tags: ["DNS", "Infrastructure", "Content", "Resolved"],
   },
   {
     title: "De-escalation control",
@@ -93,7 +97,8 @@ const deliveredObjects = [
 ];
 
 const incidentStates = [
-  ["New", "First detected and awaiting routing or review."],
+  ["New", "First detected before or after DNS exists and awaiting routing or review."],
+  ["Polling", "No DNS records or no website yet. Datazag keeps checking for DNS, hosting, website and content changes."],
   ["Monitoring", "Low-confidence or early-stage infrastructure being watched for activation, DNS, hosting or content changes."],
   ["Investigating", "Analyst, customer or partner review is needed before action."],
   ["Block notice", "High-confidence infrastructure is suitable for block-list, SIEM, SOAR or customer-warning workflows."],
@@ -108,6 +113,21 @@ const deEscalationReasons = [
   ["Approved campaign", "The domain is part of an approved marketing, support, onboarding, payment or customer-success workflow."],
   ["Known-good infrastructure", "The asset belongs to the organisation, a trusted provider or a previously approved platform footprint."],
   ["Duplicate or irrelevant", "The finding duplicates an existing incident or matches a term that is not relevant to the protected brand."],
+];
+
+const serviceBoundary = [
+  {
+    title: "Datazag provides",
+    text: "Detection, staged alerts, polling, incident updates, reason codes, evidence pack, abuse contacts, lifecycle updates and reporting trail.",
+  },
+  {
+    title: "Customer manages",
+    text: "Blocking decisions, abuse desk contact, registrar/provider requests, legal review, takedown requests and customer communication.",
+  },
+  {
+    title: "Partners can package",
+    text: "MSSPs, ESPs and agencies can use Datazag evidence inside their own managed response or customer-facing service model.",
+  },
 ];
 
 const deliveryRoutes = [
@@ -172,17 +192,17 @@ function IncidentPanel() {
       <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Example incident</p>
         <h3 className="mt-3 text-2xl font-semibold text-white">INC-1782384515-13ec9b</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-300">Brand impersonation detected. Evidence pack open. Abuse contacts supplied. Current status: Block notice.</p>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Brand impersonation detected before DNS. Polling active. Evidence pack will update when DNS and website evidence appears.</p>
         <div className="mt-5 grid gap-2 sm:grid-cols-2">
-          <div className="rounded-xl border border-cyan-300/20 bg-[#030619]/60 px-4 py-3 text-sm font-semibold text-cyan-50">Prepare evidence pack</div>
-          <div className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white">De-escalate legitimate site</div>
+          <div className="rounded-xl border border-cyan-300/20 bg-[#030619]/60 px-4 py-3 text-sm font-semibold text-cyan-50">Polling DNS + website</div>
+          <div className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white">De-escalate any time</div>
         </div>
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Incident contains</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {["Status", "Timeline", "Reason codes", "Evidence", "Abuse contacts", "Screenshots", "Actions", "De-escalation"].map((item) => (
+          {["Status", "Timeline", "DGA / entropy", "DNS score", "Infra score", "Screenshot", "Abuse contacts", "De-escalation"].map((item) => (
             <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
           ))}
         </div>
@@ -200,16 +220,16 @@ export default function BrandProtectionPage() {
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Brand Protection</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Detect brand impersonation and manage the incident journey.</h1>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Detect brand impersonation and update the incident as evidence appears.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag Brand Protection detects brand impersonation and turns relevant findings into live incidents with status, evidence, lifecycle updates, response guidance and a reporting trail.
+              Datazag Brand Protection detects brand impersonation in stages: before DNS exists, when DNS and infrastructure appear, when a website becomes visible, and when the customer confirms or de-escalates the finding.
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag is not a takedown service. We provide the evidence pack, abuse contacts and incident updates so your organisation or authorised partner can manage blocking, abuse reporting, legal review, takedown requests and de-escalation.
+              Datazag is not a takedown service. We provide staged alerts, the evidence pack, abuse contacts and incident updates so your organisation or authorised partner can manage blocking, abuse reporting, legal review, takedown requests and de-escalation.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Discuss brand protection</a>
-              <a href="#incident-journey" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View incident journey</a>
+              <a href="#alert-lifecycle" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View alert lifecycle</a>
             </div>
           </div>
           <IncidentPanel />
@@ -220,14 +240,43 @@ export default function BrandProtectionPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="What gets delivered"
-            title="Incident records, evidence packs, abuse contacts and status updates."
-            body="Alerts tell you something happened. Brand protection needs to show what it is, who owns it, what evidence exists, what action is recommended, how to de-escalate legitimate sites and how the incident changes over time."
+            title="Staged alerts, incident updates, evidence packs and de-escalation."
+            body="Brand protection is not just one alert. Datazag opens and updates an incident as the infrastructure matures, evidence appears and the customer confirms whether the finding is malicious, legitimate or irrelevant."
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {outcomes.map((outcome) => (
               <article key={outcome.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h2 className="text-lg font-semibold text-white">{outcome.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{outcome.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="alert-lifecycle" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Four alert stages"
+            title="The incident updates as the attacker infrastructure matures."
+            body="A domain may be suspicious before it resolves, then gain DNS, hosting and finally a website. Datazag keeps polling and updates the incident at each stage."
+          />
+          <div className="mt-12 grid gap-5 lg:grid-cols-4">
+            {alertStages.map((stage) => (
+              <article key={stage.step} className="flex min-h-[26rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-sm font-semibold text-cyan-100">{stage.step}</span>
+                  <h3 className="text-xl font-semibold text-white">{stage.title}</h3>
+                </div>
+                <div className="mt-5 border-t border-white/10 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Trigger</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{stage.trigger}</p>
+                </div>
+                <div className="mt-5 border-t border-white/10 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Delivered</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{stage.delivered}</p>
+                </div>
+                <p className="mt-auto border-t border-white/10 pt-4 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-100/70">Status: {stage.status}</p>
               </article>
             ))}
           </div>
@@ -242,42 +291,12 @@ export default function BrandProtectionPage() {
             body="Datazag identifies brand impersonation, maintains the incident record and supplies the evidence pack and abuse contacts. The organisation or its authorised partner remains in control of provider contact, legal decisions, takedown requests and customer communications."
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
-            <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-              <h3 className="text-xl font-semibold text-white">Datazag provides</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">Detection, incident record, reason codes, evidence pack, abuse contacts, lifecycle updates and reporting trail.</p>
-            </article>
-            <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-              <h3 className="text-xl font-semibold text-white">Customer manages</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">Blocking decisions, abuse desk contact, registrar/provider requests, legal review, takedown requests and customer communication.</p>
-            </article>
-            <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-              <h3 className="text-xl font-semibold text-white">Partners can package</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">MSSPs, ESPs and agencies can use Datazag evidence inside their own managed response or customer-facing service model.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="incident-journey" className="border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Incident journey"
-            title="From suspicious infrastructure to an updateable case."
-            body="The incident view gives teams a shared record that can evolve as the infrastructure changes, evidence appears, action is taken or a legitimate finding is de-escalated."
-          />
-          <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
-            <div className="grid gap-3 lg:grid-cols-6">
-              {incidentJourney.map((step, index) => (
-                <article key={step.status} className="relative rounded-2xl border border-white/10 bg-[#030619]/70 p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-                    {index < incidentJourney.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
-                  </div>
-                  <h3 className="mt-4 text-xl font-semibold text-white">{step.status}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
-                </article>
-              ))}
-            </div>
+            {serviceBoundary.map((item) => (
+              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -287,7 +306,7 @@ export default function BrandProtectionPage() {
           <SectionHeader
             eyebrow="Incident anatomy"
             title="What each incident can contain."
-            body="The exact evidence depends on the finding, but the incident structure is designed to be useful to analysts, customers, partners and executives."
+            body="The exact evidence depends on the maturity of the finding. A pre-DNS incident may contain naming evidence only; a mature incident may contain DNS, infrastructure, website, logo and policy-page evidence."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {incidentFields.map(([field, text], index) => (
@@ -304,15 +323,15 @@ export default function BrandProtectionPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="De-escalation"
-            title="Not every brand match is malicious."
-            body="The de-escalate button is important. It lets the customer mark legitimate partner sites, approved campaigns and known-good infrastructure so future findings become cleaner."
+            title="The customer can de-escalate at any point."
+            body="The de-escalate button is important. It lets the customer mark legitimate partner sites, approved campaigns and known-good infrastructure before or after DNS, website and evidence updates appear."
           />
           <div className="mt-12 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:p-8">
             <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Incident control</p>
                 <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">De-escalate legitimate site</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorised partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history.</p>
+                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorised partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history and can reduce future noise.</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {deEscalationReasons.map(([title, text]) => (
@@ -353,7 +372,7 @@ export default function BrandProtectionPage() {
           <SectionHeader
             eyebrow="Incident states"
             title="Status makes the journey understandable."
-            body="A customer should be able to tell whether an incident is new, being watched, ready for action, under review, resolved or de-escalated as legitimate."
+            body="A customer should be able to tell whether an incident is pre-DNS, being polled, ready for action, under review, resolved or de-escalated as legitimate."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {incidentStates.map(([state, text], index) => (
