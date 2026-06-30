@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const outcomes = [
   {
     title: "Threats targeting your platform footprint",
-    text: "Identify external threat activity around the platforms, providers and vendors that can be inferred from your domain's public records.",
+    text: "Identify external threat activity around the platforms, providers and vendors visible from your domain's public records.",
   },
   {
     title: "Detailed DNS defence analysis",
@@ -21,43 +21,58 @@ const outcomes = [
     text: "Translate findings into clear actions, likely owners and practical remediation effort so teams know what to fix first.",
   },
   {
-    title: "Path to portfolio insight",
-    text: "Move from one free domain report into paid portfolio reporting that identifies recurring weaknesses and systemic risk.",
+    title: "Portfolio systemic risk",
+    text: "Paid reporting shows whether weaknesses repeat across domains, brands, subsidiaries, suppliers or acquired assets.",
   },
 ];
 
 const reportSections = [
   {
     title: "Platform-led threat exposure",
-    sell: "Map the platforms and providers your organisation appears to use, then check for suspicious infrastructure targeting those platforms and related brand terms.",
+    sell: "Which visible platforms and providers are being used as lures, and which suspicious domains, certificates or DNS patterns are relevant to them?",
     powers: ["Platform lures", "Vendor footprint", "Brand terms", "Certificates", "DNS changes", "Evidence"],
   },
   {
     title: "DNS and email defence analysis",
-    sell: "Analyse DNS and email records in detail to identify spoofing, trust, routing and configuration weaknesses.",
+    sell: "Which DNS and email records create spoofing, trust, routing or configuration weaknesses that should be fixed?",
     powers: ["SPF", "DKIM", "DMARC", "BIMI", "MTA-STS", "MX providers"],
   },
   {
-    title: "Visible platform footprint",
-    sell: "Identify email platforms, cloud services, SaaS providers, CDNs, nameservers and hosting patterns visible from public records.",
+    title: "Platform and vendor footprint",
+    sell: "Which email platforms, cloud services, SaaS providers, CDNs, nameservers and hosting relationships are visible?",
     powers: ["Email platform", "Cloud", "CDN", "Hosting", "Nameservers", "SaaS signals"],
   },
   {
     title: "Subdomain and infrastructure view",
-    sell: "Surface public subdomains, provider relationships, hosting context and externally visible infrastructure patterns.",
+    sell: "Which public subdomains, CNAMEs, provider relationships and hosting patterns expose the operating footprint?",
     powers: ["Subdomains", "A/AAAA", "CNAMEs", "Hosting", "ASN", "Related infrastructure"],
   },
   {
     title: "Remediation effort and cost indicators",
-    sell: "Prioritise fixes by severity, likely owner, implementation effort and whether the issue is isolated or part of a wider pattern.",
+    sell: "Which issues are high priority, who is likely to own them, and what level of effort should be expected?",
     powers: ["Risk ranking", "Evidence", "Next steps", "Owners", "Effort bands", "Monitoring path"],
+  },
+];
+
+const sampleReports = [
+  {
+    title: "Sample free Domain Health Report",
+    href: "/reports/sample/domain-health",
+    text: "A dummy one-domain report showing threat exposure around visible platforms, DNS defence gaps and first remediation priorities.",
+    sections: ["Executive summary", "Threat exposure", "DNS defence analysis", "Remediation priorities"],
+  },
+  {
+    title: "Sample paid Portfolio Risk Report",
+    href: "/reports/sample/portfolio-risk",
+    text: "A dummy portfolio report showing individual domain findings, recurring weaknesses, systemic risk and remediation planning across many domains.",
+    sections: ["Portfolio summary", "Systemic risk", "Domain ranking", "Remediation programme"],
   },
 ];
 
 const reportTypes = [
   {
     title: "Free Domain Health Report",
-    text: "A single-domain report covering platform-led threat exposure, detailed DNS defence analysis and first remediation priorities.",
+    text: "One domain. Platform-led threat exposure, detailed DNS defence analysis and first remediation priorities.",
   },
   {
     title: "Executive Surface Report",
@@ -69,7 +84,7 @@ const reportTypes = [
   },
   {
     title: "Portfolio Risk Report",
-    text: "Paid reporting across the domains an organisation owns, showing individual domain findings and systemic risk across the portfolio.",
+    text: "Paid reporting across the domains an organisation owns, showing individual findings and systemic risk across the portfolio.",
   },
   {
     title: "Partner-branded Report",
@@ -77,16 +92,8 @@ const reportTypes = [
   },
 ];
 
-const flow = [
-  { title: "Submit", text: "Start with a work email for the free report, or an agreed domain portfolio for paid reporting." },
-  { title: "Map", text: "Resolve DNS, email posture, subdomains, providers, platforms and external infrastructure." },
-  { title: "Assess", text: "Check external threat exposure around the platforms in use, then analyse DNS and email defence weaknesses." },
-  { title: "Prioritise", text: "Turn findings into evidence, remediation priorities, likely owners and effort or cost indicators." },
-  { title: "Monitor", text: "Move important domains, brands, platforms or suppliers into alerts, portfolio views or data shares." },
-];
-
 const sampleFindings = [
-  ["Platform threat exposure", "Which platforms and vendors are visible from public records, and is suspicious infrastructure appearing around those lures?"],
+  ["Platform threat exposure", "Which platforms and vendors are visible, and is suspicious infrastructure appearing around those lures?"],
   ["DNS defence gaps", "Which SPF, DKIM, DMARC, BIMI, MTA-STS, MX or nameserver weaknesses should be remediated first?"],
   ["Mail platform alignment", "Does the public DNS footprint match the expected email platform and sender configuration?"],
   ["Systemic portfolio risk", "For paid reports, are the same weaknesses repeated across many domains, brands, subsidiaries or suppliers?"],
@@ -124,7 +131,7 @@ function ReportStackPanel() {
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Powered by Datazag</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">What it contains</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {["Threat exposure", "DNS records", "Email posture", "Platforms", "Vendors", "Certificates", "Infrastructure", "Remediation"].map((item) => (
             <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
@@ -153,7 +160,7 @@ export default function ReportsPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get my free report</a>
-              <a href="/reports/sample" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See sample report</a>
+              <a href="#sample-reports" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View sample reports</a>
             </div>
           </div>
           <ReportStackPanel />
@@ -165,7 +172,7 @@ export default function ReportsPage() {
           <SectionHeader
             eyebrow="Report value"
             title="External threat exposure and DNS defence gaps, in one report."
-            body="The free report is not just a posture snapshot. It connects the platforms visible around one domain with the threat activity targeting those platforms, then identifies the DNS and email weaknesses that affect defence and remediation priorities."
+            body="The free report is not just a posture snapshot. It connects the platforms visible around one domain with threat activity targeting those platforms, then identifies the DNS and email weaknesses that affect defence and remediation priorities."
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {outcomes.map((outcome) => (
@@ -178,12 +185,35 @@ export default function ReportsPage() {
         </div>
       </section>
 
+      <section id="sample-reports" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Sample reports"
+            title="View the anatomy in a few seconds."
+            body="Rather than explain how reports are produced, the samples show what a recipient actually sees: the summary, findings, evidence and next actions."
+          />
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {sampleReports.map((report) => (
+              <a key={report.title} href={report.href} className="group rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 transition hover:border-cyan-300/40 hover:bg-white/[0.055]">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/70">Dummy report</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">{report.title}</h3>
+                <p className="mt-4 text-sm leading-6 text-slate-400">{report.text}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {report.sections.map((section) => <Tag key={section}>{section}</Tag>)}
+                </div>
+                <p className="mt-6 text-sm font-semibold text-cyan-100 group-hover:text-cyan-50">Open sample →</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="What the report includes"
+            eyebrow="What the report contains"
             title="Threat context, DNS analysis and remediation priorities."
-            body="The free report starts with one domain and combines external threat intelligence with detailed analysis of the public DNS and email records that shape defence posture."
+            body="The value is in the contents: what is exposed, what is weak, what is being targeted and what should be fixed first."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {reportSections.map((section, index) => (
@@ -222,30 +252,6 @@ export default function ReportsPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Report workflow"
-            title="From one email address to decision-ready findings."
-            body="The report turns external observations into evidence, summaries and actions that a security or infrastructure owner can use."
-          />
-          <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
-            <div className="grid gap-3 lg:grid-cols-5">
-              {flow.map((step, index) => (
-                <article key={step.title} className="relative rounded-2xl border border-white/10 bg-[#030619]/70 p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-                    {index < flow.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
-                  </div>
-                  <h3 className="mt-4 text-xl font-semibold text-white">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
             eyebrow="Sample findings"
             title="The report explains threat context, defence gaps and what to fix next."
             body="A useful report should not simply list records. It should explain the external threat context, the defence weakness, the likely owner and the next action."
@@ -257,9 +263,6 @@ export default function ReportsPage() {
                 <p className="text-sm leading-6 text-slate-400">{text}</p>
               </div>
             ))}
-          </div>
-          <div className="mt-8 flex justify-center">
-            <a href="/reports/sample" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View the sample report</a>
           </div>
         </div>
       </section>
@@ -285,13 +288,13 @@ export default function ReportsPage() {
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Get the free single-domain report first.</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">View the sample, then get your own report.</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Use one domain to see the external threat context, DNS defence weaknesses and remediation priorities. Review the sample report first if you want to see the format before submitting your own work email.
+            The dummy examples show the report anatomy. The free report applies the same structure to one domain using current Datazag intelligence.
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get my free report</a>
-            <a href="/reports/sample" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See sample report</a>
+            <a href="#sample-reports" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View sample reports</a>
           </div>
         </div>
       </section>
