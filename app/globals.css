@@ -103,3 +103,10 @@ h6 {
   font-family: var(--font-outfit), sans-serif;
   font-weight: 500;
 }
+
+@media (min-width: 1024px) {
+  main > section:first-of-type h1 {
+    font-size: 6rem;
+    line-height: 1;
+  }
+}
