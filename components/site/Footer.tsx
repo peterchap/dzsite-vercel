@@ -4,6 +4,54 @@ import { Mail, Linkedin, Twitter, Github } from "lucide-react";
 import { BrandingLogo } from "@/components/site/BrandingLogo";
 import Link from "next/link";
 
+const defaultProductLinks: NavLink[] = [
+    { label: "How It Works", href: "/how-it-works" },
+    { label: "Reports", href: "/reports" },
+    { label: "Threat Alerts", href: "/alerts" },
+    { label: "Brand Protection", href: "/brand-protection" },
+    { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
+    { label: "Pricing", href: "/pricing" },
+];
+
+const defaultTrustLinks: NavLink[] = [
+    { label: "Trust", href: "/trust" },
+    { label: "Responsible Disclosure", href: "/trust/responsible-disclosure" },
+    { label: "Privacy", href: "/legal/privacy" },
+    { label: "Terms", href: "/legal/terms" },
+    { label: "DPA", href: "/legal/dpa" },
+];
+
+const defaultCompanyLinks: NavLink[] = [
+    { label: "About", href: "/about" },
+    { label: "MSSP Partners", href: "/mssp-partners" },
+    { label: "ESP Partners", href: "/esp-partners" },
+    { label: "Blog", href: "/blog" },
+    { label: "Documentation", href: "/docs" },
+    { label: "Contact", href: "/contact" },
+];
+
+function linkLabels(links: NavLink[] = []) {
+    return links.map((link) => link.label).join("|").toLowerCase();
+}
+
+function shouldUseDefaultProductLinks(links: NavLink[] = []) {
+    if (links.length === 0) return true;
+    const labels = linkLabels(links);
+    return labels.includes("domain intelligence") || !labels.includes("brand protection") || !labels.includes("infrastructure intelligence");
+}
+
+function shouldUseDefaultTrustLinks(links: NavLink[] = []) {
+    if (links.length === 0) return true;
+    const labels = linkLabels(links);
+    return !labels.includes("privacy") || !labels.includes("terms") || !labels.includes("trust");
+}
+
+function shouldUseDefaultCompanyLinks(links: NavLink[] = [], fallbackLinks: NavLink[] = []) {
+    if (links.length === 0 && fallbackLinks.length === 0) return true;
+    const labels = linkLabels(links.length > 0 ? links : fallbackLinks);
+    return !labels.includes("about") || !labels.includes("contact") || !labels.includes("blog") || !labels.includes("documentation");
+}
+
 export function Footer({
     title,
     footerLinks = [],
@@ -27,12 +75,17 @@ export function Footer({
 }) {
     const currentYear = new Date().getFullYear();
     const displayCopyright = copyright?.replace("{year}", currentYear.toString()) ?? `© ${currentYear} ${title ?? "Datazag"}. All rights reserved.`;
+    const resolvedProductLinks = shouldUseDefaultProductLinks(productLinks) ? defaultProductLinks : productLinks;
+    const resolvedTrustLinks = shouldUseDefaultTrustLinks(trustLinks) ? defaultTrustLinks : trustLinks;
+    const resolvedCompanyLinks = shouldUseDefaultCompanyLinks(companyLinks, footerLinks) ? defaultCompanyLinks : companyLinks.length > 0 ? companyLinks : footerLinks;
+    const resolvedFooterAbout = footerAbout && !footerAbout.toLowerCase().includes("predictive domain intelligence")
+        ? footerAbout
+        : "Infrastructure Intelligence for external domain, DNS, certificate, hosting, provider and platform risk.";
 
     return (
         <footer className="border-t border-white/10 bg-slate-950 pt-24 pb-12">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-                    {/* Brand Column */}
                     <div className="lg:col-span-4">
                         <div className="flex flex-col gap-6">
                             <div>
@@ -40,7 +93,7 @@ export function Footer({
                                     <BrandingLogo className="text-2xl group-hover:scale-[1.02]" />
                                 </Link>
                                 <p className="mt-4 text-sm font-medium leading-relaxed text-slate-400 max-w-xs">
-                                    {footerAbout ?? "Predictive domain intelligence and security-focused data products for the modern enterprise."}
+                                    {resolvedFooterAbout}
                                 </p>
                             </div>
 
@@ -64,19 +117,13 @@ export function Footer({
                         </div>
                     </div>
 
-                    {/* Links Columns */}
                     <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
-                        <FooterColumn title="Product" links={productLinks} />
-                        <FooterColumn title="Trust & Legal" links={trustLinks} />
-                        {/* Fallback to legacy footerLinks if companyLinks is empty */}
-                        <FooterColumn
-                            title="Company"
-                            links={companyLinks.length > 0 ? companyLinks : footerLinks}
-                        />
+                        <FooterColumn title="Product" links={resolvedProductLinks} />
+                        <FooterColumn title="Trust & Legal" links={resolvedTrustLinks} />
+                        <FooterColumn title="Company" links={resolvedCompanyLinks} />
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
                 <div className="mt-24 border-t border-white/10 pt-12">
                     <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
                         <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
@@ -92,17 +139,6 @@ export function Footer({
                                     <Mail className="h-3.5 w-3.5" />
                                     REPORT VULNERABILITY
                                 </a>
-                            )}
-
-                            {/* Global fallback: show legacy links if the new link groups are completely empty */}
-                            {footerLinks.length > 0 && productLinks.length === 0 && trustLinks.length === 0 && companyLinks.length === 0 && (
-                                <div className="flex items-center gap-4">
-                                    {footerLinks.filter(l => l.href && l.label).map((l, idx) => (
-                                        <a key={`${l.href}-${idx}`} href={normalizeHref(l.href)} className="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-tight">
-                                            {l.label}
-                                        </a>
-                                    ))}
-                                </div>
                             )}
                         </div>
                     </div>
