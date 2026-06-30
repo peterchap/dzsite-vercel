@@ -85,8 +85,8 @@ const commercialModel = [
     text: "We price the intelligence layer by scope: client estate, domains, brands, data volume, delivery route, white-label needs and SLA.",
   },
   {
-    title: "Margin comes from packaging",
-    text: "Your margin is created by combining Datazag intelligence with your SOC, reporting, portal, remediation, account management and support services.",
+    title: "Designed for service margin",
+    text: "Partner terms are designed to leave room for meaningful managed-service margin without publishing a fixed discount or margin percentage.",
   },
   {
     title: "No channel conflict by design",
@@ -279,7 +279,7 @@ export default function MsspPartnersPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Margin principle</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">Partner price minus Datazag platform cost equals the service margin you control.</h3>
               <p className="mt-4 text-sm leading-6 text-slate-300">
-                We do not publish a fixed partner margin because it depends on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. The goal is to make Datazag a predictable input cost so the partner can build repeatable recurring revenue around it.
+                We do not publish a fixed partner margin because it depends on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. The goal is to make Datazag a predictable input cost so the partner can build repeatable recurring revenue around it. Specific discounts and margin targets are discussed privately as part of the partner agreement.
               </p>
             </div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
