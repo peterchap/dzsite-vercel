@@ -85,9 +85,9 @@ export function Header({
 
     return (
         <header className="relative z-50 w-full border-b border-white/10 bg-[#030619]">
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
                 <Link href="/" className="group flex items-center">
-                    <BrandingLogo className="text-3xl group-hover:scale-[1.02]" />
+                    <BrandingLogo className="text-4xl md:text-[2.625rem] group-hover:scale-[1.02]" />
                 </Link>
 
                 <nav className="hidden items-center gap-8 md:flex">
