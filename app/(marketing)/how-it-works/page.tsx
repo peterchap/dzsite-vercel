@@ -1,193 +1,283 @@
-import { sanityFetch } from "@/sanity/fetch";
-import { howItWorksPageDataQuery } from "@/sanity/queries";
-import { PageShell } from "@/components/layout/PageShell";
-import React from "react";
-import { ChevronRight, ShieldCheck, Activity } from "lucide-react";
-import HowItWorksPipeline from "@/components/sections/blocks/HowItWorksPipeline";
-import { SectionRenderer } from "@/components/sections/SectionRenderer";
+import type { Metadata } from "next";
+import type React from "react";
 
-export const metadata = {
-  title: 'How It Works | Datazag',
-  description: 'Learn how Datazag transforms raw internet registry noise into instant defensive blocklines.',
+export const metadata: Metadata = {
+  title: "How It Works — Datazag",
+  description:
+    "How Datazag turns domains, DNS, certificates, hosting, provider context and history into reports, alerts, APIs and cloud-native infrastructure intelligence.",
+};
+
+const processSteps = [
+  {
+    step: "01",
+    title: "Observe external signals",
+    text: "Datazag monitors public internet infrastructure signals such as newly observed domains, DNS, certificates, hosting, ASNs, provider footprints and platform patterns.",
+    tags: ["Domains", "DNS", "Certificates", "Hosting", "ASN"],
+  },
+  {
+    step: "02",
+    title: "Connect the infrastructure",
+    text: "Signals are joined into an infrastructure graph so domains, IPs, providers, certificates, platforms and related assets can be understood together.",
+    tags: ["Relationships", "Shared infrastructure", "Provider context", "History"],
+  },
+  {
+    step: "03",
+    title: "Evaluate risk and context",
+    text: "Datazag scores naming, DNS, infrastructure, website and historical evidence to decide whether a finding should be monitored, escalated or de-escalated.",
+    tags: ["Risk", "Reason codes", "Confidence", "Triage"],
+  },
+  {
+    step: "04",
+    title: "Package evidence",
+    text: "Findings are delivered with explainable evidence: reason codes, DNS state, provider context, screenshots, abuse contacts, related assets and lifecycle changes where available.",
+    tags: ["Evidence", "Screenshots", "Abuse contacts", "Lifecycle"],
+  },
+  {
+    step: "05",
+    title: "Deliver into the workflow",
+    text: "The same intelligence layer can become a report, an alert, an API response, a webhook event, a data share or a partner-branded service.",
+    tags: ["Reports", "Alerts", "API", "Data shares"],
+  },
+  {
+    step: "06",
+    title: "Update and learn from feedback",
+    text: "Incidents and datasets update as infrastructure changes. Customer context and de-escalation decisions help reduce noise and improve future routing.",
+    tags: ["Polling", "Updates", "De-escalation", "Baselines"],
+  },
+];
+
+const paths = [
+  {
+    title: "Report path",
+    text: "For a domain, portfolio, supplier group or acquisition target, Datazag packages findings into a business-readable assessment with DNS, platform, infrastructure and remediation context.",
+    href: "/reports",
+    cta: "View reports",
+  },
+  {
+    title: "Alert path",
+    text: "For operational monitoring, Datazag opens and updates alerts as DNS, infrastructure, website evidence and customer decisions appear.",
+    href: "/alerts",
+    cta: "View alerts",
+  },
+  {
+    title: "Brand protection path",
+    text: "For owned brands, Datazag detects impersonation, supplies evidence packs and abuse contacts, and lets customers de-escalate legitimate partner sites.",
+    href: "/brand-protection",
+    cta: "View brand protection",
+  },
+  {
+    title: "Data product path",
+    text: "For analytics and data teams, Datazag publishes infrastructure intelligence as SQL-ready datasets, samples, private offers or cloud data shares.",
+    href: "/infrastructure-intelligence",
+    cta: "View datasets",
+  },
+];
+
+const signalStages = [
+  ["Naming signal", "A suspicious domain, subdomain, brand term, DGA-style pattern or entropy signal may be visible before DNS exists."],
+  ["DNS signal", "When DNS appears, Datazag can score records, providers, mail posture, hosting and infrastructure context."],
+  ["Website signal", "When a site appears, the incident can gain screenshot evidence, page analysis, brand-logo checks and policy-page capture where present."],
+  ["Customer signal", "Customer-approved infrastructure, known-good partner sites and de-escalation decisions change how future findings are routed."],
+];
+
+const principles = [
+  {
+    title: "Outside-in first",
+    text: "Datazag looks at the infrastructure visible from outside the organisation, where many impersonation and abuse signals start forming.",
+  },
+  {
+    title: "Evidence over assertion",
+    text: "Findings should show the reason, the observed infrastructure and the supporting context behind a score or alert.",
+  },
+  {
+    title: "Workflow-aware delivery",
+    text: "A SOC, MSSP, ESP, data buyer and executive report do not need the same output, even when they use the same intelligence layer.",
+  },
+  {
+    title: "Customer control",
+    text: "Customers and authorised partners control response decisions, takedown requests, de-escalation and permitted use boundaries.",
+  },
+];
+
+const outputs = [
+  ["Reports", "Readable assessments for domains, portfolios, suppliers and executive reviews."],
+  ["Alerts", "Operational signals with reason codes, evidence and lifecycle updates."],
+  ["API / webhooks", "Lookup, scoring and enrichment for products, portals and security workflows."],
+  ["Cloud data products", "SQL-ready infrastructure intelligence for warehouses, lakehouses and marketplace routes."],
+  ["Partner services", "Datazag-powered services delivered through MSSPs, ESPs, platforms and other authorised partners."],
+];
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
 }
 
-export default async function HowItWorksPage() {
-  const data = await sanityFetch<any>(howItWorksPageDataQuery, {});
-
-  if (!data?.hero) {
-    return (
-      <PageShell>
-        <div className="text-white p-20 text-center">
-          How It Works Content Not Found. Please configure the howItWorksHero document in Sanity Studio.
-        </div>
-      </PageShell>
-    );
-  }
-
-  const { hero, pageSections } = data;
-  const pipeline = hero?.pipelineGrid;
-
+function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
   return (
-    <PageShell>
-      <section className="relative w-full min-h-screen py-24 flex flex-col items-center">
-        {/* Header Block */}
-        <div className="text-center max-w-4xl mb-24 px-4">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 text-white">
-            {hero.pageH1 || "The Datazag Engine"}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            {hero.pageSubhead}
-          </p>
+    <div className="mx-auto max-w-3xl text-center">
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{eyebrow}</p>
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
+      {body ? <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">{body}</p> : null}
+    </div>
+  );
+}
+
+function FlowPanel() {
+  return (
+    <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
+      <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Operating model</p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">Observe → connect → explain → deliver.</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Datazag turns public infrastructure signals into evidence-led outputs that can be used by analysts, platforms, partners and data teams.</p>
+      </div>
+      <div className="mx-auto h-8 w-px bg-cyan-300/30" />
+      <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Inputs and outputs</p>
+        <div className="mt-4 grid gap-2">
+          {["External signals", "Infrastructure graph", "Risk and reason codes", "Evidence pack", "Workflow delivery"].map((item) => (
+            <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
+          ))}
         </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* Schematic Grid */}
-        <div className="w-full max-w-[90rem] px-4 flex flex-col xl:flex-row items-stretch justify-center gap-8 relative">
-          
-          {/* Left Panel - Product Stack */}
-          <div className="flex-1 bg-[#131326]/50 border border-white/10 rounded-2xl p-8 lg:p-10 backdrop-blur-xl flex flex-col shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-cyan-400 opacity-50"></div>
-            <h2 className="text-sm tracking-[0.2em] text-gray-400 font-bold mb-8 uppercase flex items-center gap-3">
-              <Activity className="w-5 h-5 text-blue-400" />
-              {hero.leftPanelHeader || "THE DATAZAG PRODUCT MATRIX"}
-            </h2>
-            <div className="flex flex-col gap-6 flex-1">
-              {hero.productLayers?.map((layer: any, idx: number) => (
-                <div key={idx} className="bg-white/[0.03] border border-white/5 hover:border-white/10 transition-colors rounded-xl p-6 group">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end border-b border-white/10 pb-4 mb-4 gap-2">
-                    <span className="text-xs uppercase tracking-widest text-blue-400 font-bold">{layer.phase}</span>
-                    <span className="text-lg font-medium text-white">{layer.focus}</span>
-                  </div>
-                  <ul className="space-y-3">
-                    {layer.bullets?.map((b: string, i: number) => (
-                      <li key={i} className="text-sm text-gray-400 flex items-start">
-                        <ChevronRight className="w-4 h-4 mr-2 text-blue-500/70 shrink-0 mt-0.5" />
-                        <span className="leading-relaxed">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+export default function HowItWorksPage() {
+  return (
+    <main className="overflow-hidden bg-[#030619] text-white">
+      <section className="relative py-24 md:py-32">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.13),transparent_34%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
+          <div>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">How it works</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">From external signal to usable infrastructure intelligence.</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              Datazag observes public internet infrastructure, connects related signals, evaluates risk, packages evidence and delivers the result as reports, alerts, APIs or datasets.
+            </p>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
+              The process is designed for teams that need earlier context without rebuilding a domain, DNS, certificate, hosting and provider intelligence layer themselves.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
+              <a href="#process" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View the process</a>
             </div>
           </div>
-
-          {/* Center Animated Connector (Desktop only) */}
-          <div className="hidden xl:flex flex-col justify-center items-center w-40 shrink-0 relative">
-            <div className="text-[10px] uppercase tracking-widest text-cyan-400 absolute top-1/2 -translate-y-12 whitespace-nowrap font-bold">
-              Real-Time Signals Feed
-            </div>
-            {/* The Track */}
-            <div className="w-full h-[2px] bg-white/10 relative overflow-hidden flex items-center">
-               {/* The Pulse */}
-               <div className="absolute left-0 h-[2px] w-1/2 bg-cyan-400 shadow-[0_0_15px_#22d3ee] animate-feed-stream rounded-full"></div>
-            </div>
-            {/* Arrow Head */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[6px] border-y-transparent border-l-[8px] border-l-cyan-400/50"></div>
-          </div>
-          
-          {/* Mobile connector */}
-          <div className="xl:hidden flex justify-center py-8">
-             <div className="flex flex-col items-center gap-2">
-               <span className="text-[10px] uppercase tracking-widest text-cyan-400 font-bold">Real-Time Signals Feed</span>
-               <div className="h-12 w-[2px] bg-white/10 relative overflow-hidden">
-                 <div className="absolute top-0 w-full h-1/2 bg-cyan-400 shadow-[0_0_15px_#22d3ee] animate-feed-stream-vertical rounded-full"></div>
-               </div>
-               <div className="w-0 h-0 border-x-[6px] border-x-transparent border-t-[8px] border-t-cyan-400/50"></div>
-             </div>
-          </div>
-
-          {/* Right Panel - Security Stack */}
-          <div className="flex-1 bg-[#131326]/50 border border-white/10 rounded-2xl p-8 lg:p-10 backdrop-blur-xl flex flex-col shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-green-400 opacity-50"></div>
-            <h2 className="text-sm tracking-[0.2em] text-gray-400 font-bold mb-8 uppercase flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-emerald-400" />
-              {hero.rightPanelHeader || "YOUR SECURITY STACK"}
-            </h2>
-            <div className="flex flex-col gap-6 flex-1">
-              {hero.securityLayers?.map((layer: any, idx: number) => (
-                <div key={idx} className="bg-white/[0.03] border border-white/5 hover:border-white/10 transition-colors rounded-xl p-6">
-                  <h3 className="text-lg font-medium text-white mb-4 border-b border-white/10 pb-4">{layer.title}</h3>
-                  <ul className="space-y-3">
-                    {layer.bullets?.map((b: string, i: number) => (
-                      <li key={i} className="text-sm text-gray-400 flex items-start">
-                        <span className="w-4 h-4 mr-3 mt-0.5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-                          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
-                        </span>
-                        <span className="leading-relaxed">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Far-Right Outcome Connector & Block */}
-          <div className="hidden 2xl:flex flex-col justify-center items-center w-24 shrink-0 relative">
-             <div className="w-full h-[2px] bg-white/10 relative overflow-hidden flex items-center">
-               <div className="absolute left-0 h-[2px] w-1/2 bg-green-500 shadow-[0_0_15px_#22c55e] animate-feed-stream rounded-full" style={{ animationDelay: '0.5s' }}></div>
-            </div>
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[6px] border-y-transparent border-l-[8px] border-l-green-500/50"></div>
-          </div>
-          
-          <div className="2xl:hidden flex justify-center py-8">
-             <div className="h-12 w-[2px] bg-white/10 relative overflow-hidden">
-               <div className="absolute top-0 w-full h-1/2 bg-green-500 shadow-[0_0_15px_#22c55e] animate-feed-stream-vertical rounded-full" style={{ animationDelay: '0.5s' }}></div>
-             </div>
-          </div>
-
-          <div className="flex-1 2xl:max-w-[300px] bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-8 backdrop-blur-xl flex flex-col justify-center text-center shadow-[0_0_30px_rgba(16,185,129,0.1)] relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
-             <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent"></div>
-             <div className="text-emerald-400 mb-6 relative">
-                <div className="w-16 h-16 mx-auto bg-emerald-500/10 rounded-full flex items-center justify-center ring-1 ring-emerald-500/30 group-hover:ring-emerald-500/50 group-hover:scale-110 transition-all duration-500">
-                  <ShieldCheck className="w-8 h-8" />
-                </div>
-             </div>
-             <p className="text-sm font-bold text-emerald-300 uppercase tracking-widest leading-loose relative">
-               {hero.outcomeLabel}
-             </p>
-          </div>
-
+          <FlowPanel />
         </div>
-
-        {/* Footer Footnote */}
-        <div className="mt-24 text-xs text-gray-500 font-mono tracking-widest text-center px-4 max-w-3xl">
-           {hero.schematicFootnote}
-        </div>
-
-        {/* Custom Animations */}
-        <style>{`
-          @keyframes feedStream {
-            0% { left: -100%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-          }
-          @keyframes feedStreamVertical {
-            0% { top: -100%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-          }
-          .animate-feed-stream {
-            animation: feedStream 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          }
-          .animate-feed-stream-vertical {
-            animation: feedStreamVertical 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          }
-        `}</style>
       </section>
 
-      {/* Pipeline Component Directly Beneath Hero */}
-      <HowItWorksPipeline 
-        headline={pipeline?.sectionHeadline} 
-        subhead={pipeline?.sectionSubhead} 
-        stages={pipeline?.pipelineStages} 
-      />
+      <section id="process" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Process"
+            title="Six steps from observation to action."
+            body="The exact output depends on the product, but the same core intelligence layer supports reports, alerts, APIs, datasets and partner services."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {processSteps.map((step) => (
+              <article key={step.step} className="flex min-h-[22rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/70">{step.step}</span>
+                  <span className="h-px flex-1 bg-white/10" />
+                </div>
+                <h3 className="mt-5 text-2xl font-semibold text-white">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
+                <div className="mt-auto flex flex-wrap gap-2 pt-5">
+                  {step.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* Dynamic Sections Array (e.g., VendorThesis, HowItWorks, Why360) */}
-      {pageSections && pageSections.length > 0 && (
-        <SectionRenderer sections={pageSections} />
-      )}
-    </PageShell>
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Signal maturity"
+            title="A finding can change as infrastructure appears."
+            body="Suspicious infrastructure is not always complete when first seen. Datazag can watch the lifecycle from naming signal to DNS, website evidence and customer feedback."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {signalStages.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Delivery paths"
+            title="The same intelligence layer, different outputs."
+            body="A buyer does not have to consume the full data layer. Datazag can deliver the right slice for the workflow."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {paths.map((path) => (
+              <article key={path.title} className="flex min-h-[17rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{path.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{path.text}</p>
+                <a href={path.href} className="mt-auto pt-5 text-sm font-semibold text-cyan-100 hover:text-white">{path.cta} →</a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Principles"
+            title="Designed to complement the security stack."
+            body="Datazag is an external infrastructure layer. It helps existing security, fraud, platform and data workflows make better decisions."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {principles.map((principle) => (
+              <article key={principle.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{principle.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{principle.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Outputs"
+            title="What comes out of the engine."
+            body="Datazag is not a single feed. The intelligence layer can be packaged in the form a customer, partner or data buyer can actually use."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {outputs.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-24 md:py-32">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Start with the output you need.</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            Use a free report for a single-domain assessment, alerts for operational monitoring, the API for enrichment or cloud data products for analysis at scale.
+          </p>
+          <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
+            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Contact Datazag</a>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
