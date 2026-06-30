@@ -7,7 +7,7 @@ import { homepageAtmosphereQuery } from "@/sanity/queries";
 const fallbackMetadata: Metadata = {
   title: "Datazag — Detect Malicious Infrastructure Before Blacklists",
   description:
-    "Datazag delivers annotated internet infrastructure intelligence within 10 seconds of staging, helping MSSPs and enterprise teams stop threats before they go live.",
+    "Datazag detects malicious domains within around 10 seconds of certificate issuance and pipes annotated intelligence into your SIEM and controls up to 48 hours ahead of traditional blacklists.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
