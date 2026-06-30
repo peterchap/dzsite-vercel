@@ -6,6 +6,7 @@ import productConceptPage from "./documents/productConceptPage";
 import useCase from "./documents/useCase";
 import pricingPage from "./documents/pricingPage";
 import blogPost from "./documents/blogPost";
+import marketingPageCopy from "./documents/marketingPageCopy";
 import subscriber from "./documents/subscriber";
 import persona from "./documents/persona";
 import integration from "./documents/integration";
@@ -14,6 +15,9 @@ import integration from "./documents/integration";
 import seo from "./objects/seo";
 import cta from "./objects/cta";
 import navLink from "./objects/navLink";
+import marketingCopyCta from "./objects/marketingCopyCta";
+import marketingCopyItem from "./objects/marketingCopyItem";
+import marketingCopySection from "./objects/marketingCopySection";
 
 // Sections
 import heroSplitCta from "./objects/sections/heroSplitCta";
@@ -84,6 +88,7 @@ export const schemaTypes = [
   useCase,
   pricingPage,
   blogPost,
+  marketingPageCopy,
   subscriber,
   persona,
   integration,
@@ -91,6 +96,9 @@ export const schemaTypes = [
   seo,
   cta,
   navLink,
+  marketingCopyCta,
+  marketingCopyItem,
+  marketingCopySection,
 
   heroSplitCta,
   heroAttackTimeline,
