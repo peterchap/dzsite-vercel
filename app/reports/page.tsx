@@ -57,13 +57,13 @@ const reportSections = [
 const sampleReports = [
   {
     title: "Sample free Domain Health Report",
-    href: "/reports/sample/domain-health",
+    href: "/reports/sample#domain-health",
     text: "A dummy one-domain report showing threat exposure around visible platforms, DNS defence gaps and first remediation priorities.",
     sections: ["Executive summary", "Threat exposure", "DNS defence analysis", "Remediation priorities"],
   },
   {
     title: "Sample paid Portfolio Risk Report",
-    href: "/reports/sample/portfolio-risk",
+    href: "/reports/sample#portfolio-risk",
     text: "A dummy portfolio report showing individual domain findings, recurring weaknesses, systemic risk and remediation planning across many domains.",
     sections: ["Portfolio summary", "Systemic risk", "Domain ranking", "Remediation programme"],
   },
