@@ -1,5 +1,6 @@
 import React from "react";
 import { PortableText } from "next-sanity";
+
 export default function SimpleText({
   kicker,
   title,
@@ -21,6 +22,9 @@ export default function SimpleText({
     mono: "font-mono",
   };
   const selectedFont = fontClasses[fontStyle] || "font-sans";
+  const safeBody = Array.isArray(body)
+    ? body.filter((block) => block && typeof block === "object" && typeof block._type === "string")
+    : [];
   const components = {
     block: {
       normal: ({ children }: any) => <p className="mb-4 text-left">{children}</p>,
@@ -40,11 +44,11 @@ export default function SimpleText({
           {kicker ? <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mb-3">{kicker}</p> : null}
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{title}</h2>
           {subtitle ? <p className="mt-4 text-xl text-slate-300">{subtitle}</p> : null}
-          {body && (
+          {safeBody.length > 0 ? (
             <div className={`mt-6 text-lg text-slate-300 leading-8 text-left ${selectedFont} [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2`}>
-              <PortableText value={body} components={components} />
+              <PortableText value={safeBody} components={components} />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>
