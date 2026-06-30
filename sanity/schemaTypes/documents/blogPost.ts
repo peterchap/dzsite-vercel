@@ -14,6 +14,12 @@ export default {
         { name: "publishedAt", title: "Published at", type: "datetime" },
         { name: "excerpt", title: "Excerpt", type: "text", rows: 3 },
         {
+            name: "image",
+            title: "Featured image",
+            type: "image",
+            options: { hotspot: true },
+        },
+        {
             name: "body",
             title: "Body",
             type: "array",
@@ -23,9 +29,9 @@ export default {
         { name: "seo", title: "SEO", type: "seo" },
     ],
     preview: {
-        select: { title: "title", date: "publishedAt" },
-        prepare({ title, date }: any) {
-            return { title, subtitle: date ? new Date(date).toDateString() : "Draft" };
+        select: { title: "title", date: "publishedAt", media: "image" },
+        prepare({ title, date, media }: any) {
+            return { title, subtitle: date ? new Date(date).toDateString() : "Draft", media };
         },
     },
 };
