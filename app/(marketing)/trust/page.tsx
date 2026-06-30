@@ -1,151 +1,319 @@
 import type { Metadata } from "next";
-
-import ProductConceptPage, { type ProductConceptPageProps } from "@/components/sections/blocks/ProductConceptPage";
-import { sanityFetch } from "@/sanity/fetch";
-import { productConceptPageBySlugQuery } from "@/sanity/queries";
+import type React from "react";
 
 export const metadata: Metadata = {
-  title: "Trust & Methodology — Datazag",
+  title: "Trust & Governance — Datazag",
   description:
-    "How Datazag collects public internet infrastructure data, normalises signals, scores risk, reduces false positives and builds license-clean intelligence products.",
+    "How Datazag handles observable infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts, APIs and data shares.",
 };
 
-const fallbackContent: ProductConceptPageProps = {
-  eyebrow: "Trust & Methodology",
-  title: "Explainable internet intelligence, built from observable infrastructure.",
-  intro:
-    "Datazag observes public internet infrastructure, normalises it into connected entities, enriches it with context, and turns it into reasoned intelligence that customers can inspect, join, automate and challenge.",
-  primaryCta: { label: "Get a free report", href: "/#free-report" },
-  secondaryCta: { label: "View infrastructure intelligence", href: "/domain-intelligence" },
-  proof: [
-    { title: "Public infrastructure", text: "Signals come from observable internet infrastructure such as domains, DNS, certificates, RDAP, ASN/BGP, RPKI and provider footprints." },
-    { title: "Reasoned output", text: "Scores and alerts are paired with reason codes, evidence fields and context rather than unexplained labels." },
-    { title: "False-positive controls", text: "Provider attribution, known-good infrastructure, cloud/CDN mapping and de-escalation workflows help reduce over-blocking." },
-    { title: "License-clean exports", text: "Marketplace datasets are built from sellable derived intelligence and exclude sourced feeds that are internal-only." },
-  ],
-  narrative: {
-    kicker: "Principle",
-    title: "Trust starts with showing how the signal was produced.",
-    body: [
-      "Security teams, ESPs, MSSPs, insurers and platform buyers cannot rely on a black-box score alone. They need to understand what was observed, how it was normalised, why a risk decision was made, and what evidence supports the output.",
-      "Datazag is designed around that principle. The platform collects infrastructure signals, links them into stable entities, adds historical and provider context, generates risk signals, and exposes the reasoning in a form that can be read by humans or consumed by systems.",
-      "The result is not just a feed of domains. It is an evidence layer for reports, alerts, API enrichment, data shares, partner services, portfolio monitoring and cloud marketplace datasets.",
-    ],
+const principles = [
+  {
+    title: "Observable infrastructure",
+    text: "Datazag focuses on public internet signals such as domains, DNS, certificates, hosting, ASN context, routing and provider footprints.",
   },
-  flowTitle: "How Datazag turns observable infrastructure into usable intelligence.",
-  flow: [
-    { title: "Observe", text: "Collect public infrastructure signals: domains, DNS, certificates, RDAP, ASN/BGP, RPKI, cloud/CDN ranges, mail posture and platform fingerprints." },
-    { title: "Normalise", text: "Resolve noisy observations into entities such as domains, hostnames, IPs, prefixes, ASNs, providers, platforms, registrars and abuse contacts." },
-    { title: "Score", text: "Attach risk scores, threat bands, confidence context, reason codes, posture findings, impersonation signals and historical features." },
-    { title: "Evidence", text: "Deliver output as reports, alerts, API responses, webhooks, data shares and marketplace tables with supporting context attached." },
-  ],
-  wideFlowLayout: true,
-  audiencesTitle: "The methodology is designed for buyers who need evidence, not just data.",
-  audiences: [
-    { title: "Security teams", text: "Need alert context, investigation trails and confidence before blocking, escalating or ignoring a signal." },
-    { title: "ESPs and platforms", text: "Need explainable account, link and infrastructure risk that can support policy decisions without harming legitimate customers." },
-    { title: "MSSPs and MDRs", text: "Need repeatable evidence they can show analysts, clients and account teams across many customer environments." },
-    { title: "Data and AI teams", text: "Need stable fields, historical context and interpretable features for joins, models, agents and analytics workflows." },
-    { title: "Insurers and risk teams", text: "Need portfolio-level posture, infrastructure exposure and time-aware evidence for underwriting, renewal or diligence." },
-    { title: "Marketplace buyers", text: "Need to know what is derived, what is redistributable, what is excluded, and how freshness and schema scope are controlled." },
-  ],
-  alertTypeSection: {
-    kicker: "Methodology layers",
-    title: "Each score or alert is built from several evidence layers.",
-    intro:
-      "The public page should not expose scoring internals in detail, but it should explain the kinds of evidence Datazag uses and how those signals become operational output.",
-    stats: [
-      { title: "Signals", text: "observable infrastructure events and facts." },
-      { title: "Context", text: "provider, history, posture and relationship mapping." },
-      { title: "Output", text: "reasoned scores, reports, alerts and datasets." },
-    ],
-    types: [
-      {
-        title: "Collection layer",
-        subtitle: "Observable internet data",
-        coverage: "Domains, DNS, TLS/certificates, RDAP, ASN/BGP, RPKI, prefixes, cloud/CDN ranges, mail posture and provider fingerprints.",
-        action: "Capture the external infrastructure state that changes before, during and after malicious activity or operational exposure appears.",
-        text: "Datazag focuses on infrastructure that can be observed from the outside. That makes the intelligence useful for customers who do not have an asset list, internal telemetry or prior knowledge of a campaign.",
-        evidence: ["Domain and DNS observations", "Certificate and TLS context", "ASN, prefix and routing context", "Mail, provider and platform footprints"],
-      },
-      {
-        title: "Entity and enrichment layer",
-        subtitle: "Normalised context",
-        coverage: "Domains, hostnames, IPs, prefixes, ASNs, registrars, providers, platforms, abuse contacts, parking, mailbox/CDN/cloud attribution and historical state.",
-        action: "Turn raw observations into stable, joinable records that customers can use in reports, APIs, warehouses and operational systems.",
-        text: "The same domain can appear through DNS, certificates, mail records, provider footprints and infrastructure relationships. Normalisation links those observations into a usable evidence graph.",
-        evidence: ["Provider and known-good infrastructure attribution", "Registrar and abuse-contact context", "Historical and point-in-time state", "Customer-joinable entities and fields"],
-      },
-      {
-        title: "Scoring and reasoning layer",
-        subtitle: "Explainable risk",
-        coverage: "Domain risk, ASN risk, prefix risk, posture findings, impersonation signals, confidence context, reason codes and operational classifications.",
-        action: "Support blocking, triage, reporting, enrichment, portfolio analysis and data-product workflows with transparent evidence attached.",
-        text: "A score is only useful if a team can see why it exists. Datazag pairs scores with reason fields and context so humans and systems can decide how much trust to place in the output.",
-        evidence: ["Risk score and threat band", "Reason codes and supporting features", "Confidence and false-positive context", "Operational class and suggested use"],
-      },
-      {
-        title: "Publish and control layer",
-        subtitle: "Safe delivery",
-        coverage: "Reports, alerts, APIs, webhooks, cloud data shares, object storage exports, Iceberg/Delta tables and marketplace-ready datasets.",
-        action: "Deliver only the fields appropriate for the product, licence, buyer use case, refresh cadence and evidence requirements.",
-        text: "Different products expose different slices of the evidence layer. A free report, alert, API response and marketplace dataset may share the same underlying intelligence, but each has its own scope and delivery controls.",
-        evidence: ["Field-level product scope", "License-clean marketplace exports", "Refresh and snapshot controls", "De-escalation and human review paths where appropriate"],
-      },
-    ],
-    note: "The methodology is designed to make Datazag useful in operational systems without asking customers to blindly trust a black-box feed.",
+  {
+    title: "Evidence over black boxes",
+    text: "Reports, alerts and enrichment outputs include evidence, reason codes and context so teams can inspect why a finding exists.",
   },
-  flagshipFieldsTitle: "What customers can inspect.",
-  flagshipFields: [
-    { title: "Observed facts", text: "The underlying domain, DNS, certificate, mail, provider, ASN, prefix and registrar context that supports a finding." },
-    { title: "Reason codes", text: "Readable explanations of why a domain, link, provider pattern, ASN or infrastructure relationship was considered relevant." },
-    { title: "Confidence context", text: "Fields that help teams understand when to automate, when to escalate and when to route to human review." },
-    { title: "Provider attribution", text: "Cloud, CDN, mailbox, hosting, platform and known-good context used to reduce accidental over-classification." },
-    { title: "History", text: "Point-in-time and trend context where the product includes historical slices or data-share access." },
-    { title: "Action context", text: "The intended operational use: report, alert, block, enrich, investigate, monitor, score, de-escalate or package into a partner service." },
-  ],
-  licenseClean: {
-    title: "Marketplace and data-share products are controlled at publish time.",
-    body: "Datazag separates internal intelligence operations from sellable data products. Sourced threat feeds and restricted popularity data can inform internal scoring and investigation, but marketplace exports should expose only derived Datazag intelligence, public infrastructure facts and redistributable provider context.",
-    included: [
-      "Derived domain, DNS, mail, hosting and posture features",
-      "Domain, ASN and prefix risk scores with reason context",
-      "Native IP-to-ASN and infrastructure attribution",
-      "Provider, cloud/CDN, MX/NS and technographic context",
-      "Registrar, ASN and abuse-contact enrichment from public sources",
-    ],
-    excluded: [
-      "Raw third-party threat-feed rows or direct feed membership",
-      "Restricted popularity data or derived popularity buckets",
-      "Internal-only investigative joins not cleared for redistribution",
-      "Unfinished signals or fields not ready for the product's published schema",
-    ],
+  {
+    title: "Product-specific scope",
+    text: "A free report, alert, API response and data share do not expose the same fields. Each product has its own scope, use case and delivery controls.",
   },
-  freshnessTitle: "Freshness and history are part of the trust model.",
-  freshness: [
-    { title: "Current state", text: "Reports, alerts and API responses are designed to reflect recent observable infrastructure state rather than stale static lists." },
-    { title: "Regular refresh", text: "Domain, ASN, prefix and provider layers can have different cadences depending on how quickly the underlying data changes." },
-    { title: "Point-in-time evidence", text: "Historical snapshots help answer what was known at a specific date, which matters for backtesting, underwriting and investigations." },
-    { title: "Change detection", text: "Infrastructure changes such as DNS movement, provider changes, new certificates or routing context can be more useful than a one-time label." },
-    { title: "Backtesting", text: "Data-share buyers can use historical slices to validate models, scoring thresholds and portfolio-risk assumptions." },
-    { title: "Versioned products", text: "Published datasets should keep schema, refresh cadence and licence boundaries explicit so buyers know what they are consuming." },
-  ],
-  packagesTitle: "Where this methodology shows up.",
-  packages: [
-    { title: "Free reports", text: "External domain, DNS, platform and impersonation findings explained in buyer-friendly language." },
-    { title: "Threat alerts", text: "Platform, brand and keyword infrastructure alerts with reason codes, evidence and de-escalation paths." },
-    { title: "Infrastructure intelligence", text: "API and data-share products with joinable fields, risk scores, history and licence-clean publish views." },
-    { title: "MSSP services", text: "Partner-branded reports, alerts and portfolio monitoring powered by explainable Datazag evidence." },
-    { title: "ESP controls", text: "Signup, outbound-link, customer-data and SMTP enrichment that supports explainable platform policy decisions." },
-    { title: "Marketplace datasets", text: "Curated, derived datasets with product-specific fields, refresh cadences and redistribution boundaries." },
-  ],
-  finalTitle: "Use intelligence you can inspect.",
-  finalBody:
-    "Datazag is built to provide evidence, reasoning and licensing clarity around internet infrastructure signals, so teams can use the output in reports, alerts, APIs, data shares and partner products with more confidence.",
-};
+  {
+    title: "Clear licensing boundaries",
+    text: "Datazag separates internal intelligence operations from sellable data products, partner services and marketplace-ready outputs.",
+  },
+];
 
-export default async function TrustPage() {
-  const cmsContent = await sanityFetch<ProductConceptPageProps | null>(productConceptPageBySlugQuery, { slug: "trust" });
+const evidenceLayers = [
+  {
+    title: "Observed facts",
+    text: "Domain, DNS, certificate, mail, hosting, ASN, prefix, registrar and provider context that supports a report or alert finding.",
+    tags: ["Domains", "DNS", "Certificates", "ASN", "Providers"],
+  },
+  {
+    title: "Reason codes",
+    text: "Readable explanations of why a domain, IP, infrastructure relationship, platform pattern or posture issue was considered relevant.",
+    tags: ["Risk reasons", "Posture reasons", "Alert reasons", "Evidence fields"],
+  },
+  {
+    title: "Confidence context",
+    text: "Signals that help teams decide whether to automate, block, investigate, de-escalate, monitor or route to human review.",
+    tags: ["Confidence", "Severity", "Routing", "Review path"],
+  },
+  {
+    title: "Known-good and provider context",
+    text: "Cloud, CDN, mailbox, hosting, platform and customer-approved context used to reduce accidental over-classification.",
+    tags: ["Cloud", "CDN", "MX", "NS", "Allowlists"],
+  },
+  {
+    title: "History and change",
+    text: "Where included, point-in-time records and change history help buyers understand what changed and when it changed.",
+    tags: ["Snapshots", "Deltas", "Time travel", "Change detection"],
+  },
+];
 
-  return <ProductConceptPage {...(cmsContent ?? fallbackContent)} />;
+const productControls = [
+  ["Reports", "Designed for business-readable findings, DNS defence analysis, threat exposure, remediation priorities and portfolio summaries."],
+  ["Alerts", "Designed for operational delivery with alert class, reason codes, infrastructure context, recommended action and de-escalation paths."],
+  ["API", "Designed for real-time scoring and enrichment inside customer products, analyst workflows and partner platforms."],
+  ["Cloud data shares", "Designed for analytical joins, historical review, data science, threat hunting and marketplace-style consumption."],
+  ["Partner services", "Designed so MSSPs, ESPs and service providers can package intelligence into their own services without reselling raw data by default."],
+];
+
+const licensing = [
+  {
+    title: "Included by default",
+    points: [
+      "Use Datazag outputs inside the licensed product or workflow.",
+      "Use reports, alerts and enrichment to support internal decisions and customer-facing managed services where contracted.",
+      "Use permitted fields, schemas and delivery routes defined for the product purchased.",
+    ],
+  },
+  {
+    title: "Not included by default",
+    points: [
+      "Raw data resale, bulk redistribution or standalone sublicensing.",
+      "Publishing Datazag data into another marketplace or public dataset.",
+      "Allowing downstream resellers, franchisees or channel partners to use or resell Datazag-powered services without written approval.",
+    ],
+  },
+  {
+    title: "Handled by agreement",
+    points: [
+      "Partner-branded reporting and portal features.",
+      "Portfolio-wide or multi-client use cases.",
+      "Marketplace, data-share, white-label and downstream partner rights.",
+    ],
+  },
+];
+
+const privacy = [
+  ["Public internet data", "Most intelligence products are built from externally observable infrastructure, not from customer inboxes, endpoint telemetry or private network traffic."],
+  ["Report requests", "For free reports, the submitted work email is used to derive the domain, process the request and deliver the report."],
+  ["Marketing consent", "Marketing follow-up should be separate from the processing needed to generate a requested report."],
+  ["Customer context", "Customer-supplied brands, domains, watchlists or approved baselines are used to make outputs more relevant and reduce false positives."],
+];
+
+const falsePositiveControls = [
+  ["Known-good infrastructure", "Provider attribution, customer-approved infrastructure and common platform footprints help avoid obvious misclassification."],
+  ["Context before action", "A platform or brand term alone should not determine severity. DNS, certificate, hosting, history and relationship signals change routing."],
+  ["De-escalation path", "Operational products can include review and de-escalation workflows so accepted or known-good findings do not remain noisy."],
+  ["Human-readable evidence", "Reason codes and evidence fields give analysts and customers a way to challenge, validate or tune the output."],
+];
+
+const marketplaceBoundaries = [
+  ["Derived intelligence", "Marketplace and data-share products should expose derived Datazag intelligence, public infrastructure facts and product-approved context."],
+  ["Restricted inputs", "Internal-only feeds, restricted popularity data and raw third-party threat-feed rows are not published as standalone resale fields by default."],
+  ["Schema discipline", "Published datasets need explicit field scope, refresh cadence, historical coverage and licensing boundaries."],
+  ["Buyer clarity", "Customers should be able to understand what the dataset contains, how it can be used and what redistribution is not permitted."],
+];
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
+}
+
+function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{eyebrow}</p>
+      <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
+      {body ? <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">{body}</p> : null}
+    </div>
+  );
+}
+
+function TrustStackPanel() {
+  return (
+    <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
+      <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Buyer assurance</p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">Evidence, scope and licence clarity</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Trust comes from knowing what is included, what is excluded, how output can be used and where human review or contractual approval is needed.</p>
+      </div>
+      <div className="mx-auto h-8 w-px bg-cyan-300/30" />
+      <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Trust dimensions</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {["Evidence", "Reason codes", "Licensing", "Privacy", "False positives", "Data shares", "Partner use", "Governance"].map((item) => (
+            <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function TrustPage() {
+  return (
+    <main className="overflow-hidden bg-[#030619] text-white">
+      <section className="relative py-24 md:py-32">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.13),transparent_34%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
+          <div>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Trust & Governance</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Use infrastructure intelligence you can inspect and govern.</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              Datazag products are built around observable internet infrastructure, explainable evidence, controlled product scope and clear licensing boundaries.
+            </p>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
+              This page explains the trust model behind reports, alerts, APIs, data shares, marketplace datasets and partner-delivered services.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
+              <a href="/alerts" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View alerts</a>
+            </div>
+          </div>
+          <TrustStackPanel />
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Trust principles"
+            title="Evidence first. Scope explicit. Rights controlled."
+            body="Buyers need more than a data feed. They need to understand what evidence supports the output, how it can be used and where the boundaries sit."
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {principles.map((principle) => (
+              <article key={principle.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                <h2 className="text-lg font-semibold text-white">{principle.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{principle.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="What customers can inspect"
+            title="The evidence behind reports, alerts and data products."
+            body="The exact fields vary by product, but Datazag output is designed to expose enough context for a buyer to understand and challenge the result."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {evidenceLayers.map((layer, index) => (
+              <div key={layer.title} className={`grid gap-5 p-5 md:grid-cols-[0.28fr_0.44fr_0.28fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-xl font-semibold text-white">{layer.title}</h3>
+                <p className="text-sm leading-6 text-slate-300">{layer.text}</p>
+                <div className="flex flex-wrap gap-2">
+                  {layer.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Product controls"
+            title="Different products expose different slices of the intelligence layer."
+            body="A report, alert, API response and cloud data share can draw on the same intelligence foundation, but each has its own field scope and intended use."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {productControls.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Licensing and permitted use"
+            title="Built for operational use, not uncontrolled raw data resale."
+            body="Licensing should be simple to understand: use the intelligence in the contracted workflow, but do not redistribute raw data or extend rights to downstream partners without agreement."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {licensing.map((item) => (
+              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-400">
+                  {item.points.map((point) => <li key={point}>• {point}</li>)}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Privacy and customer context"
+            title="External intelligence with clear customer-input boundaries."
+            body="Most Datazag products focus on externally observable infrastructure. Customer-supplied context is used to make the output more relevant and reduce noise."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {privacy.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="False-positive controls"
+            title="Useful intelligence needs tuning and challenge paths."
+            body="Security teams need confidence that platform names, brand terms and provider patterns are not being treated as malicious without context."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {falsePositiveControls.map(([title, text]) => (
+              <article key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Marketplace and data-share boundaries"
+            title="Data products are controlled at publish time."
+            body="Cloud marketplace and data-share buyers need to know what is included, what is excluded and what redistribution rights do not come with the product by default."
+          />
+          <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+            {marketplaceBoundaries.map(([title, text], index) => (
+              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-24 md:py-32">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Use intelligence with evidence and boundaries.</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            Start with a report or alert workflow, then agree the product scope, delivery route and permitted use that fits your team, partner model or data-share requirement.
+          </p>
+          <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
+            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Talk to us</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
