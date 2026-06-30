@@ -4,29 +4,34 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "MSSP Partners — Datazag",
   description:
-    "Add predictive infrastructure intelligence to managed security services. Datazag helps MSSPs reduce analyst workload and launch partner-branded services.",
+    "Add infrastructure intelligence and early alerts to managed security services. Datazag helps MSSPs reduce analyst workload and launch partner-branded services.",
 };
 
 const outcomes = [
   {
     title: "Reduce analyst workload",
-    text: "Evidence-rich signals help analysts triage faster and give automation enough context to act when confidence is high.",
+    text: "Reasoned early alerts and infrastructure context help analysts triage faster and give automation enough evidence to act when confidence is high.",
   },
   {
     title: "Launch new services",
-    text: "Add brand protection, portfolio monitoring, customer reports and SOC enrichment without building the intelligence layer yourself.",
+    text: "Add alert feeds, brand protection, portfolio monitoring, customer reports and SOC enrichment without building the intelligence layer yourself.",
   },
   {
     title: "Keep your brand",
-    text: "Datazag works behind your service, portal, reports and commercial model. You own the client relationship.",
+    text: "Datazag works behind your service, portal, reports, alerts and commercial model. You own the client relationship.",
   },
   {
     title: "Integrate into your stack",
-    text: "Use API, webhooks, reports, exports or cloud data shares depending on how your operations and customers already work.",
+    text: "Use alerts, API, webhooks, reports, exports or cloud data shares depending on how your operations and customers already work.",
   },
 ];
 
 const serviceCatalogue = [
+  {
+    title: "Early alert feed",
+    sell: "Detect newly observed impersonation and high-risk infrastructure early enough to support blocks, triage and escalation.",
+    powers: ["Platform matches", "Brand matches", "Certificates", "DNS changes", "Reason codes"],
+  },
   {
     title: "Brand protection",
     sell: "Monitor client brands, platforms and high-risk keywords for early impersonation infrastructure.",
@@ -62,17 +67,17 @@ const serviceCatalogue = [
 const flow = [
   { verb: "Observe", text: "Datazag monitors domains, DNS, certificates, routing and infrastructure changes." },
   { verb: "Enrich", text: "Signals are expanded with hosting, ASN, platform, relationship and historical context." },
-  { verb: "Explain", text: "Outputs include reason codes, evidence and confidence so decisions are easier to trust." },
-  { verb: "Deliver", text: "You receive the intelligence through the delivery route that fits your service model." },
-  { verb: "Monetise", text: "You package it as your managed service, report, portal feature or detection workflow." },
+  { verb: "Explain", text: "Outputs include reason codes, evidence and confidence so alerts and decisions are easier to trust." },
+  { verb: "Deliver", text: "You receive alerts, API responses, webhook events, reports or data shares through the route that fits your service model." },
+  { verb: "Monetise", text: "You package it as your managed alerting, reporting, enrichment, portal or detection workflow." },
 ];
 
 const roleSplit = [
   ["Client relationship", "Partner owns", "Datazag supports behind the scenes"],
   ["Commercial packaging", "Partner defines offer, pricing and SLA", "Datazag supplies intelligence and delivery options"],
   ["Internet-scale collection", "Partner avoids building this", "Datazag observes and enriches the infrastructure graph"],
-  ["Reports and portal", "Partner brands the experience", "Datazag powers findings, evidence and data exports"],
-  ["Operational workflows", "Partner controls triage, blocking and escalation", "Datazag supplies signals, reasons and context"],
+  ["Reports and portal", "Partner brands the experience", "Datazag powers findings, alerts, evidence and data exports"],
+  ["Operational workflows", "Partner controls triage, blocking and escalation", "Datazag supplies early alerts, signals, reasons and context"],
 ];
 
 const commercialModel = [
@@ -95,10 +100,10 @@ const commercialModel = [
 ];
 
 const marginLevers = [
-  ["Attach to existing clients", "Add brand protection, reporting or enrichment to accounts you already serve."],
+  ["Attach to existing clients", "Add alerting, brand protection, reporting or enrichment to accounts you already serve."],
   ["Use one intelligence layer", "Reuse the same data across alerts, reports, portal features and SOC enrichment."],
   ["Reduce analyst effort", "Reasoned outputs reduce manual investigation time and make automation easier to trust."],
-  ["Package premium services", "Sell evidence, monitoring, remediation and reporting rather than raw data access."],
+  ["Package premium services", "Sell evidence, monitoring, remediation, alerts and reporting rather than raw data access."],
 ];
 
 const usageRights = [
@@ -108,6 +113,10 @@ const usageRights = [
 ];
 
 const delivery = [
+  {
+    title: "Alerts",
+    text: "Reasoned early alerts for impersonation infrastructure, suspicious certificates, risky DNS changes and high-confidence block candidates.",
+  },
   {
     title: "API",
     text: "Real-time enrichment for portals, case management, scoring, customer products and AI-assisted workflows.",
@@ -133,15 +142,15 @@ const pilotSteps = [
   },
   {
     title: "Connect delivery",
-    text: "Start with reports, API, webhook events or a sample data view depending on how your team wants to evaluate.",
+    text: "Start with alerts, reports, API, webhook events or a sample data view depending on how your team wants to evaluate.",
   },
   {
     title: "Validate the findings",
-    text: "Review signal quality, evidence, triage fit, false-positive handling and the reporting value for your client base.",
+    text: "Review alert quality, evidence, triage fit, false-positive handling and the reporting value for your client base.",
   },
   {
     title: "Package the service",
-    text: "Decide whether the first commercial motion is enrichment, alerts, reports, brand protection or portfolio monitoring.",
+    text: "Decide whether the first commercial motion is early alerts, enrichment, reports, brand protection or portfolio monitoring.",
   },
 ];
 
@@ -171,7 +180,7 @@ function PartnerStackPanel() {
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Powered by Datazag</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {["Domains", "DNS", "Certificates", "Infrastructure", "Relationships", "Evidence"].map((item) => (
+          {["Domains", "DNS", "Certificates", "Infrastructure", "Relationships", "Alerts", "Evidence"].map((item) => (
             <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
           ))}
         </div>
@@ -189,12 +198,12 @@ export default function MsspPartnersPage() {
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">MSSP Partners</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Add predictive infrastructure intelligence to your managed security services.</h1>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Add infrastructure intelligence to your managed security services.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag gives MSSPs the domain, DNS, certificate and infrastructure intelligence layer behind new managed detection, brand protection, portfolio monitoring and client reporting services.
+              Datazag gives MSSPs the domain, DNS, certificate, infrastructure and early alert layer behind managed detection, brand protection, portfolio monitoring and client reporting services.
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              Your brand owns the client relationship. Datazag powers the data, evidence and monitoring underneath.
+              Your brand owns the client relationship. Datazag powers the data, alerts, evidence and monitoring underneath.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start a partner pilot</a>
@@ -207,7 +216,12 @@ export default function MsspPartnersPage() {
 
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <SectionHeader
+            eyebrow="Partner value"
+            title="Reduce costs. Increase recurring revenue."
+            body="The page story starts here: use Datazag to reduce the cost of operating security services, then package the same intelligence into new client-facing revenue lines."
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {outcomes.map((outcome) => (
               <article key={outcome.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h2 className="text-lg font-semibold text-white">{outcome.title}</h2>
@@ -223,7 +237,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Partner service catalogue"
             title="Create services your clients already understand."
-            body="Datazag is the intelligence layer. You decide how to package it: as managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services."
+            body="Datazag is the intelligence layer. You decide how to package it: early alerts, managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             {serviceCatalogue.map((service, index) => (
@@ -246,7 +260,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="How Datazag fits"
             title="Your service in front. Our intelligence behind it."
-            body="The partner model is deliberately simple: you own the client, packaging and operational decisions; Datazag supplies the external intelligence layer and delivery routes."
+            body="The partner model is deliberately simple: you own the client, packaging and operational decisions; Datazag supplies the external intelligence layer, early alerts and delivery routes."
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             <div className="hidden grid-cols-[0.28fr_0.36fr_0.36fr] border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70 md:grid">
@@ -322,7 +336,7 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Operating model"
             title="From internet observations to partner revenue."
-            body="Datazag collects and explains the infrastructure signal. MSSPs convert that signal into services, decisions and recurring customer value."
+            body="Datazag collects and explains the infrastructure signal. MSSPs convert that signal into alerts, services, decisions and recurring customer value."
           />
           <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
             <div className="grid gap-3 lg:grid-cols-5">
@@ -346,9 +360,9 @@ export default function MsspPartnersPage() {
           <SectionHeader
             eyebrow="Delivery"
             title="Use the route that fits your service model."
-            body="The same intelligence layer can support analyst workflows, customer portals, managed reports, automated enrichment and data-driven partner products."
+            body="The same intelligence layer can support alerts, analyst workflows, customer portals, managed reports, automated enrichment and data-driven partner products."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
             {delivery.map((item) => (
               <article key={item.title} className="flex min-h-[16rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{item.title}</h3>
@@ -383,7 +397,7 @@ export default function MsspPartnersPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Build the partner offer around your clients.</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Start with a client cohort, validate the intelligence, then decide whether the first commercial motion is SOC enrichment, brand protection, reporting or portfolio monitoring.
+            Start with a client cohort, validate the intelligence, then decide whether the first commercial motion is early alerts, SOC enrichment, brand protection, reporting or portfolio monitoring.
           </p>
           <div className="mt-10 flex justify-center">
             <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start a partner pilot</a>
