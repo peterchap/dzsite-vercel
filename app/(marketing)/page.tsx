@@ -5,9 +5,9 @@ import { sanityFetch } from "@/sanity/fetch";
 import { homepageAtmosphereQuery } from "@/sanity/queries";
 
 const fallbackMetadata: Metadata = {
-  title: "Datazag — Predictive Domain & Infrastructure Intelligence",
+  title: "Datazag — Detect Malicious Infrastructure Before Blacklists",
   description:
-    "Datazag observes domains, DNS, certificates, hosting and internet infrastructure changes to detect emerging impersonation and attack infrastructure before campaigns reach users.",
+    "Datazag delivers annotated internet infrastructure intelligence within 10 seconds of staging, helping MSSPs and enterprise teams stop threats before they go live.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
