@@ -15,10 +15,16 @@ const coreNavLinks: NavLink[] = [
         label: "Products",
         href: "#",
         children: [
-            { label: "How It Works", href: "/how-it-works" },
             { label: "Reports", href: "/reports" },
             { label: "Threat Alerts", href: "/alerts" },
             { label: "Brand Protection", href: "/brand-protection" },
+        ],
+    },
+    {
+        label: "Data",
+        href: "#",
+        children: [
+            { label: "How It Works", href: "/how-it-works" },
             { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
         ],
     },
@@ -64,7 +70,8 @@ function isOldDefaultNav(navLinks?: NavLink[]) {
         labels.includes("domain intelligence") ||
         labels.includes("documentation") && labels.includes("blog") && !labels.includes("brand protection") ||
         !labels.includes("infrastructure intelligence") ||
-        !labels.includes("how it works")
+        !labels.includes("how it works") ||
+        !labels.includes("data")
     );
 }
 
