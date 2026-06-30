@@ -75,6 +75,32 @@ const roleSplit = [
   ["Operational workflows", "Partner controls triage, blocking and escalation", "Datazag supplies signals, reasons and context"],
 ];
 
+const commercialModel = [
+  {
+    title: "Partner owns pricing",
+    text: "You decide how the service is packaged, bundled, marked up and sold to clients. Datazag does not set your end-customer price.",
+  },
+  {
+    title: "Datazag is the wholesale layer",
+    text: "We price the intelligence layer by scope: client estate, domains, brands, data volume, delivery route, white-label needs and SLA.",
+  },
+  {
+    title: "Margin comes from packaging",
+    text: "Your margin is created by combining Datazag intelligence with your SOC, reporting, portal, remediation, account management and support services.",
+  },
+  {
+    title: "No channel conflict by design",
+    text: "For partner-led accounts, the client relationship stays with the MSSP. Datazag is infrastructure behind your managed service, not a competing front-end service.",
+  },
+];
+
+const marginLevers = [
+  ["Attach to existing clients", "Add brand protection, reporting or enrichment to accounts you already serve."],
+  ["Use one intelligence layer", "Reuse the same data across alerts, reports, portal features and SOC enrichment."],
+  ["Reduce analyst effort", "Reasoned outputs reduce manual investigation time and make automation easier to trust."],
+  ["Package premium services", "Sell evidence, monitoring, remediation and reporting rather than raw data access."],
+];
+
 const delivery = [
   {
     title: "API",
@@ -229,6 +255,41 @@ export default function MsspPartnersPage() {
                 <div className="text-sm leading-6 text-slate-300">{datazag}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Commercial model"
+            title="Built for partner margin, not channel conflict."
+            body="Datazag's perspective is that the MSSP should own the customer relationship, commercial packaging and service margin. We provide the intelligence infrastructure as a predictable wholesale layer behind your offer."
+          />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {commercialModel.map((item) => (
+              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div className="rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Margin principle</p>
+              <h3 className="mt-3 text-2xl font-semibold text-white">Partner price minus Datazag platform cost equals the service margin you control.</h3>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                We do not publish a fixed partner margin because it depends on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. The goal is to make Datazag a predictable input cost so the partner can build repeatable recurring revenue around it.
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
+              {marginLevers.map(([title, text], index) => (
+                <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.35fr_0.65fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                  <h3 className="text-sm font-semibold text-white">{title}</h3>
+                  <p className="text-sm leading-6 text-slate-400">{text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
