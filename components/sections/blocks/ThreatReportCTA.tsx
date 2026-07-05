@@ -6,7 +6,7 @@ import { PortableText } from 'next-sanity';
 
 // Common free webmail domains to validate against
 const freeWebmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
-const portalReportUrl = process.env.NEXT_PUBLIC_PORTAL_REPORT_URL || 'https://app.datazag.com/threat-report';
+const portalReportUrl = process.env.NEXT_PUBLIC_PORTAL_REPORT_URL || 'https://portal.datazag.com/threat-report';
 
 // Block-level rendering for the rich-text body below the subheadline
 const bodyComponents = {
