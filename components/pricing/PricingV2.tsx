@@ -18,6 +18,15 @@ const reports = [
     highlight: true,
   },
   {
+    name: "Domain Risk Report",
+    price: "From £495",
+    cadence: "per report",
+    description: "The full paid assessment of one domain: an executive core any board can read, plus a technical remediation appendix your engineers execute.",
+    features: ["One domain", "Threat exposure and defence posture", "Evidence behind every claim", "Technical remediation appendix", "Paste-ready records, staged rollout"],
+    cta: "Request the Domain Risk Report",
+    href: "/contact",
+  },
+  {
     name: "Cross-Estate Domain Risk Report",
     price: "From £995",
     cadence: "per report",
@@ -217,8 +226,8 @@ export function PricingV2() {
 
       <section id="pricing" className="relative border-t border-white/10 py-20 md:py-28">
         <div id="reports" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Reports" title="Assess one domain or a whole portfolio." body="Reports are for buyers who need a concrete assessment before committing to continuous monitoring, brand protection or data access." />
-          <div className="grid gap-5 md:grid-cols-2">
+          <SectionHeader eyebrow="Reports" title="Assess one domain or a whole estate." body="Reports are for buyers who need a concrete assessment before committing to continuous monitoring, brand protection or data access." />
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {reports.map((item) => <PriceCard key={item.name} item={item} />)}
           </div>
         </div>

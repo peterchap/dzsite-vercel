@@ -7,8 +7,9 @@ export const metadata: Metadata = {
     "Start free with the Domain Health Report on one domain. The Domain Risk Report gives the full single-domain assessment; the Cross-Estate Domain Risk Report finds the estate you actually own and the systemic risk across it.",
 };
 
-// WU16 portal purchase flow is not live for the paid report SKUs, so both buy
-// CTAs render "Contact us" (WU17 fallback pattern) instead of a portal link.
+// WU16 portal purchase flow is not live for the paid report SKUs, so paid CTAs
+// route to /pricing#reports or "Contact us" (WU17 fallback) instead of a
+// portal buy link.
 const contactHref = "/contact";
 const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
 
@@ -120,6 +121,8 @@ type CatalogueEntry = {
   title: string;
   note?: string;
   text: string;
+  price?: string;
+  cadence?: string;
   cta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
 };
@@ -128,24 +131,30 @@ const reportTypes: CatalogueEntry[] = [
   {
     title: "Free Domain Health Report",
     text: "One domain. Platform-led threat exposure, detailed DNS defence analysis and first remediation priorities.",
+    price: "Free",
     cta: { label: "Get your free report", href: "/#free-report" },
   },
   {
     title: "Domain Risk Report",
     note: "Single domain · paid",
     text: "The full assessment of one domain — yours, a client's, a vendor's, an acquisition target's. An executive core any board can read: threat exposure, defence posture, and the evidence behind every claim. Plus a technical remediation appendix your engineers execute: every finding with current state, target state, and paste-ready records, staged in the order a change should actually land.",
-    cta: { label: "Contact us", href: contactHref },
+    price: "From £495",
+    cadence: "per report",
+    cta: { label: "See pricing", href: "/pricing#reports" },
   },
   {
     title: "Cross-Estate Domain Risk Report",
     note: "Multi-domain · paid",
     text: "The same assessment at estate scope, opened by discovery: the domains you declared, the ones we found and can evidence, and the systemic layer no single-domain report can show — concentration, posture variance, correlated weakness, the operational calendar — closed by a worksheet grouped by the team that administers each zone. Variants for technical teams, and for insurance underwriting and M&A due diligence.",
-    cta: { label: "Contact us", href: contactHref },
+    price: "From £995",
+    cadence: "per report",
+    cta: { label: "See pricing", href: "/pricing#reports" },
     secondaryCta: { label: "See the sample", href: crossEstateSampleHref },
   },
   {
     title: "Partner-branded reports",
     text: "White-label or partner-led reporting for MSSPs, ESPs and service providers delivering reports under their own brand. Any report in this catalogue, delivered under your brand.",
+    price: "By agreement",
     cta: { label: "Talk to us", href: contactHref },
   },
 ];
@@ -347,6 +356,12 @@ export default function ReportsPage() {
                 <h3 className={`text-xl font-semibold text-white ${item.note ? "mt-2" : ""}`}>{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
                 <div className="mt-auto flex flex-col gap-2 pt-5">
+                  {item.price ? (
+                    <div className="flex items-end gap-1.5 pb-1">
+                      <span className="text-2xl font-semibold tracking-tight text-white">{item.price}</span>
+                      {item.cadence ? <span className="pb-0.5 text-xs text-slate-400">{item.cadence}</span> : null}
+                    </div>
+                  ) : null}
                   <a href={item.cta.href} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{item.cta.label}</a>
                   {item.secondaryCta ? (
                     <a href={item.secondaryCta.href} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{item.secondaryCta.label}</a>
