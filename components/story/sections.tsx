@@ -179,8 +179,10 @@ export function StoryAudiences({ data }: { data: AudiencesProps }) {
   );
 }
 
-export function StoryReportCta({ data }: { data: ReportCtaProps }) {
-  return <DomainHealthReportCta buttonHref={data.button.href} />;
+export function StoryReportCta({ data: _data }: { data: ReportCtaProps }) {
+  // The CTA is now a live email-capture form handing off to the portal; the
+  // CMS button href (which pointed back at this section) is no longer used.
+  return <DomainHealthReportCta />;
 }
 
 export function StoryObservatory() {

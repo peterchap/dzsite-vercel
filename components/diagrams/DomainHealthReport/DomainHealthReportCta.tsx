@@ -1,3 +1,12 @@
+"use client";
+
+import { useState } from "react";
+
+// Lead handoff: the report form (consent + generation) lives on the customer
+// portal; this section captures the email and passes it across prefilled.
+const portalReportUrl =
+  process.env.NEXT_PUBLIC_PORTAL_REPORT_URL || "https://portal.datazag.com/threat-report";
+
 const trustSignals = [
   "No questionnaire",
   "No asset inventory",
@@ -76,7 +85,21 @@ function AnalysisProgress() {
   );
 }
 
-export function DomainHealthReportCta({ buttonHref = "/#free-report" }: { buttonHref?: string }) {
+export function DomainHealthReportCta() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const domain = email.split("@")[1]?.toLowerCase() || "";
+    if (!domain || !domain.includes(".")) {
+      setError("Enter a valid work email address.");
+      return;
+    }
+    const params = new URLSearchParams({ email: email.trim(), domain });
+    window.location.href = `${portalReportUrl}?${params.toString()}`;
+  }
+
   return (
     <section id="free-report" className="relative border-t border-white/10 py-24 md:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(55,222,245,0.13),transparent_30%),radial-gradient(circle_at_80%_70%,rgba(16,185,129,0.1),transparent_32%)]" />
@@ -90,18 +113,22 @@ export function DomainHealthReportCta({ buttonHref = "/#free-report" }: { button
                 Datazag reviews public DNS, visible platforms, subdomains, certificates and infrastructure exposure, then sends a detailed multi-page report for technical and executive teams.
               </p>
 
-              <div className="mt-8 rounded-2xl border border-white/10 bg-[#030619]/65 p-3 md:p-4">
+              <form onSubmit={submit} className="mt-8 rounded-2xl border border-white/10 bg-[#030619]/65 p-3 md:p-4">
                 <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
                   <input
                     type="email"
+                    required
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setError(""); }}
                     placeholder="Enter your work email"
                     className="min-h-12 rounded-xl border border-white/10 bg-white/[0.055] px-4 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50 focus:ring-2 focus:ring-cyan-300/20"
                   />
-                  <a href={buttonHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
+                  <button type="submit" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
                     Get my FREE report
-                  </a>
+                  </button>
                 </div>
-              </div>
+                {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
+              </form>
 
               <div className="mt-5 grid gap-2 sm:grid-cols-2">
                 {trustSignals.map((signal) => (
