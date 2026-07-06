@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Manrope, Outfit } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  weight: "800",
 });
 
 const outfit = Outfit({
@@ -28,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${outfit.variable} antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} ${manrope.variable} antialiased`}>
         <CurrencyProvider>
           {children}
         </CurrencyProvider>

@@ -1,4 +1,24 @@
 @import "tailwindcss";
+/* WU21 shared design tokens — vendored from datazag_intelligence
+   design/generated/tokens.css (canonical source: design/tokens.json).
+   Regenerate there; never hand-edit here. */
+@import "./tokens.css";
+
+/* Two-tone wordmark (WU21 option 2a). Manrope is the logotype face ONLY —
+   it must not appear outside the .dz-logo lockup. */
+.dz-logo {
+  font-family: var(--font-manrope), var(--logo-font);
+  font-weight: 800;
+  letter-spacing: var(--logo-tracking);
+}
+.dz-logo-data { color: var(--logo-data-on-dark); }
+.dz-logo-zag {
+  background: linear-gradient(90deg, var(--logo-zag-from), var(--logo-zag-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
