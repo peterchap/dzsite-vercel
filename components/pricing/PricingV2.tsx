@@ -28,11 +28,11 @@ const reports = [
   },
   {
     name: "Cross-Estate Domain Risk Report",
-    price: "From £995",
-    cadence: "per report",
-    description: "Paid reporting across the domains an organisation owns, showing individual findings and systemic risk patterns.",
+    price: "Banded",
+    cadence: "by domain count",
+    description: "Paid reporting across the domains an organisation owns, showing individual findings and systemic risk patterns. Estate size is unknown until discovery runs, so pricing is banded by domain count — the final quote follows scope confirmation.",
     features: ["Multiple domains", "Estate discovery", "Systemic weakness analysis", "Domain ranking", "Remediation worksheet"],
-    cta: "Request the Cross-Estate report",
+    cta: "Talk to us about your estate",
     href: "/contact",
   },
 ];

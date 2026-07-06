@@ -7,10 +7,12 @@ export const metadata: Metadata = {
     "Start free with the Domain Health Report on one domain. The Domain Risk Report gives the full single-domain assessment; the Cross-Estate Domain Risk Report finds the estate you actually own and the systemic risk across it.",
 };
 
-// WU16 portal purchase flow is not live for the paid report SKUs, so paid CTAs
-// route to /pricing#reports or "Contact us" (WU17 fallback) instead of a
-// portal buy link.
+// CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
+// is a direct card buy (WU16; renders "Contact us" until that flow ships) and
+// the Cross-Estate report is NEVER a bare buy — its CTA is the WU20 scope flow,
+// rendering "Talk to us about your estate" until WU20 ships.
 const contactHref = "/contact";
+const scopeEstateCta = { label: "Talk to us about your estate", href: contactHref };
 const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
 
 const freeReportValue = [
@@ -140,15 +142,16 @@ const reportTypes: CatalogueEntry[] = [
     text: "The full assessment of one domain — yours, a client's, a vendor's, an acquisition target's. An executive core any board can read: threat exposure, defence posture, and the evidence behind every claim. Plus a technical remediation appendix your engineers execute: every finding with current state, target state, and paste-ready records, staged in the order a change should actually land.",
     price: "From £495",
     cadence: "per report",
-    cta: { label: "See pricing", href: "/pricing#reports" },
+    cta: { label: "Contact us", href: contactHref },
+    secondaryCta: { label: "See pricing", href: "/pricing#reports" },
   },
   {
     title: "Cross-Estate Domain Risk Report",
     note: "Multi-domain · paid",
     text: "The same assessment at estate scope, opened by discovery: the domains you declared, the ones we found and can evidence, and the systemic layer no single-domain report can show — concentration, posture variance, correlated weakness, the operational calendar — closed by a worksheet grouped by the team that administers each zone. Variants for technical teams, and for insurance underwriting and M&A due diligence.",
-    price: "From £995",
-    cadence: "per report",
-    cta: { label: "See pricing", href: "/pricing#reports" },
+    price: "Banded",
+    cadence: "by domain count",
+    cta: scopeEstateCta,
     secondaryCta: { label: "See the sample", href: crossEstateSampleHref },
   },
   {
@@ -299,7 +302,7 @@ export default function ReportsPage() {
             ))}
           </div>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={contactHref} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Contact us</a>
+            <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{scopeEstateCta.label}</a>
             <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the sample</a>
           </div>
         </div>
@@ -418,8 +421,11 @@ export default function ReportsPage() {
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
             <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get my free report</a>
-            <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See a sample Cross-Estate report</a>
+            <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{scopeEstateCta.label}</a>
           </div>
+          <p className="mt-6 text-sm">
+            <a href={crossEstateSampleHref} className="font-semibold text-cyan-100 hover:text-cyan-50">See a sample Cross-Estate report →</a>
+          </p>
         </div>
       </section>
     </main>
