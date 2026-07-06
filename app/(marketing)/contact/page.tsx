@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const enquiryRoutes = [
   {
     title: "Report request",
-    text: "Start with a free Domain Health Report or discuss a paid portfolio report for multiple domains, subsidiaries, suppliers or clients.",
+    text: "Start with a free Domain Health Report, or discuss the paid Domain Risk Report and the Cross-Estate Domain Risk Report for multiple domains, subsidiaries, suppliers or clients.",
   },
   {
     title: "Alerts and brand protection",
@@ -30,7 +30,8 @@ const enquiryRoutes = [
 
 const enquiryTypes = [
   "Free Domain Health Report",
-  "Portfolio Risk Report",
+  "Domain Risk Report",
+  "Cross-Estate Domain Risk Report",
   "Platform Alerts",
   "Keyword Alerts",
   "Brand Protection Alerts",

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Datazag Cross-Estate Domain Risk Report — Acme Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ SHARED DESIGN SYSTEM (free_report v1.3) ============ */
+:root{
+  --navy:#0F1923;--navy-2:#16263A;--navy-deep:#0A121C;
+  --ink:#0F172A;--ink-2:#33415A;--ink-3:#64748B;--ink-4:#94A3B8;
+  --paper:#FFFFFF;--tint:#F6F8FB;--tint-2:#EEF3F8;
+  --rule:#E2E8F0;--rule-2:#F0F4F8;
+  --cyan:#00C2FF;--cyan-deep:#0091C7;--cyan-wash:#E8F8FF;
+  --good:#0E9F6E;--good-wash:#E7F7F0;--good-line:#A8E6CC;
+  --warn:#D97706;--warn-wash:#FEF4E6;--warn-line:#F6D9A8;
+  --bad:#E02424;--bad-wash:#FDECEC;--bad-line:#F5C6C6;
+  --w:#FFFFFF;--w2:rgba(255,255,255,.82);--w3:rgba(255,255,255,.58);--w4:rgba(255,255,255,.34);
+  --rd:rgba(255,255,255,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:A4;margin:0}
+html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+.page{width:794px;min-height:1123px;margin:22px auto;background:var(--paper);position:relative;display:flex;flex-direction:column;page-break-after:always;box-shadow:0 8px 22px -8px rgba(15,25,35,.22)}
+.page:last-child{page-break-after:auto}
+.runner{display:flex;justify-content:space-between;align-items:center;padding:14px 44px;border-bottom:1px solid var(--rule);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.runner .r-brand{font-weight:800;color:var(--ink);letter-spacing:-.01em;text-transform:none;font-size:13px}
+.runner .r-brand span{color:var(--cyan-deep)}
+.runner .r-id{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0}
+.foot{margin-top:auto;padding:11px 44px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}
+
+/* cover */
+.cover{background:var(--navy);color:var(--w);overflow:hidden}
+.cover::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 5%,rgba(0,194,255,.12),transparent 40%),radial-gradient(circle at 5% 92%,rgba(0,194,255,.06),transparent 42%);pointer-events:none}
+.cover>*{position:relative;z-index:1}
+.cover .runner{border-bottom-color:var(--rd);color:var(--w3)}
+.cover .runner .r-brand{color:var(--w)}.cover .runner .r-brand span{color:var(--cyan)}
+.cover-main{flex:1;padding:34px 44px 22px;display:flex;flex-direction:column}
+.kick{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 13px;border:1px solid rgba(0,194,255,.3);background:rgba(0,194,255,.08);border-radius:100px;font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+.kick .d{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 7px var(--cyan)}
+.cover .org{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.08}
+.cover .org .dom{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;letter-spacing:0;display:block;margin-top:7px}
+.synthesis{font-size:13.5px;line-height:1.6;color:var(--w2);max-width:600px;margin:16px 0 22px;border-left:2px solid var(--cyan);padding-left:16px}
+.synthesis b{color:var(--w);font-weight:600}
+.dash{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}
+.dcard{background:rgba(255,255,255,.04);border:1px solid var(--rd);border-radius:11px;padding:15px 15px 14px;border-top:3px solid var(--ink-4)}
+.dcard.ok{border-top-color:var(--good)}.dcard.warn{border-top-color:var(--warn)}.dcard.bad{border-top-color:var(--bad)}.dcard.cy{border-top-color:var(--cyan)}
+.dcard .dk{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--w3)}
+.dcard .dstate{font-size:18px;font-weight:800;letter-spacing:-.02em;margin:9px 0 7px}
+.dcard.ok .dstate{color:#7DE3B6}.dcard.warn .dstate{color:#FFD27A}.dcard.bad .dstate{color:#FF9A9A}.dcard.cy .dstate{color:#7FDBFF}
+.dcard .dnote{font-size:10.5px;line-height:1.45;color:var(--w2)}
+.lens{background:linear-gradient(135deg,rgba(0,194,255,.07),rgba(0,194,255,.02));border:1px solid rgba(0,194,255,.22);border-radius:12px;padding:18px 20px;margin-bottom:0}
+.lens .lh{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.lens .lh .li{width:15px;height:15px}
+.lens .lbody{font-size:12px;line-height:1.6;color:var(--w2)}
+.lens .lbody b{color:var(--w);font-weight:600}
+.lens .lscope{font-size:10px;line-height:1.5;color:var(--w3);margin-top:10px;padding-top:10px;border-top:1px solid var(--rd);font-style:italic}
+.cover-foot{padding:14px 44px;border-top:1px solid var(--rd);display:flex;justify-content:space-between;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--w4)}
+
+/* body */
+.body{padding:26px 44px 0;flex:1;display:flex;flex-direction:column}
+.shead{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-bottom:2px solid var(--navy);padding-bottom:13px;margin-bottom:18px}
+.shead .stitle{font-size:23px;font-weight:800;letter-spacing:-.022em;line-height:1.12;max-width:490px}
+.shead .ssub{font-size:11.5px;color:var(--ink-3);line-height:1.5;max-width:480px;margin-top:6px}
+.shead .smeta{text-align:right;flex-shrink:0}
+.shead .smeta .sm-k{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)}
+.shead .smeta .sm-v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1;margin-top:4px}
+.sm-v.bad{color:var(--bad)}.sm-v.warn{color:var(--warn)}.sm-v.good{color:var(--good)}.sm-v.cy{color:var(--cyan-deep)}
+.lead{font-size:13px;line-height:1.62;color:var(--ink-2);margin-bottom:16px;max-width:625px}
+.lead b{color:var(--ink);font-weight:600}
+.discovery-note{background:var(--tint);border:1px solid var(--rule);border-radius:8px;padding:12px 15px;margin:6px 0 16px;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.discovery-note b{color:var(--ink);font-weight:600}
+.discovery-note code{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--tint-2);padding:1px 5px;border-radius:3px}
+.monitor-note{background:var(--tint);border:1px solid var(--rule);border-left:3px solid var(--ink-4);border-radius:8px;padding:11px 15px;margin-top:4px;font-size:11px;line-height:1.5;color:var(--ink-2)}
+.monitor-note .mn-h{display:block;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.monitor-note b{color:var(--ink);font-weight:600}
+
+/* tiers — same component as free report seam, now the primary content */
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tier{border:1px solid var(--rule);border-radius:8px;padding:11px 13px;border-left:3px solid var(--ink-4)}
+.tier.declared{border-left-color:var(--ink-3)}
+.tier.strong{border-left-color:var(--good)}
+.tier.possible{border-left-color:var(--warn)}
+.tier.defensive{border-left-color:var(--cyan-deep)}
+.tier .tk{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.tier .tn{font-size:12px;font-weight:700;color:var(--ink);margin:4px 0 3px;letter-spacing:-.01em}
+.tier .td{font-size:10px;line-height:1.45;color:var(--ink-2)}
+
+/* discovery funnel strip */
+.funnel{display:flex;align-items:stretch;gap:0;border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.funnel .f-declared{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--w);padding:20px 24px;flex:0 0 auto;min-width:190px;display:flex;flex-direction:column;justify-content:center}
+.funnel .f-declared .fn{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:.9}
+.funnel .f-declared .fl{font-size:11px;color:var(--w2);margin-top:8px;line-height:1.4}
+.funnel .f-arrow{display:flex;align-items:center;padding:0 14px;background:var(--tint);color:var(--ink-4);font-size:20px;font-weight:300}
+.funnel .f-found{background:linear-gradient(135deg,#062A38,#0A3D50);color:var(--w);padding:20px 24px;flex:1;display:flex;align-items:center;gap:20px}
+.funnel .f-found .fn{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:.9;color:var(--cyan)}
+.funnel .f-found .fl{font-size:12px;color:var(--w2);line-height:1.5}
+.funnel .f-found .fl b{color:var(--w);font-weight:600}
+
+/* discovery table */
+.disc-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:10.5px}
+.disc-table th{text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);padding:6px 9px;border-bottom:1.5px solid var(--rule)}
+.disc-table td{padding:6px 9px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.disc-table td.dom{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink);font-weight:500;white-space:nowrap}
+.disc-table td.ev{font-size:9.5px;color:var(--ink-2);line-height:1.45}
+.disc-table td.ev code{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--tint-2);padding:1px 4px;border-radius:3px}
+.disc-table tr:last-child td{border-bottom:none}
+.tpill{font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:100px;white-space:nowrap}
+.tpill.strong{color:var(--good);background:var(--good-wash)}
+.tpill.possible{color:var(--warn);background:var(--warn-wash)}
+.tpill.defensive{color:var(--cyan-deep);background:var(--cyan-wash)}
+.tpill.declared{color:var(--ink-3);background:var(--tint-2)}
+
+/* grade block */
+.grade-strip{display:flex;align-items:stretch;gap:12px;margin-bottom:16px}
+.grade-box{flex:0 0 auto;min-width:150px;background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--w);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;justify-content:center}
+.grade-box .gb-k{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--w3)}
+.grade-box .gb-g{font-size:46px;font-weight:900;letter-spacing:-.03em;line-height:1;color:#FFD27A;margin:6px 0 4px}
+.grade-box .gb-s{font-size:10px;color:var(--w2);font-family:'JetBrains Mono',monospace}
+.grade-dist{flex:1;border:1px solid var(--rule);border-radius:12px;padding:14px 18px}
+.grade-dist .gd-k{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px}
+.gd-row{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.gd-row:last-child{margin-bottom:0}
+.gd-row .gl{width:14px;font-size:11px;font-weight:800;color:var(--ink-2);font-family:'JetBrains Mono',monospace}
+.gd-row .gbar{flex:1;height:13px;background:var(--tint-2);border-radius:4px;overflow:hidden}
+.gd-row .gfill{height:100%;border-radius:4px}
+.gd-row .gn{width:20px;font-size:10px;font-weight:700;color:var(--ink-3);text-align:right;font-family:'JetBrains Mono',monospace}
+.gfill.ga{background:var(--good)}.gfill.gb{background:#5BBF8F}.gfill.gc{background:var(--warn)}
+.gfill.gd{background:#C2661C}.gfill.ge{background:var(--bad)}.gfill.gf{background:#8B1414}
+
+/* concentration bars */
+.conc{margin-bottom:14px}
+.conc-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule-2)}
+.conc-row:last-child{border-bottom:none}
+.conc-row .ck{flex:0 0 172px;font-size:10.5px;font-weight:600;color:var(--ink-2);line-height:1.3}
+.conc-row .cprov{flex:0 0 140px;font-size:10.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.conc-row .cbar{flex:1;height:15px;background:var(--tint-2);border-radius:4px;overflow:hidden;position:relative}
+.conc-row .cfill{height:100%;border-radius:4px;background:var(--cyan-deep)}
+.conc-row .cpct{flex:0 0 74px;text-align:right;font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--ink)}
+.conc-row .cpct .delta{display:block;font-size:8.5px;font-weight:500;color:var(--ink-4)}
+.conc-row .csev{flex:0 0 66px;text-align:center}
+.csev .pill{font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:100px;white-space:nowrap}
+.csev .pill.high{color:#fff;background:var(--bad)}
+.csev .pill.elevated{color:var(--warn);background:var(--warn-wash)}
+.csev .pill.watch{color:var(--cyan-deep);background:var(--cyan-wash)}
+.conc-row .ctier{flex:0 0 170px;font-size:9px;line-height:1.35;color:var(--ink-3)}
+.conc-row .ctier b{color:var(--ink-2);font-weight:700}
+
+/* variance table */
+.var-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:11px}
+.var-table th{text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);padding:7px 10px;border-bottom:1.5px solid var(--rule)}
+.var-table td{padding:8px 10px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
+.var-table td.seg{font-weight:700;color:var(--ink)}
+.var-table td.mono{font-family:'JetBrains Mono',monospace;font-size:10.5px}
+.var-table tr:last-child td{border-bottom:none}
+.gradepill{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;font-weight:900;font-size:13px;color:#fff}
+.gradepill.ga{background:var(--good)}.gradepill.gb{background:#5BBF8F}.gradepill.gc{background:var(--warn)}
+.gradepill.gd{background:#C2661C}.gradepill.ge{background:var(--bad)}.gradepill.gf{background:#8B1414}
+.outlier-tag{font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bad);background:var(--bad-wash);padding:3px 9px;border-radius:100px}
+
+/* correlated weakness rows */
+.cw{border:1px solid var(--rule);border-radius:9px;margin-bottom:8px;padding:11px 15px;display:flex;align-items:center;gap:14px}
+.cw .cw-main{flex:1;min-width:0}
+.cw .cw-t{font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.cw .cw-seg{font-size:10px;color:var(--ink-3);margin-top:2px}
+.cw .cw-seg b{color:var(--warn);font-weight:700}
+.cw .cw-bar{flex:0 0 150px;height:13px;background:var(--tint-2);border-radius:4px;overflow:hidden}
+.cw .cw-fill{height:100%;border-radius:4px;background:var(--warn)}
+.cw .cw-fill.hot{background:var(--bad)}
+.cw .cw-pct{flex:0 0 88px;text-align:right;font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--ink)}
+.cw .cw-pct .of{display:block;font-size:8.5px;font-weight:500;color:var(--ink-4)}
+
+/* impersonation exposure (scale hero reuse) */
+.scale{display:flex;align-items:stretch;gap:0;border:1px solid var(--bad-line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.scale .sbig{background:linear-gradient(135deg,#2A0E0E,#3D1414);color:#fff;padding:22px 26px;flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;min-width:215px}
+.scale .sbig .snum{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:.9;color:#FF9A9A}
+.scale .sbig .slab{font-size:11px;color:var(--w2);margin-top:8px;line-height:1.4}
+.scale .sbig .sprov{font-size:9px;color:var(--w3);margin-top:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.01em;border-top:1px solid var(--rd);padding-top:8px}
+.scale .stext{padding:20px 24px;background:var(--bad-wash);font-size:12.5px;line-height:1.6;color:#7A1212;display:flex;align-items:center}
+.scale .stext b{font-weight:700}
+.imp-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:10.5px}
+.imp-table th{text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);padding:6px 9px;border-bottom:1.5px solid var(--rule)}
+.imp-table td{padding:7px 9px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.imp-table td.dom{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink)}
+.imp-table tr:last-child td{border-bottom:none}
+
+/* calendar */
+.cal-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:11px}
+.cal-table th{text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);padding:7px 10px;border-bottom:1.5px solid var(--rule)}
+.cal-table td{padding:7px 10px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.cal-table td.dom{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--ink);white-space:nowrap}
+.cal-table tr:last-child td{border-bottom:none}
+.due{font-size:8.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:100px;white-space:nowrap}
+.due.overdue{color:#fff;background:var(--bad)}
+.due.soon{color:var(--warn);background:var(--warn-wash)}
+.due.later{color:var(--ink-3);background:var(--tint-2)}
+
+/* exception register */
+.exc{border:1px solid var(--rule);border-radius:9px;margin-bottom:9px;overflow:hidden}
+.exc .ex-head{display:flex;align-items:center;gap:11px;padding:10px 15px;background:var(--tint)}
+.exc .ex-num{width:24px;height:24px;border-radius:6px;background:var(--navy);color:var(--w);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.exc .ex-t{font-size:12.5px;font-weight:700;letter-spacing:-.01em;flex:1;line-height:1.3}
+.exc .ex-sev{font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px;flex-shrink:0}
+.ex-sev.high{color:var(--bad);background:var(--bad-wash)}
+.ex-sev.elevated{color:var(--warn);background:var(--warn-wash)}
+.ex-sev.watch{color:var(--cyan-deep);background:var(--cyan-wash)}
+.exc .ex-body{padding:10px 15px;font-size:11px;line-height:1.55;color:var(--ink-2)}
+.exc .ex-body b{color:var(--ink);font-weight:600}
+.exc .ex-ev{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-3);margin-top:6px;padding-top:6px;border-top:1px solid var(--rule-2)}
+
+/* upgrade seam + CTA (shared with free report) */
+.seam{border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.seam-h{display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--w)}
+.seam-n{flex:0 0 auto;width:34px;height:34px;border-radius:8px;background:rgba(0,194,255,.16);border:1px solid rgba(0,194,255,.3);color:var(--cyan);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center}
+.seam-title{font-size:15px;font-weight:800;letter-spacing:-.015em}
+.seam-sub{font-size:10.5px;color:var(--w3);margin-top:2px;line-height:1.4}
+.seam-body{padding:15px 18px;background:var(--paper)}
+.seam-lead{font-size:11.5px;line-height:1.55;color:var(--ink-2);margin-bottom:12px}
+.seam-note{margin-top:12px;background:var(--tint);border-left:3px solid var(--cyan);border-radius:0 7px 7px 0;padding:10px 14px;font-size:11px;line-height:1.55;color:var(--ink-2)}
+.seam-note b{color:var(--ink);font-weight:600}
+.upgrade-cta{display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,#062A38,#0A3D50);color:var(--w);border-radius:12px;padding:18px 22px;margin:14px 0 12px}
+.upgrade-cta .uc-text{flex:1}
+.upgrade-cta .uc-h{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.upgrade-cta .uc-b{font-size:11.5px;color:var(--w2);line-height:1.5;margin-top:3px}
+.upgrade-cta .uc-btn{flex:0 0 auto;background:var(--cyan);color:var(--navy);font-weight:800;font-size:12px;padding:11px 18px;border-radius:8px;text-decoration:none}
+
+/* limits + glossary strip */
+.limits{margin-top:14px;border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.limits .lim-h{background:var(--navy);color:var(--w);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px}
+.limits .lim-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+.limits .lim-item{background:var(--paper);padding:12px 16px;font-size:10.5px;line-height:1.5;color:var(--ink-2)}
+.limits .lim-item b{color:var(--ink);font-weight:700}
+.limits .lim-item code{font-family:'JetBrains Mono',monospace;font-size:9.5px;background:var(--tint-2);padding:1px 4px;border-radius:3px}
+.gloss-strip{font-size:10px;line-height:1.7;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:11px;margin-top:12px}
+.gloss-strip b{color:var(--ink)}
+.gloss-strip span{display:inline;margin-right:14px}
+.evidence{background:var(--tint);border:1px solid var(--rule);border-radius:8px;padding:12px 15px;margin:6px 0 14px;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.evidence b{color:var(--ink);font-weight:600}
+.evidence .src{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-4);margin-top:7px;padding-top:7px;border-top:1px solid var(--rule-2)}
+
+/* ---------- APPENDIX A — REMEDIATION WORKSHEET ---------- */
+.fix{border:1px solid var(--rule);border-radius:9px;margin-bottom:12px;overflow:hidden}
+.fix .fx-head{display:flex;align-items:center;gap:11px;padding:11px 15px;background:var(--tint)}
+.fix .fx-num{width:24px;height:24px;border-radius:6px;background:var(--navy);color:var(--w);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fix .fx-t{font-size:13px;font-weight:700;letter-spacing:-.01em;flex:1}
+.fix .fx-pri{font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.fx-pri.now{color:var(--bad);background:var(--bad-wash)}
+.fx-pri.soon{color:var(--warn);background:var(--warn-wash)}
+.fx-pri.plan{color:var(--cyan-deep);background:var(--cyan-wash)}
+.fix .fx-body{padding:12px 15px;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.fix .fx-body .why{margin-bottom:9px}
+.fix .fx-body .why b{color:var(--ink);font-weight:600}
+.fix .fx-cmd{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--navy-deep);color:#CFE8F5;padding:10px 13px;border-radius:6px;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin-bottom:10px}
+.fix .fx-cmd .cm{color:#6BA8C0}
+.ws-table{width:100%;border-collapse:collapse;font-size:10px}
+.ws-table th{text-align:left;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);padding:6px 8px;border-bottom:1.5px solid var(--rule)}
+.ws-table td{padding:6px 8px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.ws-table td.dom{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:500;color:var(--ink);white-space:nowrap}
+.ws-table td.adm{font-size:9px;color:var(--ink-3);white-space:nowrap}
+.ws-table td.now{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--bad)}
+.ws-table td.tgt{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-2)}
+.ws-table tr:last-child td{border-bottom:none}
+.ws-check{width:13px;height:13px;border:1.5px solid var(--ink-4);border-radius:3px;display:inline-block}
+.adm-strip{display:flex;gap:9px;margin-bottom:14px}
+.adm{flex:1;border:1px solid var(--rule);border-radius:9px;padding:10px 13px}
+.adm .ak{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4)}
+.adm .an{font-size:13px;font-weight:800;color:var(--ink);margin-top:3px;letter-spacing:-.01em}
+.adm .ad{font-size:9.5px;color:var(--ink-3);margin-top:2px;line-height:1.4}
+.gloss{columns:2;column-gap:28px;margin-top:4px}
+.gterm{break-inside:avoid;margin-bottom:11px}
+.gterm .gt{font-size:11px;font-weight:700;color:var(--ink)}
+.gterm .gd{font-size:10px;color:var(--ink-2);line-height:1.48;margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 — COVER / DASHBOARD ============ -->
+<div class="page cover">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">CROSS-ESTATE DOMAIN RISK REPORT</div></div>
+  <div class="cover-main">
+    <div class="kick"><span class="d"></span>Cross-Estate Domain Risk Report · 2 July 2026</div>
+    <div class="org">Acme Group<span class="dom">9 declared domains · 3 segments · corp / retail / acquired</span></div>
+
+    <p class="synthesis">You declared 9 domains. Datazag's discovery walked certificate, mail and registration relationships across the 340M-domain corpus and found <b>15 more connected to Acme Group</b> — 5 you almost certainly own, 4 to review, and 6 attackers would favour. Across the true estate, risk is <b>systemic, not isolated</b>: the weaknesses cluster in the acquired and retail segments, and one expired acquisition domain is a live takeover window today.</p>
+
+    <div class="dash">
+      <div class="dcard cy">
+        <div class="dk">Estate discovered</div>
+        <div class="dstate">9 → 24</div>
+        <div class="dnote">15 undeclared domains found — 5 strongly associated, 4 to review, 6 defensive.</div>
+      </div>
+      <div class="dcard warn">
+        <div class="dk">Estate grade</div>
+        <div class="dstate">C · 47/100</div>
+        <div class="dnote">Declared + strongly-associated. Two domains at E/F drag the whole estate.</div>
+      </div>
+      <div class="dcard bad">
+        <div class="dk">Active exposure</div>
+        <div class="dstate">9 in 30d</div>
+        <div class="dnote">Impersonations targeting your platform stack — 100% concentrated on Microsoft 365.</div>
+      </div>
+      <div class="dcard bad">
+        <div class="dk">Live lapses</div>
+        <div class="dstate">2 overdue</div>
+        <div class="dnote">oldco.com registration and certificate both expired — an open takeover window.</div>
+      </div>
+    </div>
+
+    <div class="lens">
+      <div class="lh">
+        <svg class="li" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-4z" stroke="#00C2FF" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        What a cyber insurer would note
+      </div>
+      <div class="lbody">
+        An underwriter reading this estate would see the classic <b>acquisition-integration gap</b>: the corp segment holds a defensible C, while the acquired segment sits at median F with expired registrations and unenforced email controls. The exposure that matters is not any single domain — it is that <b>62% of the estate routes through one registrar and one mailbox provider</b>, and the weakest domains still carry the group's name.
+      </div>
+      <div class="lscope">Scope: externally observable DNS, certificate, mail and registration evidence for 24 domains (9 declared, 15 discovered). No internal systems accessed. Snapshot 2 July 2026; discovery confidence tiers defined on the next page.</div>
+    </div>
+  </div>
+  <div class="cover-foot"><div>Datazag · datazag.com · intelligence@datazag.com</div><div>Prepared for Acme Group · Confidential · 1 / 6</div></div>
+</div>
+
+<!-- ============ PAGE 2 — DISCOVERY (the headline differentiator) ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · estate discovery</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">The estate you actually own.</div><div class="ssub">Starting from your 9 declared domains, Datazag walked certificate SAN relationships, shared mail and DNS infrastructure, registration patterns and Companies House records to surface the rest.</div></div>
+      <div class="smeta"><div class="sm-k">Found</div><div class="sm-v cy">+15</div></div>
+    </div>
+
+    <div class="funnel">
+      <div class="f-declared"><div class="fn">9</div><div class="fl">Domains you declared — the list your teams hold today.</div></div>
+      <div class="f-arrow">→</div>
+      <div class="f-found">
+        <div class="fn">24</div>
+        <div class="fl"><b>The estate Datazag can evidence.</b> Every additional domain below carries the connection that surfaced it — a certificate, a mail route, a registration record — not a guess.</div>
+      </div>
+    </div>
+
+    <p class="lead">Everything found is sorted into the four confidence tiers you saw promised in the single-domain report — now populated with your domains and the evidence for each:</p>
+
+    <div class="tiers" style="margin-bottom:14px">
+      <div class="tier declared"><div class="tk">Declared · 9</div><div class="tn">The domains you told us about</div><div class="td">Your starting list — graded and assessed throughout this report.</div></div>
+      <div class="tier strong"><div class="tk">Strongly associated · 5</div><div class="tn">High-confidence: you own these</div><div class="td">Shared certificate SANs, same MX + SPF, matching registrar patterns, redirects to your primary sites. Included in the estate grade.</div></div>
+      <div class="tier possible"><div class="tk">Possible · 4</div><div class="tn">Medium-confidence: review these</div><div class="td">Lexical brand similarity, shared infrastructure, historic links. Listed for confirmation — not graded until you claim them.</div></div>
+      <div class="tier defensive"><div class="tk">Defensive / acquisition · 6</div><div class="tn">Consider recovering or monitoring</div><div class="td">Expired acquisition names, for-sale lookalikes, and the login/payroll/invoice patterns attackers favour.</div></div>
+    </div>
+
+    <table class="disc-table">
+      <tr><th>Domain</th><th>Tier</th><th>Connection evidence</th></tr>
+      <tr><td class="dom">acmegroup.co.uk</td><td><span class="tpill strong">Strong</span></td><td class="ev">Same MX + SPF as acme.com · redirects to <code>acme.com</code> · same registrar account pattern</td></tr>
+      <tr><td class="dom">acme-payments.com</td><td><span class="tpill strong">Strong</span></td><td class="ev">Shares certificate SAN with <code>acmeshop.com</code> · same nameservers</td></tr>
+      <tr><td class="dom">acmecareers.com</td><td><span class="tpill strong">Strong</span></td><td class="ev">301 redirect to <code>acme.com/careers</code> · GoDaddy account pattern match</td></tr>
+      <tr><td class="dom">oldco.io</td><td><span class="tpill strong">Strong</span></td><td class="ev">Subsidiary-name match (OldCo Ltd, CRN 0842…) · same registrant organisation as oldco.com</td></tr>
+      <tr><td class="dom">acme.dev</td><td><span class="tpill strong">Strong</span></td><td class="ev">Shared Cloudflare NS pair with corp segment · TXT ownership token matches</td></tr>
+      <tr><td class="dom">acmegrp.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Lexical match · parked · historically resolved to AS13335 alongside corp estate</td></tr>
+      <tr><td class="dom">acme-events.net</td><td><span class="tpill possible">Review</span></td><td class="ev">Campaign-microsite pattern · registered same week as 2024 product launch · now parked</td></tr>
+      <tr><td class="dom">acme-logistics.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Shared hosting network with retail segment · no mail configured</td></tr>
+      <tr><td class="dom">theacmestore.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Historic redirect to <code>acmeshop.com</code> (2023, certificate-transparency evidence) · now lapsed to third party</td></tr>
+      <tr><td class="dom">oldco.net</td><td><span class="tpill defensive">Defensive</span></td><td class="ev"><b>Expired acquisition name</b> — available for registration by anyone, including attackers</td></tr>
+      <tr><td class="dom">acmegroup.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Listed for sale on aftermarket · exact brand match</td></tr>
+      <tr><td class="dom">acmepayroll.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · payroll-lure pattern attackers favour against your staff</td></tr>
+      <tr><td class="dom">acme-invoices.net</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · invoice-fraud pattern targeting your suppliers</td></tr>
+      <tr><td class="dom">acme-portal.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · login-portal lure pattern</td></tr>
+      <tr><td class="dom">acrne.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Typo-adjacent (rn→m homoglyph) · unregistered</td></tr>
+    </table>
+
+    <div class="discovery-note"><b>Why the grade includes strongly-associated domains.</b> A domain you own but forgot is still yours when it expires, gets hijacked, or serves malware under your name. The estate grade on the next pages therefore covers <b>declared + strongly associated (14 domains)</b>. Possible-tier domains are listed for your confirmation; defensive-tier domains are recovery and monitoring candidates, not graded assets.</div>
+  </div>
+  <div class="foot"><div>Estate discovery</div><div>Datazag · Confidential · 2 / 6</div></div>
+</div>
+
+<!-- ============ PAGE 3 — SYSTEMIC RISK I: CONCENTRATION & VARIANCE ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · systemic risk</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">Where the estate is single-threaded.</div><div class="ssub">Concentration is the risk no single-domain report can see: if one provider falls, what share of Acme Group falls with it. Computed across the graded estate of 14 domains.</div></div>
+      <div class="smeta"><div class="sm-k">Estate grade</div><div class="sm-v warn">C</div></div>
+    </div>
+
+    <div class="grade-strip">
+      <div class="grade-box">
+        <div class="gb-k">Estate grade</div>
+        <div class="gb-g">C</div>
+        <div class="gb-s">47.3 / 100 · 14 domains</div>
+      </div>
+      <div class="grade-dist">
+        <div class="gd-k">Grade distribution — declared + strongly associated</div>
+        <div class="gd-row"><div class="gl">A</div><div class="gbar"><div class="gfill ga" style="width:14%"></div></div><div class="gn">2</div></div>
+        <div class="gd-row"><div class="gl">B</div><div class="gbar"><div class="gfill gb" style="width:14%"></div></div><div class="gn">2</div></div>
+        <div class="gd-row"><div class="gl">C</div><div class="gbar"><div class="gfill gc" style="width:29%"></div></div><div class="gn">4</div></div>
+        <div class="gd-row"><div class="gl">D</div><div class="gbar"><div class="gfill gd" style="width:21%"></div></div><div class="gn">3</div></div>
+        <div class="gd-row"><div class="gl">E</div><div class="gbar"><div class="gfill ge" style="width:7%"></div></div><div class="gn">1</div></div>
+        <div class="gd-row"><div class="gl">F</div><div class="gbar"><div class="gfill gf" style="width:14%"></div></div><div class="gn">2</div></div>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-bottom:10px"><b>Provider concentration across the estate.</b> Each row reads: "if this provider suffers an outage or compromise, this share of Acme Group is affected at once." The share is the fact; the severity weighs <b>who the provider is</b> — a majority on a hyperscale platform with contingency depth is a different risk from the same share on a commodity provider that is slow to leave under duress. Discovery moved these numbers: shares are computed over the true estate, not the declared list. Mailbox shares are resolved through vanity MX records to the <b>operating provider</b> — a domain fronting Google Workspace behind its own MX counts as Google Workspace concentration.</p>
+
+    <div class="conc">
+      <div class="conc-row"><div class="ck">Registrar</div><div class="cprov">GoDaddy</div><div class="cbar"><div class="cfill" style="width:64%"></div></div><div class="cpct">64%<span class="delta">was 62% pre-discovery</span></div><div class="csev"><span class="pill high">High</span></div><div class="ctier"><b>Commodity, high exit friction</b> — reduce: migrate acquired zones to the corp registrar as re-platformed</div></div>
+      <div class="conc-row"><div class="ck">Email / mailbox platform</div><div class="cprov">Google Workspace</div><div class="cbar"><div class="cfill" style="width:62%"></div></div><div class="cpct">62%<span class="delta">unchanged</span></div><div class="csev"><span class="pill watch">Watch</span></div><div class="ctier"><b>Hyperscale</b> — acceptable if deliberate: verify admin MFA and recovery paths</div></div>
+      <div class="conc-row"><div class="ck">Certificate authority</div><div class="cprov">Let&#39;s Encrypt</div><div class="cbar"><div class="cfill" style="width:79%"></div></div><div class="cpct">79%<span class="delta">was 75% pre-discovery</span></div><div class="csev"><span class="pill watch">Watch</span></div><div class="ctier"><b>Hyperscale, low exit friction</b> — pin it deliberately with CAA (worksheet Fix 6)</div></div>
+      <div class="conc-row"><div class="ck">Nameserver / DNS</div><div class="cprov">Cloudflare</div><div class="cbar"><div class="cfill" style="width:43%"></div></div><div class="cpct">43%<span class="delta">was 38% pre-discovery</span></div><div class="csev"><span class="pill watch">Watch</span></div><div class="ctier"><b>Hyperscale</b> — below the 50% floor; tier context only</div></div>
+      <div class="conc-row"><div class="ck">Hosting network (ASN)</div><div class="cprov">AS13335 Cloudflare</div><div class="cbar"><div class="cfill" style="width:43%"></div></div><div class="cpct">43%<span class="delta">was 38% pre-discovery</span></div><div class="csev"><span class="pill watch">Watch</span></div><div class="ctier"><b>Hyperscale</b> — below the 50% floor; tier context only</div></div>
+    </div>
+
+    <div class="discovery-note"><b>How to read this.</b> The biggest bar is not the biggest finding — Let&#39;s Encrypt at 79% is a Watch (leaving is a config change; pin it with CAA), while GoDaddy at 64% is the High (commodity registrar, days to exit under duress, transfers attacker-abusable). Concentration becomes an exposure when it is <b>unplanned</b> (accumulated through acquisitions), <b>unlocked</b> (no registrar locks, as on the oldco domains), or <b>invisible</b> (nobody knew the estate was this size until discovery). All three apply to the registrar position.</div>
+
+    <p class="lead" style="margin-top:6px;margin-bottom:10px"><b>Posture variance by segment.</b> The estate baseline is C — but the baseline is not the signal. The variance is: which parts of the group sit materially below the standard the rest maintains.</p>
+
+    <table class="var-table">
+      <tr><th>Segment</th><th>Domains</th><th>Median grade</th><th>vs baseline</th><th></th></tr>
+      <tr><td class="seg">corp</td><td class="mono">6</td><td><span class="gradepill gc">C</span></td><td class="mono">at baseline</td><td></td></tr>
+      <tr><td class="seg">retail</td><td class="mono">4</td><td><span class="gradepill gd">D</span></td><td class="mono">−1 band</td><td></td></tr>
+      <tr><td class="seg">acquired</td><td class="mono">4</td><td><span class="gradepill gf">F</span></td><td class="mono">−3 bands</td><td><span class="outlier-tag">Outlier</span></td></tr>
+    </table>
+
+    <div class="monitor-note"><span class="mn-h">The classic integration gap</span>The acquired segment sits <b>three grade bands below</b> the group standard — expired registrations, no registrar locks, unenforced email controls. This is the standard post-acquisition pattern: the deal closed, the domains transferred, and nobody inherited operational ownership. It is also where discovery added the most: <b>oldco.io</b> (strongly associated) and <b>oldco.net</b> (expired, available to anyone) both belong to this segment and were not on the declared list.</div>
+  </div>
+  <div class="foot"><div>Concentration &amp; posture variance</div><div>Datazag · Confidential · 3 / 6</div></div>
+</div>
+
+<!-- ============ PAGE 4 — SYSTEMIC RISK II: CORRELATED WEAKNESS + ACTIVE EXPOSURE ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · systemic risk</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">What&#39;s wrong in the same way, everywhere.</div><div class="ssub">A weakness on one domain is a ticket. The same weakness on 44% of the estate, clustered in two segments, is a policy gap — and it gets fixed at policy level, not ticket level.</div></div>
+      <div class="smeta"><div class="sm-k">Patterns</div><div class="sm-v warn">6</div></div>
+    </div>
+
+    <div class="cw"><div class="cw-main"><div class="cw-t">DMARC not enforced</div><div class="cw-seg">Clustered in <b>acquired, retail</b> — corp segment is clean</div></div><div class="cw-bar"><div class="cw-fill hot" style="width:44%"></div></div><div class="cw-pct">44%<span class="of">6 / 14 domains</span></div></div>
+    <div class="cw"><div class="cw-main"><div class="cw-t">SPF not strict</div><div class="cw-seg">Clustered in <b>acquired</b></div></div><div class="cw-bar"><div class="cw-fill" style="width:33%"></div></div><div class="cw-pct">36%<span class="of">5 / 14 domains</span></div></div>
+    <div class="cw"><div class="cw-main"><div class="cw-t">DNSSEC not enabled</div><div class="cw-seg">Clustered in <b>acquired, retail</b></div></div><div class="cw-bar"><div class="cw-fill" style="width:33%"></div></div><div class="cw-pct">36%<span class="of">5 / 14 domains</span></div></div>
+    <div class="cw"><div class="cw-main"><div class="cw-t">CAA record missing</div><div class="cw-seg">Clustered in <b>acquired, retail</b></div></div><div class="cw-bar"><div class="cw-fill" style="width:33%"></div></div><div class="cw-pct">36%<span class="of">5 / 14 domains</span></div></div>
+    <div class="cw"><div class="cw-main"><div class="cw-t">Internal-IP leak in public DNS</div><div class="cw-seg">Clustered in <b>acquired, retail</b></div></div><div class="cw-bar"><div class="cw-fill" style="width:22%"></div></div><div class="cw-pct">21%<span class="of">3 / 14 domains</span></div></div>
+    <div class="cw"><div class="cw-main"><div class="cw-t">Dangling subdomain (takeover exposure)</div><div class="cw-seg">Isolated to <b>retail</b></div></div><div class="cw-bar"><div class="cw-fill" style="width:11%"></div></div><div class="cw-pct">7%<span class="of">1 / 14 domains</span></div></div>
+
+    <div class="discovery-note" style="margin-top:8px"><b>The segment clustering is the actionable finding.</b> Every pattern above concentrates in acquired and retail — the corp segment meets baseline on all six controls. That means the fix is not fourteen tickets: it is <b>one control standard applied to two segments</b>, most efficiently at the point where those segments&#39; DNS is administered.</div>
+
+    <p class="lead" style="margin-top:10px;margin-bottom:10px"><b>Active exposure — what is already reaching toward the estate.</b> Configuration weakness is potential; this is kinetic. Standing impersonation snapshot, exact-match confidence only:</p>
+
+    <div class="scale">
+      <div class="sbig">
+        <div class="snum">9</div>
+        <div class="slab">active impersonations in the last 30 days — <b style="color:#fff">100% targeting Microsoft 365</b> login journeys</div>
+        <div class="sprov">external_threat.impersonations · confidence = "exact"</div>
+      </div>
+      <div class="stext">The concentration is the finding: attackers aren&#39;t choosing between your platforms — they have found the one your staff sign in to and are producing variations of it. <b>Two of the nine reference the acquired OldCo brand</b>, whose expired domain and lapsed certificate make impersonation cheapest.</div>
+    </div>
+
+    <table class="imp-table">
+      <tr><th>Impersonating domain</th><th>Target</th><th>First seen</th><th>Pattern</th></tr>
+      <tr><td class="dom">acme-m1cros0ft.com</td><td>Microsoft 365</td><td>30d window · 4 certs</td><td>Homoglyph + platform-name composite</td></tr>
+      <tr><td class="dom">acme365-login.com</td><td>Microsoft 365</td><td>30d window · 3 certs</td><td>Brand + platform login composite</td></tr>
+      <tr><td class="dom">0ldco-login.com</td><td>Microsoft 365 · OldCo brand</td><td>30d window · 2 certs</td><td>Acquired-brand lure against staff mid-migration</td></tr>
+    </table>
+
+    <div class="monitor-note"><span class="mn-h">This report is the map — the feed is the tripwire</span>A report shows the standing exposure at snapshot time. Certificates for pages like these are typically issued <b>minutes before the phishing wave sends</b> — detection that matters happens at issuance, not at the next report. Platform &amp; Brand Impersonation Watch (page 6) delivers each of these as an event within seconds of the certificate appearing.</div>
+  </div>
+  <div class="foot"><div>Correlated weakness &amp; active exposure</div><div>Datazag · Confidential · 4 / 6</div></div>
+</div>
+
+<!-- ============ PAGE 5 — OPERATIONAL CALENDAR + EXCEPTION REGISTER ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · exceptions</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">What to act on, in order.</div><div class="ssub">The operational calendar is time-driven; the exception register is severity-driven. Together they are the estate&#39;s work queue — each correlated pattern appears once, not once per domain.</div></div>
+      <div class="smeta"><div class="sm-k">Overdue</div><div class="sm-v bad">2</div></div>
+    </div>
+
+    <p class="lead" style="margin-bottom:10px"><b>Operational calendar.</b> Expiries and lapses across all 24 domains — overdue items are live outages or open takeover windows, not future risk.</p>
+
+    <table class="cal-table">
+      <tr><th>Domain</th><th>Segment</th><th>Item</th><th>Due</th><th>Detail</th></tr>
+      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Domain registration</td><td><span class="due overdue">Overdue</span></td><td>Registration expired — renew or the name drops to open registration</td></tr>
+      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Certificate</td><td><span class="due overdue">Overdue</span></td><td>Certificate expired — any remaining service is throwing browser errors now</td></tr>
+      <tr><td class="dom">acmeshop.com</td><td>retail</td><td>Certificate</td><td><span class="due soon">12 days</span></td><td>Renewal not yet observed in certificate transparency</td></tr>
+      <tr><td class="dom">acmeretail.com</td><td>retail</td><td>Domain registration</td><td><span class="due soon">15 days</span></td><td>Registration expires — confirm auto-renew at GoDaddy</td></tr>
+      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
+      <tr><td class="dom">oldco-portal.com</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
+    </table>
+
+    <p class="lead" style="margin-bottom:10px"><b>Exception register.</b> Everything above and everything found earlier, ranked. Six exceptions, most severe first — the correlated-weakness patterns collapse into one entry because they share one fix.</p>
+
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">1</div><div class="ex-t">oldco.com is expired and unlocked — an open takeover window on an acquired brand</div><span class="ex-sev high">High</span></div>
+      <div class="ex-body">Registration and certificate both lapsed, no registrar lock, and attackers are already producing OldCo-branded Microsoft 365 lures (<b>0ldco-login.com</b>). Recover the registration this week; oldco.net (also expired, found in discovery) should be re-registered defensively at the same time.<div class="ex-ev">calendar.overdue × 2 · registrar_lock = none · external_threat.impersonations ∋ 0ldco-login.com</div></div>
+    </div>
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">2</div><div class="ex-t">9 active Microsoft 365 impersonations across the estate in 30 days</div><span class="ex-sev high">High</span></div>
+      <div class="ex-body">100% concentration on the platform your staff sign in to daily. Standing snapshot only — issuance-time detection requires the live feed. Block the three named domains at your mail and web gateways today.<div class="ex-ev">external_threat.impersonations · confidence = "exact" · 30d window</div></div>
+    </div>
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">3</div><div class="ex-t">Registrar concentration: 64% on GoDaddy, unplanned and partially unlocked</div><span class="ex-sev high">High</span></div>
+      <div class="ex-body">The one concentration that warrants action rather than acknowledgement: a commodity registrar, high exit friction, accumulated through acquisitions, with locks absent on the acquired names. Lock everything now (worksheet Fix 1); migrate acquired zones to the corp registrar as they re-platform. The mailbox (62%, Google Workspace) and CA (79%, Let&#39;s Encrypt) positions are hyperscale — accept deliberately: verify admin MFA/recovery, and pin the CA with CAA (Fix 6).<div class="ex-ev">registrar = .64 commodity/high-friction → HIGH · mailbox = .62 hyperscale → WATCH · ca = .79 hyperscale → WATCH</div></div>
+    </div>
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">4</div><div class="ex-t">Six control gaps clustered in acquired + retail — one standard, two segments</div><span class="ex-sev elevated">Elevated</span></div>
+      <div class="ex-body">DMARC, SPF, DNSSEC, CAA, internal-IP hygiene and one dangling subdomain all cluster in the same two segments while corp meets baseline. Apply the corp DNS control standard to the acquired and retail zones — one change window, not fourteen tickets. The dangling subdomain (retail) is the only item needing immediate individual attention: it is claimable by a third party now.<div class="ex-ev">correlated_weakness × 6 · segments = {acquired, retail} · corp = clean</div></div>
+    </div>
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">5</div><div class="ex-t">4 possible-tier domains need an ownership decision</div><span class="ex-sev elevated">Elevated</span></div>
+      <div class="ex-body">acmegrp.com, acme-events.net, acme-logistics.com and theacmestore.com carry evidence linking them to the group. Confirm or disclaim each: confirmed domains join the graded estate; disclaimed ones move to the impersonation watchlist — <b>theacmestore.com has already lapsed to a third party</b> while still carrying redirect history to your retail site.<div class="ex-ev">discovery.tier = possible × 4 · theacmestore.com registrant ≠ Acme since 2025-11</div></div>
+    </div>
+    <div class="exc">
+      <div class="ex-head"><div class="ex-num">6</div><div class="ex-t">5 defensive registrations recommended</div><span class="ex-sev watch">Watch</span></div>
+      <div class="ex-body">oldco.net, acmepayroll.com, acme-invoices.net, acme-portal.com and acrne.com are unregistered and match the lure patterns already in use against you. Registering them costs less per year than one incident-response hour; acmegroup.com (for sale) is a commercial decision worth pricing.<div class="ex-ev">discovery.tier = defensive × 6 · patterns: payroll / invoice / portal / typo</div></div>
+    </div>
+    <div class="monitor-note" style="margin-top:6px"><span class="mn-h">How to execute</span>Every exception above maps to a worksheet entry in <b>Appendix A — the remediation worksheet</b> at the back of this report: exact records, per domain, grouped by the team that administers each zone. Hand it directly to whoever runs your DNS.</div>
+  </div>
+  <div class="foot"><div>Calendar &amp; exception register</div><div>Datazag · Confidential · 5 / 6</div></div>
+</div>
+
+<!-- ============ PAGE 6 — CONTINUITY (monitoring seam + limits) ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · what happens next</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">What a snapshot can&#39;t do.</div><div class="ssub">This report is the map of your estate on 2 July 2026. Two things change without warning: attackers issue new certificates, and your estate keeps growing.</div></div>
+    </div>
+
+    <div class="seam">
+      <div class="seam-h">
+        <div class="seam-n">01</div>
+        <div><div class="seam-title">The certificates issued after this snapshot</div><div class="seam-sub">Nine impersonations existed at snapshot time. The tenth will be issued minutes before it is used.</div></div>
+      </div>
+      <div class="seam-body">
+        <p class="seam-lead">Every fake login page needs a certificate, and certificate issuance is public the moment it happens. <b>Platform &amp; Brand Impersonation Watch</b> monitors issuance in real time against your platforms and brands — including the OldCo names attackers are already using — and delivers each match as an event to your SIEM, gateway or ticket queue within seconds.</p>
+        <div class="seam-note"><b>Same graph, different tempo:</b> this report and the feed read identical evidence. The report is quarterly governance; the feed is the tripwire between reports. Estates already under watch receive the three domains on page 4 as blocking events, not report findings.</div>
+      </div>
+    </div>
+
+    <div class="seam">
+      <div class="seam-h">
+        <div class="seam-n">02</div>
+        <div><div class="seam-title">The estate keeps growing without telling you</div><div class="seam-sub">Discovery found 15 domains your teams didn&#39;t list. Next quarter there will be more.</div></div>
+      </div>
+      <div class="seam-body">
+        <p class="seam-lead">Campaign microsites, acquisition names, regional registrations and shadow IT accumulate continuously. On a monitored estate, each report run re-walks discovery — <b>new strongly-associated domains join the graded estate automatically</b>, possible-tier candidates queue for your confirmation, and the grade trend line shows whether the integration work is landing.</p>
+        <div class="seam-note"><b>Runs over time is the product:</b> a single snapshot proves the gap; the quarterly series proves the remediation. The acquired segment moving from F to C over two quarters is the chart your board and your insurer both want.</div>
+      </div>
+    </div>
+
+    <div class="upgrade-cta">
+      <div class="uc-text">
+        <div class="uc-h">Put the estate under watch.</div>
+        <div class="uc-b">Quarterly cross-estate reports with continuous discovery, plus real-time impersonation events to your stack — priced by estate band, from £500/month for founding partners.</div>
+      </div>
+      <a href="#" class="uc-btn">Talk to Datazag →</a>
+    </div>
+
+    <div class="limits">
+      <div class="lim-h">Limits of this assessment</div>
+      <div class="lim-grid">
+        <div class="lim-item"><b>External evidence only.</b> Everything here is observable from outside — DNS, certificate transparency, registration records, mail configuration. No internal system was accessed or scanned.</div>
+        <div class="lim-item"><b>Discovery is evidence-bound.</b> Domains appear only with a stated connection (SAN, mail route, registration, redirect, CRN). Absence from this report is not proof of absence from your estate.</div>
+        <div class="lim-item"><b>Grades cover declared + strongly associated.</b> Possible-tier domains are ungraded pending your confirmation; defensive-tier names are unregistered or third-party held and cannot be graded.</div>
+        <div class="lim-item"><b>Impersonation counts are exact-match only.</b> Confidence = "exact" against your platform and brand fingerprints. Lower-confidence typosquat candidates are tracked separately and excluded from headline figures.</div>
+      </div>
+    </div>
+
+    <div class="gloss-strip">
+      <b>Key terms:</b> <span><b>Certificate SAN</b> — the list of domains sharing one certificate; a declared link between them.</span> <span><b>Concentration</b> — the share of the estate depending on one provider.</span> <span><b>Posture variance</b> — the grade spread between segments; the integration-gap signal.</span> <span><b>Defensive registration</b> — buying a domain so an attacker can&#39;t.</span>
+    </div>
+  </div>
+  <div class="foot"><div>Datazag · datazag.com · intelligence@datazag.com</div><div>Cross-Estate Domain Risk Report · 6 / 6</div></div>
+</div>
+
+
+<!-- ============ APPENDIX A1 — WORKSHEET INTRO + RECOVERY ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · appendix a · remediation worksheet</div></div>
+  <div class="body">
+    <div class="shead">
+      <div><div class="stitle">Appendix A — Remediation worksheet.</div><div class="ssub">The report told you what&#39;s wrong; this is the sheet that fixes it. Exact records per domain, grouped by fix pattern and ordered by the account that administers each zone — hand it to the team that runs your DNS and work down the checkboxes.</div></div>
+      <div class="smeta"><div class="sm-k">Fixes</div><div class="sm-v">7</div></div>
+    </div>
+
+    <p class="lead" style="margin-bottom:10px">Three admin points cover the whole estate — each fix table is ordered so one team&#39;s work batches together into a single change window:</p>
+
+    <div class="adm-strip">
+      <div class="adm"><div class="ak">Admin point 1</div><div class="an">Cloudflare · corp zones</div><div class="ad">6 domains · already at baseline on most controls</div></div>
+      <div class="adm"><div class="ak">Admin point 2</div><div class="an">GoDaddy · retail zones</div><div class="ad">4 domains · DMARC, CAA, DNSSEC work</div></div>
+      <div class="adm"><div class="ak">Admin point 3</div><div class="an">GoDaddy · acquired (OldCo)</div><div class="ad">4 domains · recovery first, then the full control set</div></div>
+    </div>
+
+    <div class="fix">
+      <div class="fx-head"><div class="fx-num">1</div><div class="fx-t">Recover and lock the acquired names</div><span class="fx-pri now">Now</span></div>
+      <div class="fx-body">
+        <div class="why"><b>This is the open takeover window — do it before any DNS work.</b> oldco.com&#39;s registration has lapsed; oldco.net (found in discovery) already dropped to open availability. Attackers are producing OldCo-branded lures now (<b>0ldco-login.com</b>, page 4). Renew, re-register, then set every registrar lock on all acquired names.</div>
+        <div class="fx-cmd"><span class="cm"># at GoDaddy (acquired account) — registrar console, not DNS</span>
+oldco.com          renew registration immediately · enable auto-renew
+oldco.net          re-register (currently available to anyone)
+all OldCo names    set clientTransferProhibited + clientDeleteProhibited + clientUpdateProhibited</div>
+        <table class="ws-table">
+          <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Action</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">expired · unlocked</td><td class="tgt">renew + all locks + auto-renew</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.net</td><td class="adm">GoDaddy · acquired</td><td class="now">dropped · available</td><td class="tgt">re-register defensively + locks</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="fix">
+      <div class="fx-head"><div class="fx-num">2</div><div class="fx-t">Reclaim the dangling subdomain</div><span class="fx-pri now">Now</span></div>
+      <div class="fx-body">
+        <div class="why">One retail subdomain CNAMEs to a deleted third-party resource — <b>claimable by anyone right now</b>, which turns your subdomain into their content. Remove the record or re-provision the target.</div>
+        <table class="ws-table">
+          <tr><th></th><th>Record</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">promo.acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">CNAME → deleted azure resource</td><td class="tgt">delete record (or re-provision target first)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Appendix A · Remediation worksheet</div><div>Datazag · Confidential · A1 / A4</div></div>
+</div>
+
+<!-- ============ APPENDIX A2 — IP LEAK + DMARC ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · appendix a · remediation worksheet</div></div>
+  <div class="body">
+    <div class="fix" style="margin-top:2px">
+      <div class="fx-head"><div class="fx-num">3</div><div class="fx-t">Remove internal endpoints from public DNS</div><span class="fx-pri now">Now</span></div>
+      <div class="fx-body">
+        <div class="why">Hostnames resolving to private <b>10.x.x.x</b> addresses in public DNS confirm internal network structure to an attacker. Remove the public records or move them to split-horizon (internal-only) resolution.</div>
+        <table class="ws-table">
+          <tr><th></th><th>Record</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">vpn.acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.11</td><td class="tgt">remove — internal resolution only</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">intranet.acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.40</td><td class="tgt">remove — internal resolution only</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">gw.oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">A 10.30.1.1</td><td class="tgt">remove — internal resolution only</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="fix">
+      <div class="fx-head"><div class="fx-num">4</div><div class="fx-t">Enforce DMARC across acquired and retail</div><span class="fx-pri now">Now</span></div>
+      <div class="fx-body">
+        <div class="why"><b>Staged, not straight to reject.</b> A domain with no record starts at <b>p=none with reporting</b> to learn its senders; a domain already monitored moves to <b>quarantine</b>. End state for every domain is <b>p=reject</b> once reports confirm all legitimate senders — the corp zones are already there, so this is applying the group standard, not inventing one. Send all reports to one group inbox so the estate is monitored centrally.</div>
+        <div class="fx-cmd"><span class="cm"># record template — _dmarc.&lt;domain&gt;  TXT</span>
+step 1 (no record today):   "v=DMARC1; p=none; rua=mailto:dmarc@acme.com"
+step 2 (after ~4 weeks):    "v=DMARC1; p=quarantine; rua=mailto:dmarc@acme.com"
+end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.com"</div>
+        <table class="ws-table">
+          <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix (next step)</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acme-payments.com</td><td class="adm">Cloudflare · corp</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Appendix A · Remediation worksheet</div><div>Datazag · Confidential · A2 / A4</div></div>
+</div>
+
+<!-- ============ APPENDIX A3 — SPF + CAA ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · appendix a · remediation worksheet</div></div>
+  <div class="body">
+    <div class="fix" style="margin-top:2px">
+      <div class="fx-head"><div class="fx-num">5</div><div class="fx-t">Tighten SPF to hard-fail</div><span class="fx-pri now">Now</span></div>
+      <div class="fx-body">
+        <div class="why">Move from soft-fail (<b>~all</b>) to hard-fail (<b>-all</b>) <b>once each domain&#39;s DMARC reports confirm all legitimate senders are listed</b> — sequence this after Fix 4&#39;s reporting has run. Domains that send no mail at all get the null-sender record instead, which closes them to spoofing entirely.</div>
+        <div class="fx-cmd"><span class="cm"># sending domains — after DMARC reports confirm senders</span>
+"v=spf1 include:_spf.google.com -all"
+<span class="cm"># non-sending domains — null SPF, closes the domain to spoofing</span>
+"v=spf1 -all"</div>
+        <table class="ws-table">
+          <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — domain sends no mail</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmecareers.com</td><td class="adm">Cloudflare · corp</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — redirect-only domain</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="fix">
+      <div class="fx-head"><div class="fx-num">6</div><div class="fx-t">Publish CAA records</div><span class="fx-pri soon">Soon</span></div>
+      <div class="fx-body">
+        <div class="why"><b>Advanced control — do after the Now items.</b> CAA restricts which certificate authorities may issue for each domain, removing one route to a fraudulently-obtained certificate. It also converts the estate&#39;s 79% Let&#39;s Encrypt concentration from an accident into a pinned, deliberate choice (page 3, exception 3).</div>
+        <div class="fx-cmd"><span class="cm"># record template — &lt;domain&gt;  CAA</span>
+&lt;domain&gt;.  IN  CAA  0 issue "letsencrypt.org"
+&lt;domain&gt;.  IN  CAA  0 iodef "mailto:security@acme.com"</div>
+        <table class="ws-table">
+          <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "digicert.com" + iodef — this zone uses DigiCert</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Appendix A · Remediation worksheet</div><div>Datazag · Confidential · A3 / A4</div></div>
+</div>
+
+<!-- ============ APPENDIX A4 — DNSSEC + GLOSSARY / METHODOLOGY ============ -->
+<div class="page">
+  <div class="runner"><div class="r-brand">DATA<span>ZAG</span></div><div class="r-id">acme group · appendix a · remediation worksheet</div></div>
+  <div class="body">
+    <div class="fix" style="margin-top:2px">
+      <div class="fx-head"><div class="fx-num">7</div><div class="fx-t">Enable DNSSEC</div><span class="fx-pri plan">Maturity</span></div>
+      <div class="fx-body">
+        <div class="why"><b>Gold-standard control — plan it, don&#39;t alarm over it.</b> DNSSEC cryptographically signs DNS responses; its absence is normal across most estates and creates no exploitable risk today. Enable at the registrar/zone host and publish DS records — the corp Cloudflare zones make this a toggle; GoDaddy zones need DS records published manually.</div>
+        <table class="ws-table">
+          <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-bottom:8px;margin-top:6px"><b>Worksheet terms</b> — for the person executing, not the person who bought the report:</p>
+    <div class="gloss">
+      <div class="gterm"><div class="gt">DMARC</div><div class="gd">Tells receiving mail servers what to do with unauthenticated mail claiming to be from you: none (monitor), quarantine (spam folder), reject (refuse).</div></div>
+      <div class="gterm"><div class="gt">SPF</div><div class="gd">Lists which mail servers may send email as your domain. ~all suggests rejection; -all demands it. "v=spf1 -all" closes a non-sending domain entirely.</div></div>
+      <div class="gterm"><div class="gt">CAA</div><div class="gd">Restricts which certificate authorities may issue SSL/TLS certificates for your domain. iodef sets where violation reports go.</div></div>
+      <div class="gterm"><div class="gt">DNSSEC / DS record</div><div class="gd">Cryptographically signs DNS responses so they can&#39;t be tampered with in transit. The DS record at the registry links your signed zone into the chain of trust.</div></div>
+      <div class="gterm"><div class="gt">Registrar locks</div><div class="gd">clientTransferProhibited / clientDeleteProhibited / clientUpdateProhibited — registrar-side switches preventing a domain being moved or destroyed without authorisation.</div></div>
+      <div class="gterm"><div class="gt">Dangling CNAME</div><div class="gd">A subdomain pointing at a deleted third-party resource. Anyone can claim the abandoned resource and serve their content from your name.</div></div>
+      <div class="gterm"><div class="gt">Split-horizon DNS</div><div class="gd">Serving different answers internally and externally — internal hostnames resolve on your network but do not appear in public DNS.</div></div>
+      <div class="gterm"><div class="gt">rua reporting</div><div class="gd">The DMARC aggregate-report address. Reports reveal every source sending as your domain — the evidence for safely moving to quarantine, then reject.</div></div>
+    </div>
+
+    <div class="monitor-note" style="margin-top:10px"><span class="mn-h">Verification</span>Each completed fix is externally observable — Datazag&#39;s next report run (or the live feed, if the estate is under watch) confirms the change independently, which is the evidence trail your insurer or auditor wants. Sequence: <b>Fix 1 today · Fixes 2–3 this week · Fix 4 staged over ~8 weeks · Fix 5 follows 4 · Fixes 6–7 in the next planned change window.</b></div>
+  </div>
+  <div class="foot"><div>Appendix A · Remediation worksheet</div><div>Datazag · Confidential · A4 / A4</div></div>
+</div>
+
+</body>
+</html>

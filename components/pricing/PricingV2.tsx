@@ -1,6 +1,6 @@
 const productChooser = [
   { need: "Assess one domain", product: "Free Domain Health Report", href: "/#free-report" },
-  { need: "Assess a portfolio", product: "Portfolio Risk Report", href: "#reports" },
+  { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
   { need: "Monitor brand abuse", product: "Brand Protection Alerts", href: "#alerts" },
   { need: "Enrich workflows", product: "Intelligence API", href: "#api" },
   { need: "Analyse at scale", product: "Cloud Data Products", href: "#data-shares" },
@@ -18,12 +18,12 @@ const reports = [
     highlight: true,
   },
   {
-    name: "Portfolio Risk Report",
+    name: "Cross-Estate Domain Risk Report",
     price: "From £995",
     cadence: "per report",
     description: "Paid reporting across the domains an organisation owns, showing individual findings and systemic risk patterns.",
-    features: ["Multiple domains", "Portfolio risk view", "Systemic weakness analysis", "Domain ranking", "Remediation programme"],
-    cta: "Request portfolio report",
+    features: ["Multiple domains", "Estate discovery", "Systemic weakness analysis", "Domain ranking", "Remediation worksheet"],
+    cta: "Request the Cross-Estate report",
     href: "/contact",
   },
 ];
@@ -102,7 +102,7 @@ const dataShares = [
 ];
 
 const evaluation = [
-  ["Report first", "Start with the free Domain Health Report or a paid portfolio report when you need a concrete assessment before monitoring."],
+  ["Report first", "Start with the free Domain Health Report or a paid report when you need a concrete assessment before monitoring."],
   ["Alert stream", "Use alerts when the workflow is operational: platform abuse, keywords, brand impersonation and incident updates."],
   ["API credits", "Use the API when intelligence needs to sit inside a product, portal, fraud workflow, SIEM process or enrichment pipeline."],
   ["Data share", "Use cloud datasets when the buyer wants SQL-ready intelligence inside a warehouse, lakehouse or marketplace procurement route."],
@@ -192,7 +192,7 @@ export function PricingV2() {
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Pricing</p>
             <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Choose the buying path that matches the workflow.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Start with a free domain report, move into paid portfolio reports, subscribe to alerts, buy API credits, or consume Datazag as cloud-native datasets.
+              Start with a free domain report, move into paid domain risk reports, subscribe to alerts, buy API credits, or consume Datazag as cloud-native datasets.
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
               Prices below are starting points. Larger, partner-led, marketplace and data-share deployments are scoped by volume, delivery route and permitted use.
