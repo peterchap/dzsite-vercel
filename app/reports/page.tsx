@@ -9,10 +9,16 @@ export const metadata: Metadata = {
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
 // is a direct card buy (WU16; renders "Contact us" until that flow ships) and
-// the Cross-Estate report is NEVER a bare buy — its CTA is the WU20 scope flow,
-// rendering "Talk to us about your estate" until WU20 ships.
+// the Cross-Estate report is NEVER a bare buy — its CTA is the WU20 scope flow.
+// The flip is env-gated: set NEXT_PUBLIC_SCOPE_LIVE=true when WU20 deploys and
+// the copy/link switch to "Scope my estate" → portal /scope with no code change;
+// default (off) keeps the "Talk to us about your estate" contact fallback.
 const contactHref = "/contact";
-const scopeEstateCta = { label: "Talk to us about your estate", href: contactHref };
+const scopeLive = process.env.NEXT_PUBLIC_SCOPE_LIVE === "true";
+const scopePortalUrl = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.datazag.com/scope?src=reports";
+const scopeEstateCta = scopeLive
+    ? { label: "Scope my estate", href: scopePortalUrl }
+    : { label: "Talk to us about your estate", href: contactHref };
 const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
 
 const freeReportValue = [
