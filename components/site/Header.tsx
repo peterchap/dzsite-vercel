@@ -93,7 +93,7 @@ export function Header({
     // WU21 navbar: no plate — background IS the page background; the hairline
     // is the only separation. Heights 66px desktop / 56px mobile.
     return (
-        <header className="relative z-50 w-full border-b border-[rgba(255,255,255,0.05)] bg-[#030619]">
+        <header className="relative z-50 w-full border-b border-[color:var(--dz-nav-hairline)] bg-[#030619]">
             <div className="mx-auto flex h-[56px] max-w-7xl items-center justify-between px-6 md:h-[66px]">
                 <Link href="/" className="group flex items-center">
                     <BrandingLogo className="text-4xl md:text-[2.625rem] group-hover:scale-[1.02]" />
