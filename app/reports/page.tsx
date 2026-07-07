@@ -19,6 +19,14 @@ const scopePortalUrl = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.data
 const scopeEstateCta = scopeLive
     ? { label: "Scope my estate", href: scopePortalUrl }
     : { label: "Talk to us about your estate", href: contactHref };
+// Domain Risk Report checkout (WU16) is env-gated the same way: when
+// NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA flips from "Contact us" to a
+// direct buy on the portal; default keeps the WU17 contact fallback.
+const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
+const drrBuyUrl = process.env.NEXT_PUBLIC_DRR_BUY_URL || "https://portal.datazag.com/reports/buy?src=reports";
+const domainRiskCta = checkoutLive
+    ? { label: "Buy the Domain Risk Report", href: drrBuyUrl }
+    : { label: "Contact us", href: contactHref };
 const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
 
 const freeReportValue = [
@@ -148,7 +156,7 @@ const reportTypes: CatalogueEntry[] = [
     text: "The full assessment of one domain — yours, a client's, a vendor's, an acquisition target's. An executive core any board can read: threat exposure, defence posture, and the evidence behind every claim. Plus a technical remediation appendix your engineers execute: every finding with current state, target state, and paste-ready records, staged in the order a change should actually land.",
     price: "From £495",
     cadence: "per report",
-    cta: { label: "Contact us", href: contactHref },
+    cta: domainRiskCta,
     secondaryCta: { label: "See pricing", href: "/pricing#reports" },
   },
   {
