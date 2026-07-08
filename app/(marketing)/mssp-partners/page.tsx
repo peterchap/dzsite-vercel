@@ -1,158 +1,28 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import {
+  copyCta,
+  copyText,
+  getCopyItem,
+  getCopySection,
+  resolveCopyCards,
+  resolveCopyList,
+  pickItems,
+  type MarketingPageCopy,
+} from "@/lib/marketing-copy";
+import { sanityFetch } from "@/sanity/fetch";
+import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { SLUG, content } from "./copy";
+
 export const metadata: Metadata = {
   title: "MSSP Partners — Datazag",
   description:
     "Add infrastructure intelligence and early alerts to managed security services. Datazag helps MSSPs reduce analyst workload and launch partner-branded services.",
 };
 
-const outcomes = [
-  {
-    title: "Reduce analyst workload",
-    text: "Reasoned early alerts and infrastructure context help analysts triage faster and give automation enough evidence to act when confidence is high.",
-  },
-  {
-    title: "Launch new services",
-    text: "Add alert feeds, brand protection, portfolio monitoring, customer reports and SOC enrichment without building the intelligence layer yourself.",
-  },
-  {
-    title: "Deliver under your brand",
-    text: "Keep the service experience inside your own portal, reports, alerts, account reviews and commercial model.",
-  },
-  {
-    title: "Integrate into your stack",
-    text: "Use alerts, API, webhooks, reports, exports or cloud data shares depending on how your operations and customers already work.",
-  },
-];
-
-const serviceCatalogue = [
-  {
-    title: "Early alert feed",
-    sell: "Detect newly observed impersonation and high-risk infrastructure early enough to support blocks, triage and escalation.",
-    powers: ["Platform matches", "Brand matches", "Certificates", "DNS changes", "Reason codes"],
-  },
-  {
-    title: "Brand protection",
-    sell: "Monitor client brands, platforms and high-risk keywords for early impersonation infrastructure.",
-    powers: ["New domains", "Certificates", "DNS", "Hosting context", "Evidence packs"],
-  },
-  {
-    title: "SOC enrichment",
-    sell: "Add domain, DNS, ASN, provider and relationship context to cases, detections and investigation workflows.",
-    powers: ["Domain risk", "ASN context", "Provider labels", "Related infrastructure", "Reason codes"],
-  },
-  {
-    title: "Portfolio monitoring",
-    sell: "Track risk, posture and infrastructure changes across client domains, subsidiaries, suppliers and brands.",
-    powers: ["DNS posture", "Email posture", "Historical changes", "Platform exposure", "Risk trends"],
-  },
-  {
-    title: "Client reporting",
-    sell: "Create recurring security reports for account reviews, executive updates and remediation planning.",
-    powers: ["Executive summaries", "Technical evidence", "Trend analysis", "Remediation queues", "White-label exports"],
-  },
-  {
-    title: "Evidence packs",
-    sell: "Give analysts and customers clear evidence for blocking, escalation, takedown and remediation decisions.",
-    powers: ["Reason codes", "DNS evidence", "Certificate evidence", "Infrastructure links", "Confidence context"],
-  },
-  {
-    title: "Customer portal intelligence",
-    sell: "Embed Datazag intelligence inside your own portal, dashboards and customer-facing service views.",
-    powers: ["API outputs", "Webhook events", "Data shares", "Client-scoped views", "Custom exports"],
-  },
-];
-
-const flow = [
-  { verb: "Observe", text: "Datazag monitors domains, DNS, certificates, routing and infrastructure changes." },
-  { verb: "Enrich", text: "Signals are expanded with hosting, ASN, platform, relationship and historical context." },
-  { verb: "Explain", text: "Outputs include reason codes, evidence and confidence so alerts and decisions are easier to trust." },
-  { verb: "Deliver", text: "You receive alerts, API responses, webhook events, reports or data shares through the route that fits your service model." },
-  { verb: "Monetise", text: "You package it as managed alerting, reporting, enrichment, portal intelligence or detection workflows." },
-];
-
-const roleSplit = [
-  ["Client relationship", "Partner owns the relationship", "Datazag supports behind the scenes"],
-  ["Commercial packaging", "Partner defines offer, pricing and SLA", "Datazag supplies intelligence and delivery options"],
-  ["Internet-scale collection", "Partner avoids building this", "Datazag observes and enriches the infrastructure graph"],
-  ["Reports and portal", "Partner brands the experience", "Datazag powers findings, alerts, evidence and data exports"],
-  ["Operational workflows", "Partner controls triage, blocking and escalation", "Datazag supplies early alerts, signals, reasons and context"],
-];
-
-const commercialModel = [
-  {
-    title: "Partner owns pricing",
-    text: "You decide how the service is packaged, bundled, marked up and sold to clients. Datazag does not set your end-customer price.",
-  },
-  {
-    title: "Datazag is the wholesale layer",
-    text: "The intelligence layer is priced by scope: client estate, domains, brands, data volume, delivery route, white-label needs and SLA.",
-  },
-  {
-    title: "Designed for service margin",
-    text: "Partner terms are designed to leave room for meaningful managed-service margin without publishing a fixed discount or margin percentage.",
-  },
-  {
-    title: "No channel conflict by design",
-    text: "For partner-led accounts, the client relationship stays with the MSSP. Datazag remains infrastructure behind the managed service.",
-  },
-];
-
-const marginLevers = [
-  ["Attach to existing clients", "Add alerting, brand protection, reporting or enrichment to accounts you already serve."],
-  ["Use one intelligence layer", "Reuse the same data across alerts, reports, portal features and SOC enrichment."],
-  ["Reduce analyst effort", "Reasoned outputs reduce manual investigation time and make automation easier to trust."],
-  ["Package premium services", "Sell evidence, monitoring, remediation, alerts and reporting rather than raw data access."],
-];
-
-const usageRights = [
-  ["Included", "Use Datazag intelligence to power partner-led managed services, reports, alerts, enrichment workflows and portal features for your own end clients."],
-  ["Not standalone resale", "Raw data, API access, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default."],
-  ["Downstream partners", "Services sold through your own resellers, franchisees or channel partners require written approval, pass-through terms and a separate commercial model."],
-];
-
-const delivery = [
-  {
-    title: "Alerts",
-    text: "Reasoned early alerts for impersonation infrastructure, suspicious certificates, risky DNS changes and high-confidence block candidates.",
-  },
-  {
-    title: "API",
-    text: "Real-time enrichment for portals, case management, scoring, customer products and AI-assisted workflows.",
-  },
-  {
-    title: "Webhooks",
-    text: "Push important changes and early signals into your existing alerting, ticketing or automation flows.",
-  },
-  {
-    title: "Reports and exports",
-    text: "Generate white-label evidence packs, account-review material and recurring client-facing reports.",
-  },
-  {
-    title: "Cloud data shares",
-    text: "Use Iceberg or Delta datasets for partner analytics, hunting, client-scoped views and large-scale enrichment.",
-  },
-];
-
-const pilotSteps = [
-  {
-    title: "Select a cohort",
-    text: "Choose a small group of clients, brands, domains or use cases where external infrastructure intelligence should create visible value.",
-  },
-  {
-    title: "Connect delivery",
-    text: "Start with alerts, reports, API, webhook events or a sample data view depending on how your team wants to evaluate.",
-  },
-  {
-    title: "Validate the findings",
-    text: "Review alert quality, evidence, triage fit, false-positive handling and the reporting value for your client base.",
-  },
-  {
-    title: "Package the service",
-    text: "Decide whether the first commercial motion is early alerts, enrichment, reports, brand protection or portfolio monitoring.",
-  },
-];
+// Hardcoded fallbacks preserve the exact current copy when no marketingPageCopy
+// document exists for this slug, so the page renders identically post-migration.
 
 function Tag({ children }: { children: React.ReactNode }) {
   return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
@@ -189,7 +59,50 @@ function PartnerStackPanel() {
   );
 }
 
-export default function MsspPartnersPage() {
+export default async function MsspPartnersPage() {
+  const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+
+  const hero = getCopySection(pageCopy, "hero");
+  const partnerValue = getCopySection(pageCopy, "partnerValue");
+  const serviceCatalogueSection = getCopySection(pageCopy, "serviceCatalogue");
+  const howDatazagFits = getCopySection(pageCopy, "howDatazagFits");
+  const commercialModelSection = getCopySection(pageCopy, "commercialModel");
+  const marginPrinciple = getCopySection(pageCopy, "marginPrinciple");
+  const marginLeversSection = getCopySection(pageCopy, "marginLevers");
+  const usageRightsIntro = getCopySection(pageCopy, "usageRightsIntro");
+  const usageRightsSection = getCopySection(pageCopy, "usageRights");
+  const operatingModel = getCopySection(pageCopy, "operatingModel");
+  const deliverySection = getCopySection(pageCopy, "delivery");
+  const pilotPath = getCopySection(pageCopy, "pilotPath");
+  const finalCta = getCopySection(pageCopy, "finalCta");
+
+  const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
+  const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
+  const finalPrimaryCta = copyCta(finalCta?.primaryCta, content.finalCta.primaryCta!);
+
+  const resolvedOutcomes = resolveCopyCards(content.partnerValue.items!, partnerValue);
+  const resolvedCommercialModel = resolveCopyCards(content.commercialModel.items!, commercialModelSection);
+  const resolvedMarginLevers = resolveCopyCards(content.marginLevers.items!, marginLeversSection);
+  const resolvedUsageRights = resolveCopyCards(content.usageRights.items!, usageRightsSection);
+  const resolvedDelivery = resolveCopyCards(content.delivery.items!, deliverySection);
+  const resolvedPilotSteps = resolveCopyCards(content.pilotPath.items!, pilotPath);
+  const resolvedRoleSplit = resolveCopyList(content.howDatazagFits.items!, howDatazagFits);
+
+  const resolvedServiceCatalogue = pickItems(content.serviceCatalogue.items!, serviceCatalogueSection).map((f) => {
+    const item = getCopyItem(serviceCatalogueSection, f.key);
+    return {
+      ...f,
+      title: copyText(item?.title, f.title!),
+      sell: copyText(item?.text, f.text!),
+      powers: item?.tags && item.tags.length > 0 ? item.tags : f.tags!,
+    };
+  });
+
+  const resolvedFlow = pickItems(content.operatingModel.items!, operatingModel).map((f) => {
+    const item = getCopyItem(operatingModel, f.key);
+    return { ...f, verb: copyText(item?.title, f.title!), text: copyText(item?.text, f.text!) };
+  });
+
   return (
     <main className="overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -197,17 +110,17 @@ export default function MsspPartnersPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
-            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">MSSP Partners</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Add infrastructure intelligence to your managed security services.</h1>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, content.hero.eyebrow!)}</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, content.hero.title!)}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag gives MSSPs the domain, DNS, certificate, infrastructure and early alert layer behind managed detection, brand protection, portfolio monitoring and client reporting services.
+              {copyText(hero?.body, content.hero.body!)}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              Keep the client relationship and service experience under your brand while Datazag powers the data, alerts, evidence and monitoring underneath.
+              {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start a partner pilot</a>
-              <a href="#services" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Explore partner services</a>
+              <a href={heroPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              <a href={heroSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>
           <PartnerStackPanel />
@@ -217,13 +130,13 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Partner value"
-            title="Reduce costs. Increase recurring revenue."
-            body="Use Datazag to reduce the cost of operating security services, then package the same intelligence into new client-facing revenue lines."
+            eyebrow={copyText(partnerValue?.eyebrow, content.partnerValue.eyebrow!)}
+            title={copyText(partnerValue?.title, content.partnerValue.title!)}
+            body={copyText(partnerValue?.body, content.partnerValue.body!)}
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {outcomes.map((outcome) => (
-              <article key={outcome.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+            {resolvedOutcomes.map((outcome) => (
+              <article key={outcome.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h2 className="text-lg font-semibold text-white">{outcome.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{outcome.text}</p>
               </article>
@@ -235,13 +148,13 @@ export default function MsspPartnersPage() {
       <section id="services" className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Partner service catalogue"
-            title="Create services your clients already understand."
-            body="Choose the first commercial motion: early alerts, managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services."
+            eyebrow={copyText(serviceCatalogueSection?.eyebrow, content.serviceCatalogue.eyebrow!)}
+            title={copyText(serviceCatalogueSection?.title, content.serviceCatalogue.title!)}
+            body={copyText(serviceCatalogueSection?.body, content.serviceCatalogue.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {serviceCatalogue.map((service, index) => (
-              <div key={service.title} className={`grid gap-5 p-5 md:grid-cols-[0.32fr_0.42fr_0.26fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+            {resolvedServiceCatalogue.map((service, index) => (
+              <div key={service.key} className={`grid gap-5 p-5 md:grid-cols-[0.32fr_0.42fr_0.26fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
                 <div>
                   <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                 </div>
@@ -258,9 +171,9 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="How Datazag fits"
-            title="Your service in front. Our intelligence behind it."
-            body="You own the client, packaging and operational decisions. Datazag supplies the external intelligence, early alerts and delivery routes."
+            eyebrow={copyText(howDatazagFits?.eyebrow, content.howDatazagFits.eyebrow!)}
+            title={copyText(howDatazagFits?.title, content.howDatazagFits.title!)}
+            body={copyText(howDatazagFits?.body, content.howDatazagFits.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             <div className="hidden grid-cols-[0.28fr_0.36fr_0.36fr] border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70 md:grid">
@@ -268,11 +181,11 @@ export default function MsspPartnersPage() {
               <div>Partner</div>
               <div>Datazag</div>
             </div>
-            {roleSplit.map(([area, partner, datazag]) => (
-              <div key={area} className="grid gap-3 border-b border-white/10 px-5 py-5 last:border-b-0 md:grid-cols-[0.28fr_0.36fr_0.36fr] md:items-start">
-                <div className="text-sm font-semibold text-white">{area}</div>
-                <div className="text-sm leading-6 text-slate-400">{partner}</div>
-                <div className="text-sm leading-6 text-slate-300">{datazag}</div>
+            {resolvedRoleSplit.map((row) => (
+              <div key={row.key} className="grid gap-3 border-b border-white/10 px-5 py-5 last:border-b-0 md:grid-cols-[0.28fr_0.36fr_0.36fr] md:items-start">
+                <div className="text-sm font-semibold text-white">{row.title}</div>
+                <div className="text-sm leading-6 text-slate-400">{row.points[0]}</div>
+                <div className="text-sm leading-6 text-slate-300">{row.points[1]}</div>
               </div>
             ))}
           </div>
@@ -282,13 +195,13 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Commercial model"
-            title="Built for partner margin, not channel conflict."
-            body="The model is designed so the MSSP owns the customer relationship, commercial packaging and service margin. Datazag provides the intelligence infrastructure as a predictable wholesale layer behind the offer."
+            eyebrow={copyText(commercialModelSection?.eyebrow, content.commercialModel.eyebrow!)}
+            title={copyText(commercialModelSection?.title, content.commercialModel.title!)}
+            body={copyText(commercialModelSection?.body, content.commercialModel.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {commercialModel.map((item) => (
-              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+            {resolvedCommercialModel.map((item) => (
+              <article key={item.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
               </article>
@@ -296,17 +209,17 @@ export default function MsspPartnersPage() {
           </div>
           <div className="mt-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div className="rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Margin principle</p>
-              <h3 className="mt-3 text-2xl font-semibold text-white">Partner price minus Datazag platform cost equals the service margin you control.</h3>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">{copyText(marginPrinciple?.eyebrow, content.marginPrinciple.eyebrow!)}</p>
+              <h3 className="mt-3 text-2xl font-semibold text-white">{copyText(marginPrinciple?.title, content.marginPrinciple.title!)}</h3>
               <p className="mt-4 text-sm leading-6 text-slate-300">
-                Partner economics depend on how the service is packaged: managed detection, reporting, remediation, portal intelligence, data enrichment or a premium add-on. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it. Specific discounts and margin targets are handled privately in the partner agreement.
+                {copyText(marginPrinciple?.body, content.marginPrinciple.body!)}
               </p>
             </div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-              {marginLevers.map(([title, text], index) => (
-                <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.35fr_0.65fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                  <h3 className="text-sm font-semibold text-white">{title}</h3>
-                  <p className="text-sm leading-6 text-slate-400">{text}</p>
+              {resolvedMarginLevers.map((item, index) => (
+                <div key={item.key} className={`grid gap-3 p-5 md:grid-cols-[0.35fr_0.65fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                  <h3 className="text-sm font-semibold text-white">{item.title}</h3>
+                  <p className="text-sm leading-6 text-slate-400">{item.text}</p>
                 </div>
               ))}
             </div>
@@ -314,17 +227,17 @@ export default function MsspPartnersPage() {
           <div className="mt-8 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
             <div className="grid gap-5 border-b border-white/10 bg-white/[0.025] p-5 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/70">Usage rights</p>
-                <h3 className="mt-3 text-2xl font-semibold text-white">Built for services, not raw data resale.</h3>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/70">{copyText(usageRightsIntro?.eyebrow, content.usageRightsIntro.eyebrow!)}</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">{copyText(usageRightsIntro?.title, content.usageRightsIntro.title!)}</h3>
               </div>
               <p className="text-sm leading-6 text-slate-300">
-                Partners can package Datazag intelligence into their own managed services; Datazag data itself remains a licensed intelligence layer. Detailed terms are handled in the partner agreement.
+                {copyText(usageRightsIntro?.body, content.usageRightsIntro.body!)}
               </p>
             </div>
-            {usageRights.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedUsageRights.map((item, index) => (
+              <div key={item.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{item.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{item.text}</p>
               </div>
             ))}
           </div>
@@ -334,17 +247,17 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Operating model"
-            title="From internet observations to partner revenue."
-            body="Datazag collects and explains the infrastructure signal. MSSPs convert that signal into alerts, services, decisions and recurring customer value."
+            eyebrow={copyText(operatingModel?.eyebrow, content.operatingModel.eyebrow!)}
+            title={copyText(operatingModel?.title, content.operatingModel.title!)}
+            body={copyText(operatingModel?.body, content.operatingModel.body!)}
           />
           <div className="mt-12 rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 md:p-7">
             <div className="grid gap-3 lg:grid-cols-5">
-              {flow.map((step, index) => (
-                <article key={step.verb} className="relative rounded-2xl border border-white/10 bg-[#030619]/70 p-5">
+              {resolvedFlow.map((step, index) => (
+                <article key={step.key} className="relative rounded-2xl border border-white/10 bg-[#030619]/70 p-5">
                   <div className="flex items-center justify-between gap-3">
                     <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.08] text-xs font-semibold text-cyan-100">{index + 1}</span>
-                    {index < flow.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
+                    {index < resolvedFlow.length - 1 ? <span className="hidden text-cyan-200/40 lg:block">→</span> : null}
                   </div>
                   <h3 className="mt-4 text-xl font-semibold text-white">{step.verb}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
@@ -358,13 +271,13 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Delivery"
-            title="Use the route that fits your service model."
-            body="The same intelligence layer can support alerts, analyst workflows, customer portals, managed reports, automated enrichment and data-driven partner products."
+            eyebrow={copyText(deliverySection?.eyebrow, content.delivery.eyebrow!)}
+            title={copyText(deliverySection?.title, content.delivery.title!)}
+            body={copyText(deliverySection?.body, content.delivery.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-            {delivery.map((item) => (
-              <article key={item.title} className="flex min-h-[16rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+            {resolvedDelivery.map((item) => (
+              <article key={item.key} className="flex min-h-[16rem] flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
               </article>
@@ -376,13 +289,13 @@ export default function MsspPartnersPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Pilot path"
-            title="Start with a small cohort, then package the service."
-            body="A partner pilot should prove signal quality, operational fit and commercial packaging before scaling across the client base."
+            eyebrow={copyText(pilotPath?.eyebrow, content.pilotPath.eyebrow!)}
+            title={copyText(pilotPath?.title, content.pilotPath.title!)}
+            body={copyText(pilotPath?.body, content.pilotPath.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {pilotSteps.map((step, index) => (
-              <article key={step.title} className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
+            {resolvedPilotSteps.map((step, index) => (
+              <article key={step.key} className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-100">{index + 1}</span>
                 <h3 className="mt-4 text-xl font-semibold text-white">{step.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{step.text}</p>
@@ -394,13 +307,13 @@ export default function MsspPartnersPage() {
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Build the partner offer around your clients.</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{copyText(finalCta?.eyebrow, content.finalCta.eyebrow!)}</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">{copyText(finalCta?.title, content.finalCta.title!)}</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Start with a client cohort, validate the intelligence, then decide whether the first commercial motion is early alerts, SOC enrichment, brand protection, reporting or portfolio monitoring.
+            {copyText(finalCta?.body, content.finalCta.body!)}
           </p>
           <div className="mt-10 flex justify-center">
-            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start a partner pilot</a>
+            <a href={finalPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{finalPrimaryCta.label}</a>
           </div>
         </div>
       </section>

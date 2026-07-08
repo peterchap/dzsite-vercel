@@ -1,114 +1,23 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import {
+  copyCta,
+  copyText,
+  getCopySection,
+  resolveCopyCards,
+  resolveCopyList,
+  type MarketingPageCopy,
+} from "@/lib/marketing-copy";
+import { sanityFetch } from "@/sanity/fetch";
+import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { SLUG, content } from "./copy";
+
 export const metadata: Metadata = {
   title: "Trust & Governance — Datazag",
   description:
     "How Datazag handles observable infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts, APIs and data shares.",
 };
-
-const principles = [
-  {
-    title: "Observable infrastructure",
-    text: "Datazag focuses on public internet signals such as domains, DNS, certificates, hosting, ASN context, routing and provider footprints.",
-  },
-  {
-    title: "Evidence over black boxes",
-    text: "Reports, alerts and enrichment outputs include evidence, reason codes and context so teams can inspect why a finding exists.",
-  },
-  {
-    title: "Product-specific scope",
-    text: "A free report, alert, API response and data share do not expose the same fields. Each product has its own scope, use case and delivery controls.",
-  },
-  {
-    title: "Clear licensing boundaries",
-    text: "Datazag separates internal intelligence operations from sellable data products, partner services and marketplace-ready outputs.",
-  },
-];
-
-const evidenceLayers = [
-  {
-    title: "Observed facts",
-    text: "Domain, DNS, certificate, mail, hosting, ASN, prefix, registrar and provider context that supports a report or alert finding.",
-    tags: ["Domains", "DNS", "Certificates", "ASN", "Providers"],
-  },
-  {
-    title: "Reason codes",
-    text: "Readable explanations of why a domain, IP, infrastructure relationship, platform pattern or posture issue was considered relevant.",
-    tags: ["Risk reasons", "Posture reasons", "Alert reasons", "Evidence fields"],
-  },
-  {
-    title: "Confidence context",
-    text: "Signals that help teams decide whether to automate, block, investigate, de-escalate, monitor or route to human review.",
-    tags: ["Confidence", "Severity", "Routing", "Review path"],
-  },
-  {
-    title: "Known-good and provider context",
-    text: "Cloud, CDN, mailbox, hosting, platform and customer-approved context used to reduce accidental over-classification.",
-    tags: ["Cloud", "CDN", "MX", "NS", "Allowlists"],
-  },
-  {
-    title: "History and change",
-    text: "Where included, point-in-time records and change history help buyers understand what changed and when it changed.",
-    tags: ["Snapshots", "Deltas", "Time travel", "Change detection"],
-  },
-];
-
-const productControls = [
-  ["Reports", "Designed for business-readable findings, DNS defence analysis, threat exposure, remediation priorities and portfolio summaries."],
-  ["Alerts", "Designed for operational delivery with alert class, reason codes, infrastructure context, recommended action and de-escalation paths."],
-  ["API", "Designed for real-time scoring and enrichment inside customer products, analyst workflows and partner platforms."],
-  ["Cloud data shares", "Designed for analytical joins, historical review, data science, threat hunting and marketplace-style consumption."],
-  ["Partner services", "Designed so MSSPs, ESPs and service providers can package intelligence into their own services without reselling raw data by default."],
-];
-
-const licensing = [
-  {
-    title: "Included by default",
-    points: [
-      "Use Datazag outputs inside the licensed product or workflow.",
-      "Use reports, alerts and enrichment to support internal decisions and customer-facing managed services where contracted.",
-      "Use permitted fields, schemas and delivery routes defined for the product purchased.",
-    ],
-  },
-  {
-    title: "Not included by default",
-    points: [
-      "Raw data resale, bulk redistribution or standalone sublicensing.",
-      "Publishing Datazag data into another marketplace or public dataset.",
-      "Allowing downstream resellers, franchisees or channel partners to use or resell Datazag-powered services without written approval.",
-    ],
-  },
-  {
-    title: "Handled by agreement",
-    points: [
-      "Partner-branded reporting and portal features.",
-      "Portfolio-wide or multi-client use cases.",
-      "Marketplace, data-share, white-label and downstream partner rights.",
-    ],
-  },
-];
-
-const privacy = [
-  ["Public internet data", "Most intelligence products are built from externally observable infrastructure, not from customer inboxes, endpoint telemetry or private network traffic."],
-  ["Report requests", "For free reports, the submitted work email is used to derive the domain, process the request and deliver the report."],
-  ["Marketing consent", "Marketing follow-up should be separate from the processing needed to generate a requested report."],
-  ["Customer context", "Customer-supplied brands, domains, watchlists or approved baselines are used to make outputs more relevant and reduce false positives."],
-];
-
-const falsePositiveControls = [
-  ["Known-good infrastructure", "Provider attribution, customer-approved infrastructure and common platform footprints help avoid obvious misclassification."],
-  ["Context before action", "A platform or brand term alone should not determine severity. DNS, certificate, hosting, history and relationship signals change routing."],
-  ["De-escalation path", "Operational products can include review and de-escalation workflows so accepted or known-good findings do not remain noisy."],
-  ["Human-readable evidence", "Reason codes and evidence fields give analysts and customers a way to challenge, validate or tune the output."],
-];
-
-const marketplaceBoundaries = [
-  ["Derived intelligence", "Marketplace and data-share products should expose derived Datazag intelligence, public infrastructure facts and product-approved context."],
-  ["Restricted inputs", "Internal-only feeds, restricted popularity data and raw third-party threat-feed rows are not published as standalone resale fields by default."],
-  ["Schema discipline", "Published datasets need explicit field scope, refresh cadence, historical coverage and licensing boundaries."],
-  ["Buyer clarity", "Customers should be able to understand what the dataset contains, how it can be used and what redistribution is not permitted."],
-];
 
 function Tag({ children }: { children: React.ReactNode }) {
   return <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-xs font-semibold text-slate-300">{children}</span>;
@@ -145,7 +54,32 @@ function TrustStackPanel() {
   );
 }
 
-export default function TrustPage() {
+export default async function TrustPage() {
+  const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+
+  const hero = getCopySection(pageCopy, "hero");
+  const trustPrinciples = getCopySection(pageCopy, "trustPrinciples");
+  const evidence = getCopySection(pageCopy, "evidence");
+  const productControlsSection = getCopySection(pageCopy, "productControls");
+  const licensingSection = getCopySection(pageCopy, "licensing");
+  const privacySection = getCopySection(pageCopy, "privacy");
+  const falsePositives = getCopySection(pageCopy, "falsePositives");
+  const marketplaceBoundariesSection = getCopySection(pageCopy, "marketplaceBoundaries");
+  const finalCta = getCopySection(pageCopy, "finalCta");
+
+  const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
+  const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
+  const finalPrimaryCta = copyCta(finalCta?.primaryCta, content.finalCta.primaryCta!);
+  const finalSecondaryCta = copyCta(finalCta?.secondaryCta, content.finalCta.secondaryCta!);
+
+  const resolvedPrinciples = resolveCopyCards(content.trustPrinciples.items!, trustPrinciples);
+  const resolvedEvidenceLayers = resolveCopyCards(content.evidence.items!, evidence);
+  const resolvedProductControls = resolveCopyCards(content.productControls.items!, productControlsSection);
+  const resolvedLicensing = resolveCopyList(content.licensing.items!, licensingSection);
+  const resolvedPrivacy = resolveCopyCards(content.privacy.items!, privacySection);
+  const resolvedFalsePositiveControls = resolveCopyCards(content.falsePositives.items!, falsePositives);
+  const resolvedMarketplaceBoundaries = resolveCopyCards(content.marketplaceBoundaries.items!, marketplaceBoundariesSection);
+
   return (
     <main className="overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -153,17 +87,17 @@ export default function TrustPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
-            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Trust & Governance</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">Use infrastructure intelligence you can inspect and govern.</h1>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, content.hero.eyebrow!)}</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, content.hero.title!)}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag products are built around observable internet infrastructure, explainable evidence, controlled product scope and clear licensing boundaries.
+              {copyText(hero?.body, content.hero.body!)}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              This page explains the trust model behind reports, alerts, APIs, data shares, marketplace datasets and partner-delivered services.
+              {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
-              <a href="/alerts" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View alerts</a>
+              <a href={heroPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              <a href={heroSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>
           <TrustStackPanel />
@@ -173,13 +107,13 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Trust principles"
-            title="Evidence first. Scope explicit. Rights controlled."
-            body="Buyers need more than a data feed. They need to understand what evidence supports the output, how it can be used and where the boundaries sit."
+            eyebrow={copyText(trustPrinciples?.eyebrow, content.trustPrinciples.eyebrow!)}
+            title={copyText(trustPrinciples?.title, content.trustPrinciples.title!)}
+            body={copyText(trustPrinciples?.body, content.trustPrinciples.body!)}
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {principles.map((principle) => (
-              <article key={principle.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+            {resolvedPrinciples.map((principle) => (
+              <article key={principle.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h2 className="text-lg font-semibold text-white">{principle.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{principle.text}</p>
               </article>
@@ -191,17 +125,17 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="What customers can inspect"
-            title="The evidence behind reports, alerts and data products."
-            body="The exact fields vary by product, but Datazag output is designed to expose enough context for a buyer to understand and challenge the result."
+            eyebrow={copyText(evidence?.eyebrow, content.evidence.eyebrow!)}
+            title={copyText(evidence?.title, content.evidence.title!)}
+            body={copyText(evidence?.body, content.evidence.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {evidenceLayers.map((layer, index) => (
-              <div key={layer.title} className={`grid gap-5 p-5 md:grid-cols-[0.28fr_0.44fr_0.28fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
+            {resolvedEvidenceLayers.map((layer, index) => (
+              <div key={layer.key} className={`grid gap-5 p-5 md:grid-cols-[0.28fr_0.44fr_0.28fr] md:items-start ${index > 0 ? "border-t border-white/10" : ""}`}>
                 <h3 className="text-xl font-semibold text-white">{layer.title}</h3>
                 <p className="text-sm leading-6 text-slate-300">{layer.text}</p>
                 <div className="flex flex-wrap gap-2">
-                  {layer.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                  {layer.tags?.map((tag) => <Tag key={tag}>{tag}</Tag>)}
                 </div>
               </div>
             ))}
@@ -212,15 +146,15 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Product controls"
-            title="Different products expose different slices of the intelligence layer."
-            body="A report, alert, API response and cloud data share can draw on the same intelligence foundation, but each has its own field scope and intended use."
+            eyebrow={copyText(productControlsSection?.eyebrow, content.productControls.eyebrow!)}
+            title={copyText(productControlsSection?.title, content.productControls.title!)}
+            body={copyText(productControlsSection?.body, content.productControls.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {productControls.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedProductControls.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
@@ -230,13 +164,13 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Licensing and permitted use"
-            title="Built for operational use, not uncontrolled raw data resale."
-            body="Licensing should be simple to understand: use the intelligence in the contracted workflow, but do not redistribute raw data or extend rights to downstream partners without agreement."
+            eyebrow={copyText(licensingSection?.eyebrow, content.licensing.eyebrow!)}
+            title={copyText(licensingSection?.title, content.licensing.title!)}
+            body={copyText(licensingSection?.body, content.licensing.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {licensing.map((item) => (
-              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+            {resolvedLicensing.map((item) => (
+              <article key={item.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                 <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-400">
                   {item.points.map((point) => <li key={point}>• {point}</li>)}
@@ -250,15 +184,15 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Privacy and customer context"
-            title="External intelligence with clear customer-input boundaries."
-            body="Most Datazag products focus on externally observable infrastructure. Customer-supplied context is used to make the output more relevant and reduce noise."
+            eyebrow={copyText(privacySection?.eyebrow, content.privacy.eyebrow!)}
+            title={copyText(privacySection?.title, content.privacy.title!)}
+            body={copyText(privacySection?.body, content.privacy.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {privacy.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedPrivacy.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
@@ -268,15 +202,15 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="False-positive controls"
-            title="Useful intelligence needs tuning and challenge paths."
-            body="Security teams need confidence that platform names, brand terms and provider patterns are not being treated as malicious without context."
+            eyebrow={copyText(falsePositives?.eyebrow, content.falsePositives.eyebrow!)}
+            title={copyText(falsePositives?.title, content.falsePositives.title!)}
+            body={copyText(falsePositives?.body, content.falsePositives.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {falsePositiveControls.map(([title, text]) => (
-              <article key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-                <h3 className="text-xl font-semibold text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedFalsePositiveControls.map((row) => (
+              <article key={row.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-xl font-semibold text-white">{row.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{row.text}</p>
               </article>
             ))}
           </div>
@@ -286,15 +220,15 @@ export default function TrustPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Marketplace and data-share boundaries"
-            title="Data products are controlled at publish time."
-            body="Cloud marketplace and data-share buyers need to know what is included, what is excluded and what redistribution rights do not come with the product by default."
+            eyebrow={copyText(marketplaceBoundariesSection?.eyebrow, content.marketplaceBoundaries.eyebrow!)}
+            title={copyText(marketplaceBoundariesSection?.title, content.marketplaceBoundaries.title!)}
+            body={copyText(marketplaceBoundariesSection?.body, content.marketplaceBoundaries.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {marketplaceBoundaries.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedMarketplaceBoundaries.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
@@ -303,14 +237,14 @@ export default function TrustPage() {
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Use intelligence with evidence and boundaries.</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{copyText(finalCta?.eyebrow, content.finalCta.eyebrow!)}</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">{copyText(finalCta?.title, content.finalCta.title!)}</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Start with a report or alert workflow, then agree the product scope, delivery route and permitted use that fits your team, partner model or data-share requirement.
+            {copyText(finalCta?.body, content.finalCta.body!)}
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
-            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Talk to us</a>
+            <a href={finalPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{finalPrimaryCta.label}</a>
+            <a href={finalSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{finalSecondaryCta.label}</a>
           </div>
         </div>
       </section>

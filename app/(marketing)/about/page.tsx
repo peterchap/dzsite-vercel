@@ -1,91 +1,22 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import {
+  copyCta,
+  copyText,
+  getCopySection,
+  resolveCopyCards,
+  type MarketingPageCopy,
+} from "@/lib/marketing-copy";
+import { sanityFetch } from "@/sanity/fetch";
+import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { SLUG, content } from "./copy";
+
 export const metadata: Metadata = {
   title: "About — Datazag",
   description:
     "Datazag builds infrastructure intelligence for external domain, DNS, certificate, hosting and provider risk, delivered through reports, alerts, APIs, datasets and partner services.",
 };
-
-const companyPrinciples = [
-  {
-    title: "External risk forms before the incident",
-    text: "New domains, certificates, DNS changes, hosting choices and platform lures often appear before users see a finished phishing page or abuse campaign.",
-  },
-  {
-    title: "Infrastructure context should be usable",
-    text: "Signals are only useful when they are connected, explained and delivered into the workflow where a team can act on them.",
-  },
-  {
-    title: "Evidence matters more than black boxes",
-    text: "Scores and alerts should include reason codes, supporting context and de-escalation paths so teams can validate what they are seeing.",
-  },
-  {
-    title: "Data should meet buyers where they work",
-    text: "Some teams need reports. Others need alerts, APIs, webhooks, data shares, marketplace datasets or partner-delivered services.",
-  },
-];
-
-const missionCards = [
-  {
-    title: "Mission",
-    text: "Make suspicious external infrastructure visible, explainable and usable before it becomes a finished attack or a portfolio-wide blind spot.",
-  },
-  {
-    title: "Vision",
-    text: "External infrastructure risk should become a measurable intelligence layer that security, platform, partner and data teams can query and act on.",
-  },
-  {
-    title: "Approach",
-    text: "Connect domains, DNS, certificates, hosting, ASN, provider, platform and historical signals into evidence-led outputs.",
-  },
-];
-
-const intelligenceLayer = [
-  ["Domains", "Newly observed, suspicious, related and historical domain context. Domain intelligence is one part of the wider infrastructure layer."],
-  ["DNS", "A, AAAA, MX, NS, TXT, email-authentication posture, provider footprints and change history."],
-  ["Certificates", "Certificate Transparency observations, SAN expansion, issuer context and early discovery signals."],
-  ["Infrastructure", "IP, ASN, prefix, hosting, cloud, CDN, provider and routing context for suspicious assets."],
-  ["Platforms", "Signals around platform impersonation, login lures, supplier exposure and vendor-specific abuse patterns."],
-  ["History", "Snapshots, deltas, first-seen, last-seen and lifecycle changes that show how infrastructure evolves."],
-];
-
-const deliveryModel = [
-  {
-    title: "Reports",
-    text: "For teams that need an assessment of one domain, a portfolio, a client estate, a supplier group or an acquisition target.",
-  },
-  {
-    title: "Alerts",
-    text: "For operational workflows where suspicious platform, keyword or brand-impersonation infrastructure needs to be routed quickly.",
-  },
-  {
-    title: "API and webhooks",
-    text: "For products, portals, SIEM workflows, fraud systems and customer-facing tools that need enrichment or scoring on demand.",
-  },
-  {
-    title: "Cloud data products",
-    text: "For teams that want SQL-ready infrastructure intelligence inside a warehouse, lakehouse, marketplace or analytical environment.",
-  },
-  {
-    title: "Partner services",
-    text: "For MSSPs, MDRs, ESPs and platforms that want to package Datazag intelligence inside their own customer experience.",
-  },
-];
-
-const whoFor = [
-  ["Security teams", "Investigate suspicious external infrastructure, enrich alerts and explain why a domain, IP or provider relationship matters."],
-  ["MSSPs and MDRs", "Add reports, alerting and evidence-led services without building the infrastructure intelligence layer from scratch."],
-  ["ESPs and platforms", "Improve abuse, trust, link and customer-risk workflows with domain and infrastructure context."],
-  ["Data buyers", "Consume curated datasets through cloud shares, marketplaces, APIs and sample schemas."],
-  ["Portfolio owners", "Assess exposure across subsidiaries, suppliers, clients, parked domains and acquisition targets."],
-];
-
-const boundaries = [
-  ["Not a takedown service", "Datazag provides detection, evidence packs and abuse contacts. Customers or authorised partners manage takedown requests and legal response."],
-  ["Not uncontrolled raw-data resale", "Data products and partner rights are governed by product scope, permitted use and contractual boundaries."],
-  ["Not a black-box score", "Risk outputs are designed to include reasons and supporting context so teams can validate, challenge or de-escalate findings."],
-];
 
 function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
   return (
@@ -118,7 +49,31 @@ function AboutPanel() {
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+
+  const hero = getCopySection(pageCopy, "hero");
+  const whyExist = getCopySection(pageCopy, "whyExist");
+  const principles = getCopySection(pageCopy, "principles");
+  const intelligenceLayerSection = getCopySection(pageCopy, "intelligenceLayer");
+  const deliveryModelSection = getCopySection(pageCopy, "deliveryModel");
+  const whoForSection = getCopySection(pageCopy, "whoFor");
+  const boundariesSection = getCopySection(pageCopy, "boundaries");
+  const finalCta = getCopySection(pageCopy, "finalCta");
+
+  const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
+  const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
+  const boundariesCta = copyCta(boundariesSection?.primaryCta, content.boundaries.primaryCta!);
+  const finalPrimaryCta = copyCta(finalCta?.primaryCta, content.finalCta.primaryCta!);
+  const finalSecondaryCta = copyCta(finalCta?.secondaryCta, content.finalCta.secondaryCta!);
+
+  const resolvedMissionCards = resolveCopyCards(content.whyExist.items!, whyExist);
+  const resolvedPrinciples = resolveCopyCards(content.principles.items!, principles);
+  const resolvedIntelligenceLayer = resolveCopyCards(content.intelligenceLayer.items!, intelligenceLayerSection);
+  const resolvedDeliveryModel = resolveCopyCards(content.deliveryModel.items!, deliveryModelSection);
+  const resolvedWhoFor = resolveCopyCards(content.whoFor.items!, whoForSection);
+  const resolvedBoundaries = resolveCopyCards(content.boundaries.items!, boundariesSection);
+
   return (
     <main className="overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -126,17 +81,17 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
-            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">About Datazag</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">We make external infrastructure risk visible before it reaches your users.</h1>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, content.hero.eyebrow!)}</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, content.hero.title!)}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Datazag exists because many attacks are assembled in public before they are obvious: domains are registered, certificates are issued, DNS appears, hosting is selected and platform lures take shape.
+              {copyText(hero?.body, content.hero.body!)}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              We build Infrastructure Intelligence that connects those signals and turns them into evidence-led reports, alerts, APIs, cloud data products and partner services.
+              {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
-              <a href="/trust" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View trust model</a>
+              <a href={heroPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              <a href={heroSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>
           <AboutPanel />
@@ -146,13 +101,13 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Why we exist"
-            title="Security teams can see many internal alerts. They often cannot see the infrastructure forming outside them."
-            body="That external layer is where many phishing, impersonation, fraud and supplier-risk signals first appear. Datazag was built to make that layer visible, explainable and usable."
+            eyebrow={copyText(whyExist?.eyebrow, content.whyExist.eyebrow!)}
+            title={copyText(whyExist?.title, content.whyExist.title!)}
+            body={copyText(whyExist?.body, content.whyExist.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {missionCards.map((card) => (
-              <article key={card.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+            {resolvedMissionCards.map((card) => (
+              <article key={card.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h2 className="text-xl font-semibold text-white">{card.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{card.text}</p>
               </article>
@@ -164,13 +119,13 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="What we believe"
-            title="External intelligence should be connected, inspectable and useful."
-            body="Datazag is built around observable internet infrastructure and practical delivery formats, not generic threat-intelligence claims."
+            eyebrow={copyText(principles?.eyebrow, content.principles.eyebrow!)}
+            title={copyText(principles?.title, content.principles.title!)}
+            body={copyText(principles?.body, content.principles.body!)}
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {companyPrinciples.map((principle) => (
-              <article key={principle.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+            {resolvedPrinciples.map((principle) => (
+              <article key={principle.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-lg font-semibold text-white">{principle.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{principle.text}</p>
               </article>
@@ -182,15 +137,15 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Infrastructure Intelligence"
-            title="Domain intelligence is a subset of the wider infrastructure picture."
-            body="The intelligence layer connects public internet signals so teams can understand relationships, risk and change rather than reviewing isolated indicators."
+            eyebrow={copyText(intelligenceLayerSection?.eyebrow, content.intelligenceLayer.eyebrow!)}
+            title={copyText(intelligenceLayerSection?.title, content.intelligenceLayer.title!)}
+            body={copyText(intelligenceLayerSection?.body, content.intelligenceLayer.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {intelligenceLayer.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedIntelligenceLayer.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
@@ -200,13 +155,13 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="How it reaches customers"
-            title="The same intelligence layer supports different buying paths."
-            body="About Datazag should explain the model, not repeat every product page. The common thread is infrastructure evidence delivered in the format the buyer can use."
+            eyebrow={copyText(deliveryModelSection?.eyebrow, content.deliveryModel.eyebrow!)}
+            title={copyText(deliveryModelSection?.title, content.deliveryModel.title!)}
+            body={copyText(deliveryModelSection?.body, content.deliveryModel.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-            {deliveryModel.map((item) => (
-              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+            {resolvedDeliveryModel.map((item) => (
+              <article key={item.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
               </article>
@@ -218,15 +173,15 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Who it is for"
-            title="Built for teams that need external-infrastructure context inside decisions."
-            body="Datazag is designed for buyers who need intelligence inside investigations, customer services, products, partner offers and analytical environments."
+            eyebrow={copyText(whoForSection?.eyebrow, content.whoFor.eyebrow!)}
+            title={copyText(whoForSection?.title, content.whoFor.title!)}
+            body={copyText(whoForSection?.body, content.whoFor.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {whoFor.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedWhoFor.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
@@ -236,34 +191,34 @@ export default function AboutPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Boundaries"
-            title="Clear about what Datazag is and is not."
-            body="The trust model matters. Datazag provides intelligence, evidence and controlled delivery routes; customers and partners keep control of their response and use rights."
+            eyebrow={copyText(boundariesSection?.eyebrow, content.boundaries.eyebrow!)}
+            title={copyText(boundariesSection?.title, content.boundaries.title!)}
+            body={copyText(boundariesSection?.body, content.boundaries.body!)}
           />
           <div className="mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
-            {boundaries.map(([title, text], index) => (
-              <div key={title} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
-                <h3 className="text-sm font-semibold text-white">{title}</h3>
-                <p className="text-sm leading-6 text-slate-400">{text}</p>
+            {resolvedBoundaries.map((row, index) => (
+              <div key={row.key} className={`grid gap-3 p-5 md:grid-cols-[0.28fr_0.72fr] ${index > 0 ? "border-t border-white/10" : ""}`}>
+                <h3 className="text-sm font-semibold text-white">{row.title}</h3>
+                <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
           </div>
           <div className="mt-8 flex justify-center">
-            <a href="/trust" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View trust and governance</a>
+            <a href={boundariesCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{boundariesCta.label}</a>
           </div>
         </div>
       </section>
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Start with one domain or one workflow.</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{copyText(finalCta?.eyebrow, content.finalCta.eyebrow!)}</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">{copyText(finalCta?.title, content.finalCta.title!)}</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Use a free report to see the intelligence in context, or contact Datazag to discuss alerts, API access, cloud data products or partner services.
+            {copyText(finalCta?.body, content.finalCta.body!)}
           </p>
           <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
-            <a href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Contact Datazag</a>
+            <a href={finalPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{finalPrimaryCta.label}</a>
+            <a href={finalSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{finalSecondaryCta.label}</a>
           </div>
         </div>
       </section>

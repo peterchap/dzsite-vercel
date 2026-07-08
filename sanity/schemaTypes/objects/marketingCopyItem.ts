@@ -18,6 +18,7 @@ export default {
         { name: "href", title: "Link URL", type: "string" },
         { name: "cta", title: "CTA label", type: "string" },
         { name: "tags", title: "Tags", type: "array", of: [{ type: "string" }] },
+        { name: "points", title: "Bullet points", type: "array", of: [{ type: "string" }] },
     ],
     preview: {
         select: { title: "title", subtitle: "itemKey" },

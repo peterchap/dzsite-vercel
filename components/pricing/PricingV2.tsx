@@ -1,3 +1,8 @@
+import { CurrencyText } from "@/components/ui/CurrencyText";
+
+// Prices use {{PRICE:cents}} markers (USD-base cents) so the nav currency widget
+// converts them. Amounts are placeholders carried over from the prior GBP figures
+// — adjust the cents values to the real USD list prices.
 const productChooser = [
   { need: "Assess one domain", product: "Free Domain Health Report", href: "/#free-report" },
   { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
@@ -9,8 +14,8 @@ const productChooser = [
 const reports = [
   {
     name: "Domain Health Report",
-    price: "£0",
-    cadence: "free",
+    price: "Free",
+    cadence: "",
     description: "A free single-domain report covering platform-led threat exposure, DNS and email defence gaps, and remediation priorities.",
     features: ["One domain", "Platform threat exposure", "DNS and email defence analysis", "Remediation priorities", "Sample report available"],
     cta: "Get my free report",
@@ -19,7 +24,7 @@ const reports = [
   },
   {
     name: "Domain Risk Report",
-    price: "From £495",
+    price: "From {{PRICE:49500}}",
     cadence: "per report",
     description: "The full paid assessment of one domain: an executive core any board can read, plus a technical remediation appendix your engineers execute.",
     features: ["One domain", "Threat exposure and defence posture", "Evidence behind every claim", "Technical remediation appendix", "Paste-ready records, staged rollout"],
@@ -40,7 +45,7 @@ const reports = [
 const alertProducts = [
   {
     name: "Platform Alerts",
-    price: "£499",
+    price: "{{PRICE:49900}}",
     cadence: "/mo",
     description: "Platform impersonation monitoring for the platforms, vendors and workflows that matter to your organisation.",
     features: ["Platform impersonation signals", "Reason codes", "Webhook/API delivery", "Operational alert stream"],
@@ -49,7 +54,7 @@ const alertProducts = [
   },
   {
     name: "Keyword Alerts",
-    price: "£499",
+    price: "{{PRICE:49900}}",
     cadence: "/mo",
     description: "Keyword-led suspicious infrastructure monitoring for terms such as login, payroll, invoice, VPN, support or HR.",
     features: ["Customer-defined keywords", "New domains and certificates", "Subdomain context", "Webhook/API delivery"],
@@ -58,7 +63,7 @@ const alertProducts = [
   },
   {
     name: "Brand Protection Alerts",
-    price: "From £2,500",
+    price: "From {{PRICE:250000}}",
     cadence: "/mo",
     description: "Per-brand impersonation detection with staged alert updates, evidence packs, abuse contacts and de-escalation controls.",
     features: ["One protected brand", "Pre-DNS and DNS-stage alerts", "Website evidence updates", "Evidence pack and abuse contacts", "De-escalation button"],
@@ -71,13 +76,13 @@ const alertProducts = [
 const apiPlans = [
   {
     name: "Developer",
-    price: "£499",
+    price: "{{PRICE:49900}}",
     cadence: "/mo",
     features: ["100k credits", "Evaluation and integration", "Portal credit purchase", "REST API access"],
   },
   {
     name: "Business",
-    price: "£2,499",
+    price: "{{PRICE:249900}}",
     cadence: "/mo",
     features: ["1M credits", "Commercial use", "Bulk enrichment", "Higher request rates"],
   },
@@ -92,13 +97,13 @@ const apiPlans = [
 const dataShares = [
   {
     name: "Standard",
-    price: "From £5,000",
+    price: "From {{PRICE:500000}}",
     cadence: "/mo",
     features: ["Core domain intelligence", "Cloud-native delivery", "Standard refresh cadence", "Direct or marketplace route"],
   },
   {
     name: "Advanced",
-    price: "From £10,000",
+    price: "From {{PRICE:1000000}}",
     cadence: "/mo",
     features: ["Expanded DNS and infrastructure fields", "Historical context", "Priority data support", "Marketplace private offers"],
   },
@@ -147,7 +152,7 @@ function PriceCard({ item }: { item: { name: string; price: string; cadence?: st
         <h3 className="text-xl font-semibold text-white">{item.name}</h3>
         <p className="mt-3 text-sm leading-6 text-slate-400">{item.description}</p>
         <div className="mt-6 flex items-end gap-1">
-          <span className="text-4xl font-semibold tracking-tight text-white">{item.price}</span>
+          <span className="text-4xl font-semibold tracking-tight text-white"><CurrencyText value={item.price} /></span>
           {item.cadence ? <span className="pb-1 text-sm text-slate-400">{item.cadence}</span> : null}
         </div>
       </div>
@@ -168,7 +173,7 @@ function CompactPlanCard({ plan }: { plan: { name: string; price: string; cadenc
     <article className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
       <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
       <div className="mt-4 flex items-end gap-1">
-        <span className="text-3xl font-semibold tracking-tight text-white">{plan.price}</span>
+        <span className="text-3xl font-semibold tracking-tight text-white"><CurrencyText value={plan.price} /></span>
         {plan.cadence ? <span className="pb-1 text-sm text-slate-400">{plan.cadence}</span> : null}
       </div>
       <ul className="mt-5 grid gap-2 text-sm text-slate-300">

@@ -33,7 +33,8 @@ export const marketingPageCopyBySlugQuery = `
       status,
       href,
       cta,
-      tags
+      tags,
+      points
     }
   }
 }
