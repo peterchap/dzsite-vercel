@@ -90,9 +90,11 @@ export function Header({
 }) {
     const navLinks: NavLink[] = isOldDefaultNav(passedNavLinks) ? coreNavLinks : passedNavLinks ?? coreNavLinks;
 
+    // WU21 navbar: no plate — background IS the page background; the hairline
+    // is the only separation. Heights 66px desktop / 56px mobile.
     return (
-        <header className="relative z-50 w-full border-b border-white/10 bg-[#030619]">
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <header className="relative z-50 w-full border-b border-[color:var(--dz-nav-hairline)] bg-[#030619]">
+            <div className="mx-auto flex h-[56px] max-w-7xl items-center justify-between px-6 md:h-[66px]">
                 <Link href="/" className="group flex items-center">
                     <BrandingLogo className="text-4xl md:text-[2.625rem] group-hover:scale-[1.02]" />
                 </Link>
@@ -107,7 +109,7 @@ export function Header({
                         if (hasChildren) {
                             return (
                                 <DropdownMenu.Root key={`${href || link.label}-${i}`}>
-                                    <DropdownMenu.Trigger className="group flex items-center gap-1 text-sm font-medium text-slate-300 outline-none transition hover:text-white">
+                                    <DropdownMenu.Trigger className="group flex items-center gap-1 text-sm font-medium text-[color:var(--ink-4)] outline-none transition hover:text-white">
                                         {link.label}
                                         <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
                                     </DropdownMenu.Trigger>
@@ -122,7 +124,7 @@ export function Header({
                                                 <DropdownMenu.Item key={ci} asChild>
                                                     <Link
                                                         href={normalizeHref(child.href) || "#"}
-                                                        className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/5 hover:text-white"
+                                                        className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/[0.04] hover:text-white"
                                                     >
                                                         {child.label}
                                                     </Link>
@@ -138,10 +140,10 @@ export function Header({
                             <Link
                                 key={`${href}-${i}`}
                                 href={href || "#"}
-                                className="group relative text-sm font-medium text-slate-300 transition hover:text-white"
+                                className="group relative text-sm font-medium text-[color:var(--ink-4)] transition hover:text-white"
                             >
                                 {link.label}
-                                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-blue-500 transition-all group-hover:w-full" />
+                                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-[color:var(--cyan)] transition-all group-hover:w-full" />
                             </Link>
                         );
                     })}
@@ -193,7 +195,7 @@ export function Header({
                                                         <DropdownMenu.Item key={child.href} asChild>
                                                             <Link
                                                                 href={normalizeHref(child.href) || "#"}
-                                                                className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/5 hover:text-white"
+                                                                className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/[0.04] hover:text-white"
                                                             >
                                                                 {child.label}
                                                             </Link>
@@ -207,7 +209,7 @@ export function Header({
                                             <DropdownMenu.Item key={link.href} asChild>
                                                 <Link
                                                     href={href || "#"}
-                                                    className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/5 hover:text-white"
+                                                    className="block rounded-lg px-3 py-2 text-sm text-slate-300 outline-none transition hover:bg-white/[0.04] hover:text-white"
                                                 >
                                                     {link.label}
                                                 </Link>

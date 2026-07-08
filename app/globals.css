@@ -1,4 +1,65 @@
 @import "tailwindcss";
+/* WU21 shared design tokens — vendored from datazag_intelligence
+   design/generated/tokens.css (canonical source: design/tokens.json).
+   Regenerate there; never hand-edit here. */
+@import "./tokens.css";
+
+/* Two-tone wordmark (WU21 option 2a). Manrope is the logotype face ONLY —
+   it must not appear outside the .dz-logo / .dz-mark lockup selectors. */
+:root { --dz-nav-hairline: rgba(255, 255, 255, 0.05); }
+
+.dz-logo {
+  font-family: var(--font-manrope), var(--logo-font);
+  font-weight: 800;
+  letter-spacing: var(--logo-tracking);
+}
+.dz-logo-data { color: var(--logo-data-on-dark); }
+.dz-logo-zag {
+  background: linear-gradient(90deg, var(--logo-zag-from), var(--logo-zag-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* Mono / knockout fallbacks (single-colour print, gradient can't render). */
+.dz-logo--mono .dz-logo-data,
+.dz-logo--mono .dz-logo-zag {
+  background: none;
+  color: var(--logo-data-on-dark);
+  -webkit-text-fill-color: var(--logo-data-on-dark);
+}
+.dz-logo--knockout {
+  background: var(--logo-data-on-dark);
+  border-radius: 8px;
+  padding: 0.15em 0.4em;
+}
+.dz-logo--knockout .dz-logo-data,
+.dz-logo--knockout .dz-logo-zag {
+  background: none;
+  color: var(--navy-deep);
+  -webkit-text-fill-color: var(--navy-deep);
+}
+/* "Dz" square app mark. Tile radial uses TOKEN navys (reconciliation 3). */
+.dz-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 25%;
+  background: radial-gradient(130% 130% at 25% 10%, var(--navy-2), var(--navy-deep));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-family: var(--font-manrope), var(--logo-font);
+  font-weight: 800;
+  letter-spacing: var(--logo-tracking-mark);
+}
+.dz-mark-d { color: var(--logo-data-on-dark); }
+.dz-mark-z {
+  background: linear-gradient(180deg, var(--logo-zag-from), var(--logo-zag-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
