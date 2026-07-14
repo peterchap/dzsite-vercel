@@ -19,6 +19,7 @@ type DataCorpusProps = {
     subheadline?: string;
     totalDomains: string;
     ingestionLatency: string;
+    /** RETIRED (WU27-B): accepted for CMS back-compat, never rendered. */
     falsePositiveRate?: string;
     dataFeatures?: DataFeature[];
     ctaLabel: string;
@@ -54,7 +55,6 @@ export default function DataCorpus({
     subheadline,
     totalDomains,
     ingestionLatency,
-    falsePositiveRate,
     dataFeatures = [],
     ctaLabel,
     ctaHref,
@@ -164,15 +164,20 @@ export default function DataCorpus({
                             </div>
                         </motion.div>
 
-                        <motion.div 
+                        {/* WU27-B: the unmeasured FP-rate stat is retired. Mechanism chip
+                            instead, linking to the Detection Quality section. The CMS
+                            falsePositiveRate field is intentionally ignored. */}
+                        <motion.div
                             className="absolute top-1/2 -translate-y-1/2 right-10 z-10 w-fit bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-6 py-3 text-center shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all"
                             whileHover={{ scale: 1.05 }}
                         >
-                            <div className="text-purple-400 font-mono text-[10px] uppercase tracking-widest mb-1">False Positive Rate</div>
-                            <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
-                                <Shield className="w-5 h-5 text-purple-400" />
-                                {falsePositiveRate || "<1%"}
-                            </div>
+                            <a href="/#detection-quality" className="block">
+                                <div className="text-purple-400 font-mono text-[10px] uppercase tracking-widest mb-1">Alert Verification</div>
+                                <div className="text-3xl font-bold text-white tracking-tighter flex items-center justify-center gap-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+                                    <Shield className="w-5 h-5 text-purple-400" />
+                                    Four-stage
+                                </div>
+                            </a>
                         </motion.div>
 
                         <motion.div 

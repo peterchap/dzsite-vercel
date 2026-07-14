@@ -113,7 +113,7 @@ export default function HowItWorksPage() {
                                 <li className="flex gap-2"><Check className="h-5 w-5 text-[#56A8F5]" /> Detect mailbox provider</li>
                                 <li className="flex gap-2"><Check className="h-5 w-5 text-[#56A8F5]" /> Check for disposable infrastructure</li>
                             </ul>
-                            <p className="mt-4 text-sm text-gray-500">This happens in &lt;10 seconds and ensures zero false positives.</p>
+                            <p className="mt-4 text-sm text-gray-500">This happens in &lt;10 seconds.</p>
                         </div>
                         <div className="mt-8 lg:mt-0 bg-gray-50 rounded-xl p-8 border border-gray-200">
                             <pre className="text-xs bg-[#1E1E38] text-green-400 p-4 rounded-lg overflow-x-auto">

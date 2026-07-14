@@ -1,6 +1,7 @@
 import type { StoryContent } from "./types";
 import { mergeStoryContent } from "./content";
 import { CaseStudyTeaser } from "./CaseStudyTeaser";
+import { DetectionQualitySection } from "./DetectionQualitySection";
 import {
   StoryAudiences,
   StoryEngine,
@@ -45,6 +46,12 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
         the repo for that revival; they are simply no longer mounted here.
       */}
       <CaseStudyTeaser />
+      {/*
+        WU27-A: teaser proves coverage → this section proves rigour →
+        Relationship Intelligence explains the model. Fills the slot vacated by
+        the old illustrative Detection Advantage timeline.
+      */}
+      <DetectionQualitySection />
       <StoryInsight data={c.insight} />
       <StoryRelationshipIntelligence />
       <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />

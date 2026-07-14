@@ -74,7 +74,7 @@ export default function LegacyHomepage() {
 
                     <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-400">
                         <span className="flex items-center gap-2">⚡ &lt;Sub-60 second enforcement window</span>
-                        <span className="flex items-center gap-2">🎯 &lt;1% false positives</span>
+                        <span className="flex items-center gap-2">🎯 Four-stage verification</span>
                         <span className="flex items-center gap-2">🌍 Infrastructure-led attribution across 315M+ domains</span>
                         <span className="flex items-center gap-2">☁️ API, feeds & webhooks for automated response</span>
                     </div>

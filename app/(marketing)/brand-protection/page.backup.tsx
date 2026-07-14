@@ -33,7 +33,7 @@ export default function BrandProtectionPage() {
                     </div>
                     <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-gray-400">
                         <span>⚡ &lt;60 second detection</span>
-                        <span>🎯 &lt;1% false positive rate</span>
+                        <span>🎯 Four-stage verification</span>
                         <span>🏢 Trusted by 1,000+ brands</span>
                         <span>💰 From £999/month</span>
                     </div>
@@ -154,7 +154,7 @@ export default function BrandProtectionPage() {
                                     { name: 'Detection Speed', datazag: '<60 sec', netcraft: '2-4 hours', brandshield: '4-24 hours' },
                                     { name: 'Per-Client Feed', datazag: '✓', netcraft: '✗', brandshield: '✗' },
                                     { name: 'Live DNS Check', datazag: '✓', netcraft: '✗', brandshield: '✗' },
-                                    { name: 'False Positives', datazag: '<1%', netcraft: '~5%', brandshield: '~5%' },
+                                    { name: 'Alert Verification', datazag: 'Four-stage', netcraft: '—', brandshield: '—' },
                                     { name: 'Starting Price', datazag: '£999/mo', netcraft: '£4K+/mo', brandshield: '£2.5K+/mo' }
                                 ].map((row, i) => (
                                     <tr key={i} className={i % 2 === 0 ? undefined : 'bg-gray-50'}>

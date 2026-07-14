@@ -14,7 +14,12 @@ export default {
     { name: 'subheadline', type: 'text', rows: 3 },
     { name: 'totalDomains', type: 'string', description: 'e.g., 330M+' },
     { name: 'ingestionLatency', type: 'string', description: 'e.g., <10s' },
-    { name: 'falsePositiveRate', type: 'string', description: 'e.g., <1%' },
+    {
+      name: 'falsePositiveRate',
+      type: 'string',
+      hidden: true,
+      description: 'RETIRED (WU27-B) — unmeasured rate claims are banned; the component never renders this field. Rates return only via the /trust/methodology page.',
+    },
     {
       name: 'dataFeatures',
       type: 'array',

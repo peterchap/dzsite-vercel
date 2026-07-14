@@ -13,6 +13,7 @@ import {
 } from "@/lib/marketing-copy";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { DetectionQualityCondensed } from "@/components/story/DetectionQualitySection";
 import { SLUG, content } from "./copy";
 
 export const metadata: Metadata = {
@@ -188,6 +189,10 @@ export default async function MsspPartnersPage() {
                 <div className="text-sm leading-6 text-slate-300">{row.points[1]}</div>
               </div>
             ))}
+          </div>
+          {/* WU27-A: condensed Detection Quality block (locked copy, not CMS-editable). */}
+          <div className="mt-8">
+            <DetectionQualityCondensed />
           </div>
         </div>
       </section>

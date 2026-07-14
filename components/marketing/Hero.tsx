@@ -92,7 +92,7 @@ export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
 
                 <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-400">
                     <span className="flex items-center gap-2">⚡ &lt;60 sec detection</span>
-                    <span className="flex items-center gap-2">🎯 &lt;1% false positives</span>
+                    <span className="flex items-center gap-2">🎯 Four-stage verification</span>
                     <span className="flex items-center gap-2">🌍 {DOMAINS_DISPLAY} domains</span>
                     <span className="flex items-center gap-2">☁️ API + Data Shares</span>
                 </div>

@@ -44,7 +44,9 @@ export default function FalsePositiveReduction({
                                 {subheadline}
                             </p>
                         </div>
-                        {metric && (
+                        {/* WU27-B: percentage/rate metrics are suppressed — unmeasured accuracy
+                            claims are banned until the methodology page (WU27-C) can back them. */}
+                        {metric && metric.value && !metric.value.includes("%") && (
                             <div className="inline-flex flex-col rounded-2xl border border-blue-100 bg-blue-50/50 p-6 shadow-sm">
                                 <span className="text-4xl font-extrabold text-blue-600">{metric.value}</span>
                                 <span className="text-sm font-medium text-blue-800 uppercase tracking-wider">{metric.label}</span>
