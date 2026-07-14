@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 
 type PredictiveLayerSectionProps = {
@@ -22,7 +23,7 @@ export default function PredictiveLayerSection(props: PredictiveLayerSectionProp
     headline = "Datazag is the predictive layer alongside your stack.",
     subheadline = "Datazag works with ASM, DRP, brand protection and threat intelligence \u2014 not against them. Where you've invested in any of these, Datazag is the layer that makes them work better. Where you haven't, it's the zero-input place to start.",
     architectureDiagram,
-    substrateFoundations = ['330M-domain corpus', 'CertStream', 'BGP (RouteViews & RIPE RIS)']
+    substrateFoundations = [`${DOMAINS_DISPLAY} domain corpus`, 'CertStream', 'BGP (RouteViews & RIPE RIS)']
   } = props;
 
   return (

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Activity, Database, Zap, Code, Shield, Hexagon, Network, Globe } from "lucide-react";
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 type DataFeature = {
     title: string;
@@ -159,7 +160,7 @@ export default function DataCorpus({
                         >
                             <div className="text-cyan-400 font-mono text-[10px] uppercase tracking-widest mb-1">Live Corpus Size</div>
                             <div className="text-3xl font-bold text-white tracking-tighter" style={{ fontFamily: 'var(--font-outfit)' }}>
-                                {totalDomains || "330M+"}
+                                {totalDomains || DOMAINS_DISPLAY}
                             </div>
                         </motion.div>
 

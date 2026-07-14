@@ -2,7 +2,7 @@ const outcomes = [
   {
     title: "Remove the attacker's advantage",
     text: "Attackers prepare domains, certificates and infrastructure before launching. Early visibility removes the element of surprise and gives defenders time to prepare.",
-    steps: ["Prep", "Detect", "Prepare", "Launch"],
+    steps: ["Prep", "Detect", "Defend", "Launch"],
   },
   {
     title: "Block before go-live",

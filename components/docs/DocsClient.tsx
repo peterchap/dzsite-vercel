@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from "react";
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -82,7 +83,7 @@ export function DocsClient() {
                         Domain Intelligence <span className="text-blue-600">API</span>
                     </h1>
                     <p className="mt-8 max-w-3xl text-xl text-slate-600 leading-relaxed font-medium">
-                        Programmatic access to Datazag's continuously refreshed dataset of 315M+ domains.
+                        Programmatic access to Datazag's continuously refreshed dataset of {DOMAINS_DISPLAY} domains.
                         Built for high-scale KYC, fraud prevention, and deliverability automation.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">

@@ -1,6 +1,7 @@
 export type Card = { title: string; text: string };
 export type TimelineStep = Card & { marker: string };
 export type Cta = { label: string; href: string };
+export type HeroChip = { label: string; href?: string };
 export type CopySection = { kicker: string; title: string; body?: string[] };
 
 export type StoryContent = {
@@ -11,6 +12,7 @@ export type StoryContent = {
   primaryCta: Cta;
   secondaryCta: Cta;
   heroPills: string[];
+  heroChips: HeroChip[];
   insight: CopySection;
   signals: CopySection;
   platform: CopySection;

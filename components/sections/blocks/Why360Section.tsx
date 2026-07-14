@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Database, Activity, Shield } from "lucide-react";
 import { PortableText } from '@portabletext/react';
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 type DataLayer = {
   title: string;
@@ -40,7 +41,7 @@ export default function Why360Section(props: Why360SectionProps) {
     sectionHeadline = "Why 360? The threat outside, the surface inside.",
     sectionBrief = "Impersonation only works when two things line up: infrastructure an attacker has built, and an attack surface that lets it land. The 360 Health Report covers both halves.",
     externalTitle = "The external half \u2014 your platforms, and what\u2019s targeting them.",
-    externalBody = "First we map the platforms and vendors you depend on, read straight from your DNS and subdomains. Then we match that map against our 330M-domain corpus and live infrastructure feeds to surface the spoofs, lookalikes and suspicious certificates built to impersonate those exact platforms \u2014 and your brand.",
+    externalBody = `First we map the platforms and vendors you depend on, read straight from your DNS and subdomains. Then we match that map against our ${DOMAINS_DISPLAY} domain corpus and live infrastructure feeds to surface the spoofs, lookalikes and suspicious certificates built to impersonate those exact platforms \u2014 and your brand.`,
     trustSurfaceTitle = "The Trust Surface \u2014 your verified perimeter.",
     trustSurfaceBody = "The core platforms you know and manage. We monitor the state of your DNS, your email authentication (SPF, DKIM, DMARC), and your mail configurations to identify every gap that makes impersonation easy instead of hard.",
     threatSurfaceTitle = "The Threat Surface \u2014 your active exposure.",

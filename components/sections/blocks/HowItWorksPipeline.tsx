@@ -1,4 +1,5 @@
 import React from 'react';
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 interface PipelineStage {
   stageNumber: string;
@@ -23,7 +24,7 @@ export default function HowItWorksPipeline({ headline, subhead, stages }: Pipeli
     {
       stageNumber: '[02]',
       stageTitle: 'Graph Enrichment',
-      bodyText: 'Incoming domains are mapped against our 330M-domain historical corpus. We isolate infrastructure footprints, configurations, and network risk indices.'
+      bodyText: `Incoming domains are mapped against our ${DOMAINS_DISPLAY} domain historical corpus. We isolate infrastructure footprints, configurations, and network risk indices.`
     },
     {
       stageNumber: '[03]',

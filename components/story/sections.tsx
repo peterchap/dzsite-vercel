@@ -4,7 +4,7 @@ import { EarlyWarningTimeline } from "@/components/diagrams/EarlyWarningTimeline
 import { IntelligenceEngine } from "@/components/diagrams/IntelligenceEngine/IntelligenceEngine";
 import { LiveInternetIntelligence } from "@/components/diagrams/LiveInternetIntelligence/LiveInternetIntelligence";
 import { ObservatoryPreview } from "@/components/diagrams/ObservatoryPreview/ObservatoryPreview";
-import type { Card, CopySection, Cta, TimelineStep } from "./types";
+import type { Card, CopySection, Cta, HeroChip, TimelineStep } from "./types";
 import { CampaignAdvantageSection } from "./CampaignAdvantageSection";
 import { ContinueExploring } from "./ContinueExploring";
 import { RelationshipIntelligenceSection } from "./RelationshipIntelligenceSection";
@@ -19,6 +19,7 @@ type HeroProps = {
   primaryCta: Cta;
   secondaryCta: Cta;
   pills: string[];
+  chips: HeroChip[];
 };
 
 type SignalsProps = CopySection & { items: Card[] };
@@ -42,7 +43,22 @@ export function StoryHero({ data }: { data: HeroProps }) {
             <StoryButton href={data.secondaryCta.href} secondary>{data.secondaryCta.label}</StoryButton>
           </div>
           <div className="mt-12 grid max-w-3xl gap-3 text-xs text-slate-300 sm:grid-cols-3">
-            {data.pills.map((pill) => <div key={pill} className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">{pill}</div>)}
+            {data.chips.map((chip) =>
+              chip.href ? (
+                <a
+                  key={chip.label}
+                  href={chip.href}
+                  className="group rounded-2xl border border-cyan-300/25 bg-cyan-300/[0.06] px-4 py-3 font-medium text-cyan-100 transition hover:border-cyan-300/50 hover:bg-cyan-300/[0.1]"
+                >
+                  {chip.label}
+                  <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">→</span>
+                </a>
+              ) : (
+                <div key={chip.label} className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                  {chip.label}
+                </div>
+              ),
+            )}
           </div>
         </div>
       </div>

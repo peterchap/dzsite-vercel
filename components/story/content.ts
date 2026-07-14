@@ -1,15 +1,22 @@
 import type { StoryContent } from "./types";
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 export const defaultStoryContent: StoryContent = {
+  // WU24: coverage wedge leads; lead-time (48h/~10s) demoted to a proof chip.
   heroEyebrow: "Internet Infrastructure Intelligence",
-  heroTitle: "Detect malicious infrastructure up to 48 hours before traditional blacklists.",
+  heroTitle: "Your threat feeds see attacks. We see them being built.",
   heroIntro:
-    "Datazag detects malicious domains within ~10s of certificate issuance and pipes annotated intelligence straight into your SIEM and controls — up to 48 hours ahead of traditional blacklists.",
+    "Datazag maps malicious infrastructure at certificate issuance — surfacing whole campaigns before the first domain attacks — and delivers scored, annotated intelligence straight into your SIEM, warehouse and controls.",
   heroStatement:
     "",
   primaryCta: { label: "Get your free report", href: "/#free-report" },
-  secondaryCta: { label: "See how it works", href: "#how-it-works" },
+  secondaryCta: { label: "Read the investigation", href: "/intelligence/one-signal-150-domains" },
   heroPills: ["Detect earlier", "Block with evidence", "Act before launch"],
+  heroChips: [
+    { label: "150 domains from one signal — 0 in public domain feeds", href: "/intelligence/one-signal-150-domains" },
+    { label: "~10s from certificate to scored alert" },
+    { label: "Up to 48h ahead of blacklists" },
+  ],
   insight: {
     kicker: "Why it matters",
     title: "Every attack changes the internet first.",
@@ -72,7 +79,7 @@ export const defaultStoryContent: StoryContent = {
     { marker: "05", title: "Traditional detection", text: "Most controls see the threat after it reaches users or systems." },
   ],
   proofPoints: [
-    { title: "340M+ domains", text: "Every observation can be correlated against the Datazag domain corpus." },
+    { title: `${DOMAINS_DISPLAY} domains`, text: "Every observation can be correlated against the Datazag domain corpus." },
     { title: "Explainable", text: "Risk output is paired with reason codes and supporting evidence." },
     { title: "Continuous", text: "Internet infrastructure, DNS and network telemetry refresh continuously." },
     { title: "Cloud-native", text: "Reports, alerts, APIs and data products come from the same intelligence layer." },
@@ -116,6 +123,7 @@ export function mergeStoryContent(content?: Partial<StoryContent> | null): Story
     applicationsSection: { ...defaultStoryContent.applicationsSection, ...(content?.applicationsSection ?? {}) },
     finalCta: { ...defaultStoryContent.finalCta, ...(content?.finalCta ?? {}) },
     heroPills: content?.heroPills?.length ? content.heroPills : defaultStoryContent.heroPills,
+    heroChips: content?.heroChips?.length ? content.heroChips : defaultStoryContent.heroChips,
     internetSignals: content?.internetSignals?.length ? content.internetSignals : defaultStoryContent.internetSignals,
     timelineSteps: content?.timelineSteps?.length ? content.timelineSteps : defaultStoryContent.timelineSteps,
     proofPoints: content?.proofPoints?.length ? content.proofPoints : defaultStoryContent.proofPoints,

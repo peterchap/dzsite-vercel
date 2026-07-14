@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const stages = ["Signal", "Relationships", "Campaign surface", "Intelligence", "Evidence packages"];
 
 function Node({ label, tone = "default" }: { label: string; tone?: "default" | "primary" | "output" }) {
@@ -84,6 +86,13 @@ export function RelationshipIntelligenceSection() {
                 </div>
               ))}
             </div>
+
+            <p className="mt-6 text-sm leading-6 text-slate-400">
+              See this exact pivot run on a real criminal hosting cluster:{" "}
+              <Link href="/intelligence/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                One Signal, 150 Domains →
+              </Link>
+            </p>
           </div>
 
           <RelationshipGraph />

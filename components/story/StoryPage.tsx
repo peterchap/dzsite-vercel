@@ -1,5 +1,6 @@
 import type { StoryContent } from "./types";
 import { mergeStoryContent } from "./content";
+import { CaseStudyTeaser } from "./CaseStudyTeaser";
 import {
   StoryAudiences,
   StoryEngine,
@@ -11,7 +12,6 @@ import {
   StoryRelationshipIntelligence,
   StoryReportCta,
   StorySignals,
-  StoryTimeline,
 } from "./sections";
 
 export type { StoryContent } from "./types";
@@ -30,9 +30,21 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
           primaryCta: c.primaryCta,
           secondaryCta: c.secondaryCta,
           pills: c.heroPills,
+          chips: c.heroChips,
         }}
       />
-      <StoryTimeline data={{ ...c.graph, steps: c.timelineSteps }} />
+      {/*
+        WU23 §5 / WU25 §4: the case-study teaser is the primary proof slot,
+        directly under the hero. It supersedes the generic Detection Advantage
+        timeline (StoryTimeline + EarlyWarningTimeline), which is removed here —
+        one real timeline, not one illustrative + one real.
+
+        WU22 (single-case lead-time timeline) is PAUSED, not cancelled: its data
+        contract becomes the schema for the future continuous detection log under
+        /intelligence/. The StoryTimeline/EarlyWarningTimeline components remain in
+        the repo for that revival; they are simply no longer mounted here.
+      */}
+      <CaseStudyTeaser />
       <StoryInsight data={c.insight} />
       <StoryRelationshipIntelligence />
       <StoryEngine data={{ ...c.platform, proofPoints: c.proofPoints, evidence: c.graphEvidence }} />

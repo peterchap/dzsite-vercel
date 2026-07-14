@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+
 import {
   copyCta,
   copyText,
@@ -35,7 +37,7 @@ const alertExampleFields = [
 
 const alertExampleReasons = [
   "Platform impersonation targeting 'exchange' (Category: Microsoft 365)",
-  "Domain not found in known 330M corpus",
+  `Domain not found in known ${DOMAINS_DISPLAY} corpus`,
   "infra: ELEVATED_NETWORK_TYPE",
   "infra: CERTSTREAM_ANOMALY",
   "infra: MALICIOUS_IP_DENSITY",

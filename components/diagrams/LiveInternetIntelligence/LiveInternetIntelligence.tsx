@@ -1,3 +1,6 @@
+import { isActivityPanelRenderable, safeSnapshotLabel } from "@/lib/live-activity-guard";
+import { siteStats } from "@/lib/site-stats";
+
 type CoverageSnapshot = {
   domains?: number;
   ips?: number;
@@ -29,7 +32,7 @@ type StatusSnapshot = {
 };
 
 const fallbackCoverage: Required<CoverageSnapshot> = {
-  domains: 342010111,
+  domains: siteStats.domainsMonitored,
   ips: 3210567890,
   threat_ips: 10543210,
   infrastructure_ips: 10543210,
@@ -116,8 +119,19 @@ export async function LiveInternetIntelligence() {
     { label: "Certificate stream", value: status.certstream ?? "live" },
     { label: "DNS intelligence", value: status.dns ?? "live" },
     { label: "Risk scores", value: status.scores ?? "live" },
-    { label: "Infrastructure graph", value: status.snapshot ?? "updated" },
+    // WU25 §1: never surface a placeholder snapshot like "00:00 UTC".
+    { label: "Infrastructure graph", value: safeSnapshotLabel(status.snapshot) ?? "live" },
   ];
+
+  // WU25 §1 (STOP-LINE): the per-hour activity panel renders only if EVERY
+  // metric is non-zero and non-null. On any zero/null it is hidden entirely so
+  // we never render a self-refuting live zero (e.g. "0 certificates").
+  const activityPanelVisible = isActivityPanelRenderable([
+    activity.certificates,
+    activity.new_domains,
+    activity.alerts,
+    activity.routing_changes,
+  ]);
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 shadow-2xl shadow-black/20 md:p-8">
@@ -156,25 +170,27 @@ export async function LiveInternetIntelligence() {
           ))}
         </div>
 
-        <div className="mt-5 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Last {activity.window ?? "1h"}</p>
-                <h4 className="mt-2 text-xl font-semibold text-white">Infrastructure activity</h4>
-              </div>
-              <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">{formatUpdatedLabel(activity.updated ?? status.updated)}</p>
-            </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {activityMetrics.map((metric) => (
-                <div key={metric.label} className="rounded-2xl border border-white/10 bg-[#030619]/50 p-4">
-                  <p className="text-2xl font-semibold text-white">{metric.value}</p>
-                  <p className="mt-2 text-sm font-semibold text-slate-100">{metric.label}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-400">{metric.detail}</p>
+        <div className={`mt-5 grid gap-5 ${activityPanelVisible ? "lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
+          {activityPanelVisible ? (
+            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
+              <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Last {activity.window ?? "1h"}</p>
+                  <h4 className="mt-2 text-xl font-semibold text-white">Infrastructure activity</h4>
                 </div>
-              ))}
+                <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">{formatUpdatedLabel(activity.updated ?? status.updated)}</p>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {activityMetrics.map((metric) => (
+                  <div key={metric.label} className="rounded-2xl border border-white/10 bg-[#030619]/50 p-4">
+                    <p className="text-2xl font-semibold text-white">{metric.value}</p>
+                    <p className="mt-2 text-sm font-semibold text-slate-100">{metric.label}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-400">{metric.detail}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           <div className="rounded-[1.5rem] border border-white/10 bg-[#030619]/55 p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Coverage model</p>

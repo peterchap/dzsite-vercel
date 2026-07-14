@@ -26,6 +26,12 @@ export function ObservatoryPreview() {
                 Analyse your domain
               </a>
             </div>
+            <p className="mt-5 text-sm leading-6 text-slate-400">
+              The same pivot builder mapped 150 domains from a single signal:{" "}
+              <a href="/intelligence/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                read the investigation →
+              </a>
+            </p>
           </div>
 
           <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/85 p-4 shadow-2xl shadow-black/25 md:p-5">

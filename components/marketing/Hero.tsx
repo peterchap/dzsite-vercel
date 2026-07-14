@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Shield, Database } from "lucide-react"
 import Image from "next/image"
 import { urlFor } from "@/sanity/lib/image"
+import { DOMAINS_DISPLAY } from "@/lib/site-stats"
 
 interface HeroProps {
     heading: string
@@ -79,7 +80,7 @@ export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
                             <h2 className="text-xl font-semibold text-white">DOMAIN INTELLIGENCE</h2>
                         </div>
                         <p className="text-gray-400 mb-6">
-                            310M domains with risk scores, enrichment, and historical data.
+                            {DOMAINS_DISPLAY} domains with risk scores, enrichment, and historical data.
                         </p>
                         <div className="flex flex-col gap-3">
                             <Link href="/domain-intelligence" className="inline-flex items-center justify-center rounded-md bg-[#131326] px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-600 hover:bg-[#1E1E38] w-full border border-gray-600">
@@ -92,7 +93,7 @@ export function Hero({ heading, subheading, primaryCta, image }: HeroProps) {
                 <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-400">
                     <span className="flex items-center gap-2">⚡ &lt;60 sec detection</span>
                     <span className="flex items-center gap-2">🎯 &lt;1% false positives</span>
-                    <span className="flex items-center gap-2">🌍 310M domains</span>
+                    <span className="flex items-center gap-2">🌍 {DOMAINS_DISPLAY} domains</span>
                     <span className="flex items-center gap-2">☁️ API + Data Shares</span>
                 </div>
 

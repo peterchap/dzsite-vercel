@@ -1,6 +1,8 @@
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+
 const proofMetrics = [
   {
-    value: "340M+",
+    value: DOMAINS_DISPLAY,
     label: "Domains monitored",
     detail: "Continuously correlated against DNS, certificate and infrastructure history.",
     tone: "cyan",

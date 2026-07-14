@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Code, ArrowRight } from "lucide-react";
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 type DeliveryMode = {
   phase: string;
@@ -60,7 +61,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
   const {
     anchor = "delivery-modes",
     headline = "One engine. Three ways to put it to work.",
-    description = "Every Datazag product runs on the same Graph \u2014 the 330M-domain corpus, live CertStream, BGP and DNS pipelines. Pick the way you want to consume it.",
+    description = `Every Datazag product runs on the same Graph \u2014 the ${DOMAINS_DISPLAY} domain corpus, live CertStream, BGP and DNS pipelines. Pick the way you want to consume it.`,
     modes = [
         {
             phase: "ASSESS",

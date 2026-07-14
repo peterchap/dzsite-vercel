@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Container } from "@/components/ui/Container";
+import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 type Card = {
   title: string;
@@ -74,7 +75,7 @@ const defaultContent: HomepageAtmosphereContent = {
     kicker: "The platform",
     title: "From signal to intelligence in seconds.",
     body: [
-      "Datazag treats every new observation as the start of an investigation. Each signal is correlated across 340M+ internet domains, enriched with internet telemetry and threat intelligence, then connected into a continuously evolving infrastructure graph.",
+      `Datazag treats every new observation as the start of an investigation. Each signal is correlated across ${DOMAINS_DISPLAY} internet domains, enriched with internet telemetry and threat intelligence, then connected into a continuously evolving infrastructure graph.`,
     ],
   },
   graph: {
@@ -128,7 +129,7 @@ const defaultContent: HomepageAtmosphereContent = {
   ],
   proofPoints: [
     { title: "5–10 seconds", text: "New infrastructure investigated within seconds of the first observable signal." },
-    { title: "340M+ domains", text: "Every observation can be correlated against the Datazag domain corpus." },
+    { title: `${DOMAINS_DISPLAY} domains`, text: "Every observation can be correlated against the Datazag domain corpus." },
     { title: "Hourly telemetry", text: "Internet network, DNS, infrastructure and threat telemetry refresh continuously." },
     { title: "Campaign clustering", text: "Infrastructure relationships turn isolated signals into campaign intelligence." },
   ],
