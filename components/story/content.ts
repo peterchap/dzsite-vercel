@@ -43,10 +43,12 @@ export const defaultStoryContent: StoryContent = {
       "Traditional controls usually see the threat when it reaches a user, inbox, browser or endpoint. Datazag looks earlier, at the infrastructure attackers need before campaigns become operational.",
     ],
   },
+  // WU28-A step 3: retitled to journey voice (was "Products / Choose how you
+  // consume the intelligence").
   delivery: {
-    kicker: "Products",
-    title: "Choose how you consume the intelligence.",
-    body: ["The same intelligence engine powers reports, alerts and infrastructure data products."],
+    kicker: "Into your stack",
+    title: "Explainable signals flow into controls you already operate.",
+    body: ["The same intelligence engine delivers scored, annotated records as reports, alerts, APIs and data shares — formats of one thing, not separate products."],
   },
   partners: {
     kicker: "Who it helps",
