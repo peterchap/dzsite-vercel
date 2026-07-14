@@ -24,7 +24,7 @@ export const content: PageContent = {
     ],
   },
   serviceCatalogue: {
-    eyebrow: "Partner service catalogue",
+    eyebrow: "Partner service catalog",
     title: "Create services around trust, abuse and deliverability.",
     body: "Choose the first commercial motion: signup screening, pre-send link checks, early abuse alerts, customer hygiene, deliverability intelligence or brand protection.",
     items: [
@@ -34,7 +34,7 @@ export const content: PageContent = {
       { key: "smtp-enrichment", title: "SMTP log enrichment", text: "Join send logs and campaign history with domain, DNS, infrastructure and risk intelligence for deeper abuse and deliverability analytics.", tags: ["Sending domains", "Recipient patterns", "Risk fields", "History", "Warehouse joins"] },
       { key: "data-hygiene", title: "Customer data hygiene", text: "Identify suspicious, weak or low-quality customer data before it creates deliverability, fraud or platform-trust problems.", tags: ["List quality", "Domain quality", "Disposable signals", "DNS posture", "Remediation notes"] },
       { key: "brand-protection", title: "Brand protection add-on", text: "Offer customers monitoring for brand impersonation, suspicious domains and evidence packs under your own product experience.", tags: ["Customer brands", "Impersonation alerts", "Evidence packs", "Abuse contacts", "Reports"] },
-      { key: "deliverability-intel", title: "Deliverability intelligence", text: "Give deliverability and customer-success teams better context for risk, reputation, customer behaviour and domain posture.", tags: ["Domain posture", "Infrastructure risk", "Trend analysis", "Customer reports", "Account reviews"] },
+      { key: "deliverability-intel", title: "Deliverability intelligence", text: "Give deliverability and customer-success teams better context for risk, reputation, customer behavior and domain posture.", tags: ["Domain posture", "Infrastructure risk", "Trend analysis", "Customer reports", "Account reviews"] },
     ],
   },
   howDatazagFits: {
@@ -93,7 +93,7 @@ export const content: PageContent = {
       { key: "screen", title: "Screen", text: "Check customer domains, websites, DNS and infrastructure during signup, onboarding or tier upgrades." },
       { key: "score", title: "Score", text: "Evaluate campaign links, landing pages, redirect chains and sending domains before or during send." },
       { key: "decide", title: "Decide", text: "Feed risk, reason codes and confidence into allow, warn, throttle, block or review workflows." },
-      { key: "analyse", title: "Analyse", text: "Enrich SMTP logs, campaign history and abuse queues with domain and infrastructure intelligence." },
+      { key: "analyse", title: "Analyze", text: "Enrich SMTP logs, campaign history and abuse queues with domain and infrastructure intelligence." },
       { key: "monetise", title: "Monetise", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
     ],
   },

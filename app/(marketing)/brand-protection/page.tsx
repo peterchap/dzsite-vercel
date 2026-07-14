@@ -40,7 +40,7 @@ const alertStages = [
     key: "customer-de-escalation",
     step: "4",
     title: "Customer de-escalation update",
-    trigger: "The customer recognises the finding as legitimate, authorised, duplicate, irrelevant or known-good.",
+    trigger: "The customer recognizes the finding as legitimate, authorized, duplicate, irrelevant or known-good.",
     delivered: "The incident can be de-escalated at any point. The reason is retained so partner sites and approved campaigns reduce future noise.",
     status: "De-escalated",
   },
@@ -79,7 +79,7 @@ const deliveredObjects = [
   {
     key: "de-escalation-control",
     title: "De-escalation control",
-    text: "A clear route to mark legitimate partner sites, authorised campaigns, duplicates or known-good infrastructure so future noise is reduced.",
+    text: "A clear route to mark legitimate partner sites, authorized campaigns, duplicates or known-good infrastructure so future noise is reduced.",
     tags: ["Legitimate", "Partner site", "Known-good", "Suppress"],
   },
 ];
@@ -90,16 +90,16 @@ const incidentStates = [
   { key: "monitoring", title: "Monitoring", text: "Low-confidence or early-stage infrastructure being watched for activation, DNS, hosting or content changes." },
   { key: "investigating", title: "Investigating", text: "Analyst, customer or partner review is needed before action." },
   { key: "block-notice", title: "Block notice", text: "High-confidence infrastructure is suitable for block-list, SIEM, SOAR or customer-warning workflows." },
-  { key: "evidence-pack", title: "Evidence pack", text: "Evidence and abuse contacts are being packaged so the organisation can manage its own provider, registrar or legal response." },
-  { key: "action-requested", title: "Action requested", text: "The customer, authorised partner, abuse desk, registrar or provider has been asked to take action by the organisation managing the case." },
+  { key: "evidence-pack", title: "Evidence pack", text: "Evidence and abuse contacts are being packaged so the organization can manage its own provider, registrar or legal response." },
+  { key: "action-requested", title: "Action requested", text: "The customer, authorized partner, abuse desk, registrar or provider has been asked to take action by the organization managing the case." },
   { key: "resolved", title: "Resolved", text: "The infrastructure is no longer active, has been remediated or has reached the agreed closure condition." },
   { key: "de-escalated", title: "De-escalated", text: "The finding is accepted as a legitimate partner site, known-good campaign, irrelevant match, duplicate or below action threshold." },
 ];
 
 const deEscalationReasons = [
-  { key: "legitimate-partner", title: "Legitimate partner site", text: "A supplier, agency, reseller, franchisee or fulfilment partner is authorised to use the brand or campaign domain." },
+  { key: "legitimate-partner", title: "Legitimate partner site", text: "A supplier, agency, reseller, franchisee or fulfillment partner is authorized to use the brand or campaign domain." },
   { key: "approved-campaign", title: "Approved campaign", text: "The domain is part of an approved marketing, support, onboarding, payment or customer-success workflow." },
-  { key: "known-good", title: "Known-good infrastructure", text: "The asset belongs to the organisation, a trusted provider or a previously approved platform footprint." },
+  { key: "known-good", title: "Known-good infrastructure", text: "The asset belongs to the organization, a trusted provider or a previously approved platform footprint." },
   { key: "duplicate-irrelevant", title: "Duplicate or irrelevant", text: "The finding duplicates an existing incident or matches a term that is not relevant to the protected brand." },
 ];
 
@@ -135,7 +135,7 @@ const deliveryRoutes = [
   {
     key: "evidence-pack-export",
     title: "Evidence pack export",
-    text: "A shareable bundle of evidence and abuse contacts for the organisation to use in provider, registrar, legal or internal response.",
+    text: "A shareable bundle of evidence and abuse contacts for the organization to use in provider, registrar, legal or internal response.",
   },
   {
     key: "partner-branded-alert-service",
@@ -273,7 +273,7 @@ export default async function BrandProtectionPage() {
               {copyText(hero?.body, "Datazag Brand Protection detects brand impersonation in stages: before DNS exists, when DNS and infrastructure appear, when a website becomes visible, and when the customer confirms or de-escalates the finding.")}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              {copyText(hero?.secondaryBody, "Datazag is not a takedown service. We provide staged alerts, the evidence pack, abuse contacts and incident updates so your organisation or authorised partner can manage blocking, abuse reporting, legal review, takedown requests and de-escalation.")}
+              {copyText(hero?.secondaryBody, "Datazag is not a takedown service. We provide staged alerts, the evidence pack, abuse contacts and incident updates so your organization or authorized partner can manage blocking, abuse reporting, legal review, takedown requests and de-escalation.")}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href={primaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{primaryCta.label}</a>
@@ -318,7 +318,7 @@ export default async function BrandProtectionPage() {
           <SectionHeader
             eyebrow={copyText(serviceBoundarySection?.eyebrow, "Service boundary")}
             title={copyText(serviceBoundarySection?.title, "Detection and evidence, not outsourced takedown.")}
-            body={copyText(serviceBoundarySection?.body, "Datazag identifies brand impersonation, maintains the incident record and supplies the evidence pack and abuse contacts. The organisation or its authorised partner remains in control of provider contact, legal decisions, takedown requests and customer communications.")}
+            body={copyText(serviceBoundarySection?.body, "Datazag identifies brand impersonation, maintains the incident record and supplies the evidence pack and abuse contacts. The organization or its authorized partner remains in control of provider contact, legal decisions, takedown requests and customer communications.")}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {resolvedServiceBoundary.map((item) => (
@@ -361,7 +361,7 @@ export default async function BrandProtectionPage() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Incident control</p>
                 <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">De-escalate legitimate site</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorised partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history and can reduce future noise.</p>
+                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorized partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history and can reduce future noise.</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {resolvedDeEscalationReasons.map((item) => (

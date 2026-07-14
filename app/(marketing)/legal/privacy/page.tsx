@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
                         <p className="mb-4">We use personal data to:</p>
                         <ul className="list-disc pl-5 space-y-2 text-slate-600">
                             <li>Provide and operate our website and services</li>
-                            <li>Respond to enquiries and demo requests</li>
+                            <li>Respond to inquiries and demo requests</li>
                             <li>Manage customer relationships and accounts</li>
                             <li>Improve our products, services, and security</li>
                             <li>Monitor and protect our infrastructure from abuse</li>
@@ -128,7 +128,7 @@ export default function PrivacyPolicyPage() {
 
                     <LegalSection title="8. Data retention">
                         <p>
-                            We retain personal data only for as long as necessary to fulfil the purposes described in this policy, unless a longer retention period is required or permitted by law.
+                            We retain personal data only for as long as necessary to fulfill the purposes described in this policy, unless a longer retention period is required or permitted by law.
                         </p>
                         <p className="mt-4 font-semibold text-slate-900">Retention periods depend on:</p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-600">
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
 
                     <LegalSection title="9. Data security">
                         <p>
-                            We implement appropriate technical and organisational measures designed to protect personal data, including:
+                            We implement appropriate technical and organizational measures designed to protect personal data, including:
                         </p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-600">
                             <li>access controls and least-privilege principles</li>

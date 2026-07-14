@@ -37,7 +37,7 @@ export default function TermsOfServicePage() {
                             By accessing or using the Services, you agree to be bound by these Terms. If you do not agree, you may not access or use the Services.
                         </p>
                         <p className="mt-4">
-                            If you are using the Services on behalf of an organisation, you represent that you have the authority to bind that organisation to these Terms.
+                            If you are using the Services on behalf of an organization, you represent that you have the authority to bind that organization to these Terms.
                         </p>
                     </LegalSection>
 

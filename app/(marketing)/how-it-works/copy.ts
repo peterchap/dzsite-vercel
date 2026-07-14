@@ -52,10 +52,10 @@ export const content: PageContent = {
     title: "Designed to complement the security stack.",
     body: "Datazag is an external infrastructure layer. It helps existing security, fraud, platform and data workflows make better decisions.",
     items: [
-      { key: "outside-in", title: "Outside-in first", text: "Datazag looks at the infrastructure visible from outside the organisation, where many impersonation and abuse signals start forming." },
+      { key: "outside-in", title: "Outside-in first", text: "Datazag looks at the infrastructure visible from outside the organization, where many impersonation and abuse signals start forming." },
       { key: "evidence", title: "Evidence over assertion", text: "Findings should show the reason, the observed infrastructure and the supporting context behind a score or alert." },
       { key: "workflow", title: "Workflow-aware delivery", text: "A SOC, MSSP, ESP, data buyer and executive report do not need the same output, even when they use the same intelligence layer." },
-      { key: "control", title: "Customer control", text: "Customers and authorised partners control response decisions, takedown requests, de-escalation and permitted use boundaries." },
+      { key: "control", title: "Customer control", text: "Customers and authorized partners control response decisions, takedown requests, de-escalation and permitted use boundaries." },
     ],
   },
   outputs: {
@@ -67,7 +67,7 @@ export const content: PageContent = {
       { key: "alerts", title: "Alerts", text: "Operational signals with reason codes, evidence and lifecycle updates." },
       { key: "api", title: "API / webhooks", text: "Lookup, scoring and enrichment for products, portals and security workflows." },
       { key: "cloud", title: "Cloud data products", text: "SQL-ready infrastructure intelligence for warehouses, lakehouses and marketplace routes." },
-      { key: "partner", title: "Partner services", text: "Datazag-powered services delivered through MSSPs, ESPs, platforms and other authorised partners." },
+      { key: "partner", title: "Partner services", text: "Datazag-powered services delivered through MSSPs, ESPs, platforms and other authorized partners." },
     ],
   },
   finalCta: {

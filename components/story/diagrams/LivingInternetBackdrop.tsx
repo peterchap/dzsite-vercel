@@ -82,12 +82,12 @@ export function LivingInternetBackdrop() {
           </g>
 
           {infrastructureNodes.map((node, index) => {
-            const colour = nodeColour(node.tone);
+            const color = nodeColour(node.tone);
             return (
               <g key={node.id} filter="url(#dz-soft-glow)">
                 <circle cx={node.x} cy={node.y} r={node.r * 2.8} fill="url(#dz-node-glow)" opacity={node.tone === "core" ? 0.28 : 0.14} />
-                <circle cx={node.x} cy={node.y} r={node.r} fill={colour} fillOpacity={node.tone === "alert" ? 0.78 : 0.62} />
-                <circle cx={node.x} cy={node.y} r={node.r + 1.4} fill="none" stroke={colour} strokeOpacity="0.28" strokeWidth="0.3" />
+                <circle cx={node.x} cy={node.y} r={node.r} fill={color} fillOpacity={node.tone === "alert" ? 0.78 : 0.62} />
+                <circle cx={node.x} cy={node.y} r={node.r + 1.4} fill="none" stroke={color} strokeOpacity="0.28" strokeWidth="0.3" />
                 <text x={node.x + node.r + 2} y={node.y + 0.9} fill="#D9F8FF" fillOpacity={index % 2 === 0 ? 0.52 : 0.36} fontSize="2.2" fontWeight="600" letterSpacing="0.22em">
                   {node.label}
                 </text>

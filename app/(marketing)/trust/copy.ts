@@ -81,7 +81,7 @@ export const content: PageContent = {
     title: "Different products expose different slices of the intelligence layer.",
     body: "A report, alert, API response and cloud data share can draw on the same intelligence foundation, but each has its own field scope and intended use.",
     items: [
-      { key: "reports", title: "Reports", text: "Designed for business-readable findings, DNS defence analysis, threat exposure, remediation priorities and portfolio summaries." },
+      { key: "reports", title: "Reports", text: "Designed for business-readable findings, DNS defense analysis, threat exposure, remediation priorities and portfolio summaries." },
       { key: "alerts", title: "Alerts", text: "Designed for operational delivery with alert class, reason codes, infrastructure context, recommended action and de-escalation paths." },
       { key: "api", title: "API", text: "Designed for real-time scoring and enrichment inside customer products, analyst workflows and partner platforms." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Designed for analytical joins, historical review, data science, threat hunting and marketplace-style consumption." },

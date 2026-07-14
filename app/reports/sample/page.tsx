@@ -11,23 +11,23 @@ const domainSummary = [
   ["Domain", "example-business.co.uk"],
   ["Report type", "Free single-domain health report"],
   ["Primary exposure", "Microsoft 365 and payment-platform lures relevant to visible platform footprint"],
-  ["DNS defence", "DMARC present but not enforcing; SPF and DKIM require alignment review"],
+  ["DNS defense", "DMARC present but not enforcing; SPF and DKIM require alignment review"],
   ["First action", "Harden email authentication and review stale DNS records"],
 ];
 
 const domainSections = [
   {
     title: "Executive summary",
-    text: "The domain shows a visible Microsoft 365 mail footprint, public helpdesk and payment-related platform signals. External suspicious infrastructure is appearing around several of those platform lures. DNS defences are partially configured but not yet strong enough to give a high-confidence anti-spoofing posture.",
+    text: "The domain shows a visible Microsoft 365 mail footprint, public helpdesk and payment-related platform signals. External suspicious infrastructure is appearing around several of those platform lures. DNS defenses are partially configured but not yet strong enough to give a high-confidence anti-spoofing posture.",
     points: ["Threat exposure is mainly platform-led, not direct brand impersonation", "DMARC policy is not enforcing", "Several subdomains expose third-party platform usage", "First remediation should focus on email authentication and stale DNS review"],
   },
   {
     title: "Platform-led threat exposure",
-    text: "Detected platform footprint makes Microsoft 365, Stripe and Zendesk-themed lures relevant to this organisation. The report highlights suspicious infrastructure using login, verify, billing and support language around those platforms.",
+    text: "Detected platform footprint makes Microsoft 365, Stripe and Zendesk-themed lures relevant to this organization. The report highlights suspicious infrastructure using login, verify, billing and support language around those platforms.",
     points: ["Detected platform: Microsoft 365", "Detected platform: payment workflow", "Detected platform: support/helpdesk", "Recommended action: move high-confidence platform lures into alerts"],
   },
   {
-    title: "DNS and email defence analysis",
+    title: "DNS and email defense analysis",
     text: "The public DNS records show basic mail authentication is present but not hardened. The domain should move gradually from monitoring to enforcement after SPF and DKIM alignment is verified.",
     points: ["DMARC: p=none, not enforcing", "SPF: present, review includes and lookup depth", "DKIM: provider keys visible, alignment check required", "MTA-STS and BIMI not detected"],
   },
@@ -43,18 +43,18 @@ const portfolioSummary = [
   ["Report type", "Cross-Estate Domain Risk Report"],
   ["Systemic issue", "DMARC non-enforcement repeated across 61% of active domains"],
   ["Operational risk", "Inconsistent mail and DNS ownership across business units"],
-  ["Programme priority", "Standardise email authentication and review exposed platform dependencies"],
+  ["Program priority", "Standardize email authentication and review exposed platform dependencies"],
 ];
 
 const portfolioSections = [
   {
     title: "Portfolio summary",
-    text: "The organisation owns multiple active, parked and legacy domains. Individual findings matter, but the bigger issue is inconsistency: the same DNS and email weaknesses appear repeatedly across brands and subsidiaries.",
+    text: "The organization owns multiple active, parked and legacy domains. Individual findings matter, but the bigger issue is inconsistency: the same DNS and email weaknesses appear repeatedly across brands and subsidiaries.",
     points: ["42 domains reviewed", "18 active business domains", "11 parked or defensive domains", "13 legacy or unclear ownership domains"],
   },
   {
     title: "Systemic risk patterns",
-    text: "Paid reporting groups repeated issues so leadership can see which weaknesses are isolated and which require a programme-level fix.",
+    text: "Paid reporting groups repeated issues so leadership can see which weaknesses are isolated and which require a program-level fix.",
     points: ["DMARC monitoring-only policy appears across 61% of active domains", "SPF records vary by business unit", "Several domains expose old marketing or helpdesk CNAMEs", "Supplier and platform footprints are inconsistent across subsidiaries"],
   },
   {
@@ -63,8 +63,8 @@ const portfolioSections = [
     points: ["High: customer-facing login and payment domains", "Medium: active brand and campaign domains", "Low: parked defensive registrations", "Review: legacy domains with unclear ownership"],
   },
   {
-    title: "Remediation programme",
-    text: "The output is designed to support an organised remediation programme: standardise controls, assign owners, remove stale records and move high-risk domains into monitoring.",
+    title: "Remediation program",
+    text: "The output is designed to support an organized remediation program: standardize controls, assign owners, remove stale records and move high-risk domains into monitoring.",
     points: ["Create a domain ownership register", "Set a standard DMARC progression plan", "Review CNAMEs and third-party service ownership", "Monitor priority brands, platforms and suppliers"],
   },
 ];
@@ -125,7 +125,7 @@ export default function SampleReportsPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample free report</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Free Domain Health Report</h2>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A one-domain report showing platform-led threat exposure, DNS defence gaps and first remediation priorities.</p>
+          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A one-domain report showing platform-led threat exposure, DNS defense gaps and first remediation priorities.</p>
           <div className="mt-10"><SummaryGrid items={domainSummary} /></div>
           <div className="mt-10"><ReportSections sections={domainSections} /></div>
         </div>
@@ -135,7 +135,7 @@ export default function SampleReportsPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample paid report</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Cross-Estate Domain Risk Report</h2>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A paid report showing individual domain findings, repeated weaknesses and systemic risk across the estate an organisation owns.</p>
+          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A paid report showing individual domain findings, repeated weaknesses and systemic risk across the estate an organization owns.</p>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
             <a href="/samples/cross-estate-domain-risk-report.html" className="font-semibold text-cyan-100 hover:text-cyan-50">Open the full sample report (the Acme Group render) →</a>
           </p>

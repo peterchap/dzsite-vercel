@@ -23,7 +23,7 @@ export default defineType({
       title: 'Section Description',
       type: 'text',
       rows: 3,
-      initialValue: 'Datazag is built for the buyers responsible for many organisations at once. The partnership shape is consistent: your brand, your product, your customer relationship \u2014 Datazag intelligence inside.'
+      initialValue: 'Datazag is built for the buyers responsible for many organizations at once. The partnership shape is consistent: your brand, your product, your customer relationship \u2014 Datazag intelligence inside.'
     }),
     defineField({
       name: 'cta',

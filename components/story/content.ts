@@ -33,7 +33,7 @@ export const defaultStoryContent: StoryContent = {
     kicker: "Turning intelligence into action",
     title: "Intelligence becomes evidence. Evidence becomes action.",
     body: [
-      "Datazag packages relationship intelligence into reports, alerts, APIs and data products so teams can block, investigate, prioritise and explain decisions before campaigns reach users.",
+      "Datazag packages relationship intelligence into reports, alerts, APIs and data products so teams can block, investigate, prioritize and explain decisions before campaigns reach users.",
     ],
   },
   graph: {
@@ -63,7 +63,7 @@ export const defaultStoryContent: StoryContent = {
     kicker: "Start here",
     title: "Get your free External Platform Threat Report.",
     body: [
-      "We analyse your domain, discover visible platforms, review DNS and email posture, surface external threat exposure and send a report you can return to later.",
+      "We analyze your domain, discover visible platforms, review DNS and email posture, surface external threat exposure and send a report you can return to later.",
     ],
   },
   finalButton: { label: "Get your free report", href: "/#free-report" },

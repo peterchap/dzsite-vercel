@@ -25,7 +25,7 @@ export const CASE_STUDY = {
   ],
 
   teaserLine:
-    "One certificate unravelled a 150-domain criminal hosting cluster — none of it in public domain feeds.",
+    "One certificate unraveled a 150-domain criminal hosting cluster — none of it in public domain feeds.",
 
   timestamps: {
     flagged: "Flagged 14 July 2026",

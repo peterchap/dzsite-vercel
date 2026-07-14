@@ -32,7 +32,7 @@ export default function VendorThesisSection(props: VendorThesisSectionProps) {
       { name: "Google", value: 10 },
       { name: "All others combined", value: 15, isOthers: true },
     ],
-    sourceText = "Datazag CertStream analysis, April 2026 \u00B7 1.2M+ certificates analysed."
+    sourceText = "Datazag CertStream analysis, April 2026 \u00B7 1.2M+ certificates analyzed."
   } = props;
 
   return (

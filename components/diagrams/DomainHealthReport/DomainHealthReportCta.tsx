@@ -15,7 +15,7 @@ const trustSignals = [
 ];
 
 const analysisSteps = [
-  "DNS analysed",
+  "DNS analyzed",
   "Platforms mapped",
   "Subdomains reviewed",
   "Certificates checked",
@@ -26,7 +26,7 @@ const reportSections = [
   { label: "Executive summary", value: "Overall risk · key exposure · priority actions" },
   { label: "Platform exposure", value: "Microsoft 365 · Cloudflare · Google Workspace" },
   { label: "DNS & subdomain health", value: "SPF · DMARC · MTA-STS · ownership · takeover signals" },
-  { label: "Technical findings", value: "Evidence, context and prioritised remediation" },
+  { label: "Technical findings", value: "Evidence, context and prioritized remediation" },
 ];
 
 function ReportPreview() {
@@ -108,7 +108,7 @@ export function DomainHealthReportCta() {
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
               <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Free Domain Health Report</p>
-              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">See your organisation through an attacker's eyes—for free.</h2>
+              <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">See your organization through an attacker's eyes—for free.</h2>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
                 Datazag reviews public DNS, visible platforms, subdomains, certificates and infrastructure exposure, then sends a detailed multi-page report for technical and executive teams.
               </p>

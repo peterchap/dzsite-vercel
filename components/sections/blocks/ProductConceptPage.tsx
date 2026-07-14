@@ -245,7 +245,7 @@ function CardGridSection({ kicker, title, items }: { kicker: string; title: stri
 
 function DatasetCatalogue({ datasets }: { datasets: DatasetSpec[] }) {
   return (
-    <Section kicker="Dataset catalogue" title="A product-shaped catalogue for marketplace and data-share buyers.">
+    <Section kicker="Dataset catalog" title="A product-shaped catalog for marketplace and data-share buyers.">
       <div className="grid gap-4 lg:grid-cols-2">
         {datasets.map((dataset) => (
           <article key={dataset.name} className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">

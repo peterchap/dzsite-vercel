@@ -91,14 +91,14 @@ const defaultContent: HomepageAtmosphereContent = {
     title: "Intelligence where decisions are made.",
     body: [
       "Datazag is not another dashboard for analysts to monitor.",
-      "The platform produces intelligence once and delivers it wherever your organisation already works.",
+      "The platform produces intelligence once and delivers it wherever your organization already works.",
     ],
   },
   partners: {
     kicker: "Partner ecosystem",
     title: "Built for teams that protect others.",
     body: [
-      "Partner audiences belong on this page, but as a concise proof of distribution and relevance rather than a full partner programme pitch.",
+      "Partner audiences belong on this page, but as a concise proof of distribution and relevance rather than a full partner program pitch.",
       "Dedicated MSSP, MDR and ESP pages can go deeper into packaging, commercial model and workflows.",
     ],
   },
@@ -107,10 +107,10 @@ const defaultContent: HomepageAtmosphereContent = {
     title: "One intelligence engine. Many uses.",
   },
   finalCta: {
-    kicker: "Your organisation",
-    title: "What does the internet already reveal about your organisation?",
+    kicker: "Your organization",
+    title: "What does the internet already reveal about your organization?",
     body: [
-      "Get a free External Platform Threat Report. We analyse your domain, identify the platforms your organisation relies on, assess your external infrastructure posture and show where emerging impersonation activity may already be forming.",
+      "Get a free External Platform Threat Report. We analyze your domain, identify the platforms your organization relies on, assess your external infrastructure posture and show where emerging impersonation activity may already be forming.",
     ],
   },
   finalButton: { label: "Get your free report", href: "/#free-report" },
@@ -136,7 +136,7 @@ const defaultContent: HomepageAtmosphereContent = {
   graphEvidence: [
     { title: "Shared infrastructure", text: "Domains, hosting, nameservers, certificates and routing relationships are connected." },
     { title: "Confidence builds", text: "Early amber signals can become high-priority campaigns as more evidence appears." },
-    { title: "History matters", text: "New observations are interpreted against previous behaviour and infrastructure reuse." },
+    { title: "History matters", text: "New observations are interpreted against previous behavior and infrastructure reuse." },
   ],
   deliveryCards: [
     { title: "Real-time Alerts", text: "Signals delivered into SIEM, SOAR, XDR, webhooks and APIs." },
@@ -147,15 +147,15 @@ const defaultContent: HomepageAtmosphereContent = {
   ],
   partnerAudiences: [
     { title: "MSSPs and MDRs", text: "Add pre-operational infrastructure intelligence to managed detection, threat hunting and customer reporting." },
-    { title: "Email and messaging platforms", text: "Use infrastructure relationships to improve link scoring, sender trust and platform impersonation defence." },
+    { title: "Email and messaging platforms", text: "Use infrastructure relationships to improve link scoring, sender trust and platform impersonation defense." },
     { title: "Security vendors", text: "Enrich products with campaign context, explainable risk and infrastructure evidence." },
   ],
   applications: [
     { title: "Security operations", text: "Detect emerging attack infrastructure before campaigns become operational." },
     { title: "Threat intelligence and hunting", text: "Uncover related domains, infrastructure reuse and campaign clusters." },
-    { title: "Email and messaging platforms", text: "Improve sender trust, link scoring, phishing detection and impersonation defence." },
+    { title: "Email and messaging platforms", text: "Improve sender trust, link scoring, phishing detection and impersonation defense." },
     { title: "AI and machine learning", text: "Train models using continuously updated infrastructure intelligence and campaign relationships." },
-    { title: "Cloud data teams", text: "Analyse attack infrastructure directly inside your existing data platform." },
+    { title: "Cloud data teams", text: "Analyze attack infrastructure directly inside your existing data platform." },
     { title: "Partners and MSSPs", text: "Embed Datazag intelligence without building your own internet telemetry platform." },
   ],
 };

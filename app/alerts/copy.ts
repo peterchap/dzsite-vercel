@@ -32,7 +32,7 @@ export const content: PageContent = {
       { key: "brand-impersonation", title: "Brand impersonation", trigger: "Prepare evidence, capture website state, identify abuse contacts and support takedown workflows.", text: "When the alert targets a brand the customer owns or represents, the workflow can move beyond blocking into evidence capture, abuse reporting and remediation tracking.", tags: ["Owned brands", "Aliases", "Suspicious wording", "Website evidence", "Abuse contacts"] },
       { key: "keyword-subdomain", title: "Keyword and subdomain infrastructure", trigger: "Investigate, block or watchlist suspicious lure terms that do not cleanly match a monitored brand.", text: "The apex domain may be parked or generic while the active subdomain carries the lure: login, secure, verify, billing, wallet, update or support.", tags: ["Suspicious subdomains", "Parked apex", "DNS activation", "Novelty", "Hosting context"] },
       { key: "infra-anomalies", title: "Infrastructure anomalies", trigger: "Escalate suspicious domains and IPs discovered around bad actor infrastructure before they appear in conventional lists.", text: "When a candidate is linked to risky infrastructure, Datazag checks related IPs, prefixes, ASNs, DNS relationships and hosted domains to uncover other connected assets that may not yet have been detected elsewhere.", tags: ["Related domains", "Related IPs", "Shared hosting", "Prefix changes", "BGP/MOAS signals"] },
-      { key: "customer-watchlists", title: "Customer watchlists", trigger: "Monitor customer-specific brands, suppliers, platforms, domains and high-risk terms with tailored thresholds.", text: "Customer context changes how alerts are interpreted. A term that is harmless for one organisation may be important for another.", tags: ["Customer brands", "Suppliers", "Terms", "Domains", "Approved baselines"] },
+      { key: "customer-watchlists", title: "Customer watchlists", trigger: "Monitor customer-specific brands, suppliers, platforms, domains and high-risk terms with tailored thresholds.", text: "Customer context changes how alerts are interpreted. A term that is harmless for one organization may be important for another.", tags: ["Customer brands", "Suppliers", "Terms", "Domains", "Approved baselines"] },
     ],
   },
   signalPipeline: {
@@ -76,7 +76,7 @@ export const content: PageContent = {
     title: "Filtering happens before the alert reaches the team.",
     body: "Brand and platform terms collide with legitimate infrastructure every day. The alerting layer needs evidence, allowlists and feedback paths to stay operationally useful.",
     items: [
-      { key: "approved-baselines", title: "Approved baselines", text: "Customer domains, brand DNS, known cloud footprints and recognised platform infrastructure are used to avoid obvious false positives." },
+      { key: "approved-baselines", title: "Approved baselines", text: "Customer domains, brand DNS, known cloud footprints and recognized platform infrastructure are used to avoid obvious false positives." },
       { key: "context-severity", title: "Context before severity", text: "A naming match alone is not enough. DNS, certificates, hosting, novelty and relationship signals change routing and severity." },
       { key: "de-escalation", title: "De-escalation feedback", text: "Accepted findings and known-good infrastructure can be de-escalated so teams are not forced to handle the same noise repeatedly." },
     ],
@@ -86,7 +86,7 @@ export const content: PageContent = {
     title: "One alert layer, multiple operational motions.",
     body: "The same infrastructure signal can support internal SOC work, managed services, brand protection, ESP abuse workflows and data-driven security operations.",
     items: [
-      { key: "soc-hunting", title: "SOC and threat hunting", text: "Prioritise emerging infrastructure before campaigns create incident volume." },
+      { key: "soc-hunting", title: "SOC and threat hunting", text: "Prioritize emerging infrastructure before campaigns create incident volume." },
       { key: "mssp-mdr", title: "MSSP and MDR delivery", text: "Package early alerting, evidence and customer reporting into managed detection services." },
       { key: "brand-protection", title: "Brand protection", text: "Separate blocking workflows from evidence-pack and takedown workflows for owned brands." },
       { key: "esp-abuse", title: "ESP abuse workflows", text: "Score suspicious links, domains and infrastructure flowing through email platforms." },

@@ -68,7 +68,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             productName: "360 Health Report",
             cadence: "Point-in-time",
             deliveredAs: "Shareable report",
-            leadBuyer: "Organisation or MSSP for their client",
+            leadBuyer: "Organization or MSSP for their client",
             outputAnswers: "\"Where am I exposed today?\"",
             roleInDefensiveAI: "Baseline mapping",
             ctaLabel: "See sample report",

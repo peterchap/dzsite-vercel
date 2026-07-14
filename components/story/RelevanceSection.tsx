@@ -2,7 +2,7 @@ import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 /**
  * Step 2 of the enterprise journey (WU28-A §3.3): "We identify what's relevant
- * to YOUR organisation." How a customer's protected platforms, brands and
+ * to YOUR organization." How a customer's protected platforms, brands and
  * keywords scope the graph into their watchlist. One diagram, house tokens.
  */
 
@@ -36,7 +36,7 @@ export function RelevanceSection() {
           <p className="mt-6 text-lg leading-8 text-slate-300">
             You tell us what you operate, own and protect. That scope carves the full infrastructure
             graph down to the domains, certificates and networks being built against your
-            organisation — and what comes out is a watchlist, not a firehose.
+            organization — and what comes out is a watchlist, not a firehose.
           </p>
         </div>
 

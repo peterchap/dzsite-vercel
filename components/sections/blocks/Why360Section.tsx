@@ -47,7 +47,7 @@ export default function Why360Section(props: Why360SectionProps) {
     threatSurfaceTitle = "The Threat Surface \u2014 your active exposure.",
     threatSurfaceBody = "The unmanaged zones \u2014 forgotten vendor integrations, abandoned staging environments, and shadow IT infrastructure. We map exactly how far the existing threats could get if they hit these exposed surfaces.",
     conversionHeadline = "Upgrade to the Full 360 View",
-    conversionBody = "The free report shows you the threat. It doesn\u2019t show you your exposure to it \u2014 and that\u2019s the half that tells you what to do. Add your internal attack surface and the External Platform Threat Report becomes the full 360 Health Report: your DNS and email-authentication posture analysed against the threats found, every weak point identified, and \u2014 for IT and MSSP customers \u2014 paste-ready DNS records to close the gaps, with provider-specific instructions.",
+    conversionBody = "The free report shows you the threat. It doesn\u2019t show you your exposure to it \u2014 and that\u2019s the half that tells you what to do. Add your internal attack surface and the External Platform Threat Report becomes the full 360 Health Report: your DNS and email-authentication posture analyzed against the threats found, every weak point identified, and \u2014 for IT and MSSP customers \u2014 paste-ready DNS records to close the gaps, with provider-specific instructions.",
     layers = [
         {
             title: "DNS Registry Analysis",

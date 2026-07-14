@@ -113,7 +113,7 @@ export default {
 
     {
       name: "datasetCatalogue",
-      title: "Dataset catalogue",
+      title: "Dataset catalog",
       type: "array",
       group: "content",
       of: [{

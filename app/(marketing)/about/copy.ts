@@ -76,7 +76,7 @@ export const content: PageContent = {
     body: "The trust model matters. Datazag provides intelligence, evidence and controlled delivery routes; customers and partners keep control of their response and use rights.",
     primaryCta: { label: "View trust and governance", href: "/trust" },
     items: [
-      { key: "not-takedown", title: "Not a takedown service", text: "Datazag provides detection, evidence packs and abuse contacts. Customers or authorised partners manage takedown requests and legal response." },
+      { key: "not-takedown", title: "Not a takedown service", text: "Datazag provides detection, evidence packs and abuse contacts. Customers or authorized partners manage takedown requests and legal response." },
       { key: "not-raw-resale", title: "Not uncontrolled raw-data resale", text: "Data products and partner rights are governed by product scope, permitted use and contractual boundaries." },
       { key: "not-black-box", title: "Not a black-box score", text: "Risk outputs are designed to include reasons and supporting context so teams can validate, challenge or de-escalate findings." },
     ],

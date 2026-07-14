@@ -38,7 +38,7 @@ function TrustStackPanel() {
     <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
       <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Buyer assurance</p>
-        <h3 className="mt-3 text-2xl font-semibold text-white">Evidence, scope and licence clarity</h3>
+        <h3 className="mt-3 text-2xl font-semibold text-white">Evidence, scope and license clarity</h3>
         <p className="mt-3 text-sm leading-6 text-slate-300">Trust comes from knowing what is included, what is excluded, how output can be used and where human review or contractual approval is needed.</p>
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />

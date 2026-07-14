@@ -88,7 +88,7 @@ export default function BenefitCards({
         {/* optional credibility chips */}
         <div className="mt-12 flex flex-wrap justify-center gap-2 text-xs text-slate-400">
           <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 backdrop-blur">
-            Prioritise what matters
+            Prioritize what matters
           </span>
           <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 backdrop-blur">
             Reduce noise and false positives

@@ -23,7 +23,7 @@ export function ObservatoryPreview() {
                 See how it works
               </a>
               <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
-                Analyse your domain
+                Analyze your domain
               </a>
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-400">

@@ -18,7 +18,7 @@ export function RelationshipIntelligence() {
       <div className="relative grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Why it matters</p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Every organisation leaves an infrastructure footprint.</h2>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Every organization leaves an infrastructure footprint.</h2>
           <p className="mt-5 text-sm leading-6 text-slate-300 md:text-base">
             Domains, DNS, certificates, mail, providers and subdomains create observable relationships. Datazag maps those relationships so exposure can be understood before attackers exploit it.
           </p>
@@ -26,7 +26,7 @@ export function RelationshipIntelligence() {
 
         <div className="relative rounded-[1.75rem] border border-white/10 bg-[#030619]/60 p-5 md:p-6">
           <div className="mx-auto grid max-w-3xl gap-4">
-            <div className="mx-auto w-full max-w-xs"><Node label="Organisation" emphasis /></div>
+            <div className="mx-auto w-full max-w-xs"><Node label="Organization" emphasis /></div>
             <div className="mx-auto h-8 w-px bg-cyan-300/35" />
             <div className="mx-auto w-full max-w-sm"><Node label="Primary domain" emphasis /></div>
 

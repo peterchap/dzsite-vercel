@@ -45,8 +45,8 @@ const enquiryTypes = [
 
 const nextSteps = [
   {
-    title: "We route the enquiry",
-    text: "The enquiry type tells us whether this is a report, alerts, brand protection, API, data product, partner or marketplace conversation.",
+    title: "We route the inquiry",
+    text: "The inquiry type tells us whether this is a report, alerts, brand protection, API, data product, partner or marketplace conversation.",
   },
   {
     title: "We check the scope",
@@ -59,7 +59,7 @@ const nextSteps = [
 ];
 
 const helpfulContext = [
-  ["For reports", "Share the domain, number of domains, portfolio type or whether the request is for your organisation, a client, supplier or acquisition target."],
+  ["For reports", "Share the domain, number of domains, portfolio type or whether the request is for your organization, a client, supplier or acquisition target."],
   ["For alerts", "Share the platforms, brands, keywords or customer workflows you want monitored and where alerts should be delivered."],
   ["For API or data", "Share expected volume, desired fields, delivery format, warehouse/lakehouse environment and refresh requirements."],
   ["For partners", "Share the service model, customer segment, rough client count and whether you need white-label, API, alerts or data-share delivery."],
@@ -69,8 +69,8 @@ const errorMessages: Record<string, string> = {
   name_required: "Please add your name.",
   valid_email_required: "Please add a valid work email address.",
   company_required: "Please add your company name.",
-  enquiry_type_required: "Please choose an enquiry type.",
-  processing_authorisation_required: "Please authorise Datazag to process your enquiry so we can respond.",
+  enquiry_type_required: "Please choose an inquiry type.",
+  processing_authorisation_required: "Please authorize Datazag to process your inquiry so we can respond.",
 };
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -125,16 +125,16 @@ export default async function ContactPage({
 
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-cyan-950/20 md:p-7">
               <div className="rounded-[1.5rem] border border-cyan-300/20 bg-cyan-300/[0.04] p-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Enquiry intake</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Inquiry intake</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">Start with the route, then the details.</h2>
                 <p className="mt-4 text-sm leading-6 text-slate-300">
-                  Choose the closest enquiry type and add the domain, portfolio, platform, integration, dataset or partner context that will help us respond usefully.
+                  Choose the closest inquiry type and add the domain, portfolio, platform, integration, dataset or partner context that will help us respond usefully.
                 </p>
               </div>
 
               {submitted ? (
                 <div className="mt-6 rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.08] p-4 text-sm leading-6 text-emerald-100" role="status">
-                  Thanks — your enquiry has been received. We will route it by the selected enquiry type.
+                  Thanks — your inquiry has been received. We will route it by the selected inquiry type.
                 </div>
               ) : null}
 
@@ -168,7 +168,7 @@ export default async function ContactPage({
                 <Field label="What do you want to do?">
                   <select className={inputClass} name="enquiry_type" defaultValue="" required>
                     <option value="" disabled>
-                      Choose an enquiry type
+                      Choose an inquiry type
                     </option>
                     {enquiryTypes.map((type) => (
                       <option key={type} value={type} className="bg-[#07102b] text-white">
@@ -190,7 +190,7 @@ export default async function ContactPage({
                   <label className="flex gap-3">
                     <input className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10" name="processing_authorisation" type="checkbox" required />
                     <span>
-                      I authorise Datazag to process the information I submit so you can respond to this enquiry, assess the relevant domain or use case, and provide the requested follow-up.
+                      I authorize Datazag to process the information I submit so you can respond to this inquiry, assess the relevant domain or use case, and provide the requested follow-up.
                     </span>
                   </label>
                   <label className="flex gap-3">
@@ -202,11 +202,11 @@ export default async function ContactPage({
                 </div>
 
                 <button className="inline-flex items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200" type="submit">
-                  Send enquiry
+                  Send inquiry
                 </button>
 
                 <p className="text-xs leading-5 text-slate-500">
-                  Processing authorisation is required so Datazag can respond to the enquiry. Marketing opt-in is optional and is not required to receive a response.
+                  Processing authorization is required so Datazag can respond to the inquiry. Marketing opt-in is optional and is not required to receive a response.
                 </p>
               </form>
             </div>
@@ -276,7 +276,7 @@ export default async function ContactPage({
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/80">Privacy note</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white">Processing is explicit. Marketing is optional.</h2>
             <p className="mt-5 text-sm leading-6 text-slate-300">
-              Processing authorisation covers responding to the enquiry and, where requested, assessing the relevant domain, portfolio or use case. Marketing consent is separate, optional and not required to receive a response.
+              Processing authorization covers responding to the inquiry and, where requested, assessing the relevant domain, portfolio or use case. Marketing consent is separate, optional and not required to receive a response.
             </p>
           </div>
         </Container>

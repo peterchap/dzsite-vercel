@@ -24,7 +24,7 @@ export const content: PageContent = {
     ],
   },
   serviceCatalogue: {
-    eyebrow: "Partner service catalogue",
+    eyebrow: "Partner service catalog",
     title: "Create services your clients already understand.",
     body: "Choose the first commercial motion: early alerts, managed detection, client reporting, remediation support, portal intelligence or a premium add-on to existing services.",
     items: [

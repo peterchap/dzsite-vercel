@@ -29,7 +29,7 @@ export default function HowItWorksSection(props: HowItWorksSectionProps) {
         stepNumber: '01',
         mechanismName: 'Platform Fingerprinting',
         systemTag: 'MAPPING',
-        description: 'One work email gives us your domain. We analyse its DNS and subdomains to map the platforms and vendors you depend on. No input from you, no manual asset lists required.'
+        description: 'One work email gives us your domain. We analyze its DNS and subdomains to map the platforms and vendors you depend on. No input from you, no manual asset lists required.'
       },
       {
         stepNumber: '02',

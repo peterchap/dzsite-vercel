@@ -174,7 +174,7 @@ export async function LiveInternetIntelligence() {
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Coverage model</p>
             <h4 className="mt-2 text-xl font-semibold text-white">Infrastructure relationships, not threat-feed lists.</h4>
             <p className="mt-3 text-sm leading-6 text-slate-400">
-              Public telemetry is normalised into Datazag's own graph so customers see explainable relationships, provider context and historical change rather than isolated indicators.
+              Public telemetry is normalized into Datazag's own graph so customers see explainable relationships, provider context and historical change rather than isolated indicators.
             </p>
             <div className="mt-5 grid gap-2">
               {["DNS intelligence", "Certificate intelligence", "Subdomain intelligence", "Routing context", "Provider and platform mapping"].map((item) => (

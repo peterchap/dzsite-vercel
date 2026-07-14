@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 303);
   }
 
-  console.info("Datazag enquiry received", payload);
+  console.info("Datazag inquiry received", payload);
 
   // Forward by email (previously this route only logged, so submissions never
   // reached anyone). Best-effort: an email failure must not lose the redirect —
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       const to = (isBenchmark && process.env.BENCHMARK_EMAIL_TO) || process.env.CONTACT_EMAIL_TO || "support@datazag.com";
       const subject = isBenchmark
         ? `Benchmark qualification — ${payload.company}`
-        : `Website enquiry (${payload.enquiryType}) — ${payload.company}`;
+        : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
       const lines = Object.entries(payload)
         .filter(([, v]) => v !== "" && v !== false)
         .map(([k, v]) => `${k}: ${v}`)
@@ -75,12 +75,12 @@ export async function POST(request: NextRequest) {
         subject,
         text: lines,
       });
-      if (error) console.error("Enquiry email send failed", error);
+      if (error) console.error("Inquiry email send failed", error);
     } catch (err) {
-      console.error("Enquiry email send failed", err);
+      console.error("Inquiry email send failed", err);
     }
   } else {
-    console.warn("RESEND_API_KEY not set — enquiry logged only, not emailed.");
+    console.warn("RESEND_API_KEY not set — inquiry logged only, not emailed.");
   }
 
   return NextResponse.redirect(new URL("/contact/thanks", request.url), 303);

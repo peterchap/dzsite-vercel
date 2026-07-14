@@ -83,8 +83,8 @@ function ReportStackPanel() {
     <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
       <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Free single-domain report</p>
-        <h3 className="mt-3 text-2xl font-semibold text-white">Threat exposure and DNS defence analysis</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-300">A practical report showing external threat context, DNS defence weaknesses and remediation priorities for one domain.</p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">Threat exposure and DNS defense analysis</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-300">A practical report showing external threat context, DNS defense weaknesses and remediation priorities for one domain.</p>
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">

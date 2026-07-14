@@ -32,7 +32,7 @@ const STAGES = [
   {
     n: "03",
     label: "Website check",
-    line: "What's actually being served? Content and behaviour, checked against the platform it claims to be.",
+    line: "What's actually being served? Content and behavior, checked against the platform it claims to be.",
   },
   {
     n: "04",

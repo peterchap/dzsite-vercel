@@ -68,7 +68,7 @@ export default function OneSignal150DomainsPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            A single certificate — on a domain that looked completely legitimate — unravelled a
+            A single certificate — on a domain that looked completely legitimate — unraveled a
             150-domain bulletproof hosting operation. Not one of those domains had been caught by any
             public domain feed.
           </p>
@@ -112,7 +112,7 @@ export default function OneSignal150DomainsPage() {
             </p>
             <p className="mt-5 text-base leading-7 text-slate-300">
               But the domain resolved into <Ioc>AS213790</Ioc>, an Iranian network our pipeline scores{" "}
-              <b className="text-white">1.0 for bulletproof behaviour</b> with an{" "}
+              <b className="text-white">1.0 for bulletproof behavior</b> with an{" "}
               <b className="text-white">abuse score of 95 / 100</b> — parts of which Spamhaus DROP
               independently lists as criminal-controlled address space. The U.S. Social Security
               Administration does not host on Iranian bulletproof infrastructure. The surface lied.
@@ -306,8 +306,8 @@ export default function OneSignal150DomainsPage() {
               intelligence is delivered as data into the stack you already run.
             </p>
             <p className="text-base leading-7 text-slate-300">
-              For MSSPs, one investigation like this, white-labelled across your client base, is a
-              retention artefact no reactive feed can produce.
+              For MSSPs, one investigation like this, white-labeled across your client base, is a
+              retention artifact no reactive feed can produce.
             </p>
             <p className="text-base leading-7 text-slate-400">
               Not every flagged certificate unravels a 150-domain cluster. Every one is checked the

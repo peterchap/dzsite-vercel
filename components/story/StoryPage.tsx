@@ -57,7 +57,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
       />
       <CaseStudyTeaser />
 
-      {/* Step 2 — we identify what's relevant to YOUR organisation. */}
+      {/* Step 2 — we identify what's relevant to YOUR organization. */}
       <RelevanceSection />
 
       {/* How step 1 works. */}

@@ -185,7 +185,7 @@ export default function BenchmarkPage() {
             </label>
             <label className="flex items-start gap-3 text-sm leading-6 text-slate-400">
               <input required type="checkbox" name="processing_authorisation" className="mt-1" />
-              I&rsquo;m authorised to discuss my organisation&rsquo;s security tooling and consent to Datazag
+              I&rsquo;m authorized to discuss my organization&rsquo;s security tooling and consent to Datazag
               processing these details to respond.
             </label>
             <button

@@ -36,7 +36,7 @@ export default function AttackChainDiagram({
   subtitle = "Phishing and impersonation campaigns are assembled step by step using newly registered domains, SSL certificates, DNS, and infrastructure. Most security tools detect them once emails are sent or websites go live. Datazag identifies them before they go live.",
   steps,
   highlightTitle = "Where Datazag fits: early attack-chain visibility",
-  highlightBody = "We detect suspicious infrastructure during registration, DNS setup, and SSL issuance — reducing triage workload and false positives by prioritising the domains that matter.",
+  highlightBody = "We detect suspicious infrastructure during registration, DNS setup, and SSL issuance — reducing triage workload and false positives by prioritizing the domains that matter.",
 }: AttackChainDiagramProps) {
   const displaySteps = steps && steps.length > 0 ? steps : DEFAULT_STEPS;
   return (

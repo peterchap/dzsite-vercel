@@ -1,10 +1,10 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-// WU21 two-tone wordmark (option 2a). Gradient and colours come from the
+// WU21 two-tone wordmark (option 2a). Gradient and colors come from the
 // logo.* token namespace; Manrope is scoped to .dz-logo in globals.css.
 // `variant`: "mono" (flat off-white) / "knockout" (navy on light chip) are the
-// README fallbacks for single-colour print or gradient-less contexts.
+// README fallbacks for single-color print or gradient-less contexts.
 export function BrandingLogo({ className, variant }: { className?: string; variant?: "mono" | "knockout" }) {
     return (
         <span

@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
-  title: "Enquiry Received — Datazag",
-  description: "Confirmation that a Datazag enquiry has been received.",
+  title: "Inquiry Received — Datazag",
+  description: "Confirmation that a Datazag inquiry has been received.",
 };
 
 export default function ContactThanksPage() {
@@ -18,16 +18,16 @@ export default function ContactThanksPage() {
         <Container>
           <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl shadow-cyan-950/20 md:p-12">
             <p className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100">
-              Enquiry received
+              Inquiry received
             </p>
-            <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white md:text-6xl">Thanks — we have received your enquiry.</h1>
+            <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white md:text-6xl">Thanks — we have received your inquiry.</h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Datazag will route it by the enquiry type you selected: report, alerts, infrastructure intelligence, API, data share, partner route or marketplace offer.
+              Datazag will route it by the inquiry type you selected: report, alerts, infrastructure intelligence, API, data share, partner route or marketplace offer.
             </p>
 
             <div className="mt-8 grid gap-4 text-left md:grid-cols-3">
               {[
-                { title: "Route", text: "We match the enquiry to the right product path." },
+                { title: "Route", text: "We match the inquiry to the right product path." },
                 { title: "Review", text: "We use the scope and context you supplied to avoid a generic follow-up." },
                 { title: "Respond", text: "The next step may be a report, pilot, schema review, partner discussion or private offer." },
               ].map((item, index) => (

@@ -39,7 +39,7 @@ export default function PartnershipSegmentsSection(props: PartnershipSegmentsSec
   const {
     anchor = "partnerships",
     headline = "One domain is self-serve. Many domains is a partnership.",
-    description = "Datazag is built for the buyers responsible for many organisations at once. The partnership shape is consistent: your brand, your product, your customer relationship \u2014 Datazag intelligence inside.",
+    description = "Datazag is built for the buyers responsible for many organizations at once. The partnership shape is consistent: your brand, your product, your customer relationship \u2014 Datazag intelligence inside.",
     cta = { label: "Talk to us about partner access", href: "/contact" },
     segments = [
         {

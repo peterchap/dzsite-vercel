@@ -84,7 +84,7 @@ export const content: PageContent = {
     items: [
       { key: "threat-hunting", title: "Threat hunting and SOC enrichment", text: "Join domains, IPs and alerts with provider labels, relationships, reasons and historical context." },
       { key: "esp-abuse", title: "ESP and platform abuse controls", text: "Score customer domains, links, landing pages and infrastructure using explainable domain and provider intelligence." },
-      { key: "portfolio-risk", title: "Portfolio and supplier risk", text: "Analyse posture and exposure across many domains, subsidiaries, suppliers, clients or acquisition targets." },
+      { key: "portfolio-risk", title: "Portfolio and supplier risk", text: "Analyze posture and exposure across many domains, subsidiaries, suppliers, clients or acquisition targets." },
       { key: "insurance-diligence", title: "Cyber insurance and diligence", text: "Use historical and portfolio-wide evidence for underwriting, renewal, exposure analysis and M&A security review." },
       { key: "data-science", title: "Data science and AI workflows", text: "Use stable features, historical slices and reason fields for modelling, agents, analytics and decision support." },
     ],
@@ -92,7 +92,7 @@ export const content: PageContent = {
   sourceGovernance: {
     eyebrow: "Sources and governance",
     title: "Transparent enough to evaluate. Controlled enough to license.",
-    body: "The Trust page covers the full governance model. This data-product page summarises the points technical and marketplace buyers usually need first.",
+    body: "The Trust page covers the full governance model. This data-product page summarizes the points technical and marketplace buyers usually need first.",
     primaryCta: { label: "View trust and governance", href: "/trust" },
     items: [
       { key: "observation-layers", title: "Observation layers", text: "Active DNS, Certificate Transparency, routing, ASN, provider, mail posture, platform and historical observations." },

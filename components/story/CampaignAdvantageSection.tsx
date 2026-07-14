@@ -11,7 +11,7 @@ const outcomes = [
   },
   {
     title: "Reveal the campaign surface",
-    text: "The first signal becomes a pivot point. Datazag analyses surrounding domains, IPs, certificates, providers and history to identify the wider attacker infrastructure.",
+    text: "The first signal becomes a pivot point. Datazag analyzes surrounding domains, IPs, certificates, providers and history to identify the wider attacker infrastructure.",
     steps: ["Signal", "Pivots", "Related", "Campaign"],
     highlight: true,
   },

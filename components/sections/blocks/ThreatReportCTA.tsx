@@ -64,7 +64,7 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
   const {
     eyebrow = "PRIMARY CONVERSION PATH",
     headline = "Start free — the External Platform Threat Report",
-    subheadline = "Enter your work email. We take the domain from your address, analyse its DNS and subdomains to map the platforms and vendors you actually run on — your email platform, your SaaS logins, your suppliers — then check our infrastructure feeds for spoofs targeting those exact platforms and your brand.",
+    subheadline = "Enter your work email. We take the domain from your address, analyze its DNS and subdomains to map the platforms and vendors you actually run on — your email platform, your SaaS logins, your suppliers — then check our infrastructure feeds for spoofs targeting those exact platforms and your brand.",
     body,
     placeholderText = "Enter your work email",
     buttonText = "Get my free report",
