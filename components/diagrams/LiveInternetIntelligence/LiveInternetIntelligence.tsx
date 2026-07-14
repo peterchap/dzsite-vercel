@@ -1,16 +1,5 @@
 import { isActivityPanelRenderable, safeSnapshotLabel } from "@/lib/live-activity-guard";
-import { siteStats } from "@/lib/site-stats";
-
-type CoverageSnapshot = {
-  domains?: number;
-  ips?: number;
-  threat_ips?: number;
-  infrastructure_ips?: number;
-  certificates?: number;
-  asns?: number;
-  prefixes?: number;
-  updated?: string;
-};
+import { DISPLAY_STATS } from "@/lib/site-stats";
 
 type ActivitySnapshot = {
   certificates?: number | null;
@@ -29,17 +18,6 @@ type StatusSnapshot = {
   graph_updated?: string;
   snapshot?: string;
   updated?: string;
-};
-
-const fallbackCoverage: Required<CoverageSnapshot> = {
-  domains: siteStats.domainsMonitored,
-  ips: 3210567890,
-  threat_ips: 10543210,
-  infrastructure_ips: 10543210,
-  certificates: 428341,
-  asns: 184532,
-  prefixes: 1322123,
-  updated: "2026-06-28T11:00:00+00:00",
 };
 
 const fallbackActivity: Required<ActivitySnapshot> = {
@@ -93,19 +71,19 @@ function formatUpdatedLabel(value?: string) {
 
 export async function LiveInternetIntelligence() {
   const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_STATS_URL;
-  const [coverage, activity, status] = await Promise.all([
-    fetchJson<CoverageSnapshot>(baseUrl, "coverage.json", fallbackCoverage),
+  const [activity, status] = await Promise.all([
     fetchJson<ActivitySnapshot>(baseUrl, "activity.json", fallbackActivity),
     fetchJson<StatusSnapshot>(baseUrl, "status.json", fallbackStatus),
   ]);
 
-  const domainLinkedIps = coverage.infrastructure_ips ?? coverage.threat_ips;
-
+  // WU26: coverage tiles come from the canonical site-stats module (refreshed
+  // from CertaLake at build time) so the corpus figures here are literally the
+  // same strings as everywhere else on the site — no separate runtime fetch.
   const coverageMetrics = [
-    { value: formatCompact(coverage.domains), label: "Domains monitored", detail: "Continuously correlated against DNS, certificates and infrastructure history." },
-    { value: formatCompact(domainLinkedIps), label: "IPs hosting domains", detail: "IP addresses currently linked to domains in the Datazag corpus." },
-    { value: formatCompact(coverage.ips), label: "IPv4 addresses indexed", detail: "Total IP space indexed for context and infrastructure correlation." },
-    { value: formatCompact(coverage.asns), label: "Networks profiled", detail: "ASN ownership and routing context for infrastructure intelligence." },
+    { value: DISPLAY_STATS.domainsMonitored, label: "Domains monitored", detail: "Continuously correlated against DNS, certificates and infrastructure history." },
+    { value: DISPLAY_STATS.ipsHostingDomains, label: "IPs hosting domains", detail: "IP addresses currently linked to domains in the Datazag corpus." },
+    { value: DISPLAY_STATS.ipv4Indexed, label: "IPv4 addresses indexed", detail: "Total IP space indexed for context and infrastructure correlation." },
+    { value: DISPLAY_STATS.networksProfiled, label: "Networks profiled", detail: "ASN ownership and routing context for infrastructure intelligence." },
   ];
 
   const activityMetrics = [

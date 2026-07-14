@@ -2,6 +2,12 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm ci --legacy-peer-deps",
+  "crons": [
+    {
+      "path": "/api/cron/refresh-stats",
+      "schedule": "30 5 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/stats/:file",

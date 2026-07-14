@@ -22,7 +22,8 @@ const outfit = Outfit({
 
 // Absolute base for canonical + OG/Twitter image URLs so nothing ever resolves
 // to localhost or a preview host in production (WU23 §2 regression guard).
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://datazag.com";
+// www.datazag.com is the canonical apex — keep the www.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
