@@ -1,11 +1,13 @@
 import { isActivityPanelRenderable, safeSnapshotLabel } from "@/lib/live-activity-guard";
 import { DISPLAY_STATS } from "@/lib/site-stats";
 
+// activity.json also carries `alerts` (brand + platform impersonation counts).
+// It is deliberately not surfaced: platform impersonations are dominated by
+// legitimate cloud domains, so the total is not a usable alert figure.
 type ActivitySnapshot = {
   certificates?: number | null;
   new_domains?: number | null;
   san_domains?: number | null;
-  alerts?: number | null;
   routing_changes?: number | null;
   window?: string;
   updated?: string;
@@ -24,7 +26,6 @@ const fallbackActivity: Required<ActivitySnapshot> = {
   certificates: null,
   new_domains: 412,
   san_domains: null,
-  alerts: 83,
   routing_changes: 17,
   window: "1h",
   updated: "2026-06-28T11:00:00+00:00",
@@ -89,7 +90,6 @@ export async function LiveInternetIntelligence() {
   const activityMetrics = [
     { value: formatCompact(activity.certificates), label: "Certificates observed", detail: "Certificate activity in the latest window." },
     { value: formatCompact(activity.new_domains), label: "New domains", detail: "Domains not yet in the main corpus." },
-    { value: formatCompact(activity.alerts), label: "Alert candidates", detail: "Signals queued for scoring or review." },
     { value: formatCompact(activity.routing_changes), label: "Routing changes", detail: "Network movement observed in the latest window." },
   ];
 
@@ -107,7 +107,6 @@ export async function LiveInternetIntelligence() {
   const activityPanelVisible = isActivityPanelRenderable([
     activity.certificates,
     activity.new_domains,
-    activity.alerts,
     activity.routing_changes,
   ]);
 
