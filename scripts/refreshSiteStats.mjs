@@ -14,6 +14,20 @@
  * live in lib/site-stats.ts, NOT here — this script records the feed
  * honestly and only refuses values that are not positive finite numbers.
  *
+ * "ONLY REFUSES VALUES THAT ARE NOT POSITIVE FINITE NUMBERS" WAS THE HOLE.
+ * 4,320,469,598 is a positive finite number and it is also more IPv4 addresses
+ * than exist, so it passed this script, passed lib/site-stats.ts, and rendered
+ * as "4.3B IPv4 addresses indexed" on the front page. Since 2026-08-22 this
+ * script also rejects a value outside its BOUND — a bad producer must not be
+ * recorded as last-known-good, because last-known-good is what the site falls
+ * back to on the next fetch failure. An out-of-bound value is dropped to null
+ * and the committed figure covers it.
+ *
+ * Per-figure as-of: coverage.json now carries an `as_of` map (each figure's own
+ * timestamp) alongside `updated` (when the file was built). We record the
+ * figures' as-of, not the build time — a daily total rendered beside an hourly
+ * counter must show when the TOTAL was measured, not when the file was written.
+ *
  * Run manually: npm run stats:refresh
  */
 import { writeFileSync } from "node:fs";
@@ -27,12 +41,36 @@ const FEED_BASE =
 
 // Keep in sync with COMMITTED.domainsMonitored in lib/site-stats.ts — used
 // only for the loud warning below; the module enforces the actual floor.
-const COMMITTED_DOMAINS_FLOOR = 368_000_000;
+const COMMITTED_DOMAINS_FLOOR = 395_865_413;
+
+const IPV4_ADDRESS_SPACE = 2 ** 32; // 4,294,967,296
+
+// Keep in sync with BOUNDS in lib/site-stats.ts and COVERAGE_BOUNDS in
+// riskscore/orchestration/website_stats.py. Three gates, same limits: the
+// producer, the pull, and the render. The impossible figure crossed all three
+// when none of them existed.
+const BOUNDS = {
+  domainsMonitored: [100_000_000, 2_000_000_000],
+  ipsHostingDomains: [100_000, IPV4_ADDRESS_SPACE],
+  ipv4Indexed: [1_000_000_000, IPV4_ADDRESS_SPACE],
+  networksProfiled: [10_000, 120_000],
+};
 
 const OUT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "lib", "site-stats.generated.ts");
 
-function metric(value) {
-  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
+function metric(key, value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) return null;
+  const bound = BOUNDS[key];
+  if (bound && (value < bound[0] || value > bound[1])) {
+    console.error(
+      `✗ feed ${key} = ${value.toLocaleString()} is outside its bound ` +
+        `[${bound[0].toLocaleString()}, ${bound[1].toLocaleString()}] — REJECTED, not recorded.\n` +
+        `  The producer (riskscore/orchestration/website_stats.py) is publishing a figure it ` +
+        `should have refused. Fix it there; do not widen the bound here.`,
+    );
+    return null;
+  }
+  return value;
 }
 
 function render(stats) {
@@ -49,7 +87,16 @@ export const feedStats = {
   ipsHostingDomains: ${field(stats.ipsHostingDomains)},
   ipv4Indexed: ${field(stats.ipv4Indexed)},
   networksProfiled: ${field(stats.networksProfiled)},
-  /** \`updated\` timestamp reported by the feed itself. */
+  /** Per-figure as-of from the feed's \`as_of\` block — when each figure was
+   *  measured, NOT when the file was built. A figure with no as-of does not
+   *  get to borrow another figure's freshness. */
+  asOf: {
+    domainsMonitored: ${strField(stats.asOf.domainsMonitored)},
+    ipsHostingDomains: ${strField(stats.asOf.ipsHostingDomains)},
+    ipv4Indexed: ${strField(stats.asOf.ipv4Indexed)},
+    networksProfiled: ${strField(stats.asOf.networksProfiled)},
+  },
+  /** \`updated\` timestamp reported by the feed itself — the file's build time. */
   feedUpdated: ${strField(stats.feedUpdated)},
   /** When the refresh script last wrote this file. */
   fetchedAt: ${strField(stats.fetchedAt)},
@@ -70,17 +117,47 @@ async function main() {
     return;
   }
 
-  const stats = {
-    domainsMonitored: metric(coverage.domains),
+  // Per-figure as-of, falling back to the file's build time only when the feed
+  // predates the as_of block. `updated` is when the FILE was written; it is not
+  // any figure's as-of, and treating it as one is how a 13-hour-old total came
+  // to be rendered as though it were live.
+  // A figure that is null has no as-of. Stamping one would say "measured just
+  // now" about a number the feed never supplied.
+  const asOf = (key, value) => {
+    if (value === null) return null;
+    const v = coverage?.as_of?.[key];
+    return typeof v === "string" ? v : typeof coverage.updated === "string" ? coverage.updated : null;
+  };
+
+  const values = {
+    domainsMonitored: metric("domainsMonitored", coverage.domains),
     // The feed's threat_ips is a different measure — only infrastructure_ips
     // maps to "IPs hosting domains". Absent → null → committed value is used.
-    ipsHostingDomains: metric(coverage.infrastructure_ips),
-    ipv4Indexed: metric(coverage.ips),
-    networksProfiled: metric(coverage.asns),
+    ipsHostingDomains: metric("ipsHostingDomains", coverage.infrastructure_ips),
+    ipv4Indexed: metric("ipv4Indexed", coverage.ips),
+    networksProfiled: metric("networksProfiled", coverage.asns),
+  };
+
+  const stats = {
+    ...values,
     feedUpdated: typeof coverage.updated === "string" ? coverage.updated : null,
+    asOf: {
+      domainsMonitored: asOf("domains", values.domainsMonitored),
+      ipsHostingDomains: asOf("infrastructure_ips", values.ipsHostingDomains),
+      ipv4Indexed: asOf("ips", values.ipv4Indexed),
+      networksProfiled: asOf("asns", values.networksProfiled),
+    },
     fetchedAt: new Date().toISOString(),
     source: url,
   };
+
+  // A figure the producer itself refused ships as null with the reason in
+  // `warnings`. Surface it — a silent null becomes a silent fallback to the
+  // committed value, which is exactly how a dead producer stays invisible.
+  if (Array.isArray(coverage.warnings) && coverage.warnings.length) {
+    console.error(`✗ the coverage producer reported ${coverage.warnings.length} bound violation(s):`);
+    for (const w of coverage.warnings) console.error(`    ${w}`);
+  }
 
   if (stats.domainsMonitored === null && stats.ipv4Indexed === null && stats.networksProfiled === null) {
     console.warn(`⚠ site-stats refresh skipped — ${url} returned no usable metrics. Keeping last-known-good lib/site-stats.generated.ts.`);

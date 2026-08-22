@@ -47,3 +47,64 @@ export function isPlaceholderTimeLabel(label?: string | null): boolean {
 export function safeSnapshotLabel(label?: string | null): string | null {
   return isPlaceholderTimeLabel(label) ? null : (label as string);
 }
+
+/**
+ * PER-FIGURE AS-OF (added 2026-08-22).
+ *
+ * The stats feed runs at three cadences — coverage daily, activity hourly,
+ * status every few minutes — and the page renders them together. Measured on
+ * the live endpoints: coverage.json read 00:15:47Z while activity.json read
+ * 13:31:47Z, THIRTEEN HOURS apart, side by side, with one "Updated 13:31 UTC"
+ * label between them. A live counter lends borrowed freshness to a stale total,
+ * and the reader has no way to see it.
+ *
+ * The rule: every figure carries and displays its own as-of. A figure that
+ * cannot show one does not go on the page — which is what `asOfLabel`
+ * returning null means to the caller.
+ */
+
+/** Absolute UTC label for a figure's own as-of, e.g. "22 Aug 2026, 15:01 UTC". */
+export function asOfLabel(iso?: string | null): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  const date = d.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+  const time = d.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "UTC",
+  });
+  return `${date}, ${time} UTC`;
+}
+
+/** Age of a figure in hours, or null if it has no usable as-of. */
+export function ageHours(iso: string | null | undefined, now: Date = new Date()): number | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return (now.getTime() - d.getTime()) / 3_600_000;
+}
+
+/**
+ * Is a figure too old for the cadence it claims? A figure labelled "last 1h"
+ * that was measured four hours ago is not a live figure, and rendering it
+ * beside a fresh one is the borrowed-freshness bug.
+ *
+ * `maxAgeHours` is the cadence's own budget, not a display preference.
+ */
+export function isStale(
+  iso: string | null | undefined,
+  maxAgeHours: number,
+  now: Date = new Date(),
+): boolean {
+  const age = ageHours(iso, now);
+  // No as-of at all is treated as stale: an unstamped figure cannot be shown
+  // to be current, and "cannot show one" means it does not go on the page.
+  if (age === null) return true;
+  return age > maxAgeHours;
+}

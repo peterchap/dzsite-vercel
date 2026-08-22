@@ -3,6 +3,15 @@ import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 export const defaultStoryContent: StoryContent = {
   // WU24: coverage wedge leads; lead-time (48h/~10s) demoted to a proof chip.
+  // 2026-08-22: both lead-time chips PULLED. Neither was measurable:
+  //   "~10s from certificate to scored alert" — the metric built to substantiate it
+  //     (claim_metrics latency_p50) measures 7.1 HOURS, and its t1 is a batch publish
+  //     time, so nothing anywhere supports ~10s.
+  //   "Up to 48h ahead of blacklists" — corroboration against public feeds cannot
+  //     measure this detector at all: the feeds hold ~36k domains, we alert on ~242k,
+  //     and they intersect ~50 times. n=7 at the RED band.
+  // Both are in checkClaimGuard's BANNED list now, so they cannot come back by copy edit.
+  // They return only via /trust/methodology, from gold.claim_metrics, with n and a date.
   heroEyebrow: "Internet Infrastructure Intelligence",
   heroTitle: "Your threat feeds see attacks. We see them being built.",
   heroIntro:
@@ -14,8 +23,11 @@ export const defaultStoryContent: StoryContent = {
   heroPills: ["Detect earlier", "Block with evidence", "Act before launch"],
   heroChips: [
     { label: "150 domains from one signal — 0 in public domain feeds", href: "/intelligence/one-signal-150-domains" },
-    { label: "~10s from certificate to scored alert" },
-    { label: "Up to 48h ahead of blacklists" },
+    // The two lead-time chips that sat here are pulled — see the note above. What
+    // replaces them is mechanism, not a rate: both are true by construction and neither
+    // needs a trailing window to defend.
+    { label: "Detection at certificate issuance, before DNS resolves" },
+    { label: "Every alert ships with its evidence" },
   ],
   insight: {
     kicker: "Why it matters",

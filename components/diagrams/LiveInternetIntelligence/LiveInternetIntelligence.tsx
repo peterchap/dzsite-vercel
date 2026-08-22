@@ -1,9 +1,17 @@
-import { isActivityPanelRenderable, safeSnapshotLabel } from "@/lib/live-activity-guard";
-import { DISPLAY_STATS } from "@/lib/site-stats";
+import {
+  asOfLabel,
+  isActivityPanelRenderable,
+  isStale,
+  safeSnapshotLabel,
+} from "@/lib/live-activity-guard";
+import { DISPLAY_STATS, STATS_AS_OF } from "@/lib/site-stats";
 
 // activity.json also carries `alerts` (brand + platform impersonation counts).
 // It is deliberately not surfaced: platform impersonations are dominated by
-// legitimate cloud domains, so the total is not a usable alert figure.
+// legitimate cloud domains, so the total is not a usable alert figure. The
+// producer now ships that reasoning as a definition inside the file itself
+// (ACTIVITY_DEFINITIONS in riskscore/orchestration/website_stats.py), so the
+// field cannot be picked up by another surface without it.
 type ActivitySnapshot = {
   certificates?: number | null;
   new_domains?: number | null;
@@ -11,7 +19,17 @@ type ActivitySnapshot = {
   routing_changes?: number | null;
   window?: string;
   updated?: string;
+  /** Per-figure as-of. `updated` is when the FILE was built, not when any
+   *  figure was measured — see live-activity-guard's as-of section. */
+  as_of?: Record<string, string | null>;
 };
+
+// How old an hourly figure may be before it stops being a live figure. Three
+// hours: enough slack for a late run, short enough that a stalled certstream
+// blob disappears from the page instead of being republished under a fresh
+// timestamp. Measured 2026-08-22, the blob was 3.7h stale while activity.json
+// carried an `updated` of "now" — this is the case that budget catches.
+const ACTIVITY_MAX_AGE_HOURS = 3;
 
 type StatusSnapshot = {
   certstream?: string;
@@ -22,13 +40,20 @@ type StatusSnapshot = {
   updated?: string;
 };
 
+// The fallback is now ALL NULL on purpose. It used to carry hard-coded figures
+// (412 new domains, 17 routing changes) stamped 2026-06-28, so a failed fetch
+// rendered two-month-old invented numbers under a "Last 1h" heading. A fallback
+// for a LIVE panel can only honestly be "we do not know" — the nulls fail
+// isActivityPanelRenderable and the panel hides, which is the designed
+// behaviour. The static corpus tiles above it are unaffected.
 const fallbackActivity: Required<ActivitySnapshot> = {
   certificates: null,
-  new_domains: 412,
+  new_domains: null,
   san_domains: null,
-  routing_changes: 17,
+  routing_changes: null,
   window: "1h",
-  updated: "2026-06-28T11:00:00+00:00",
+  updated: "",
+  as_of: {},
 };
 
 const fallbackStatus: Required<StatusSnapshot> = {
@@ -80,17 +105,27 @@ export async function LiveInternetIntelligence() {
   // WU26: coverage tiles come from the canonical site-stats module (refreshed
   // from CertaLake at build time) so the corpus figures here are literally the
   // same strings as everywhere else on the site — no separate runtime fetch.
+  // Every tile carries its OWN as-of. The four coverage tiles are daily and the
+  // activity tiles hourly; before this they shared one "Updated HH:MM UTC" chip
+  // that belonged to the hourly panel, so a total measured 13 hours earlier read
+  // as live. `asOf` renders under the label; a tile with no as-of says so rather
+  // than inheriting a neighbour's.
   const coverageMetrics = [
-    { value: DISPLAY_STATS.domainsMonitored, label: "Domains monitored", detail: "Continuously correlated against DNS, certificates and infrastructure history." },
-    { value: DISPLAY_STATS.ipsHostingDomains, label: "IPs hosting domains", detail: "IP addresses currently linked to domains in the Datazag corpus." },
-    { value: DISPLAY_STATS.ipv4Indexed, label: "IPv4 addresses indexed", detail: "Total IP space indexed for context and infrastructure correlation." },
-    { value: DISPLAY_STATS.networksProfiled, label: "Networks profiled", detail: "ASN ownership and routing context for infrastructure intelligence." },
+    { value: DISPLAY_STATS.domainsMonitored, label: "Domains monitored", asOf: asOfLabel(STATS_AS_OF.domainsMonitored), detail: "Distinct domains in the Datazag corpus, continuously correlated against DNS, certificates and infrastructure history." },
+    { value: DISPLAY_STATS.ipsHostingDomains, label: "IPs hosting domains", asOf: asOfLabel(STATS_AS_OF.ipsHostingDomains), detail: "IP addresses currently linked to domains in the Datazag corpus." },
+    { value: DISPLAY_STATS.ipv4Indexed, label: "IPv4 addresses indexed", asOf: asOfLabel(STATS_AS_OF.ipv4Indexed), detail: "IPv4 space announced in BGP and attributed to a network, counted once per address however many announcements cover it." },
+    { value: DISPLAY_STATS.networksProfiled, label: "Networks profiled", asOf: asOfLabel(STATS_AS_OF.networksProfiled), detail: "ASN ownership and routing context for infrastructure intelligence." },
   ];
 
+  // "Certificates observed" is the RAW CertStream firehose for the window —
+  // every certificate CT logged, matched or not. It is legitimately larger than
+  // the corpus certificate total (a filtered retention set), and rendered
+  // without saying so the pair reads as broken. The label now says which one
+  // this is; see ACTIVITY_DEFINITIONS in the producer for the canonical wording.
   const activityMetrics = [
-    { value: formatCompact(activity.certificates), label: "Certificates observed", detail: "Certificate activity in the latest window." },
-    { value: formatCompact(activity.new_domains), label: "New domains", detail: "Domains not yet in the main corpus." },
-    { value: formatCompact(activity.routing_changes), label: "Routing changes", detail: "Network movement observed in the latest window." },
+    { value: formatCompact(activity.certificates), label: "Certificates observed", asOf: asOfLabel(activity.as_of?.certificates), detail: "Every certificate logged to public Certificate Transparency in the window, whether or not it matches tracked infrastructure." },
+    { value: formatCompact(activity.new_domains), label: "New domains", asOf: asOfLabel(activity.as_of?.new_domains), detail: "Domains seen in the window that are not yet in the main corpus." },
+    { value: formatCompact(activity.routing_changes), label: "Routing changes", asOf: asOfLabel(activity.as_of?.routing_changes), detail: "Prefixes that appeared under a new origin network in the latest routing diff." },
   ];
 
   const platformStatus = [
@@ -104,11 +139,21 @@ export async function LiveInternetIntelligence() {
   // WU25 §1 (STOP-LINE): the per-hour activity panel renders only if EVERY
   // metric is non-zero and non-null. On any zero/null it is hidden entirely so
   // we never render a self-refuting live zero (e.g. "0 certificates").
-  const activityPanelVisible = isActivityPanelRenderable([
-    activity.certificates,
-    activity.new_domains,
-    activity.routing_changes,
-  ]);
+  //
+  // 2026-08-22 — extended to STALENESS. A non-zero figure measured four hours
+  // ago is just as self-refuting under a "Last 1h" heading as a zero, and it is
+  // harder to spot because it looks healthy. The panel now hides when the CT
+  // figures' own as-of is older than the window's budget, rather than
+  // republishing them under a fresh `updated`.
+  const activityFresh =
+    !isStale(activity.as_of?.certificates, ACTIVITY_MAX_AGE_HOURS) &&
+    !isStale(activity.as_of?.routing_changes, ACTIVITY_MAX_AGE_HOURS);
+  const activityPanelVisible =
+    isActivityPanelRenderable([
+      activity.certificates,
+      activity.new_domains,
+      activity.routing_changes,
+    ]) && activityFresh;
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/80 p-5 shadow-2xl shadow-black/20 md:p-8">
@@ -142,7 +187,13 @@ export async function LiveInternetIntelligence() {
             <article key={metric.label} className="grid min-h-[13rem] grid-rows-[auto_auto_1fr] rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
               <p className="text-4xl font-semibold tracking-tight text-white">{metric.value}</p>
               <h4 className="mt-4 border-t border-white/10 pt-4 text-sm font-semibold uppercase tracking-[0.15em] text-cyan-100/85">{metric.label}</h4>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{metric.detail}</p>
+              <div className="mt-3">
+                <p className="text-sm leading-6 text-slate-300">{metric.detail}</p>
+                {/* This figure's OWN as-of — never the page's, never a neighbour's. */}
+                {metric.asOf ? (
+                  <p className="mt-2 text-xs text-slate-400">Measured {metric.asOf}</p>
+                ) : null}
+              </div>
             </article>
           ))}
         </div>
@@ -155,7 +206,11 @@ export async function LiveInternetIntelligence() {
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Last {activity.window ?? "1h"}</p>
                   <h4 className="mt-2 text-xl font-semibold text-white">Infrastructure activity</h4>
                 </div>
-                <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">{formatUpdatedLabel(activity.updated ?? status.updated)}</p>
+                {/* Deliberately NOT a single "Updated HH:MM" chip any more. That
+                    chip was the file's build time and it sat above figures of
+                    two different cadences, which is how a 13-hour-old total came
+                    to read as live. Each tile carries its own "Measured …". */}
+                <p className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">Per-figure timestamps below</p>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {activityMetrics.map((metric) => (
@@ -163,6 +218,9 @@ export async function LiveInternetIntelligence() {
                     <p className="text-2xl font-semibold text-white">{metric.value}</p>
                     <p className="mt-2 text-sm font-semibold text-slate-100">{metric.label}</p>
                     <p className="mt-1 text-xs leading-5 text-slate-400">{metric.detail}</p>
+                    {metric.asOf ? (
+                      <p className="mt-2 text-xs text-slate-500">Measured {metric.asOf}</p>
+                    ) : null}
                   </div>
                 ))}
               </div>

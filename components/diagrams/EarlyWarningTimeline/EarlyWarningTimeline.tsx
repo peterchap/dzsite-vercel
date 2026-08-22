@@ -117,8 +117,15 @@ export function EarlyWarningTimeline() {
           ))}
         </div>
 
+        {/* "Up to 48 hours earlier than traditional blacklists." was here until
+            2026-08-22. Pulled: corroboration against public feeds cannot measure this
+            detector — the feeds hold ~36k domains, we alert on ~242k, and the two
+            intersect ~50 times, so the lead-time sample is n=7. The replacement is a
+            statement about WHEN we look, which the timeline above already shows and
+            which needs no trailing window to defend. A measured figure returns via
+            /trust/methodology with its n and its date, or not at all. */}
         <div className="mt-6 rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.06] p-4">
-          <p className="text-sm font-semibold text-cyan-100">Up to 48 hours earlier than traditional blacklists.</p>
+          <p className="text-sm font-semibold text-cyan-100">We watch the build phase, not the attack phase.</p>
           <p className="mt-2 text-xs leading-5 text-slate-300">Stop phishing, platform impersonation and fraud before the infrastructure starts receiving victims.</p>
         </div>
       </div>
