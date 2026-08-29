@@ -35,9 +35,27 @@ check("sub-1k renders literally", () => assert.equal(fmtStat(999), "999"));
 
 // Domains floor rule: the effective figure never drops below the committed
 // DuckLake floor.
-check("effective domains ≥ 395.8M committed floor", () =>
-  assert.ok(SITE_STATS.domainsMonitored >= 395_865_413));
-check("corpus display is 390M+", () => assert.equal(DISPLAY_STATS.domainsMonitored, "390M+"));
+//
+// ⚠️ Lowered 2026-08-29 from 395,865,413. That earlier floor was measured over
+// EVERY row of gold.dns_wide, including 39,926,798 names that do not resolve
+// (NXDOMAIN/SERVFAIL/TIMEOUT). It was not a floor under the corpus, it was a
+// floor under an inflated count — and being a floor, it would have REJECTED the
+// corrected figure and kept the inflated one on the page. Lowering it is the
+// point of this change; do not "restore" it.
+check("effective domains ≥ 362.7M committed floor", () =>
+  assert.ok(SITE_STATS.domainsMonitored >= 362_714_858));
+check("corpus display is 360M+", () => assert.equal(DISPLAY_STATS.domainsMonitored, "360M+"));
+// The corpus counts RESOLVING domains only. If the producer ever regresses to
+// counting every row, the figure jumps back over 400M — assert it cannot.
+// Bounds alone cannot catch this: 402M sits inside (100M, 2B) quite happily.
+check("corpus count excludes dead names (no un-filtered gold.dns_wide count)", () =>
+  assert.ok(
+    SITE_STATS.domainsMonitored < 380_000_000,
+    `domainsMonitored = ${SITE_STATS.domainsMonitored.toLocaleString()} looks like an ` +
+      `UNFILTERED count of gold.dns_wide (~402M includes ~40M NXDOMAIN/SERVFAIL/TIMEOUT). ` +
+      `The producer must filter on resolution_status IN ('RESOLVED','NODATA') — see ` +
+      `MEASURED_SQL in riskscore/orchestration/website_stats.py. Do not raise this ceiling.`,
+  ));
 check("DOMAINS_DISPLAY aliases the corpus display", () =>
   assert.equal(DOMAINS_DISPLAY, DISPLAY_STATS.domainsMonitored));
 

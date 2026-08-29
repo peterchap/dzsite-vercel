@@ -80,20 +80,29 @@ function inBounds(key: string, value: number): boolean {
  * Committed snapshot — the manual reconciliation point (update here when
  * checking directly against DuckLake, one commit, redeploy).
  *
- * Measured against the live DuckLake gold schema 2026-08-22:
- *   domainsMonitored  395,865,413  gold.dns_wide COUNT(DISTINCT domain)
- *   ipv4Indexed     3,129,369,541  gold.asn_ip4 interval UNION (was a SUM that
+ * Measured against the live DuckLake gold schema 2026-08-29:
+ *   domainsMonitored  362,714,858  gold.dns_wide COUNT(DISTINCT domain) WHERE
+ *                                  resolution_status IN ('RESOLVED','NODATA')
+ *   ipv4Indexed     3,134,235,878  gold.asn_ip4 interval UNION (was a SUM that
  *                                  double-counted nested more-specifics by 1.17B)
- *   networksProfiled       79,021  gold.gold_risk_asn COUNT(*)
+ *   networksProfiled       79,028  gold.gold_risk_asn COUNT(*)
  * ipsHostingDomains is NOT in that schema and is carried forward unverified —
  * it has no producer behind it, which is its own problem, tracked separately.
+ *
+ * ⚠️ domainsMonitored went DOWN on 2026-08-29, from 395,865,413. That is a
+ * CORRECTION, not a shrinking corpus. The producer counted every row of
+ * gold.dns_wide — which holds every domain ever ATTEMPTED, including 24.4M
+ * NXDOMAIN, 9.7M SERVFAIL and 5.9M TIMEOUT. 39,926,798 dead names, 9.9% of the
+ * published figure, were being sold as "domains monitored". Fixed in
+ * riskscore/orchestration/website_stats.py (MEASURED_SQL); this file must not
+ * drift back above it. A number moving down is what a correction looks like.
  */
 const COMMITTED = {
-  domainsMonitored: 395_865_413,
+  domainsMonitored: 362_714_858,
   ipsHostingDomains: 10_500_000,
-  ipv4Indexed: 3_129_369_541,
-  networksProfiled: 79_021,
-  statsAsOf: "2026-08-22",
+  ipv4Indexed: 3_134_235_878,
+  networksProfiled: 79_028,
+  statsAsOf: "2026-08-29",
 } as const;
 
 // A committed figure outside its bound fails the BUILD. This is the assertion
@@ -128,10 +137,38 @@ function pickMetric(key: string, feed: number | null | undefined, committed: num
   return feed;
 }
 
+/**
+ * Floor rule: never below committed while the feed lags DuckLake (see header).
+ *
+ * ⚠️ This ratchet cannot tell "the feed lags" from "the feed got more honest" —
+ * both look like a smaller number. It was written to absorb the first and would
+ * have silently swallowed the second: on 2026-08-29 the corrected feed dropped
+ * ~40M dead names and `Math.max` would have kept publishing the inflated
+ * 395,865,413, with the floor assertion in checkSiteStats passing while it did.
+ * A downward correction was invisible to every guard on this page.
+ *
+ * So the substitution is now LOUD. It still floors — a lagging feed must not
+ * shrink the page — but it says so in the build log, which is the only place a
+ * human sees a build. If this fires and the feed is RIGHT, the fix is to lower
+ * COMMITTED, never to leave the ratchet holding an old number up.
+ */
+function floorAtCommitted(key: string, value: number, committed: number): number {
+  if (value < committed) {
+    console.error(
+      `site-stats: feed ${key} = ${value.toLocaleString()} is BELOW committed ` +
+        `${committed.toLocaleString()} — floored to committed. If the feed is correct ` +
+        `(a population fix, not a lag), lower COMMITTED.${key} instead of publishing the ` +
+        `higher stale figure.`,
+    );
+    return committed;
+  }
+  return value;
+}
+
 /** Effective raw values: validated feed values over the committed snapshot. */
 export const SITE_STATS = {
-  // Floor rule: never below committed while the feed lags DuckLake (see header).
-  domainsMonitored: Math.max(
+  domainsMonitored: floorAtCommitted(
+    "domainsMonitored",
     pickMetric("domainsMonitored", feedStats.domainsMonitored, COMMITTED.domainsMonitored),
     COMMITTED.domainsMonitored,
   ),
