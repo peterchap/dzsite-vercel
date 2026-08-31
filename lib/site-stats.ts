@@ -65,7 +65,10 @@ export const IPV4_ADDRESS_SPACE = 2 ** 32; // 4,294,967,296
  */
 export const BOUNDS: Record<string, readonly [number, number]> = {
   domainsMonitored: [100_000_000, 2_000_000_000],
-  ipsHostingDomains: [100_000, IPV4_ADDRESS_SPACE],
+  // Floor raised from 100_000 on 2026-08-31, when this figure acquired a producer for the
+  // first time. 1M is far below the measured 13.6M and far above what a broken a_records
+  // column leaves behind. Keep in sync with COVERAGE_BOUNDS["infrastructure_ips"].
+  ipsHostingDomains: [1_000_000, IPV4_ADDRESS_SPACE],
   ipv4Indexed: [1_000_000_000, IPV4_ADDRESS_SPACE],
   networksProfiled: [10_000, 120_000], // ~120k ASNs have ever been allocated
 } as const;
@@ -86,8 +89,12 @@ function inBounds(key: string, value: number): boolean {
  *   ipv4Indexed     3,134,235,878  gold.asn_ip4 interval UNION (was a SUM that
  *                                  double-counted nested more-specifics by 1.17B)
  *   networksProfiled       79,028  gold.gold_risk_asn COUNT(*)
- * ipsHostingDomains is NOT in that schema and is carried forward unverified —
- * it has no producer behind it, which is its own problem, tracked separately.
+ * ipsHostingDomains acquired a producer on 2026-08-31 and is no longer carried
+ * forward unverified: 13,585,332 distinct IPv4 addresses that a measured-corpus
+ * domain resolves to (dns_wide.a_records, same MEASURED_SQL population as
+ * domainsMonitored). ⚠️ The obvious source was the wrong one — gold.v_fact_domain_ip
+ * gives 2,078,505 but covers 5.6% of the corpus, and publishing that under a
+ * corpus-wide label would repeat the dead-name mistake at a different grain.
  *
  * ⚠️ domainsMonitored went DOWN on 2026-08-29, from 395,865,413. That is a
  * CORRECTION, not a shrinking corpus. The producer counted every row of
@@ -99,10 +106,16 @@ function inBounds(key: string, value: number): boolean {
  */
 const COMMITTED = {
   domainsMonitored: 362_714_858,
-  ipsHostingDomains: 10_500_000,
+  // 2026-08-31: this had NO PRODUCER. refreshSiteStats mapped it from
+  // `coverage.infrastructure_ips`, a key website_stats.py had never emitted, so the feed
+  // value was permanently null and this constant permanently won — a number with no source
+  // at all, frozen since it was typed, rendering as "10M+ IPs hosting domains". The
+  // producer now measures it corpus-wide from dns_wide.a_records under the same population
+  // filter as domainsMonitored: 13,585,332. The claim was defensible all along.
+  ipsHostingDomains: 13_585_332,
   ipv4Indexed: 3_134_235_878,
   networksProfiled: 79_028,
-  statsAsOf: "2026-08-29",
+  statsAsOf: "2026-08-31",
 } as const;
 
 // A committed figure outside its bound fails the BUILD. This is the assertion
