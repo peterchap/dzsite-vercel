@@ -41,7 +41,17 @@ const FEED_BASE =
 
 // Keep in sync with COMMITTED.domainsMonitored in lib/site-stats.ts — used
 // only for the loud warning below; the module enforces the actual floor.
-const COMMITTED_DOMAINS_FLOOR = 395_865_413;
+//
+// ⚠️ THIS CONSTANT HAS NOW GONE STALE TWICE, and both times it produced a
+// CONFIDENT WRONG INSTRUCTION rather than silence. It sat at 368_000_000 while
+// the real floor moved, then at 395_865_413 after the corpus was refiltered to
+// exclude ~40M dead names — and on that run it told the reader the feed was
+// "BELOW the committed floor" and that an upstream fix was needed, when the
+// feed had just become MORE honest and the upstream fix was the thing that had
+// happened. A stale duplicate of a number is worse than no check at all: it
+// speaks with the authority of a guard while pointing the wrong way.
+// If you change COMMITTED.domainsMonitored, change this in the same commit.
+const COMMITTED_DOMAINS_FLOOR = 362_714_858;
 
 const IPV4_ADDRESS_SPACE = 2 ** 32; // 4,294,967,296
 
@@ -169,9 +179,15 @@ async function main() {
 
   if (stats.domainsMonitored !== null && stats.domainsMonitored < COMMITTED_DOMAINS_FLOOR) {
     console.warn(
-      `\n⚠ CertaLake feed reports ${stats.domainsMonitored.toLocaleString()} domains — BELOW the committed DuckLake floor of ${COMMITTED_DOMAINS_FLOOR.toLocaleString()}.\n` +
+      `\n⚠ Feed reports ${stats.domainsMonitored.toLocaleString()} domains — BELOW the committed floor of ${COMMITTED_DOMAINS_FLOOR.toLocaleString()}.\n` +
         `  The site keeps displaying the committed floor (see FLOOR RULE in lib/site-stats.ts).\n` +
-        `  Upstream fix needed: the coverage.json generator should calculate the domain count from DuckLake gold (~368M), not its current source.\n`,
+        `  TWO CAUSES LOOK IDENTICAL HERE and they need opposite responses:\n` +
+        `    - a LAGGING feed (producer stale/degraded)  -> flooring is correct, fix the producer;\n` +
+        `    - a MORE HONEST feed (population corrected)  -> flooring is WRONG and is holding a\n` +
+        `      stale higher number up. Lower COMMITTED.domainsMonitored to match, and this\n` +
+        `      constant with it.\n` +
+        `  Check which before acting: compare the feed's definitions.domains against what\n` +
+        `  COMMITTED was measured over. The 2026-08-29 dead-name correction was the second kind.\n`,
     );
   }
 }

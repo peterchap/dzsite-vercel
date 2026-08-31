@@ -5,22 +5,22 @@
  * A null means the feed did not provide that field.
  */
 export const feedStats = {
-  domainsMonitored: 395930845 as number | null,
+  domainsMonitored: 362784236 as number | null,
   ipsHostingDomains: null as number | null,
-  ipv4Indexed: 3129369541 as number | null,
-  networksProfiled: 79023 as number | null,
+  ipv4Indexed: 3134402278 as number | null,
+  networksProfiled: 79035 as number | null,
   /** Per-figure as-of from the feed's `as_of` block — when each figure was
    *  measured, NOT when the file was built. A figure with no as-of does not
    *  get to borrow another figure's freshness. */
   asOf: {
-    domainsMonitored: "2026-08-22T21:17:43+00:00" as string | null,
+    domainsMonitored: "2026-08-31T10:08:37+00:00" as string | null,
     ipsHostingDomains: null as string | null,
-    ipv4Indexed: "2026-08-22T21:17:43+00:00" as string | null,
-    networksProfiled: "2026-08-22T21:17:43+00:00" as string | null,
+    ipv4Indexed: "2026-08-31T10:08:37+00:00" as string | null,
+    networksProfiled: "2026-08-31T10:08:37+00:00" as string | null,
   },
   /** `updated` timestamp reported by the feed itself — the file's build time. */
-  feedUpdated: "2026-08-22T21:17:45+00:00" as string | null,
+  feedUpdated: "2026-08-31T10:08:40+00:00" as string | null,
   /** When the refresh script last wrote this file. */
-  fetchedAt: "2026-08-22T21:18:16.987Z" as string | null,
+  fetchedAt: "2026-08-31T10:10:35.390Z" as string | null,
   source: "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/coverage.json" as string | null,
 };
