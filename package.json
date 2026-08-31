@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "stats:refresh": "node scripts/refreshSiteStats.mjs",
-    "guard": "node scripts/guards/checkCorpusDrift.mjs && node --experimental-strip-types scripts/guards/checkTickerGuard.mjs && tsx scripts/guards/checkSiteStats.ts && node scripts/guards/checkClaimGuard.mjs",
+    "guard": "node scripts/guards/checkCorpusDrift.mjs && node --experimental-strip-types scripts/guards/checkTickerGuard.mjs && tsx scripts/guards/checkSiteStats.ts && node scripts/guards/checkClaimGuard.mjs && tsx scripts/guards/checkDatasetFigures.ts",
     "guard:claims": "node scripts/guards/checkClaimGuard.mjs",
     "guard:corpus": "node scripts/guards/checkCorpusDrift.mjs",
     "guard:ticker": "node --experimental-strip-types scripts/guards/checkTickerGuard.mjs",
@@ -25,7 +25,9 @@
     "sanity:fix-seo-null": "node scripts/fixSeoNull.mjs",
     "sanity:check-home-links": "node scripts/checkHomeLinks.mjs",
     "studio:dev": "npx sanity dev --port 3333",
-    "site:seed-trust": "node scripts/seedTrustEvidence.mjs"
+    "site:seed-trust": "node scripts/seedTrustEvidence.mjs",
+    "site:seed-datasets": "node scripts/seedDatasets.mjs",
+    "guard:datasets": "tsx scripts/guards/checkDatasetFigures.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

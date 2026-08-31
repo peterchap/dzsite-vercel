@@ -10,6 +10,7 @@ import marketingPageCopy from "./documents/marketingPageCopy";
 import subscriber from "./documents/subscriber";
 import persona from "./documents/persona";
 import integration from "./documents/integration";
+import dataset from "./documents/dataset";
 
 // Objects
 import seo from "./objects/seo";
@@ -18,6 +19,11 @@ import navLink from "./objects/navLink";
 import marketingCopyCta from "./objects/marketingCopyCta";
 import marketingCopyItem from "./objects/marketingCopyItem";
 import marketingCopySection from "./objects/marketingCopySection";
+import datasetColumn from "./objects/datasets/datasetColumn";
+import datasetCodeBlock from "./objects/datasets/datasetCodeBlock";
+import datasetNote from "./objects/datasets/datasetNote";
+import datasetFact from "./objects/datasets/datasetFact";
+import datasetChangelogEntry from "./objects/datasets/datasetChangelogEntry";
 
 // Sections
 import heroSplitCta from "./objects/sections/heroSplitCta";
@@ -92,6 +98,7 @@ export const schemaTypes = [
   subscriber,
   persona,
   integration,
+  dataset,
 
   seo,
   cta,
@@ -99,6 +106,11 @@ export const schemaTypes = [
   marketingCopyCta,
   marketingCopyItem,
   marketingCopySection,
+  datasetColumn,
+  datasetCodeBlock,
+  datasetNote,
+  datasetFact,
+  datasetChangelogEntry,
 
   heroSplitCta,
   heroAttackTimeline,

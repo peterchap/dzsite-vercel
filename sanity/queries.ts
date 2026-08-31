@@ -551,3 +551,53 @@ export const howItWorksPageDataQuery = `
   }
 }
 `;
+
+/**
+ * DATASET DOCUMENTATION PAGES (/datasets/*)
+ *
+ * Projections are explicit rather than spread (`...`) so the shape the page
+ * renders is pinned here: these pages are the documentation URL on live
+ * marketplace listings, and an accidental schema change must show up as a
+ * missing field in review, not as a silently reshaped public page.
+ */
+export const datasetBySlugQuery = `
+*[_type == "dataset" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  eyebrow,
+  summary,
+  overview,
+  facts[]{ _key, label, value, note },
+  tableName,
+  columns[]{ _key, name, type, description, isJoinKey },
+  schemaNote,
+  joinGuideTitle,
+  joinGuideIntro,
+  codeExamples[]{ _key, title, description, language, code, note },
+  methodology[]{ _key, title, body, tone },
+  relatedDatasets[]->{ _id, title, "slug": slug.current, summary },
+  changelog[]{ _key, date, summary },
+  listingUrl,
+  listingLabel,
+  contactNote,
+  order,
+  seo
+}
+`;
+
+export const datasetsListQuery = `
+*[_type == "dataset" && defined(slug.current)] | order(coalesce(order, 100) asc, title asc){
+  _id,
+  title,
+  "slug": slug.current,
+  eyebrow,
+  summary,
+  order,
+  "columnCount": count(columns)
+}
+`;
+
+export const datasetSlugsQuery = `
+*[_type == "dataset" && defined(slug.current)].slug.current
+`;

@@ -53,9 +53,24 @@ export const structure: StructureResolver = (S) =>
             .filter('slug.current == "site-settings" || title match "Site Settings"')
         ),
 
+      // Dataset documentation pages (/datasets/*). Surfaced explicitly because
+      // these back the documentation URL on live cloud-marketplace listings —
+      // editors need to find them without hunting through the type list.
+      S.listItem()
+        .title("Datasets")
+        .schemaType("dataset")
+        .child(
+          S.documentTypeList("dataset")
+            .title("Datasets")
+            .defaultOrdering([
+              { field: "order", direction: "asc" },
+              { field: "title", direction: "asc" },
+            ])
+        ),
+
       // Other document types, excluding ones we surface as singletons
       ...S.documentTypeListItems().filter(
-        (li) => !["page", "siteSettings"].includes(li.getId() as string)
+        (li) => !["page", "siteSettings", "dataset"].includes(li.getId() as string)
       ),
     ]);
 

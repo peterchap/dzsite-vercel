@@ -10,6 +10,7 @@ const defaultProductLinks: NavLink[] = [
     { label: "Threat Alerts", href: "/alerts" },
     { label: "Brand Protection", href: "/brand-protection" },
     { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
+    { label: "Datasets", href: "/datasets" },
     { label: "Pricing", href: "/pricing" },
 ];
 
