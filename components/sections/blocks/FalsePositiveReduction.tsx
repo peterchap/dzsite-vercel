@@ -47,23 +47,23 @@ export default function FalsePositiveReduction({
                         {/* WU27-B: percentage/rate metrics are suppressed — unmeasured accuracy
                             claims are banned until the methodology page (WU27-C) can back them. */}
                         {metric && metric.value && !metric.value.includes("%") && (
-                            <div className="inline-flex flex-col rounded-2xl border border-blue-100 bg-blue-50/50 p-6 shadow-sm">
-                                <span className="text-4xl font-extrabold text-blue-600">{metric.value}</span>
-                                <span className="text-sm font-medium text-blue-800 uppercase tracking-wider">{metric.label}</span>
+                            <div className="inline-flex flex-col rounded-2xl border border-blue-400/30 bg-blue-500/10 p-6 shadow-sm">
+                                <span className="text-4xl font-extrabold text-blue-300">{metric.value}</span>
+                                <span className="text-sm font-medium text-blue-200 uppercase tracking-wider">{metric.label}</span>
                             </div>
                         )}
                         <div className="grid gap-6 sm:grid-cols-2">
                             {/* Problem */}
                             <div className="rounded-2xl border border-white/10 bg-slate-950 p-6 shadow-sm">
-                                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-red-50 text-red-600">
+                                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/15 text-red-300">
                                     <AlertCircle className="h-5 w-5" />
                                 </div>
                                 <h3 className="mb-2 font-bold text-white">{problemSnippet?.title}</h3>
                                 <p className="text-sm text-slate-300 leading-relaxed">{problemSnippet?.content}</p>
                             </div>
                             {/* Solution */}
-                            <div className="rounded-2xl border border-blue-100 bg-blue-50/30 p-6 shadow-sm">
-                                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 text-green-600">
+                            <div className="rounded-2xl border border-blue-400/30 bg-blue-500/10 p-6 shadow-sm">
+                                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/15 text-green-300">
                                     <CheckCircle2 className="h-5 w-5" />
                                 </div>
                                 <h3 className="mb-2 font-bold text-white">{solutionSnippet?.title}</h3>

@@ -40,7 +40,7 @@ export default async function UseCasesPage() {
                 <SectionRenderer sections={page.sections} />
             ) : null}
             {!hasHero && !hasSections ? (
-                <div className="mx-auto max-w-3xl px-6 py-16 text-center text-slate-500">
+                <div className="mx-auto max-w-3xl px-6 py-16 text-center text-slate-400">
                     No content found for Use Cases yet. Add a hero or sections in Studio.
                 </div>
             ) : null}

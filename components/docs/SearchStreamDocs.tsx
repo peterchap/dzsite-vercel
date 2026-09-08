@@ -134,7 +134,7 @@ if (!hash_equals($expected, $signature)) {
                 <div className="container mx-auto max-w-6xl px-6 py-24 lg:py-36 relative z-10">
                     <div className="flex items-center gap-3 mb-6">
                         <Badge variant="secondary" className="px-3 bg-blue-50 text-blue-600 border-blue-100 font-bold uppercase tracking-wider text-[10px]">Developer Portal</Badge>
-                        <span className="text-slate-300">/</span>
+                        <span className="text-slate-500">/</span>
                         <span className="text-sm font-medium text-slate-500">Phishing Search Stream</span>
                     </div>
                     <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
@@ -160,7 +160,7 @@ if (!hash_equals($expected, $signature)) {
                 <aside className="sticky top-32 hidden h-fit w-64 shrink-0 lg:block mt-2">
                     <nav className="space-y-8">
                         <div>
-                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Search Stream</h3>
+                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Search Stream</h3>
                             <ul className="space-y-4">
                                 {TOC.map((t) => (
                                     <li key={t.id}>
@@ -173,7 +173,7 @@ if (!hash_equals($expected, $signature)) {
                             </ul>
                         </div>
                         <div className="pt-8 border-t border-slate-100">
-                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Other APIs</h3>
+                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Other APIs</h3>
                             <ul className="space-y-4">
                                 <li><a href="/docs" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Domain Intelligence API</a></li>
                             </ul>
@@ -228,7 +228,7 @@ if (!hash_equals($expected, $signature)) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="p-8 rounded-3xl border border-slate-200 bg-white">
                                     <Lock className="h-6 w-6 text-blue-600 mb-4" />
-                                    <h4 className="font-bold text-slate-900 mb-2">Signature Verification <Badge className="ml-2 bg-rose-600">Required</Badge></h4>
+                                    <h4 className="font-bold text-slate-900 mb-2">Signature Verification <Badge className="ml-2 bg-rose-700">Required</Badge></h4>
                                     <p className="text-sm text-slate-500 leading-relaxed mb-4">
                                         Every request includes a <code className="text-blue-600 font-bold">X-SearchStream-Signature</code> header.
                                         This is an HMAC-SHA256 hash of the raw request body.
@@ -269,9 +269,9 @@ if (!hash_equals($expected, $signature)) {
                             </p>
                             <Tabs defaultValue="node" className="w-full">
                                 <TabsList className="bg-slate-100 p-1.5 rounded-2xl mb-6 inline-flex">
-                                    <TabsTrigger value="node" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">Node.js</TabsTrigger>
-                                    <TabsTrigger value="python" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">Python</TabsTrigger>
-                                    <TabsTrigger value="php" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">PHP</TabsTrigger>
+                                    <TabsTrigger value="node" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Node.js</TabsTrigger>
+                                    <TabsTrigger value="python" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Python</TabsTrigger>
+                                    <TabsTrigger value="php" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">PHP</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="node">
                                     <CodeBlock language="javascript" text={nodeCode} title="Express.js Verification" />
@@ -303,7 +303,7 @@ if (!hash_equals($expected, $signature)) {
                                     columns={["Field", "Type", "Description"]}
                                     data={FIELDS.map(f => [
                                         <code className="text-blue-600 font-bold">{f.field}</code>,
-                                        <span className="text-slate-400 font-mono text-[10px] uppercase">{f.type}</span>,
+                                        <span className="text-slate-600 font-mono text-[10px] uppercase">{f.type}</span>,
                                         <span className="text-slate-600 font-medium">{f.desc}</span>
                                     ])}
                                 />
@@ -359,7 +359,7 @@ if (!hash_equals($expected, $signature)) {
                                 <p className="text-slate-600 mb-6 font-medium">
                                     You can trigger a manual test event from your dashboard at any time to verify your endpoint setup.
                                 </p>
-                                <div className="flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-wider">
+                                <div className="flex items-center gap-2 text-sm font-bold text-slate-600 uppercase tracking-wider">
                                     <span>Dashboard</span> <ArrowRight className="h-3 w-3" /> <span>Settings</span> <ArrowRight className="h-3 w-3" /> <span>Integrations</span>
                                 </div>
                             </div>
@@ -392,7 +392,7 @@ const CodeBlock = ({ language, text, title }: { language: string, text: string, 
         <div className="flex items-center justify-between bg-white px-6 py-3 border-b border-slate-100">
             <div className="flex items-center gap-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-100"></span>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">{title || language}</span>
+                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest leading-none">{title || language}</span>
             </div>
             <CopyButton text={text} className="h-9 w-9 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" />
         </div>
@@ -407,7 +407,7 @@ const DataTable = ({ columns, data }: { columns: string[], data: (string | React
         <Table>
             <TableHeader className="bg-slate-50/50">
                 <TableRow className="border-slate-100 hover:bg-transparent">
-                    {columns.map(c => <TableHead key={c} className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
+                    {columns.map(c => <TableHead key={c} className="text-slate-600 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
                 </TableRow>
             </TableHeader>
             <TableBody>

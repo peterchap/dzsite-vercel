@@ -207,7 +207,7 @@ function ContentCard({ item, isDark, isCardView = false }: { item: SegmentItem; 
                             </div>
                         </div>
                         {item.pricing.savings && (
-                            <div className={`text-sm font-semibold px-3 py-1 rounded-full self-start ${isDark ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-700"
+                            <div className={`text-sm font-semibold px-3 py-1 rounded-full self-start ${isDark ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-800"
                                 }`}>
                                 {item.pricing.savings}
                             </div>

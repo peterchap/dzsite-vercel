@@ -48,7 +48,7 @@ function DataStackPanel() {
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Delivery formats</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Delivery formats</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {["Iceberg", "Delta", "Parquet", "Cloud shares", "Marketplace", "API", "Snapshots", "Deltas"].map((item) => (
             <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>

@@ -70,8 +70,8 @@ export default function AttackChainDiagram({
                   <div className="rounded-2xl border border-white/10 bg-slate-950 p-5 shadow-sm h-full min-w-0">
                     <div className="flex flex-col gap-4">
                       <div className="flex items-start gap-3">
-                        <div className="rounded-2xl bg-blue-50 p-3 ring-1 ring-blue-100 shrink-0">
-                          <IconMapper iconName={s.icon} className="h-5 w-5 text-blue-600" />
+                        <div className="rounded-2xl bg-blue-500/10 p-3 ring-1 ring-blue-400/30 shrink-0">
+                          <IconMapper iconName={s.icon} className="h-5 w-5 text-blue-300" />
                         </div>
                         <div>
                           <div className="font-semibold text-white leading-tight">{s.title}</div>
@@ -99,7 +99,7 @@ export default function AttackChainDiagram({
               ))}
             </div>
             {(highlightTitle || highlightBody) && (
-              <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50/60 p-5">
+              <div className="mt-8 rounded-2xl border border-blue-400/30 bg-blue-500/10 p-5">
                 {highlightTitle && (
                   <div className="text-sm font-semibold text-center text-white">
                     {highlightTitle}

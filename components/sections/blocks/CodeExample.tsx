@@ -70,7 +70,7 @@ export function CodeExample({ title, intro, code, json, language, callouts, cta,
                 {intro && <p className="mt-4 max-w-2xl opacity-80">{intro}</p>}
                 <div className="mt-8 grid gap-8 lg:grid-cols-3">
                     <div className="lg:col-span-2 relative">
-                        <div className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest text-neutral-500 bg-neutral-800 px-2 py-1 rounded">
+                        <div className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest text-neutral-300 bg-neutral-800 px-2 py-1 rounded">
                             {language}
                         </div>
                         <pre className="overflow-x-auto rounded-xl bg-neutral-900 p-6 text-sm text-neutral-100 font-mono leading-relaxed">

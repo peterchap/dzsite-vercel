@@ -28,10 +28,10 @@ export default function StatsGrid({ isDark, title, items }: StatsGridProps) {
                                 key={i}
                                 className="flex flex-col items-center text-center p-6 rounded-2xl border border-white/10 bg-slate-950 shadow-sm transition hover:shadow-md"
                             >
-                                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/15 text-blue-300">
                                     {IconComponent && <IconComponent className="h-6 w-6" />}
                                 </div>
-                                <div className="mb-1 text-4xl font-extrabold text-blue-600">
+                                <div className="mb-1 text-4xl font-extrabold text-blue-300">
                                     {item.stat}
                                 </div>
                                 <div className="mb-3 text-lg font-semibold text-white">

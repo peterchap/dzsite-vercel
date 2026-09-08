@@ -12,14 +12,14 @@ export default function DataProcessingAgreementPage() {
     return (
         <PageShell>
             {/* Hero Section */}
-            <div className="border-b border-slate-100 bg-slate-50/30">
+            <div className="border-b border-white/10 bg-white/[0.03]">
                 <div className="mx-auto max-w-6xl px-6 py-16 lg:py-20">
                     <div className="max-w-3xl">
-                        <p className="text-sm font-bold uppercase tracking-widest text-blue-600">Legal</p>
-                        <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+                        <p className="text-sm font-bold uppercase tracking-widest text-blue-400">Legal</p>
+                        <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
                             Data Processing Agreement
                         </h1>
-                        <p className="mt-6 text-lg text-slate-600 leading-relaxed font-medium">
+                        <p className="mt-6 text-lg text-slate-300 leading-relaxed font-medium">
                             This Data Processing Agreement (“DPA”) describes how Datazag processes personal data on behalf of customers in accordance with applicable data protection laws.
                         </p>
                     </div>
@@ -58,13 +58,13 @@ export default function DataProcessingAgreementPage() {
                         <p>
                             Depending on the customer’s use of the services, Datazag may process limited categories of personal data, which may include:
                         </p>
-                        <ul className="mt-4 list-disc pl-5 space-y-2 text-slate-600">
+                        <ul className="mt-4 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Domain-associated email addresses</li>
                             <li>Technical metadata related to domains and infrastructure</li>
                             <li>Contact details provided for account administration</li>
                             <li>Log and usage data related to API or platform access</li>
                         </ul>
-                        <p className="mt-6 italic text-sm text-slate-500">
+                        <p className="mt-6 italic text-sm text-slate-400">
                             Datazag does not intentionally process special category (sensitive) personal data.
                         </p>
                     </LegalSection>
@@ -90,9 +90,9 @@ export default function DataProcessingAgreementPage() {
                         <p>
                             Datazag may engage sub-processors to support service delivery (for example, cloud infrastructure providers). Datazag remains responsible for the performance of its sub-processors in accordance with this DPA.
                         </p>
-                        <p className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-900 flex items-center justify-between">
+                        <p className="mt-6 p-4 rounded-xl bg-white/[0.035] border border-white/10 text-sm font-semibold text-white flex items-center justify-between">
                             <span>A current list of sub-processors is available upon request.</span>
-                            <a href="mailto:legal@datazag.com" className="text-blue-600 hover:text-blue-800 transition-colors">Contact Legal →</a>
+                            <a href="mailto:legal@datazag.com" className="text-blue-400 hover:text-blue-300 transition-colors">Contact Legal →</a>
                         </p>
                     </LegalSection>
 
@@ -129,7 +129,7 @@ export default function DataProcessingAgreementPage() {
                     <LegalSection title="Availability" border={false}>
                         <div className="bg-blue-600 p-10 rounded-[2rem] text-white shadow-xl shadow-blue-600/10">
                             <h3 className="text-2xl font-bold mb-4">Transparency & Execution</h3>
-                            <p className="text-blue-100 mb-8 leading-relaxed font-medium">
+                            <p className="text-blue-50 mb-8 leading-relaxed font-medium">
                                 This DPA is provided for transparency. Formal execution may occur as part of customer onboarding or upon request.
                             </p>
                             <a
@@ -150,9 +150,9 @@ export default function DataProcessingAgreementPage() {
 
 function LegalSection({ title, children, border = true }: { title: string; children: React.ReactNode; border?: boolean }) {
     return (
-        <section className={cn("space-y-6", border && "pb-10 border-b border-slate-100")}>
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{title}</h2>
-            <div className="text-slate-600 leading-relaxed font-medium">
+        <section className={cn("space-y-6", border && "pb-10 border-b border-white/10")}>
+            <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
+            <div className="text-slate-300 leading-relaxed font-medium">
                 {children}
             </div>
         </section>
@@ -161,9 +161,9 @@ function LegalSection({ title, children, border = true }: { title: string; child
 
 function DataPoint({ title, description }: { title: string; description: string }) {
     return (
-        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-            <h4 className="font-bold text-slate-900 mb-2">{title}</h4>
-            <p className="text-sm text-slate-500 leading-relaxed">{description}</p>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-6 shadow-sm">
+            <h4 className="font-bold text-white mb-2">{title}</h4>
+            <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
         </div>
     );
 }
@@ -171,12 +171,12 @@ function DataPoint({ title, description }: { title: string; description: string 
 function DataDetail({ title, description }: { title: string; description: string }) {
     return (
         <div className="flex items-start gap-4">
-            <div className="mt-1 h-5 w-5 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
-                <div className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            <div className="mt-1 h-5 w-5 rounded-full bg-blue-500/15 border border-blue-400/30 flex items-center justify-center shrink-0">
+                <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
             </div>
             <div>
-                <p className="font-bold text-slate-900">{title}</p>
-                <p className="text-sm text-slate-500 mt-0.5">{description}</p>
+                <p className="font-bold text-white">{title}</p>
+                <p className="text-sm text-slate-400 mt-0.5">{description}</p>
             </div>
         </div>
     );

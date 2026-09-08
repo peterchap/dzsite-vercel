@@ -76,7 +76,7 @@ export function DocsClient() {
                 <div className="container mx-auto max-w-6xl px-6 py-24 lg:py-36 relative z-10">
                     <div className="flex items-center gap-3 mb-6">
                         <Badge variant="secondary" className="px-3 bg-blue-50 text-blue-600 border-blue-100 font-bold uppercase tracking-wider text-[10px]">Developer Portal</Badge>
-                        <span className="text-slate-300">/</span>
+                        <span className="text-slate-500">/</span>
                         <span className="text-sm font-medium text-slate-500">v1.2 Reference</span>
                     </div>
                     <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
@@ -103,7 +103,7 @@ export function DocsClient() {
                 <aside className="sticky top-32 hidden h-fit w-64 shrink-0 lg:block mt-2">
                     <nav className="space-y-8">
                         <div>
-                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Documentation</h3>
+                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Documentation</h3>
                             <ul className="space-y-4">
                                 {TOC.map((t) => (
                                     <li key={t.id}>
@@ -116,13 +116,13 @@ export function DocsClient() {
                             </ul>
                         </div>
                         <div className="pt-8 border-t border-slate-100">
-                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Other APIs</h3>
+                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Other APIs</h3>
                             <ul className="space-y-4">
                                 <li><a href="/docs/search-stream" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Search Stream Webhooks</a></li>
                             </ul>
                         </div>
                         <div className="pt-8 border-t border-slate-100">
-                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Resources</h3>
+                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Resources</h3>
                             <ul className="space-y-4">
                                 <li><a href="#" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors"><Terminal className="h-4 w-4" /> SDK Libraries</a></li>
                                 <li><a href="#" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors"><Code2 className="h-4 w-4" /> Postman Collection</a></li>
@@ -165,7 +165,7 @@ export function DocsClient() {
                                 Datazag uses API keys to allow access to the API. Every request must include your private key in the header.
                             </p>
                             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                                <p className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">Header Name</p>
+                                <p className="text-sm font-bold text-slate-600 mb-4 uppercase tracking-widest">Header Name</p>
                                 <div className="flex items-center justify-between">
                                     <code className="text-xl font-bold font-mono text-blue-600">X-API-Key</code>
                                     <Badge className="bg-blue-600 font-bold">Required</Badge>
@@ -188,7 +188,7 @@ export function DocsClient() {
 
                             <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 font-mono text-lg shadow-sm group">
                                 <Badge className="px-4 py-1.5 bg-blue-600 text-[11px] font-black italic">GET</Badge>
-                                <span className="text-slate-400">/api/</span>
+                                <span className="text-slate-600">/api/</span>
                                 <span className="text-slate-900 font-bold">{'{domain}'}</span>
                             </div>
 
@@ -201,8 +201,8 @@ export function DocsClient() {
                                     columns={["Parameter", "Type", "Required", "Description"]}
                                     data={PARAMS.map(p => [
                                         <code className="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded">{p.name}</code>,
-                                        <span className="text-slate-400 font-mono text-xs">{p.type}</span>,
-                                        p.required ? <span className="text-blue-600 font-bold text-xs">Required</span> : <span className="text-slate-300 font-bold text-xs italic">Optional</span>,
+                                        <span className="text-slate-600 font-mono text-xs">{p.type}</span>,
+                                        p.required ? <span className="text-blue-600 font-bold text-xs">Required</span> : <span className="text-slate-500 font-bold text-xs italic">Optional</span>,
                                         <span className="text-slate-600 font-medium">{p.desc}</span>
                                     ])}
                                 />
@@ -212,9 +212,9 @@ export function DocsClient() {
                                 <h3 className="text-2xl font-bold text-slate-900 mb-8">Implementation Examples</h3>
                                 <Tabs defaultValue="curl" className="w-full">
                                     <TabsList className="bg-slate-100 p-1.5 rounded-2xl mb-6 inline-flex">
-                                        <TabsTrigger value="curl" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">cURL</TabsTrigger>
-                                        <TabsTrigger value="python" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">Python</TabsTrigger>
-                                        <TabsTrigger value="node" className="rounded-xl px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:shadow-md font-bold text-sm">Node.js</TabsTrigger>
+                                        <TabsTrigger value="curl" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">cURL</TabsTrigger>
+                                        <TabsTrigger value="python" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Python</TabsTrigger>
+                                        <TabsTrigger value="node" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Node.js</TabsTrigger>
                                     </TabsList>
                                     <TabsContent value="curl" className="mt-0 ring-offset-0 focus-visible:ring-0">
                                         <CodeBlock language="bash" text={curl} title="cURL Example" />
@@ -238,7 +238,7 @@ export function DocsClient() {
                                         columns={["Property", "Data Type", "Definition"]}
                                         data={FIELDS.map(f => [
                                             <code className="text-slate-900 font-black">{f.key}</code>,
-                                            <span className="text-slate-400 font-mono text-[10px] uppercase tracking-tighter">{f.type}</span>,
+                                            <span className="text-slate-600 font-mono text-[10px] uppercase tracking-tighter">{f.type}</span>,
                                             <span className="text-slate-600 font-medium leading-relaxed">{f.desc}</span>
                                         ])}
                                     />
@@ -287,7 +287,7 @@ export function DocsClient() {
                                 </p>
                             </div>
                             <div className="space-y-6">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold border border-emerald-100">02</div>
+                                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-700 font-bold border border-emerald-100">02</div>
                                 <h3 className="text-2xl font-extrabold text-slate-900">Revenue Operations</h3>
                                 <p className="text-slate-500 leading-relaxed">
                                     Automatically enrich inbound leads with infrastructure health. Discard un-mailable leads before
@@ -305,7 +305,7 @@ export function DocsClient() {
                                     <h4 className="text-2xl font-bold mb-4 italic">High Velocity</h4>
                                     <p className="text-slate-400 mb-6 leading-relaxed">Average response time sits consistently under <strong>200ms</strong> globaly.</p>
                                     <div className="flex items-center gap-2 text-xs font-mono text-blue-300 bg-blue-500/10 p-4 rounded-xl border border-blue-500/20">
-                                        <span className="text-blue-500 font-bold">PRO TIP:</span> Use ?exclude=infrastructure to save 40% bandwidth.
+                                        <span className="text-blue-400 font-bold">PRO TIP:</span> Use ?exclude=infrastructure to save 40% bandwidth.
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-center space-y-6 p-6">
@@ -382,7 +382,7 @@ const CodeBlock = ({ language, text, title }: { language: string, text: string, 
         <div className="flex items-center justify-between bg-white px-6 py-3 border-b border-slate-100">
             <div className="flex items-center gap-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-100"></span>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">{title || language}</span>
+                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest leading-none">{title || language}</span>
             </div>
             <CopyButton text={text} className="h-9 w-9 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" />
         </div>
@@ -399,7 +399,7 @@ const DataTable = ({ columns, data }: { columns: string[], data: (string | React
         <Table>
             <TableHeader className="bg-slate-50/50">
                 <TableRow className="border-slate-100 hover:bg-transparent">
-                    {columns.map(c => <TableHead key={c} className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
+                    {columns.map(c => <TableHead key={c} className="text-slate-600 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
                 </TableRow>
             </TableHeader>
             <TableBody>
