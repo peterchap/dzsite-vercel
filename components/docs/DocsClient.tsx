@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CopyButton } from "@/components/ui/copy-button";
-import { HelpCircle, Zap, Shield, Rocket, ClipboardList, Info, AlertCircle, Link as LinkIcon, Terminal, Code2, Cpu } from "lucide-react";
+import { HelpCircle, Zap, Shield, Rocket, ClipboardList, AlertCircle, Link as LinkIcon, Terminal, Code2, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // --- Data for the documentation page ---
@@ -136,7 +136,7 @@ export function DocsClient() {
                     <Section id="overview" title="Overview">
                         <div className="prose prose-slate max-w-none space-y-6">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                The Datazag API is a RESTful interface for querying real-time signals on over 315 million domains.
+                                The Datazag API is a RESTful interface for querying real-time signals on {DOMAINS_DISPLAY} domains.
                                 Unlike static datasets, our API provides "Answers" by aggregating live DNS, hosting, and risk telemetry
                                 into actionable binary flags and risk scores.
                             </p>
@@ -171,9 +171,8 @@ export function DocsClient() {
                                     <Badge className="bg-blue-600 font-bold">Required</Badge>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <AuthNotice icon={<AlertCircle className="h-4 w-4 text-amber-500" />} text="Never expose your API key in client-side code." />
-                                <AuthNotice icon={<Info className="h-4 w-4 text-blue-500" />} text="Rotate keys every 90 days for SOC2 compliance." />
                             </div>
                             <CodeBlock language="bash" text={'X-API-Key: YOUR_API_KEY'} />
                         </div>
@@ -270,7 +269,7 @@ export function DocsClient() {
                                     title="Preferred"
                                     color="emerald"
                                     icon={<CheckCircleIcon />}
-                                    text={<>Whitelists users where <code className="font-bold">has_spf</code> and <code className="font-bold">has_dmarc</code> are both true.</>}
+                                    text={<>Allow-lists users where <code className="font-bold">has_spf</code> and <code className="font-bold">has_dmarc</code> are both true.</>}
                                 />
                             </div>
                         </div>
@@ -302,10 +301,10 @@ export function DocsClient() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="p-10 rounded-3xl bg-slate-900 text-white shadow-2xl">
                                     <Zap className="h-10 w-10 text-blue-400 mb-8" />
-                                    <h4 className="text-2xl font-bold mb-4 italic">High Velocity</h4>
-                                    <p className="text-slate-400 mb-6 leading-relaxed">Average response time sits consistently under <strong>200ms</strong> globaly.</p>
+                                    <h4 className="text-2xl font-bold mb-4 italic">Response Size</h4>
+                                    <p className="text-slate-400 mb-6 leading-relaxed">Responses carry the full infrastructure block by default. Request only the fields you score on to keep payloads small.</p>
                                     <div className="flex items-center gap-2 text-xs font-mono text-blue-300 bg-blue-500/10 p-4 rounded-xl border border-blue-500/20">
-                                        <span className="text-blue-400 font-bold">PRO TIP:</span> Use ?exclude=infrastructure to save 40% bandwidth.
+                                        <span className="text-blue-400 font-bold">PRO TIP:</span> Use ?exclude=infrastructure to drop the infrastructure block.
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-center space-y-6 p-6">
@@ -337,7 +336,7 @@ export function DocsClient() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                             <FaqItem
                                 question="How fresh is the data?"
-                                answer="Our database is refreshed continuously from hundreds of DNS sensor nodes. Critical infrastructure changes are typically detected and updated within 12–24 hours."
+                                answer="Certificate Transparency is consumed continuously, so newly issued certificates are observed as they are logged. DNS and hosting records are re-resolved on a rolling schedule; the refresh cadence for each field is documented on the dataset page that ships it."
                             />
                             <FaqItem
                                 question="Do you support subdomains?"
