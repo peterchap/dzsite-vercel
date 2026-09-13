@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { TECHNICAL_BRIEFING_ENQUIRY_TYPE } from "@/lib/contact-routes";
+
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function clean(value: FormDataEntryValue | null) {
@@ -38,6 +40,12 @@ export async function POST(request: NextRequest) {
   // (WU28-B §3). Re-point BENCHMARK_EMAIL_TO at the COO when the address exists.
   const isBenchmark = payload.source === "benchmark_qualification";
 
+  // WU-C11: a technical-briefing request is a commercial lead with someone
+  // waiting on a reply, so it goes to sales rather than the general inbox —
+  // the same reasoning as the benchmark route above. Adding the option to the
+  // form without routing it would have made the shortest path the slowest one.
+  const isBriefing = payload.enquiryType === TECHNICAL_BRIEFING_ENQUIRY_TYPE;
+
   const errors: string[] = [];
   if (!payload.name) errors.push("name_required");
   if (!emailPattern.test(payload.email)) errors.push("valid_email_required");
@@ -60,10 +68,16 @@ export async function POST(request: NextRequest) {
     try {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const to = (isBenchmark && process.env.BENCHMARK_EMAIL_TO) || process.env.CONTACT_EMAIL_TO || "support@datazag.com";
+      const to =
+        (isBenchmark && process.env.BENCHMARK_EMAIL_TO) ||
+        (isBriefing && (process.env.SALES_EMAIL_TO || "sales@datazag.com")) ||
+        process.env.CONTACT_EMAIL_TO ||
+        "support@datazag.com";
       const subject = isBenchmark
         ? `Benchmark qualification — ${payload.company}`
-        : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
+        : isBriefing
+          ? `Technical briefing request — ${payload.company}`
+          : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
       const lines = Object.entries(payload)
         .filter(([, v]) => v !== "" && v !== false)
         .map(([k, v]) => `${k}: ${v}`)
