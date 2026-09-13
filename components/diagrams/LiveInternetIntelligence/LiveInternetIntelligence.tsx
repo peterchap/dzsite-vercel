@@ -4,7 +4,7 @@ import {
   isStale,
   safeSnapshotLabel,
 } from "@/lib/live-activity-guard";
-import { PUBLISHED_STATS } from "@/lib/site-stats";
+import { publishedStats } from "@/lib/site-stats";
 
 // activity.json also carries `alerts` (brand + platform impersonation counts).
 // It is deliberately not surfaced: platform impersonations are dominated by
@@ -115,17 +115,16 @@ export async function LiveInternetIntelligence() {
   // only place on the site where a figure's population was written down at all,
   // and a copy that could drift from the number it described without anything
   // noticing. The definition now belongs to the figure.
-  const coverageMetrics = (
-    ["domainsMonitored", "ipsHostingDomains", "ipv4Indexed", "networksProfiled"] as const
-  ).map((key) => {
-    const stat = PUBLISHED_STATS[key];
-    return {
-      value: stat.display,
-      label: stat.label,
-      asOf: asOfLabel(stat.measuredAt),
-      detail: stat.definition,
-    };
-  });
+  // publishedStats() returns ONLY figures the feed actually supplied. A figure
+  // the producer could not give us is absent from this panel entirely — it does
+  // not render as zero, and it does not render a constant from a previous
+  // reconciliation. An empty tile is honest; a stale one is not.
+  const coverageMetrics = publishedStats().map((stat) => ({
+    value: stat.display,
+    label: stat.label,
+    asOf: asOfLabel(stat.measuredAt),
+    detail: stat.definition,
+  }));
 
   // "Certificates observed" is the RAW CertStream firehose for the window —
   // every certificate CT logged, matched or not. It is legitimately larger than

@@ -216,12 +216,14 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                             <p className="text-sm text-slate-500 leading-relaxed border-l-2 border-slate-200 pl-4">
                                 <span className="font-semibold text-slate-700">What {DOMAINS_DISPLAY} counts: </span>
                                 {PUBLISHED_STATS.domainsMonitored.definition}{" "}
-                                <span className="whitespace-nowrap">
-                                    Measured{" "}
-                                    <time dateTime={PUBLISHED_STATS.domainsMonitored.measuredAt}>
-                                        {PUBLISHED_STATS.domainsMonitored.measuredAt.slice(0, 10)}
-                                    </time>.
-                                </span>
+                                {PUBLISHED_STATS.domainsMonitored.measuredAt ? (
+                                    <span className="whitespace-nowrap">
+                                        Measured{" "}
+                                        <time dateTime={PUBLISHED_STATS.domainsMonitored.measuredAt}>
+                                            {PUBLISHED_STATS.domainsMonitored.measuredAt.slice(0, 10)}
+                                        </time>.
+                                    </span>
+                                ) : null}
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 text-center md:text-left">
                                 <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 group hover:border-blue-100 transition-colors">

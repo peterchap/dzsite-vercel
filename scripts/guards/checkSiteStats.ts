@@ -7,12 +7,14 @@
  * imports: `npm run guard` / `npm run guard:stats`.
  */
 import assert from "node:assert/strict";
+import { feedStats } from "../../lib/site-stats.generated";
 import {
   fmtStat,
   SITE_STATS,
   DISPLAY_STATS,
   DOMAINS_DISPLAY,
   PUBLISHED_STATS,
+  publishedStats,
   STATS_AS_OF,
   BOUNDS,
   IPV4_ADDRESS_SPACE,
@@ -37,22 +39,34 @@ check("sub-1k renders literally", () => assert.equal(fmtStat(999), "999"));
 // Domains floor rule: the effective figure never drops below the committed
 // DuckLake floor.
 //
-// ⚠️ Lowered 2026-08-29 from 395,865,413. That earlier floor was measured over
-// EVERY row of gold.dns_wide, including 39,926,798 names that do not resolve
-// (NXDOMAIN/SERVFAIL/TIMEOUT). It was not a floor under the corpus, it was a
-// floor under an inflated count — and being a floor, it would have REJECTED the
-// corrected figure and kept the inflated one on the page. Lowering it is the
-// point of this change; do not "restore" it.
-check("effective domains ≥ 362.7M committed floor", () =>
-  assert.ok(SITE_STATS.domainsMonitored >= 362_714_858));
+// ── R2 IS THE SOURCE (13 Sep 2026) ─────────────────────────────────────────
+// The old "effective domains >= 362,714,858 committed floor" assertion is gone
+// WITH the floor it guarded. It asserted that the published figure could never
+// drop below the last hand-reconciled number — which is exactly the behaviour
+// that would have kept the inflated 395,865,413 on the page after the producer
+// was corrected to drop ~40M dead names. An assertion protecting a ratchet is
+// an assertion against corrections.
+//
+// What replaces it is the contract that matters now: the published figure IS
+// the feed's figure. Nothing substitutes a constant for it.
+check("the published corpus figure comes from the feed, unmodified", () => {
+  assert.equal(
+    SITE_STATS.domainsMonitored,
+    feedStats.domainsMonitored,
+    "the corpus figure must be the feed's value — no constant, no floor, no ceiling clamp",
+  );
+});
+check("a corpus figure is publishable at all", () =>
+  assert.ok(SITE_STATS.domainsMonitored !== null, "an unpublishable corpus figure fails the build"));
+
 check("corpus display is 360M+", () => assert.equal(DISPLAY_STATS.domainsMonitored, "360M+"));
 // The corpus counts RESOLVING domains only. If the producer ever regresses to
 // counting every row, the figure jumps back over 400M — assert it cannot.
 // Bounds alone cannot catch this: 402M sits inside (100M, 2B) quite happily.
 check("corpus count excludes dead names (no un-filtered gold.dns_wide count)", () =>
   assert.ok(
-    SITE_STATS.domainsMonitored < 380_000_000,
-    `domainsMonitored = ${SITE_STATS.domainsMonitored.toLocaleString()} looks like an ` +
+    (SITE_STATS.domainsMonitored ?? 0) < 380_000_000,
+    `domainsMonitored = ${String(SITE_STATS.domainsMonitored)} looks like an ` +
       `UNFILTERED count of gold.dns_wide (~402M includes ~40M NXDOMAIN/SERVFAIL/TIMEOUT). ` +
       `The producer must filter on resolution_status IN ('RESOLVED','NODATA') — see ` +
       `MEASURED_SQL in riskscore/orchestration/website_stats.py. Do not raise this ceiling.`,
@@ -68,8 +82,8 @@ check("DOMAINS_DISPLAY aliases the corpus display", () =>
 // 4,294,967,296. A floor cannot catch a ceiling violation.
 check("ipv4Indexed cannot exceed the IPv4 address space", () =>
   assert.ok(
-    SITE_STATS.ipv4Indexed <= IPV4_ADDRESS_SPACE,
-    `ipv4Indexed = ${SITE_STATS.ipv4Indexed.toLocaleString()} exceeds 2^32 = ` +
+    (SITE_STATS.ipv4Indexed ?? 0) <= IPV4_ADDRESS_SPACE,
+    `ipv4Indexed = ${String(SITE_STATS.ipv4Indexed)} exceeds 2^32 = ` +
       `${IPV4_ADDRESS_SPACE.toLocaleString()}. This number cannot exist. Find the ` +
       `double-count in the producer; do NOT cap it at 2^32.`,
   ));
@@ -106,7 +120,37 @@ check("every displayed figure has its own parseable as-of", () => {
 // Every display stat must be derived, non-empty, and never a raw huge number.
 check("all display stats formatted", () => {
   for (const [key, value] of Object.entries(DISPLAY_STATS)) {
+    // null is a legitimate value now: the feed had nothing publishable, so the
+    // figure renders NOTHING. Only a present string has to be well-formed.
+    if (value === null) continue;
     assert.ok(/^\d+(\.\d)?(B|M\+|k)$|^\d{1,3}$/.test(value), `${key} malformed: ${value}`);
+  }
+});
+
+// ── RENDER NOTHING, NOT A CONSTANT ─────────────────────────────────────────
+check("publishedStats() omits any figure the feed could not supply", () => {
+  const published = publishedStats();
+  for (const stat of published) {
+    assert.ok(stat.value !== null, `${stat.key} is published with a null value`);
+    assert.ok(stat.display !== null, `${stat.key} is published with a null display`);
+    assert.ok(stat.measuredAt !== null, `${stat.key} is published with no measured-at`);
+  }
+  const nulls = Object.entries(PUBLISHED_STATS).filter(([, s]) => s.value === null);
+  for (const [key] of nulls) {
+    assert.ok(
+      !published.some((p) => p.key === key),
+      `${key} has no value but still reached publishedStats()`,
+    );
+  }
+});
+
+check("every published figure is the feed's own value", () => {
+  for (const stat of publishedStats()) {
+    assert.equal(
+      stat.value,
+      (feedStats as Record<string, unknown>)[stat.key],
+      `${stat.key} does not match the feed — something is substituting a value`,
+    );
   }
 });
 
