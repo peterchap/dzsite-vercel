@@ -41,6 +41,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/domain-search", changeFrequency: "monthly", priority: 0.6 },
   { path: "/esp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs/search-stream", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.7 },
