@@ -76,6 +76,16 @@ const EN_GB = [
   ["customise", "customize"], ["personalise", "personalize"], ["specialise", "specialize"],
   ["behaviour", "behavior"], ["colour", "color"], ["defence", "defense"],
   ["centre", "center"], ["catalogue", "catalog"], ["licence", "license"],
+  // Folded in from checkSpelling.mjs when the Observatory branch was rebased: that
+  // guard scanned the same tree for the same thing, and two spelling guards is one
+  // more than can be kept in step. These are the terms it had that this list did not.
+  ["neighbour", "neighbor"], ["honour", "honor"],
+  ["programme", "program"], ["favour", "favor"],
+  ["categorise", "categorize"], ["serialise", "serialize"], ["initialise", "initialize"],
+  ["realise", "realize"], ["capitalise", "capitalize"],
+  ["labelled", "labeled"], ["labelling", "labeling"], ["modelled", "modeled"],
+  ["cancelled", "canceled"], ["travelled", "traveled"], ["signalled", "signaled"], ["totalled", "totaled"],
+  ["grey", "gray"], ["per cent", "percent"],
 ];
 
 const EXEMPT = [

@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-US">
       <body className={`${inter.variable} ${outfit.variable} ${manrope.variable} antialiased`}>
         <CurrencyProvider>
           {children}

@@ -25,6 +25,7 @@ const coreNavLinks: NavLink[] = [
         href: "#",
         children: [
             { label: "How It Works", href: "/how-it-works" },
+            { label: "Observatory", href: "/observatory" },
             { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
             { label: "Datasets", href: "/datasets" },
         ],

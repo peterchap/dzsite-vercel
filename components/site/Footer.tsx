@@ -24,6 +24,7 @@ const defaultTrustLinks: NavLink[] = [
 
 const defaultCompanyLinks: NavLink[] = [
     { label: "About", href: "/about" },
+    { label: "Observatory", href: "/observatory" },
     { label: "Intelligence", href: "/intelligence/one-signal-150-domains" },
     { label: "MSSP Partners", href: "/mssp-partners" },
     { label: "ESP Partners", href: "/esp-partners" },
