@@ -77,7 +77,7 @@ export default function DataProcessingAgreementPage() {
 
                     <LegalSection title="Security measures">
                         <p className="mb-8">
-                            Datazag implements appropriate technical and organizational measures to protect personal data against unauthorised access, alteration, disclosure, or destruction.
+                            Datazag implements appropriate technical and organizational measures to protect personal data against unauthorized access, alteration, disclosure, or destruction.
                         </p>
                         <div className="space-y-4">
                             <DataDetail title="Technical safeguards" description="Encryption in transit, access controls, and logical separation of environments." />
