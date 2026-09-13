@@ -44,6 +44,18 @@ const RULES = [
     fix: "supply the real value, or do not publish the sentence",
   },
   {
+    // A stub STRING VALUE, e.g. `companyNumber: "TBD"`. The bracket rule above
+    // catches prose placeholders; this catches the other shape, which is how a
+    // half-filled legal fact would most likely arrive once someone starts
+    // filling in lib/legal-entity.ts. Anchored to an assignment so ordinary
+    // prose containing these letters is untouched.
+    // NOT "N/A": `value ? fmt(value) : "N/A"` is a correct UI fallback for a
+    // metric that genuinely has no value, not an unfinished field.
+    re: /[:=]\s*["'`](?:TBD|TBC|xxx+|\?\?+|FILL ?ME|CHANGE ?ME)["'`]/i,
+    why: "a stub value standing in for a real one",
+    fix: "supply the real value, or leave the field null so the renderer omits it",
+  },
+  {
     // Narrow on purpose: "Use this page for report requests" on /contact is
     // addressed to the visitor and is fine. Only the author-facing phrasings
     // that actually shipped are caught.

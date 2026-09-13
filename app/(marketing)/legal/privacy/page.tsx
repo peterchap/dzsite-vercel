@@ -2,6 +2,8 @@ import React from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
+import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
     title: "Privacy Policy | Datazag",
@@ -22,6 +24,7 @@ export default function PrivacyPolicyPage() {
                         <p className="mt-6 text-lg text-slate-300 leading-relaxed font-medium">
                             This Privacy Policy explains how Datazag collects, uses, and protects personal data when you interact with our website, platform, and services.
                         </p>
+                        <LegalDateline />
                     </div>
                 </div>
             </div>
@@ -49,7 +52,14 @@ export default function PrivacyPolicyPage() {
                         <p>
                             Datazag provides Infrastructure Intelligence to help security teams detect phishing, brand impersonation, and infrastructure abuse.
                         </p>
-                        <p className="mt-4 font-semibold text-white">For the purposes of applicable data protection laws, Datazag acts as:</p>
+                        <p className="mt-4">
+                            The controller for personal data collected through this website is {LEGAL_ENTITY.legalName},
+                            a company registered in {LEGAL_ENTITY.jurisdiction}.
+                        </p>
+                        <div className="mt-6">
+                            <EntityBlock />
+                        </div>
+                        <p className="mt-6 font-semibold text-white">For the purposes of applicable data protection laws, Datazag acts as:</p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
                             <li>a data controller for personal data collected through our website and business operations</li>
                             <li>a data processor where we process personal data on behalf of customers under a Data Processing Agreement (DPA)</li>
