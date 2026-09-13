@@ -43,7 +43,7 @@ export default function TermsOfServicePage() {
 
                     <LegalSection title="2. Description of the Services">
                         <p>
-                            Datazag provides predictive domain intelligence and security-focused data products, including but not limited to:
+                            Datazag provides Infrastructure Intelligence and security-focused data products, including but not limited to:
                         </p>
                         <ul className="mt-4 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Real-time phishing and brand impersonation detection streams</li>

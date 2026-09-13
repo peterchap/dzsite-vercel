@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
 
                     <LegalSection title="2. Who we are">
                         <p>
-                            Datazag provides predictive domain intelligence to help security teams detect phishing, brand impersonation, and infrastructure abuse.
+                            Datazag provides Infrastructure Intelligence to help security teams detect phishing, brand impersonation, and infrastructure abuse.
                         </p>
                         <p className="mt-4 font-semibold text-white">For the purposes of applicable data protection laws, Datazag acts as:</p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
