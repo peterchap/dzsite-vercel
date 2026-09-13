@@ -1,14 +1,11 @@
 import type { StoryContent } from "./types";
 import { mergeStoryContent } from "./content";
 import { CaseStudyTeaser } from "./CaseStudyTeaser";
-import { DetectionQualitySection } from "./DetectionQualitySection";
-import { RelevanceSection } from "./RelevanceSection";
 import { SegmentRouter } from "./SegmentRouter";
 import {
   StoryHero,
   StoryObservatory,
   StoryProducts,
-  StoryProof,
   StoryRelationshipIntelligence,
   StoryReportCta,
 } from "./sections";
@@ -30,12 +27,24 @@ export type { StoryContent } from "./types";
  *   StoryAudiences (replaced by SegmentRouter — the only per-segment presence).
  *
  * HELD pending gates (WU28-B §4 / WU28-C §4 — see BenchmarkSection.tsx):
- *   <BenchmarkSection /> mounts between StoryProducts and StoryProof once the
- *   WU27-C dress rehearsal clears and/or the marketplace listing URL exists.
+ *   <BenchmarkSection /> mounts between StoryProducts and the Observatory once
+ *   the WU27-C dress rehearsal clears and/or the marketplace listing URL exists.
  *
- * KEPT by judgement: StoryProof (the live ticker) — WU24 called it corroborating
- * evidence for step 1 and WU26 wired it to the canonical stats; it stays as the
- * live receipt ahead of the Observatory.
+ * WU-C9 (13 Sep 2026) — the page ran nine blocks; concept count was the
+ * problem, so three MOVED rather than being cut. Each is mounted where its
+ * content belongs, not deleted:
+ *   RelevanceSection ("your slice of the graph")  -> /how-it-works
+ *   DetectionQualitySection (four checks)         -> /alerts
+ *   StoryProof (the live ticker)                  -> removed; the Observatory
+ *     owns the denominator under the settled content split, and the Observatory
+ *     block below already links out to it (WU-C10).
+ *
+ * ⚠️ StoryProof was previously "KEPT by judgement" here — WU24 called it
+ * corroborating evidence for step 1 and WU26 wired it to the canonical stats.
+ * That judgement is deliberately REVERSED, not overlooked: those four counters
+ * are what the Observatory exists to own, they were one of the six conflicting
+ * corpus sources, and moving them converts a homepage block into Observatory
+ * traffic. The component and its render-guards remain in the repo.
  */
 export default function StoryPage({ content }: { content?: Partial<StoryContent> | null }) {
   const c = mergeStoryContent(content);
@@ -57,22 +66,15 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
       />
       <CaseStudyTeaser />
 
-      {/* Step 2 — we identify what's relevant to YOUR organization. */}
-      <RelevanceSection />
-
-      {/* How step 1 works. */}
+      {/* Step 2 — how step 1 works. This IS the proposition, not a detail. */}
       <StoryRelationshipIntelligence />
-
-      {/* How we keep it accurate (WU27-A). */}
-      <DetectionQualitySection />
 
       {/* Step 3 — explainable signals flow into controls you already operate. */}
       <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
 
       {/* Step 4 — <BenchmarkSection /> mounts HERE once its gates clear. */}
 
-      {/* Live corroboration + the Observatory. */}
-      <StoryProof />
+      {/* The Observatory — and the live metrics that moved there. */}
       <StoryObservatory />
 
       {/* Segment router — the only per-segment presence on the homepage. */}

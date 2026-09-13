@@ -13,6 +13,7 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { SLUG, content } from "./copy";
+import { RelevanceSection } from "@/components/story/RelevanceSection";
 
 export const metadata: Metadata = {
   title: "How It Works — Datazag",
@@ -208,6 +209,11 @@ export default async function HowItWorksPage() {
           </div>
         </div>
       </section>
+
+      {/* WU-C9: "your slice of the graph" moved here off the homepage. How a
+          customer's platforms, brands and keywords scope the graph into a
+          watchlist is a how-it-works concept, not a front-page one. */}
+      <RelevanceSection />
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">

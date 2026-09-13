@@ -15,6 +15,7 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { SLUG, content } from "./copy";
+import { DetectionQualitySection } from "@/components/story/DetectionQualitySection";
 
 export const metadata: Metadata = {
   title: "Threat Alerts — Datazag",
@@ -327,6 +328,11 @@ export default async function AlertsPage() {
           </div>
         </div>
       </section>
+
+      {/* WU-C9: the four detection checks moved here off the homepage. Copy is
+          unchanged — it is LOCKED per the WU27 spec; this is a relocation, not
+          a rewrite. Alerts is where the confidence claim needs backing. */}
+      <DetectionQualitySection />
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
