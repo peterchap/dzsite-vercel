@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from "react";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { DOMAINS_DISPLAY, PUBLISHED_STATS } from "@/lib/site-stats";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -139,6 +139,19 @@ export function DocsClient() {
                                 The Datazag API is a RESTful interface for querying real-time signals on {DOMAINS_DISPLAY} domains.
                                 Unlike static datasets, our API provides "Answers" by aggregating live DNS, hosting, and risk telemetry
                                 into actionable binary flags and risk scores.
+                            </p>
+                            {/* WU-C3: the figure states its own population. This page previously
+                                carried two different corpus numbers eleven lines apart, which a
+                                technical buyer reads as the site not knowing its own coverage. */}
+                            <p className="text-sm text-slate-500 leading-relaxed border-l-2 border-slate-200 pl-4">
+                                <span className="font-semibold text-slate-700">What {DOMAINS_DISPLAY} counts: </span>
+                                {PUBLISHED_STATS.domainsMonitored.definition}{" "}
+                                <span className="whitespace-nowrap">
+                                    Measured{" "}
+                                    <time dateTime={PUBLISHED_STATS.domainsMonitored.measuredAt}>
+                                        {PUBLISHED_STATS.domainsMonitored.measuredAt.slice(0, 10)}
+                                    </time>.
+                                </span>
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 text-center md:text-left">
                                 <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 group hover:border-blue-100 transition-colors">

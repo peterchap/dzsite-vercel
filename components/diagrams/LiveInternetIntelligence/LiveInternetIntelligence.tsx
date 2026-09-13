@@ -4,7 +4,7 @@ import {
   isStale,
   safeSnapshotLabel,
 } from "@/lib/live-activity-guard";
-import { DISPLAY_STATS, STATS_AS_OF } from "@/lib/site-stats";
+import { PUBLISHED_STATS } from "@/lib/site-stats";
 
 // activity.json also carries `alerts` (brand + platform impersonation counts).
 // It is deliberately not surfaced: platform impersonations are dominated by
@@ -110,12 +110,22 @@ export async function LiveInternetIntelligence() {
   // that belonged to the hourly panel, so a total measured 13 hours earlier read
   // as live. `asOf` renders under the label; a tile with no as-of says so rather
   // than inheriting a neighbour's.
-  const coverageMetrics = [
-    { value: DISPLAY_STATS.domainsMonitored, label: "Domains monitored", asOf: asOfLabel(STATS_AS_OF.domainsMonitored), detail: "Distinct domains in the Datazag corpus, continuously correlated against DNS, certificates and infrastructure history." },
-    { value: DISPLAY_STATS.ipsHostingDomains, label: "IPs hosting domains", asOf: asOfLabel(STATS_AS_OF.ipsHostingDomains), detail: "IP addresses currently linked to domains in the Datazag corpus." },
-    { value: DISPLAY_STATS.ipv4Indexed, label: "IPv4 addresses indexed", asOf: asOfLabel(STATS_AS_OF.ipv4Indexed), detail: "IPv4 space announced in BGP and attributed to a network, counted once per address however many announcements cover it." },
-    { value: DISPLAY_STATS.networksProfiled, label: "Networks profiled", asOf: asOfLabel(STATS_AS_OF.networksProfiled), detail: "ASN ownership and routing context for infrastructure intelligence." },
-  ];
+  // WU-C3: label, value, definition and measured-at all travel together from
+  // lib/site-stats. These four `detail` sentences used to be typed here — the
+  // only place on the site where a figure's population was written down at all,
+  // and a copy that could drift from the number it described without anything
+  // noticing. The definition now belongs to the figure.
+  const coverageMetrics = (
+    ["domainsMonitored", "ipsHostingDomains", "ipv4Indexed", "networksProfiled"] as const
+  ).map((key) => {
+    const stat = PUBLISHED_STATS[key];
+    return {
+      value: stat.display,
+      label: stat.label,
+      asOf: asOfLabel(stat.measuredAt),
+      detail: stat.definition,
+    };
+  });
 
   // "Certificates observed" is the RAW CertStream firehose for the window —
   // every certificate CT logged, matched or not. It is legitimately larger than

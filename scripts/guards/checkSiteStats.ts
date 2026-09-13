@@ -12,6 +12,7 @@ import {
   SITE_STATS,
   DISPLAY_STATS,
   DOMAINS_DISPLAY,
+  PUBLISHED_STATS,
   STATS_AS_OF,
   BOUNDS,
   IPV4_ADDRESS_SPACE,
@@ -106,6 +107,53 @@ check("every displayed figure has its own parseable as-of", () => {
 check("all display stats formatted", () => {
   for (const [key, value] of Object.entries(DISPLAY_STATS)) {
     assert.ok(/^\d+(\.\d)?(B|M\+|k)$|^\d{1,3}$/.test(value), `${key} malformed: ${value}`);
+  }
+});
+
+// ── PER-FIGURE DEFINITION (WU-C3) ──────────────────────────────────────────
+// A number without its population is not a fact. Six coverage figures were in
+// circulation and the damaging pair sat eleven lines apart on one page; the
+// fix is that every published figure states what it counts, from one place.
+check("every published figure carries a definition and a measured-at", () => {
+  for (const [key, stat] of Object.entries(PUBLISHED_STATS)) {
+    assert.ok(stat.definition?.trim(), `${key} has no definition — it must not be rendered`);
+    assert.ok(
+      stat.definition.trim().length >= 40,
+      `${key} definition is too short to state a population: "${stat.definition}"`,
+    );
+    assert.ok(stat.label?.trim(), `${key} has no label`);
+    assert.ok(stat.measuredAt, `${key} has no measuredAt`);
+    assert.ok(
+      !Number.isNaN(new Date(stat.measuredAt).getTime()),
+      `${key} measuredAt unparseable: ${stat.measuredAt}`,
+    );
+  }
+});
+
+// The definition must describe the SAME number the page renders. If a figure
+// is published, its display string is the one derived from site-stats — never
+// a second literal typed beside it.
+check("published figures agree with the display strings", () => {
+  for (const [key, stat] of Object.entries(PUBLISHED_STATS)) {
+    const expected = (DISPLAY_STATS as Record<string, string>)[key];
+    assert.equal(stat.display, expected, `${key} display drifted: ${stat.display} vs ${expected}`);
+    assert.equal(
+      stat.measuredAt,
+      (STATS_AS_OF as Record<string, string>)[key],
+      `${key} measuredAt drifted from STATS_AS_OF`,
+    );
+  }
+});
+
+// Every figure the site formats for display must be published WITH a
+// definition — adding a fifth stat to DISPLAY_STATS and forgetting to define
+// it is exactly how the undefined figures got out the first time.
+check("no displayed figure is missing from PUBLISHED_STATS", () => {
+  for (const key of Object.keys(DISPLAY_STATS)) {
+    assert.ok(
+      key in PUBLISHED_STATS,
+      `${key} is displayed but has no entry in PUBLISHED_STATS — it has no definition`,
+    );
   }
 });
 
