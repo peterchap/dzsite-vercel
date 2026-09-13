@@ -49,7 +49,7 @@ const SAMPLE_PAYLOAD = `{
 
 const TROUBLESHOOTING = [
     { issue: "Signature Mismatch", cause: "Hashing parsed JSON instead of raw bytes.", solution: "Ensure your code reads the request body before any JSON parsing middleware runs." },
-    { issue: "403 Forbidden", cause: "Firewall blocking our IPs.", solution: "Whitelist 192.0.2.10 and 192.0.2.11 on your WAF or firewall." },
+    { issue: "403 Forbidden", cause: "Firewall blocking our IPs.", solution: "Allow-list 192.0.2.10 and 192.0.2.11 on your WAF or firewall." },
     { issue: "Timeouts / 5xx", cause: "Slow processing on your end.", solution: "Your endpoint must respond within 5 seconds. Offload heavy processing to a background job." },
     { issue: "Duplicate Events", cause: "Retry logic.", solution: "If we don't receive a 200 OK, we retry 3 times. Ensure your system checks alert_id to handle duplicates." },
 ];

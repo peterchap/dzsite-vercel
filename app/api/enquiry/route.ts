@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { TECHNICAL_BRIEFING_ENQUIRY_TYPE } from "@/lib/contact-routes";
+
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function clean(value: FormDataEntryValue | null) {
@@ -38,6 +40,14 @@ export async function POST(request: NextRequest) {
   // (WU28-B §3). Re-point BENCHMARK_EMAIL_TO at the COO when the address exists.
   const isBenchmark = payload.source === "benchmark_qualification";
 
+  // The enquiry type tells us which PRODUCT someone is asking about, not
+  // whether they are a prospect or an existing customer — "Platform Alerts"
+  // could be either. Rather than guess a split the form cannot express, every
+  // submission goes to sales for now and a human forwards what belongs to
+  // support. A misrouted lead is recoverable; a lead dropped into a shared
+  // inbox nobody owns is not.
+  const isBriefing = payload.enquiryType === TECHNICAL_BRIEFING_ENQUIRY_TYPE;
+
   const errors: string[] = [];
   if (!payload.name) errors.push("name_required");
   if (!emailPattern.test(payload.email)) errors.push("valid_email_required");
@@ -60,10 +70,19 @@ export async function POST(request: NextRequest) {
     try {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const to = (isBenchmark && process.env.BENCHMARK_EMAIL_TO) || process.env.CONTACT_EMAIL_TO || "support@datazag.com";
+      // NOTE: CONTACT_EMAIL_TO is deliberately no longer consulted. It used to
+      // sit ahead of the default and would quietly send everything to whatever
+      // it pointed at, which is the split this change removes. Set
+      // SALES_EMAIL_TO to override.
+      const to =
+        (isBenchmark && process.env.BENCHMARK_EMAIL_TO) ||
+        process.env.SALES_EMAIL_TO ||
+        "sales@datazag.com";
       const subject = isBenchmark
         ? `Benchmark qualification — ${payload.company}`
-        : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
+        : isBriefing
+          ? `Technical briefing request — ${payload.company}`
+          : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
       const lines = Object.entries(payload)
         .filter(([, v]) => v !== "" && v !== false)
         .map(([k, v]) => `${k}: ${v}`)

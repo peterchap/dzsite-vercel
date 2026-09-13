@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 // Lead handoff: the report form (consent + generation) lives on the customer
 // portal; this section captures the email and passes it across prefilled.
@@ -129,6 +130,19 @@ export function DomainHealthReportCta() {
                 </div>
                 {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
               </form>
+
+              {/* WU-C9: a buyer who will not hand over an email yet can still
+                  see what they would get. The friction-reducers below answer
+                  "what will this cost me"; this answers "what do I get". */}
+              <p className="mt-4 text-sm text-slate-400">
+                Not ready to enter an email?{" "}
+                <Link
+                  href="/reports/sample"
+                  className="font-semibold text-cyan-200 underline-offset-4 hover:underline"
+                >
+                  View a sample report
+                </Link>
+              </p>
 
               <div className="mt-5 grid gap-2 sm:grid-cols-2">
                 {trustSignals.map((signal) => (

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { getDatasetSlugs } from "@/lib/datasets/load";
+import { isLegacyRedirectSource } from "@/lib/legacy-redirects";
 import { sanityFetch } from "@/sanity/fetch";
 
 // www.datazag.com is the canonical apex — keep the www (see app/layout.tsx).
@@ -15,6 +16,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *   /home, /internet-never-stands-still — server redirects to /
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
+ *   /enterprise                 — noindex skeleton, deferred (WU-C7)
+ *   legacy 301 sources          — see lib/legacy-redirects.ts (WU-C5)
  */
 
 type StaticEntry = {
@@ -30,7 +33,6 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/domain-intelligence", changeFrequency: "monthly", priority: 0.8 },
   { path: "/infrastructure-intelligence", changeFrequency: "monthly", priority: 0.8 },
   { path: "/brand-protection", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/use-cases", changeFrequency: "monthly", priority: 0.8 },
   { path: "/datasets", changeFrequency: "weekly", priority: 0.8 },
   { path: "/intelligence/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
   { path: "/alerts", changeFrequency: "monthly", priority: 0.7 },
@@ -39,6 +41,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/domain-search", changeFrequency: "monthly", priority: 0.6 },
   { path: "/esp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs/search-stream", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.7 },
@@ -53,7 +56,7 @@ const STATIC_ROUTES: StaticEntry[] = [
 
 // Slugs with lastModified, for the dynamic Sanity content.
 const blogSitemapQuery = `
-*[_type == "blogPost" && defined(slug.current)]{
+*[_type == "blogPost" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()]{
   "slug": slug.current,
   "updated": coalesce(_updatedAt, publishedAt)
 }
@@ -66,6 +69,14 @@ const cmsPageSitemapQuery = `
   "updated": _updatedAt
 }
 `;
+
+/**
+ * CMS slugs that resolve but must not be advertised. /enterprise is a deferred
+ * skeleton carrying `robots: noindex` (see app/(marketing)/[...slug]/page.tsx);
+ * listing it in the sitemap would ask Google to crawl a page we tell it to
+ * ignore. Drop the slug here when the page ships.
+ */
+const NOINDEX_SLUGS = new Set(["enterprise"]);
 
 type SlugRow = { slug: string; updated?: string };
 
@@ -120,11 +131,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // CMS pages served by app/(marketing)/[...slug]. Some slugs (pricing,
-  // use-cases, contact, …) also have file routes; those already appear above.
+  // contact, …) also have file routes; those already appear above.
   for (const page of cmsPages ?? []) {
     if (!page?.slug) continue;
+    const slug = page.slug.replace(/^\/+/, "");
+    // A retired route 301s and a noindex route is excluded by its own metadata —
+    // neither belongs in the sitemap, whatever the CMS still holds.
+    if (isLegacyRedirectSource(slug) || NOINDEX_SLUGS.has(slug)) continue;
     entries.push({
-      url: abs(`/${page.slug.replace(/^\/+/, "")}`),
+      url: abs(`/${slug}`),
       lastModified: toDate(page.updated),
       changeFrequency: "monthly",
       priority: 0.6,

@@ -258,6 +258,88 @@ export const STATS_AS_OF = {
 } as const;
 
 /**
+ * WHAT EACH FIGURE COUNTS (WU-C3).
+ *
+ * A number without its population is not a fact, it is a guess with a comma in
+ * it. Six different coverage figures were in public circulation — 360M, 390M,
+ * 315M, 340M, 330M, 267M — and the damaging pair were the two sitting eleven
+ * lines apart on /docs, because a technical buyer reads that page linearly and
+ * concludes the site does not know its own corpus.
+ *
+ * The pair was never one number typed twice. 395,865,413 counted every domain
+ * ever ATTEMPTED, including 24.4M NXDOMAIN, 9.7M SERVFAIL and 5.9M TIMEOUT —
+ * 39.9M dead names, 9.9% of the published figure. The producer was corrected on
+ * 2026-08-29 and the honest figure went DOWN. Both numbers were "real"; only one
+ * had a definition, and it was not written down anywhere a reader could see it.
+ *
+ * So the definition now travels WITH the value, from this module, and every
+ * surface renders the same sentence. These strings were previously typed into
+ * LiveInternetIntelligence.tsx — the only place a definition existed at all —
+ * which meant the number and its meaning could drift apart silently.
+ *
+ * If two figures legitimately count different populations, BOTH may be
+ * published: each with its definition attached, rendered from here. That reads
+ * as precision. The same two numbers with no definitions read as contradiction.
+ */
+export type PublishedStat = {
+  /** Short label, as rendered beside the value. */
+  label: string;
+  /** Raw measured value. */
+  value: number;
+  /** Floored display string — the only form that goes in copy. */
+  display: string;
+  /** What the number counts, and what it excludes. Render this with the value. */
+  definition: string;
+  /** ISO timestamp this figure was measured (NOT when the page was built). */
+  measuredAt: string;
+};
+
+export const PUBLISHED_STATS = {
+  domainsMonitored: {
+    label: "Domains monitored",
+    value: SITE_STATS.domainsMonitored,
+    display: DISPLAY_STATS.domainsMonitored,
+    // The population, stated so the figure can be checked rather than believed.
+    definition:
+      "Distinct domains that resolve — every name answering with a record or " +
+      "an empty response. Names that no longer exist (NXDOMAIN) and names whose " +
+      "servers failed or timed out are excluded, so this counts the live corpus " +
+      "rather than every domain ever queried.",
+    measuredAt: STATS_AS_OF.domainsMonitored,
+  },
+  ipsHostingDomains: {
+    label: "IPs hosting domains",
+    value: SITE_STATS.ipsHostingDomains,
+    display: DISPLAY_STATS.ipsHostingDomains,
+    definition:
+      "Distinct IPv4 addresses that a domain in the measured corpus resolves to, " +
+      "taken over the same population as the domain figure above.",
+    measuredAt: STATS_AS_OF.ipsHostingDomains,
+  },
+  ipv4Indexed: {
+    label: "IPv4 addresses indexed",
+    value: SITE_STATS.ipv4Indexed,
+    display: DISPLAY_STATS.ipv4Indexed,
+    definition:
+      "IPv4 space announced in BGP and attributed to a network, counted once per " +
+      "address however many announcements cover it — a more-specific prefix inside " +
+      "its parent is not counted twice.",
+    measuredAt: STATS_AS_OF.ipv4Indexed,
+  },
+  networksProfiled: {
+    label: "Networks profiled",
+    value: SITE_STATS.networksProfiled,
+    display: DISPLAY_STATS.networksProfiled,
+    definition:
+      "Autonomous systems with ownership and routing context attached, used to " +
+      "place infrastructure in the network that announces it.",
+    measuredAt: STATS_AS_OF.networksProfiled,
+  },
+} as const satisfies Record<string, PublishedStat>;
+
+export type PublishedStatKey = keyof typeof PUBLISHED_STATS;
+
+/**
  * Display string for the corpus domain figure — the only approved way to
  * render the corpus size in copy. (Alias of DISPLAY_STATS.domainsMonitored,
  * kept as the established import across the site.)

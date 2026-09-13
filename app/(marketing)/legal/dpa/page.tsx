@@ -2,6 +2,8 @@ import React from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
+import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
     title: "Data Processing Agreement | Datazag",
@@ -22,6 +24,7 @@ export default function DataProcessingAgreementPage() {
                         <p className="mt-6 text-lg text-slate-300 leading-relaxed font-medium">
                             This Data Processing Agreement (“DPA”) describes how Datazag processes personal data on behalf of customers in accordance with applicable data protection laws.
                         </p>
+                        <LegalDateline />
                     </div>
                 </div>
             </div>
@@ -36,6 +39,16 @@ export default function DataProcessingAgreementPage() {
                         <p className="mt-4">
                             This DPA is intended to ensure compliance with applicable data protection laws, including the EU General Data Protection Regulation (“GDPR”) and equivalent regulations in other jurisdictions.
                         </p>
+                    </LegalSection>
+
+                    <LegalSection title="Processor entity">
+                        <p>
+                            The processor under this DPA is {LEGAL_ENTITY.legalName}, a company registered
+                            in {LEGAL_ENTITY.jurisdiction}.
+                        </p>
+                        <div className="mt-6">
+                            <EntityBlock />
+                        </div>
                     </LegalSection>
 
                     <LegalSection title="Roles of the parties">
@@ -77,7 +90,7 @@ export default function DataProcessingAgreementPage() {
 
                     <LegalSection title="Security measures">
                         <p className="mb-8">
-                            Datazag implements appropriate technical and organizational measures to protect personal data against unauthorised access, alteration, disclosure, or destruction.
+                            Datazag implements appropriate technical and organizational measures to protect personal data against unauthorized access, alteration, disclosure, or destruction.
                         </p>
                         <div className="space-y-4">
                             <DataDetail title="Technical safeguards" description="Encryption in transit, access controls, and logical separation of environments." />

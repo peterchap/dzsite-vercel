@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import type React from "react";
 
 import { Container } from "@/components/ui/Container";
+import {
+  publishedContactRoutes,
+  TECHNICAL_BRIEFING_ENQUIRY_TYPE,
+} from "@/lib/contact-routes";
 
 export const metadata: Metadata = {
   title: "Contact — Datazag",
@@ -29,6 +33,10 @@ const enquiryRoutes = [
 ];
 
 const enquiryTypes = [
+  // WU-C11: first, deliberately. An enterprise buyer with one technical
+  // question should not have to read to the bottom of a product list to find
+  // the shortest route to a person.
+  TECHNICAL_BRIEFING_ENQUIRY_TYPE,
   "Free Domain Health Report",
   "Domain Risk Report",
   "Cross-Estate Domain Risk Report",
@@ -120,6 +128,39 @@ export default async function ContactPage({
                 <a href="/pricing" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
                   View pricing
                 </a>
+              </div>
+
+              {/* WU-C11: a buyer with one question will not complete a broad
+                  enquiry form. Only routes confirmed to reach a person are
+                  listed — lib/contact-routes.ts omits the rest rather than
+                  publishing a mailbox that bounces. */}
+              <div className="mt-10">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                  Or email us directly
+                </h2>
+                <dl className="mt-4 grid gap-3">
+                  {publishedContactRoutes().map((route) => (
+                    <div
+                      key={route.email}
+                      className="rounded-2xl border border-white/10 bg-white/[0.035] p-4"
+                    >
+                      <dt className="text-sm font-semibold text-white">{route.label}</dt>
+                      <dd className="mt-1">
+                        <a
+                          href={`mailto:${route.email}`}
+                          className="text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline"
+                        >
+                          {route.email}
+                        </a>
+                        <p className="mt-1 text-sm leading-6 text-slate-400">{route.note}</p>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="mt-4 text-sm leading-6 text-slate-400">
+                  Want a technical conversation rather than an email thread? Choose
+                  &ldquo;{TECHNICAL_BRIEFING_ENQUIRY_TYPE}&rdquo; in the form and we will send times.
+                </p>
               </div>
             </div>
 

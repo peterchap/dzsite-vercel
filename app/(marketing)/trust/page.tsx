@@ -12,6 +12,8 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { SLUG, content } from "./copy";
+import { EntityBlock } from "@/components/legal/EntityBlock";
+import { CERTIFICATIONS, documentedTrustAreas } from "@/lib/trust-posture";
 
 export const metadata: Metadata = {
   title: "Trust & Governance — Datazag",
@@ -231,6 +233,79 @@ export default async function TrustPage() {
                 <p className="text-sm leading-6 text-slate-400">{row.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WU-C12 — the company layer procurement expects, beside the
+          intelligence-trust content above. Rows with nothing documented are
+          omitted rather than guessed (lib/trust-posture.ts); certifications are
+          the deliberate exception and state the absence outright. */}
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Company and security posture"
+            title="The company behind the intelligence."
+            body="Procurement needs to know who they are contracting with and how the company operates, not only how the data is produced."
+          />
+
+          <div className="mx-auto mt-12 max-w-3xl space-y-8">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                Contracting entity
+              </h3>
+              <div className="mt-4">
+                <EntityBlock />
+              </div>
+            </div>
+
+            {documentedTrustAreas().length > 0 ? (
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                  Operational controls
+                </h3>
+                <dl className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-[#050b22]">
+                  {documentedTrustAreas().map((area, index) => (
+                    <div
+                      key={area.label}
+                      className={`grid gap-2 p-5 md:grid-cols-[0.32fr_0.68fr] ${index > 0 ? "border-t border-white/10" : ""}`}
+                    >
+                      <dt className="text-sm font-semibold text-white">{area.label}</dt>
+                      <dd className="text-sm leading-6 text-slate-400">{area.status}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : null}
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                Certifications
+              </h3>
+              {CERTIFICATIONS.heldToday.length > 0 ? (
+                <ul className="mt-4 grid gap-2">
+                  {CERTIFICATIONS.heldToday.map((cert) => (
+                    <li key={cert} className="rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm font-semibold text-white">
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <>
+                  <p className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.06] p-5 text-sm leading-6 text-slate-200">
+                    {CERTIFICATIONS.absenceStatement}
+                  </p>
+                  <p className="mt-6 text-sm font-semibold text-white">What you can inspect instead:</p>
+                  <ul className="mt-3 grid gap-2">
+                    {CERTIFICATIONS.insteadPoints.map((point) => (
+                      <li key={point} className="rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-6 text-slate-300">
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </section>

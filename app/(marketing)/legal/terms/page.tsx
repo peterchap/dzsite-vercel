@@ -2,6 +2,8 @@ import React from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
+import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
     title: "Terms of Service | Datazag",
@@ -22,6 +24,7 @@ export default function TermsOfServicePage() {
                         <p className="mt-6 text-lg text-slate-300 leading-relaxed font-medium">
                             These Terms govern access to and use of Datazag’s products, services, datasets, and APIs.
                         </p>
+                        <LegalDateline />
                     </div>
                 </div>
             </div>
@@ -43,7 +46,7 @@ export default function TermsOfServicePage() {
 
                     <LegalSection title="2. Description of the Services">
                         <p>
-                            Datazag provides predictive domain intelligence and security-focused data products, including but not limited to:
+                            Datazag provides Infrastructure Intelligence and security-focused data products, including but not limited to:
                         </p>
                         <ul className="mt-4 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Real-time phishing and brand impersonation detection streams</li>
@@ -186,11 +189,23 @@ export default function TermsOfServicePage() {
 
                     <LegalSection title="14. Governing Law">
                         <p>
-                            These Terms are governed by the laws of [jurisdiction to be specified], without regard to conflict of law principles.
+                            These Terms, and any dispute or claim arising out of or in connection with them,
+                            are governed by and construed in accordance with {LEGAL_ENTITY.governingLaw}.
+                        </p>
+                        <p className="mt-4">
+                            {LEGAL_ENTITY.courts.charAt(0).toUpperCase() + LEGAL_ENTITY.courts.slice(1)} have
+                            exclusive jurisdiction to settle any such dispute or claim.
                         </p>
                     </LegalSection>
 
-                    <LegalSection title="15. Contact" border={false}>
+                    <LegalSection title="15. Contracting entity and contact" border={false}>
+                        <p className="mb-6">
+                            The Services are provided by {LEGAL_ENTITY.legalName}, a company registered
+                            in {LEGAL_ENTITY.jurisdiction}.
+                        </p>
+                        <div className="mb-8">
+                            <EntityBlock />
+                        </div>
                         <p className="mb-6">If you have questions about these Terms, please contact:</p>
                         <div className="max-w-md">
                             <ContactCard title="Legal Dept" value="legal@datazag.com" href="mailto:legal@datazag.com" />

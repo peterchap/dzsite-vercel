@@ -477,8 +477,12 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   social
 }`;
 
+// Only genuinely published posts reach the public list. The unfiltered query
+// shipped unpublished posts to /blog, where they rendered a "Draft" badge on a
+// production page (standing criterion 6: no published page links to a
+// Draft-status document).
 export const allBlogPostsQuery = `
-*[_type == "blogPost"] | order(publishedAt desc){
+*[_type == "blogPost" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc){
   _id,
   title,
   "slug": slug.current,
@@ -489,8 +493,10 @@ export const allBlogPostsQuery = `
 }
 `;
 
+// Same publication gate as the list: an unpublished post 404s rather than
+// rendering publicly with a "Draft" date.
 export const blogPostBySlugQuery = `
-*[_type == "blogPost" && slug.current == $slug][0]{
+*[_type == "blogPost" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0]{
   _id,
   title,
   "slug": slug.current,

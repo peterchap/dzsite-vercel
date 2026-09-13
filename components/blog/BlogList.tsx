@@ -35,7 +35,7 @@ export function BlogList({ posts }: { posts: any[] }) {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs">
                         <time dateTime={post.publishedAt} className="text-slate-500 font-bold uppercase tracking-wider">
-                            {post.publishedAt ? format(new Date(post.publishedAt), "MMM d, yyyy") : "Draft"}
+                            {post.publishedAt ? format(new Date(post.publishedAt), "MMM d, yyyy") : null}
                         </time>
                         {post.tags?.map((tag: string) => (
                             <span key={tag} className="relative z-10 rounded-full border border-cyan-300/15 bg-cyan-300/[0.08] px-3 py-1.5 font-bold text-cyan-100">
