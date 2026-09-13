@@ -15,3 +15,4 @@
     }
   ]
 }
+{ "git": { "deploymentEnabled": false } }
