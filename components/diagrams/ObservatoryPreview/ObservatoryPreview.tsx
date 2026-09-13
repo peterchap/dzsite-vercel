@@ -16,11 +16,17 @@ export function ObservatoryPreview() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Datazag Observatory</p>
             <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">Explore the relationships behind the internet.</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Search, pivot, visualise and download aggregated infrastructure intelligence from Datazag's continuously updated internet graph.
+              Search, pivot, visualize and download aggregated infrastructure intelligence from Datazag's continuously updated internet graph.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/how-it-works" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
-                See how it works
+              {/* WU-C10: this block promises search, pivot, visualize and download —
+                  send visitors to the Observatory that actually does it, not to
+                  /how-it-works. */}
+              <a
+                href="https://observatory.datazag.com"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+              >
+                Open the Observatory
               </a>
               <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
                 Analyze your domain

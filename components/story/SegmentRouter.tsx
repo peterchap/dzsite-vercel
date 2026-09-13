@@ -24,9 +24,13 @@ const SEGMENTS = [
     href: "/esp-partners",
   },
   {
+    // WU-C7: /enterprise is deferred and still a skeleton, so the largest buyer
+    // segment is routed to the page that actually makes the argument. The
+    // skeleton is noindexed meanwhile (app/(marketing)/[...slug]/page.tsx).
+    // Point this back at /enterprise when that page ships.
     title: "Enterprise",
     line: "Scored, explainable intelligence delivered into the stack you already run.",
-    href: "/enterprise",
+    href: "/domain-intelligence",
   },
 ] as const;
 
