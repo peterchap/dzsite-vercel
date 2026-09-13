@@ -57,7 +57,7 @@ const TOC = [
     { id: "auth", label: "Authentication" },
     { id: "endpoint", label: "Endpoint" },
     { id: "logic", label: "Decision Logic" },
-    { id: "use-cases", label: "Use Cases" },
+    { id: "use-cases", label: "What teams build" },
     { id: "performance", label: "Performance" },
     { id: "errors", label: "Errors" },
     { id: "faq", label: "FAQ" },
@@ -80,11 +80,13 @@ export function DocsClient() {
                         <span className="text-sm font-medium text-slate-500">v1.2 Reference</span>
                     </div>
                     <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
-                        Domain Intelligence <span className="text-blue-600">API</span>
+                        Infrastructure Intelligence <span className="text-blue-600">API</span>
                     </h1>
                     <p className="mt-8 max-w-3xl text-xl text-slate-600 leading-relaxed font-medium">
-                        Programmatic access to Datazag's continuously refreshed dataset of {DOMAINS_DISPLAY} domains.
-                        Built for high-scale KYC, fraud prevention, and deliverability automation.
+                        The query interface to the Datazag infrastructure graph. Ask it about a domain
+                        and it answers from what is publicly observable — DNS state, mail and
+                        authentication posture, hosting and network placement, and a risk score derived
+                        from {DOMAINS_DISPLAY} domains of prior observation.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">
                         <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-slate-900 hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
@@ -136,9 +138,11 @@ export function DocsClient() {
                     <Section id="overview" title="Overview">
                         <div className="prose prose-slate max-w-none space-y-6">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                The Datazag API is a RESTful interface for querying real-time signals on {DOMAINS_DISPLAY} domains.
-                                Unlike static datasets, our API provides "Answers" by aggregating live DNS, hosting, and risk telemetry
-                                into actionable binary flags and risk scores.
+                                The Datazag API is a RESTful interface onto the same infrastructure graph that produces
+                                Datazag reports and alerts. Every field below is derived from public internet infrastructure —
+                                nameservers, mail routing, email-authentication records, addressing and network placement —
+                                rather than from a static list. KYC, fraud and deliverability are things teams DO with it;
+                                they are not what it is.
                             </p>
                             {/* WU-C3: the figure states its own population. This page previously
                                 carried two different corpus numbers eleven lines apart, which a
@@ -262,15 +266,27 @@ export function DocsClient() {
                     <Section id="logic" title="Intelligent Decision logic">
                         <div className="space-y-8">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                The API is designed for automated decision systems. We recommend implementing the following
-                                thresholds into your internal risk engine.
+                                The API supplies signals. The thresholds are yours. Below is a starting point for an
+                                internal risk engine, not a policy we set on your behalf — the patterns that fit a
+                                payments signup and a B2B trial are not the same, and neither is the cost of getting
+                                one wrong.
                             </p>
+                            <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6">
+                                <p className="text-sm leading-relaxed text-slate-700">
+                                    <span className="font-bold text-slate-900">A flag is an observation, not a verdict.</span>{" "}
+                                    <code className="font-bold">is_disposable</code> says a domain belongs to a temporary
+                                    mail provider — whether that should block a signup is a policy question about your
+                                    users, not a risk finding. <code className="font-bold">is_phishing</code> reflects
+                                    third-party phishing intelligence, which can be stale or wrong. Treat both as inputs
+                                    you can weight, override and audit.
+                                </p>
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 <LogicCard
-                                    title="Hard Reject"
+                                    title="Strongest signal"
                                     color="rose"
                                     icon={<XCircleIcon />}
-                                    text={<>Reject traffic if <code className="font-bold">is_phishing</code> or <code className="font-bold">is_disposable</code> is true.</>}
+                                    text={<>A true <code className="font-bold">is_phishing</code> is the strongest single input. Many teams block on it outright; keep the response so a decision can be explained or reversed.</>}
                                 />
                                 <LogicCard
                                     title="Manual Review"
@@ -288,7 +304,7 @@ export function DocsClient() {
                         </div>
                     </Section>
 
-                    <Section id="use-cases" title="Core Industry Workflows">
+                    <Section id="use-cases" title="What teams build with it">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                             <div className="space-y-6">
                                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold border border-blue-100">01</div>
