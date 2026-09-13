@@ -19,7 +19,7 @@ export function BlogPost({ post }: { post: any }) {
             <header className="mb-12">
                 <div className="flex items-center gap-x-4 text-xs mb-6">
                     <time dateTime={post.publishedAt} className="text-slate-500 font-bold uppercase tracking-wider">
-                        {post.publishedAt ? format(new Date(post.publishedAt), "MMMM d, yyyy") : "Draft"}
+                        {post.publishedAt ? format(new Date(post.publishedAt), "MMMM d, yyyy") : null}
                     </time>
                     {post.tags?.map((tag: string) => (
                         <span key={tag} className="relative z-10 rounded-full bg-blue-50 px-3 py-1.5 font-bold text-blue-600">

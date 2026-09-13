@@ -49,7 +49,7 @@ export const content: PageContent = {
   deliveryModel: {
     eyebrow: "How it reaches customers",
     title: "The same intelligence layer supports different buying paths.",
-    body: "About Datazag should explain the model, not repeat every product page. The common thread is infrastructure evidence delivered in the format the buyer can use.",
+    body: "The common thread is infrastructure evidence delivered in the format the buyer can use.",
     items: [
       { key: "reports", title: "Reports", text: "For teams that need an assessment of one domain, a portfolio, a client estate, a supplier group or an acquisition target." },
       { key: "alerts", title: "Alerts", text: "For operational workflows where suspicious platform, keyword or brand-impersonation infrastructure needs to be routed quickly." },

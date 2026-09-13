@@ -186,7 +186,11 @@ export default function TermsOfServicePage() {
 
                     <LegalSection title="14. Governing Law">
                         <p>
-                            These Terms are governed by the laws of [jurisdiction to be specified], without regard to conflict of law principles.
+                            These Terms, and any dispute or claim arising out of or in connection with them,
+                            are governed by and construed in accordance with the laws of England and Wales.
+                        </p>
+                        <p className="mt-4">
+                            The courts of England and Wales have exclusive jurisdiction to settle any such dispute or claim.
                         </p>
                     </LegalSection>
 

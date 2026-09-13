@@ -10,6 +10,14 @@ import { HeroSplitCta } from "@/components/sections/blocks/HeroSplitCta";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 
+/**
+ * Slugs that must not be indexed while the page behind them is a skeleton.
+ * /enterprise is deferred (WU-C7): the homepage segment card no longer points
+ * at it, but the route still resolves, so keep it out of the index until it
+ * carries real content. Remove the slug here when the page ships.
+ */
+const NOINDEX_SLUGS = new Set(["enterprise"]);
+
 export async function generateMetadata(
     props:
         | { params: { slug?: string | string[] } | Promise<{ slug?: string | string[] }> }
@@ -26,7 +34,17 @@ export async function generateMetadata(
         slug ? fetcher<PageDoc>(pageBySlugQuery, { slug }) : Promise.resolve(null),
     ]);
 
-    return buildMetadata({ site, page: page ?? { title: "Home" }, pathname: "/" });
+    // The canonical must be THIS page's path. Passing "/" here published
+    // `canonical: <site root>` on every CMS-driven page — /enterprise,
+    // /cyber-risk-underwriting and the rest all claimed to be the homepage.
+    const pathname = slug ? `/${slug.replace(/^\/+/, "")}` : "/";
+
+    return buildMetadata({
+        site,
+        page: page ?? { title: "Home" },
+        pathname,
+        robots: slug && NOINDEX_SLUGS.has(slug) ? { index: false, follow: true } : undefined,
+    });
 }
 
 export default async function PageBySlug(

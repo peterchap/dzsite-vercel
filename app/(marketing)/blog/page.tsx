@@ -29,15 +29,6 @@ const editorialTracks = [
     },
 ];
 
-const starterTopics = [
-    "Why domain intelligence is only one part of Infrastructure Intelligence",
-    "What happens between certificate issuance, DNS activation and a live phishing page",
-    "How brand protection alerts should handle legitimate partner sites",
-    "What a cloud marketplace buyer expects from a cyber intelligence dataset",
-    "How MSSPs can package external infrastructure monitoring as a managed service",
-    "What DNS and email-authentication findings belong in a free domain report",
-];
-
 export default async function BlogIndexPage() {
     const posts = await sanityFetch<any[]>(allBlogPostsQuery, {}, 60);
 
@@ -56,7 +47,6 @@ export default async function BlogIndexPage() {
                         </p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                             <a href="#articles" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Read articles</a>
-                            <a href="#topics" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View topic ideas</a>
                         </div>
                     </div>
 
@@ -76,26 +66,8 @@ export default async function BlogIndexPage() {
                     <div className="mb-10 max-w-3xl">
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Articles</p>
                         <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Latest Datazag writing.</h2>
-                        <p className="mt-5 text-base leading-7 text-slate-300">Use this area for launch content, research notes, product explainers and practical buyer education.</p>
                     </div>
                     <BlogList posts={posts} />
-                </div>
-            </section>
-
-            <section id="topics" className="border-t border-white/10 py-20 md:py-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-                        <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Content backlog</p>
-                            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Good first posts to add.</h2>
-                            <p className="mt-5 text-base leading-7 text-slate-300">These topics map directly to the current site and can support sales, partner conversations and marketplace education.</p>
-                        </div>
-                        <div className="grid gap-3">
-                            {starterTopics.map((topic) => (
-                                <div key={topic} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-sm font-semibold text-slate-200">{topic}</div>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -103,7 +75,7 @@ export default async function BlogIndexPage() {
                 <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Subscribe</p>
                     <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Get Datazag updates.</h2>
-                    <p className="mt-5 text-base leading-7 text-slate-300">Use the blog list for articles and the subscription form for future newsletter capture.</p>
+                    <p className="mt-5 text-base leading-7 text-slate-300">New research and product notes on external infrastructure risk, sent when we publish.</p>
                     <div className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 text-left">
                         <BlogSubscribe />
                     </div>
