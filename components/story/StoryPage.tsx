@@ -1,6 +1,7 @@
 import type { StoryContent } from "./types";
 import { mergeStoryContent } from "./content";
 import { CaseStudyTeaser } from "./CaseStudyTeaser";
+import { CoverageStrip } from "./CoverageStrip";
 import { SegmentRouter } from "./SegmentRouter";
 import {
   StoryHero,
@@ -39,6 +40,14 @@ export type { StoryContent } from "./types";
  *     owns the denominator under the settled content split, and the Observatory
  *     block below already links out to it (WU-C10).
  *
+ * COVERAGE CAME BACK (13 Sep 2026), deliberately and in a smaller form. The
+ * ticker carried two different things: standing COVERAGE figures (how much of
+ * the internet we observe) and HOURLY ACTIVITY (what happened in the last hour).
+ * Removing both lost a buyer's qualifying question along with the demo. Only the
+ * activity half belonged to the Observatory. <CoverageStrip /> brings the
+ * coverage half back as one compact row — four figures, each with its own
+ * definition and measured-at, from the single R2 source.
+ *
  * ⚠️ StoryProof was previously "KEPT by judgement" here — WU24 called it
  * corroborating evidence for step 1 and WU26 wired it to the canonical stats.
  * That judgement is deliberately REVERSED, not overlooked: those four counters
@@ -65,6 +74,12 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
         }}
       />
       <CaseStudyTeaser />
+
+      {/* Coverage — the scale that makes the claim above possible, and a buyer's
+          qualifying question. NOT the hourly "internet right now" panel, which
+          stays on the Observatory; see the note in CoverageStrip.tsx for why the
+          two are different things. */}
+      <CoverageStrip />
 
       {/* Step 2 — how step 1 works. This IS the proposition, not a detail. */}
       <StoryRelationshipIntelligence />

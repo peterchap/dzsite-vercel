@@ -25,8 +25,13 @@
  */
 import { DISPLAY_STATS, STATS_AS_OF } from "@/lib/site-stats";
 
-/** Token name -> canonical display string. The ONLY approved figure source. */
-export const STAT_TOKENS: Record<string, string> = {
+/**
+ * Token name -> canonical display string, or `null` when the feed gave us no
+ * publishable figure. A null token resolves to NOTHING — never to a stale
+ * constant and never to a zero (see lib/site-stats.ts). The sentence around it
+ * reads a little thinner; it does not carry a number that is not true.
+ */
+export const STAT_TOKENS: Record<string, string | null> = {
   DOMAINS: DISPLAY_STATS.domainsMonitored,
   IPV4: DISPLAY_STATS.ipv4Indexed,
   ASNS: DISPLAY_STATS.networksProfiled,
@@ -34,7 +39,7 @@ export const STAT_TOKENS: Record<string, string> = {
 };
 
 /** Token name -> the as-of stamp for that figure, so a page can cite freshness. */
-export const STAT_TOKEN_AS_OF: Record<string, string> = {
+export const STAT_TOKEN_AS_OF: Record<string, string | null> = {
   DOMAINS: STATS_AS_OF.domainsMonitored,
   IPV4: STATS_AS_OF.ipv4Indexed,
   ASNS: STATS_AS_OF.networksProfiled,
@@ -54,9 +59,21 @@ export function resolveStatTokens(input: string): string;
 export function resolveStatTokens(input: string | undefined | null): string | undefined;
 export function resolveStatTokens(input: string | undefined | null): string | undefined {
   if (typeof input !== "string") return undefined;
-  return input.replace(TOKEN_RE, (whole, name: string) =>
-    name in STAT_TOKENS ? STAT_TOKENS[name] : whole,
-  );
+  const replaced = input.replace(TOKEN_RE, (whole, name: string) => {
+    if (!(name in STAT_TOKENS)) return whole; // unknown token: leave it alone
+    const value = STAT_TOKENS[name];
+    if (value === null) {
+      // Unpublishable figure. Emit nothing rather than a constant or a zero.
+      console.error(
+        `dataset copy: {{${name}}} has no publishable figure and was removed from the ` +
+          `rendered text. Fix the producer or the R2 object.`,
+      );
+      return "";
+    }
+    return value;
+  });
+  // A removed token leaves a double space or a space before punctuation behind.
+  return replaced.replace(/[ \t]{2,}/g, " ").replace(/\s+([,.;:])/g, "$1").trim();
 }
 
 /** Array convenience — resolves every string, drops empties. */

@@ -133,66 +133,105 @@ for (const [key, value] of Object.entries(COMMITTED)) {
 }
 
 /**
- * Feed value if it is usable AND within bounds, else the committed value.
- * An out-of-bound feed value is rejected loudly rather than rendered: the feed
- * is a live source and a producer regression must not reach the page.
+ * R2 IS THE SOURCE (13 Sep 2026). A figure is publishable only if the feed
+ * carries it and it survives its bound. There is no constant to fall back to.
+ *
+ * What changed and why: COMMITTED used to win in three ways — as a substitute
+ * for a missing feed value, as a substitute for a rejected one, and through a
+ * floor that kept the published number from ever going DOWN. The floor is the
+ * one that nearly caused an incident: on 2026-08-29 the producer was corrected
+ * to exclude ~40M dead names, and the ratchet would have kept publishing the
+ * inflated 395,865,413 while every guard passed. A correction is
+ * indistinguishable from a lag if all you look at is the direction.
+ *
+ * So the ratchet is gone. A smaller number from the feed is now published,
+ * because a smaller number is usually the honest one.
+ *
+ * BOUNDS STAY. They are the check that caught an IPv4 count larger than the
+ * IPv4 address space, and they reject in BOTH directions. The difference is
+ * what happens after a rejection: the figure becomes unpublishable rather than
+ * silently becoming a constant.
  */
-function pickMetric(key: string, feed: number | null | undefined, committed: number): number {
-  if (typeof feed !== "number" || !Number.isFinite(feed) || feed <= 0) return committed;
+function publishable(key: string, feed: number | null | undefined): number | null {
+  if (typeof feed !== "number" || !Number.isFinite(feed) || feed <= 0) {
+    console.error(
+      `site-stats: ${key} has no usable value in the feed — it will not be published. ` +
+        `Check the producer and the R2 object; do not substitute a constant.`,
+    );
+    return null;
+  }
   if (!inBounds(key, feed)) {
     const [lo, hi] = BOUNDS[key];
     console.error(
       `site-stats: feed ${key} = ${feed.toLocaleString()} is outside its bound ` +
-        `[${lo.toLocaleString()}, ${hi.toLocaleString()}] — rejected, using the committed value.`,
+        `[${lo.toLocaleString()}, ${hi.toLocaleString()}] — REJECTED and not published. ` +
+        `Fix the producer; do not widen the bound.`,
     );
-    return committed;
+    return null;
   }
   return feed;
 }
 
 /**
- * Floor rule: never below committed while the feed lags DuckLake (see header).
- *
- * ⚠️ This ratchet cannot tell "the feed lags" from "the feed got more honest" —
- * both look like a smaller number. It was written to absorb the first and would
- * have silently swallowed the second: on 2026-08-29 the corrected feed dropped
- * ~40M dead names and `Math.max` would have kept publishing the inflated
- * 395,865,413, with the floor assertion in checkSiteStats passing while it did.
- * A downward correction was invisible to every guard on this page.
- *
- * So the substitution is now LOUD. It still floors — a lagging feed must not
- * shrink the page — but it says so in the build log, which is the only place a
- * human sees a build. If this fires and the feed is RIGHT, the fix is to lower
- * COMMITTED, never to leave the ratchet holding an old number up.
+ * Divergence notice. COMMITTED is no longer a value source, but it is still the
+ * last figure a human reconciled against DuckLake, which makes it a useful
+ * tripwire: a feed that has moved a long way from it is either real growth, a
+ * real correction, or a producer regression — and all three are worth a line in
+ * the build log rather than silence.
  */
-function floorAtCommitted(key: string, value: number, committed: number): number {
-  if (value < committed) {
-    console.error(
-      `site-stats: feed ${key} = ${value.toLocaleString()} is BELOW committed ` +
-        `${committed.toLocaleString()} — floored to committed. If the feed is correct ` +
-        `(a population fix, not a lag), lower COMMITTED.${key} instead of publishing the ` +
-        `higher stale figure.`,
+function noteDivergence(key: string, value: number | null, reference: number): void {
+  if (value === null) return;
+  const drift = Math.abs(value - reference) / reference;
+  if (drift > 0.2) {
+    console.warn(
+      `site-stats: ${key} = ${value.toLocaleString()} differs from the last ` +
+        `reconciliation (${reference.toLocaleString()}) by ${(drift * 100).toFixed(1)}%. ` +
+        `Publishing the feed value. If this is a producer regression, fix it upstream; ` +
+        `if it is real, update COMMITTED so the tripwire stays useful.`,
     );
-    return committed;
   }
-  return value;
 }
 
-/** Effective raw values: validated feed values over the committed snapshot. */
+/** Raw values, straight from the R2 feed. `null` means "do not publish this". */
 export const SITE_STATS = {
-  domainsMonitored: floorAtCommitted(
-    "domainsMonitored",
-    pickMetric("domainsMonitored", feedStats.domainsMonitored, COMMITTED.domainsMonitored),
-    COMMITTED.domainsMonitored,
-  ),
-  ipsHostingDomains: pickMetric("ipsHostingDomains", feedStats.ipsHostingDomains, COMMITTED.ipsHostingDomains),
-  ipv4Indexed: pickMetric("ipv4Indexed", feedStats.ipv4Indexed, COMMITTED.ipv4Indexed),
-  networksProfiled: pickMetric("networksProfiled", feedStats.networksProfiled, COMMITTED.networksProfiled),
-  /** ISO date the figures are current to: feed timestamp, else committed date.
+  domainsMonitored: publishable("domainsMonitored", feedStats.domainsMonitored),
+  ipsHostingDomains: publishable("ipsHostingDomains", feedStats.ipsHostingDomains),
+  ipv4Indexed: publishable("ipv4Indexed", feedStats.ipv4Indexed),
+  networksProfiled: publishable("networksProfiled", feedStats.networksProfiled),
+  /** ISO date the figures are current to, from the feed. Null if it says nothing.
    *  This is a WHOLE-PAGE convenience only — it is one date across four figures
    *  measured at different times. Per-figure, use STATS_AS_OF. */
-  statsAsOf: feedStats.feedUpdated?.slice(0, 10) ?? COMMITTED.statsAsOf,
+  statsAsOf: feedStats.feedUpdated?.slice(0, 10) ?? null,
 } as const;
+
+noteDivergence("domainsMonitored", SITE_STATS.domainsMonitored, COMMITTED.domainsMonitored);
+noteDivergence("ipsHostingDomains", SITE_STATS.ipsHostingDomains, COMMITTED.ipsHostingDomains);
+noteDivergence("ipv4Indexed", SITE_STATS.ipv4Indexed, COMMITTED.ipv4Indexed);
+noteDivergence("networksProfiled", SITE_STATS.networksProfiled, COMMITTED.networksProfiled);
+
+/**
+ * The corpus figure is load-bearing in ~29 places of running prose ("scored
+ * against X domains of prior observation"). A null there would render the word
+ * "null" into a sentence, which is worse than any of the failures this module
+ * exists to prevent. So an unpublishable corpus figure breaks the BUILD, which
+ * is the same thing this file already does for an impossible committed value —
+ * an unusable number must not reach a page.
+ *
+ * This cannot fire from a transient outage: scripts/refreshSiteStats.mjs fails
+ * soft and leaves the last good lib/site-stats.generated.ts in place, so the
+ * committed generated file always carries values. It fires only if that file is
+ * genuinely broken, which is a thing to fix, not to paper over.
+ */
+if (SITE_STATS.domainsMonitored === null) {
+  throw new Error(
+    "site-stats: the corpus figure is not publishable from the feed. It appears in " +
+      "running prose across the site and cannot be omitted there, so this fails the " +
+      "build. Fix the producer or lib/site-stats.generated.ts — do not hardcode a value.",
+  );
+}
+
+/** The corpus figure, proven publishable above. */
+const DOMAINS_MONITORED: number = SITE_STATS.domainsMonitored;
 
 /**
  * Display formatter: rounds DOWN to a safe public claim.
@@ -221,11 +260,15 @@ export function fmtStat(n: number): string {
 }
 
 /** Pre-formatted display strings — import THESE in components/copy/metadata. */
+const fmtOrNull = (n: number | null): string | null => (n === null ? null : fmtStat(n));
+
 export const DISPLAY_STATS = {
-  domainsMonitored: fmtStat(SITE_STATS.domainsMonitored), // "360M+"
-  ipsHostingDomains: fmtStat(SITE_STATS.ipsHostingDomains), // "10M+"
-  ipv4Indexed: fmtStat(SITE_STATS.ipv4Indexed), // "4.3B"
-  networksProfiled: fmtStat(SITE_STATS.networksProfiled), // "79k"
+  /** Always a string — an unpublishable corpus figure fails the build above. */
+  domainsMonitored: fmtStat(DOMAINS_MONITORED), // "360M+"
+  /** `null` means the feed did not give us a usable figure: render NOTHING. */
+  ipsHostingDomains: fmtOrNull(SITE_STATS.ipsHostingDomains), // "10M+"
+  ipv4Indexed: fmtOrNull(SITE_STATS.ipv4Indexed), // "3.1B"
+  networksProfiled: fmtOrNull(SITE_STATS.networksProfiled), // "79k"
 } as const;
 
 /**
@@ -239,22 +282,10 @@ export const DISPLAY_STATS = {
  * the last manual reconciliation and must say so.
  */
 export const STATS_AS_OF = {
-  domainsMonitored:
-    (SITE_STATS.domainsMonitored === feedStats.domainsMonitored
-      ? feedStats.asOf?.domainsMonitored
-      : null) ?? `${COMMITTED.statsAsOf}T00:00:00Z`,
-  ipsHostingDomains:
-    (SITE_STATS.ipsHostingDomains === feedStats.ipsHostingDomains
-      ? feedStats.asOf?.ipsHostingDomains
-      : null) ?? `${COMMITTED.statsAsOf}T00:00:00Z`,
-  ipv4Indexed:
-    (SITE_STATS.ipv4Indexed === feedStats.ipv4Indexed
-      ? feedStats.asOf?.ipv4Indexed
-      : null) ?? `${COMMITTED.statsAsOf}T00:00:00Z`,
-  networksProfiled:
-    (SITE_STATS.networksProfiled === feedStats.networksProfiled
-      ? feedStats.asOf?.networksProfiled
-      : null) ?? `${COMMITTED.statsAsOf}T00:00:00Z`,
+  domainsMonitored: feedStats.asOf?.domainsMonitored ?? feedStats.feedUpdated ?? null,
+  ipsHostingDomains: feedStats.asOf?.ipsHostingDomains ?? feedStats.feedUpdated ?? null,
+  ipv4Indexed: feedStats.asOf?.ipv4Indexed ?? feedStats.feedUpdated ?? null,
+  networksProfiled: feedStats.asOf?.networksProfiled ?? feedStats.feedUpdated ?? null,
 } as const;
 
 /**
@@ -284,20 +315,20 @@ export const STATS_AS_OF = {
 export type PublishedStat = {
   /** Short label, as rendered beside the value. */
   label: string;
-  /** Raw measured value. */
-  value: number;
-  /** Floored display string — the only form that goes in copy. */
-  display: string;
+  /** Raw measured value, or null when the feed gave us nothing publishable. */
+  value: number | null;
+  /** Floored display string, or null. A null figure renders NOTHING. */
+  display: string | null;
   /** What the number counts, and what it excludes. Render this with the value. */
   definition: string;
   /** ISO timestamp this figure was measured (NOT when the page was built). */
-  measuredAt: string;
+  measuredAt: string | null;
 };
 
 export const PUBLISHED_STATS = {
   domainsMonitored: {
     label: "Domains monitored",
-    value: SITE_STATS.domainsMonitored,
+    value: DOMAINS_MONITORED,
     display: DISPLAY_STATS.domainsMonitored,
     // The population, stated so the figure can be checked rather than believed.
     definition:
@@ -340,18 +371,36 @@ export const PUBLISHED_STATS = {
 export type PublishedStatKey = keyof typeof PUBLISHED_STATS;
 
 /**
+ * Only the figures that have a value. Surfaces MAP OVER THIS rather than over
+ * the keys — a figure the feed could not supply is absent from the page
+ * entirely, which is the rule: render nothing, not zero, not a constant.
+ */
+export function publishedStats(): Array<
+  PublishedStat & { key: PublishedStatKey; display: string; measuredAt: string }
+> {
+  return (Object.entries(PUBLISHED_STATS) as Array<[PublishedStatKey, PublishedStat]>)
+    .filter(([, s]) => s.value !== null && s.display !== null && s.measuredAt !== null)
+    .map(([key, s]) => ({
+      ...s,
+      key,
+      display: s.display as string,
+      measuredAt: s.measuredAt as string,
+    }));
+}
+
+/**
  * Display string for the corpus domain figure — the only approved way to
  * render the corpus size in copy. (Alias of DISPLAY_STATS.domainsMonitored,
  * kept as the established import across the site.)
  */
-export const DOMAINS_DISPLAY = DISPLAY_STATS.domainsMonitored;
+export const DOMAINS_DISPLAY: string = DISPLAY_STATS.domainsMonitored;
 
 /** "360M+ domain corpus" — for the "…-domain corpus" phrasing. */
 export const DOMAINS_CORPUS_PHRASE = `${DOMAINS_DISPLAY} domain corpus`;
 
 /** Back-compat raw-value shape (pre-WU26 name). Prefer SITE_STATS. */
 export const siteStats = {
-  domainsMonitored: SITE_STATS.domainsMonitored,
+  domainsMonitored: DOMAINS_MONITORED,
   ipsHosting: SITE_STATS.ipsHostingDomains,
   ipv4Indexed: SITE_STATS.ipv4Indexed,
   networksProfiled: SITE_STATS.networksProfiled,
@@ -360,6 +409,7 @@ export const siteStats = {
 
 /** Human date for surfaces that want to cite freshness, e.g. "14 July 2026". */
 export function statsAsOfLabel(): string {
+  if (!SITE_STATS.statsAsOf) return "";
   const d = new Date(SITE_STATS.statsAsOf + "T00:00:00Z");
   if (Number.isNaN(d.getTime())) return SITE_STATS.statsAsOf;
   return d.toLocaleDateString("en-GB", {
