@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { DOMAINS_DISPLAY, PUBLISHED_STATS } from "@/lib/site-stats";
+import type { DatasetSummary } from "@/lib/datasets/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CopyButton } from "@/components/ui/copy-button";
 import { HelpCircle, Zap, Shield, Rocket, ClipboardList, AlertCircle, Link as LinkIcon, Terminal, Code2, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 // --- Data for the documentation page ---
 const SAMPLE_RESPONSE = `{
@@ -52,6 +54,53 @@ const FIELDS = [
     { key: "flags.is_parked", type: "boolean", desc: "True if the domain resolves to a generic parking page or is for sale." },
 ];
 
+/**
+ * ALERT DELIVERY ROUTES — mirrors app/alerts/copy.ts. Alerts are not a REST
+ * resource you poll; they are pushed, or consumed through a route the team
+ * already operates. Documenting a GET /alerts endpoint would have been
+ * inventing an API.
+ */
+const ALERT_ROUTES = [
+    { name: "Webhooks", desc: "Signed HTTP POST per alert event. Launch integrations for Palo Alto, Microsoft Sentinel and Splunk, plus custom ticketing, SOAR and portal workflows.", primary: true },
+    { name: "API", desc: "Score, enrich and retrieve alert context inside products, review queues and case-management tools." },
+    { name: "SIEM and SOC tools", desc: "Route alerts and their reason fields into detection, investigation and response workflows." },
+    { name: "Reports and evidence packs", desc: "Package findings for executives, customers, takedown workflows and account reviews." },
+    { name: "Cloud data shares", desc: "Iceberg or Delta datasets for analytics, hunting, enrichment and historical review." },
+];
+
+/** Webhook contract facts — see /docs/search-stream for the full reference. */
+const WEBHOOK_CONTRACT = [
+    { label: "Transport", value: "HTTPS POST, JSON body" },
+    { label: "Verification", value: "HMAC signature over the RAW request bytes" },
+    { label: "Your timeout", value: "Respond 200 within 5 seconds" },
+    { label: "Retries", value: "3 attempts if we do not receive a 200" },
+    { label: "Deduplication", value: "Key on alert_id — retries reuse it" },
+];
+
+const ALERT_EVENT_SHAPE = `{
+  "alert_id": "evt_889234-ab12-44c1",
+  "timestamp": "2023-10-27T14:30:00Z",
+  "event_type": "phishing_candidate_detected",
+  "severity": "high",
+  "brand_monitored": "Acme Corp",
+  "threat_data": { "url": "...", "domain": "...", "ip_address": "...", "asn": "..." },
+  "detection_logic": {
+    "score": 95,
+    "triggers": ["logo_match", "keyword_stuffing", "newly_registered_domain"]
+  }
+}`;
+
+/**
+ * REPORTS — deliberately NOT documented as an API, because there is not one.
+ * Reports are produced and delivered as documents; saying so is more useful
+ * than implying an endpoint a developer will go looking for.
+ */
+const REPORT_ROUTES = [
+    { name: "Free Domain Health Report", how: "Self-serve. Enter a work email on the site; the report is generated in the customer portal and delivered by email.", scope: "One domain" },
+    { name: "Domain Risk Report", how: "Requested through sales. Delivered as a document for technical and executive readers.", scope: "One domain, in depth" },
+    { name: "Cross-Estate Domain Risk Report", how: "Requested through sales. Opens with estate discovery, so the scope is agreed before it runs.", scope: "Portfolio, estate or supplier group" },
+];
+
 const TOC = [
     { id: "overview", label: "Overview" },
     { id: "auth", label: "Authentication" },
@@ -60,10 +109,13 @@ const TOC = [
     { id: "use-cases", label: "What teams build" },
     { id: "performance", label: "Performance" },
     { id: "errors", label: "Errors" },
+    { id: "alerts", label: "Alerts" },
+    { id: "reports", label: "Reports" },
+    { id: "datasets", label: "Datasets" },
     { id: "faq", label: "FAQ" },
 ];
 
-export function DocsClient() {
+export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
     const curl = useMemo(() => `curl -H "X-API-Key: YOUR_API_KEY" https://api.datazag.com/api/example.com`, []);
     const python = useMemo(() => `import requests\n\nurl = "https://api.datazag.com/api/example.com"\nheaders = {"X-API-Key": "YOUR_API_KEY"}\nr = requests.get(url, headers=headers, timeout=30)\nprint(r.json())`, []);
     const node = useMemo(() => `const url = 'https://api.datazag.com/api/example.com';\nconst response = await fetch(url, {\n  headers: { 'X-API-Key': 'YOUR_API_KEY' }\n});\nconsole.log(await response.json());`, []);
@@ -87,6 +139,20 @@ export function DocsClient() {
                         and it answers from what is publicly observable — DNS state, mail and
                         authentication posture, hosting and network placement, and a risk score derived
                         from {DOMAINS_DISPLAY} domains of prior observation.
+                    </p>
+                    {/* The same graph reaches you four ways. Naming them up front
+                        stops a developer reading the whole API reference before
+                        discovering that alerts are pushed and datasets are SQL. */}
+                    <p className="mt-6 max-w-3xl text-base text-slate-500 leading-relaxed font-medium">
+                        The same graph reaches you four ways, and this page documents all of them:{" "}
+                        <a href="#endpoint" className="font-bold text-slate-700 hover:text-blue-600">the API</a> for a
+                        question you ask,{" "}
+                        <a href="#alerts" className="font-bold text-slate-700 hover:text-blue-600">alerts</a> for events
+                        pushed to you,{" "}
+                        <a href="#reports" className="font-bold text-slate-700 hover:text-blue-600">reports</a> as
+                        documents, and{" "}
+                        <a href="#datasets" className="font-bold text-slate-700 hover:text-blue-600">datasets</a> as SQL
+                        in your own warehouse.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">
                         <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-slate-900 hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
@@ -359,6 +425,165 @@ export function DocsClient() {
                                 <span className="text-slate-500 font-medium">{e.desc}</span>
                             ])}
                         />
+                    </Section>
+
+                    {/* ── ALERTS ────────────────────────────────────────────
+                        Alerts are PUSHED. There is no alerts REST resource, so
+                        this documents the webhook contract and the routes that
+                        actually exist rather than inventing endpoints. */}
+                    <Section id="alerts" title="Alerts">
+                        <div className="space-y-10">
+                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                                Alerts are not something you poll for. Datazag pushes an event when
+                                infrastructure matching your watchlist is observed, and you consume it
+                                through whichever route your team already operates.
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {ALERT_ROUTES.map((route) => (
+                                    <div
+                                        key={route.name}
+                                        className={cn(
+                                            "p-6 rounded-2xl border",
+                                            route.primary
+                                                ? "border-blue-200 bg-blue-50/60"
+                                                : "border-slate-100 bg-slate-50",
+                                        )}
+                                    >
+                                        <h4 className="font-bold text-slate-900">{route.name}</h4>
+                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{route.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="space-y-6">
+                                <h3 className="text-2xl font-bold text-slate-900">The webhook contract</h3>
+                                <DataTable
+                                    columns={["Property", "Value"]}
+                                    data={WEBHOOK_CONTRACT.map((row) => [
+                                        <span key="l" className="font-bold text-slate-900">{row.label}</span>,
+                                        <span key="v" className="text-slate-600 font-medium">{row.value}</span>,
+                                    ])}
+                                />
+                                <p className="text-sm leading-relaxed text-slate-500">
+                                    Verify the signature against the <strong>raw request bytes</strong>. Hashing
+                                    a parsed and re-serialized body is the single most common integration
+                                    failure — read the body before any JSON middleware runs.
+                                </p>
+                            </div>
+
+                            <div className="space-y-6">
+                                <h3 className="text-2xl font-bold text-slate-900">Event shape</h3>
+                                <CodeBlock language="json" text={ALERT_EVENT_SHAPE} title="Alert event" />
+                                <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6">
+                                    <p className="text-sm leading-relaxed text-slate-700">
+                                        <span className="font-bold text-slate-900">detection_logic.triggers is the reason code list.</span>{" "}
+                                        It states what actually fired — not just how high the score was — so an
+                                        analyst can agree or disagree with a specific finding rather than with a
+                                        number. This is the field to surface in a queue.
+                                    </p>
+                                </div>
+                                <p className="text-sm leading-relaxed text-slate-500">
+                                    Full reference, including signature verification, retry semantics and
+                                    troubleshooting:{" "}
+                                    <Link href="/docs/search-stream" className="font-bold text-blue-600 hover:underline">
+                                        Search Stream webhook documentation
+                                    </Link>
+                                    .
+                                </p>
+                            </div>
+                        </div>
+                    </Section>
+
+                    {/* ── REPORTS ───────────────────────────────────────────
+                        Reports are documents, not an endpoint. Saying so beats
+                        implying an API a developer will hunt for. */}
+                    <Section id="reports" title="Reports">
+                        <div className="space-y-8">
+                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                                Reports are produced documents rather than an API resource. There is no
+                                reports endpoint to call — the delivery route differs by report, and each
+                                one is listed below.
+                            </p>
+                            <DataTable
+                                columns={["Report", "Scope", "How it is delivered"]}
+                                data={REPORT_ROUTES.map((r) => [
+                                    <span key="n" className="font-bold text-slate-900">{r.name}</span>,
+                                    <span key="s" className="text-slate-600 font-medium">{r.scope}</span>,
+                                    <span key="h" className="text-slate-500 font-medium leading-relaxed">{r.how}</span>,
+                                ])}
+                            />
+                            <p className="text-sm leading-relaxed text-slate-500">
+                                Building report findings into your own product? The same underlying signals
+                                are available through the API above and the datasets below — that is the
+                                supported integration path.{" "}
+                                <Link href="/reports" className="font-bold text-blue-600 hover:underline">
+                                    Report catalog
+                                </Link>{" "}
+                                ·{" "}
+                                <Link href="/reports/sample" className="font-bold text-blue-600 hover:underline">
+                                    Sample report
+                                </Link>
+                            </p>
+                        </div>
+                    </Section>
+
+                    {/* ── DATASETS ──────────────────────────────────────────
+                        Listed from lib/datasets, the same source /datasets
+                        renders, so the two cannot disagree about what ships. */}
+                    <Section id="datasets" title="Datasets">
+                        <div className="space-y-8">
+                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                                Datasets are SQL, not HTTP. They arrive as cloud data shares and marketplace
+                                listings for warehouse and lakehouse use — bulk analysis, historical review
+                                and enrichment joins that would be impractical one API call at a time.
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {[
+                                    { t: "Typed schema", d: "Every column documented with its type and meaning, and join keys marked." },
+                                    { t: "Worked SQL", d: "Runnable examples per dataset, including the join key conversions." },
+                                    { t: "Stated refresh", d: "Each page states its own cadence and carries a changelog." },
+                                ].map((c) => (
+                                    <div key={c.t} className="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <h4 className="font-bold text-slate-900">{c.t}</h4>
+                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{c.d}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {datasets.length > 0 ? (
+                                <div className="space-y-4">
+                                    <h3 className="text-2xl font-bold text-slate-900">Published datasets</h3>
+                                    <div className="grid grid-cols-1 gap-3">
+                                        {datasets.map((d) => (
+                                            <Link
+                                                key={d.slug}
+                                                href={`/datasets/${d.slug}`}
+                                                className="group block rounded-2xl border border-slate-100 bg-white p-6 transition-colors hover:border-blue-200"
+                                            >
+                                                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                                    <h4 className="font-bold text-slate-900 group-hover:text-blue-600">{d.title}</h4>
+                                                    {typeof d.columnCount === "number" ? (
+                                                        <span className="text-xs font-mono uppercase tracking-tight text-slate-400">
+                                                            {d.columnCount} columns
+                                                        </span>
+                                                    ) : null}
+                                                </div>
+                                                <p className="mt-2 text-sm leading-relaxed text-slate-500">{d.summary}</p>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            <p className="text-sm leading-relaxed text-slate-500">
+                                Each page documents only what actually ships.{" "}
+                                <Link href="/datasets" className="font-bold text-blue-600 hover:underline">
+                                    Browse the dataset catalog
+                                </Link>
+                            </p>
+                        </div>
                     </Section>
 
                     <Section id="faq" title="FAQ">

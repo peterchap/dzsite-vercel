@@ -40,10 +40,12 @@ export async function POST(request: NextRequest) {
   // (WU28-B §3). Re-point BENCHMARK_EMAIL_TO at the COO when the address exists.
   const isBenchmark = payload.source === "benchmark_qualification";
 
-  // WU-C11: a technical-briefing request is a commercial lead with someone
-  // waiting on a reply, so it goes to sales rather than the general inbox —
-  // the same reasoning as the benchmark route above. Adding the option to the
-  // form without routing it would have made the shortest path the slowest one.
+  // The enquiry type tells us which PRODUCT someone is asking about, not
+  // whether they are a prospect or an existing customer — "Platform Alerts"
+  // could be either. Rather than guess a split the form cannot express, every
+  // submission goes to sales for now and a human forwards what belongs to
+  // support. A misrouted lead is recoverable; a lead dropped into a shared
+  // inbox nobody owns is not.
   const isBriefing = payload.enquiryType === TECHNICAL_BRIEFING_ENQUIRY_TYPE;
 
   const errors: string[] = [];
@@ -68,11 +70,14 @@ export async function POST(request: NextRequest) {
     try {
       const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
+      // NOTE: CONTACT_EMAIL_TO is deliberately no longer consulted. It used to
+      // sit ahead of the default and would quietly send everything to whatever
+      // it pointed at, which is the split this change removes. Set
+      // SALES_EMAIL_TO to override.
       const to =
         (isBenchmark && process.env.BENCHMARK_EMAIL_TO) ||
-        (isBriefing && (process.env.SALES_EMAIL_TO || "sales@datazag.com")) ||
-        process.env.CONTACT_EMAIL_TO ||
-        "support@datazag.com";
+        process.env.SALES_EMAIL_TO ||
+        "sales@datazag.com";
       const subject = isBenchmark
         ? `Benchmark qualification — ${payload.company}`
         : isBriefing

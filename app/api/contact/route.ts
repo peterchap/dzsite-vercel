@@ -16,7 +16,9 @@ export async function POST(req: Request) {
 
         const { data, error } = await resend.emails.send({
             from: process.env.EMAIL_FROM || "onboarding@resend.dev",
-            to: process.env.CONTACT_EMAIL_TO || "support@datazag.com",
+            // Same routing as /api/enquiry: every submission goes to sales for
+            // now, because the form cannot tell a prospect from a customer.
+            to: process.env.SALES_EMAIL_TO || "sales@datazag.com",
             subject: `New Contact Form Submission: ${subject || "No Subject"}`,
             html: `
         <h2>New Contact Form Submission</h2>
