@@ -1,12 +1,72 @@
+import { ACTIVITY_MAX_AGE_HOURS, asOfLabel, publishableFigures } from "@/lib/live-activity-guard";
+import { fetchStatsFeed } from "@/lib/stats-feed";
+
 const datasets = ["Domains", "DNS", "Certificates", "Routing", "Platforms"];
 const pivots = ["Provider", "ASN", "Platform", "TLD", "Risk"];
-const activityRows = [
-  { label: "New domains", value: "412", note: "last hour" },
-  { label: "Alert candidates", value: "83", note: "scored" },
-  { label: "Routing changes", value: "17", note: "snapshot" },
-];
 
-export function ObservatoryPreview() {
+type ActivityFeed = {
+  certificates?: number | null;
+  new_domains?: number | null;
+  routing_changes?: number | null;
+  window?: string;
+  as_of?: Record<string, string | null>;
+  definitions?: Record<string, string>;
+};
+
+type StatusFeed = {
+  graph_updated?: string | null;
+};
+
+// The activity rows are live figures from activity.json. They used to be typed
+// here — "412 new domains / last hour", "83 alert candidates / scored",
+// "17 routing changes", "Snapshot 06:00 UTC" — invented numbers under
+// live-sounding notes, on the homepage. Each row now renders only when its own
+// figure is valid and inside the hourly budget; a figure that fails is absent,
+// never a stand-in, and if none survive the strip is not rendered at all.
+//
+// `alerts` is deliberately not offered. It is brand + platform impersonation
+// candidates, and platform impersonations are dominated by legitimate cloud
+// domains — see ACTIVITY_DEFINITIONS in riskscore/orchestration/website_stats.py.
+// `san_domains` is marked UNVERIFIED by the producer and is not offered either.
+const ACTIVITY_ROWS = [
+  { key: "certificates", label: "Certificates observed" },
+  { key: "new_domains", label: "New domains" },
+  { key: "routing_changes", label: "Routing changes" },
+] as const;
+
+// Literal class strings so Tailwind keeps them; the grid follows the rows that survive.
+const ROW_GRID = ["", "", "md:grid-cols-2", "md:grid-cols-3"] as const;
+
+function formatCompact(value: number): string {
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(value >= 100_000_000 ? 0 : 1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(value >= 10_000 ? 0 : 1)}k`;
+  return value.toLocaleString("en-US");
+}
+
+export async function ObservatoryPreview() {
+  const [activity, status] = await Promise.all([
+    fetchStatsFeed<ActivityFeed>("activity.json"),
+    fetchStatsFeed<StatusFeed>("status.json"),
+  ]);
+
+  // The producer's own definition travels with each figure (as a tooltip), so
+  // the population a number describes is never retyped here.
+  const rows = publishableFigures(
+    ACTIVITY_ROWS.map((row) => ({
+      ...row,
+      value: activity?.[row.key],
+      asOf: activity?.as_of?.[row.key],
+      definition: activity?.definitions?.[row.key],
+    })),
+    ACTIVITY_MAX_AGE_HOURS,
+  );
+  const windowLabel = activity?.window ? `Last ${activity.window} · ` : "";
+
+  // An absolute build time, not status.snapshot: that field reads "00:00 UTC"
+  // for a genuine midnight build, which the placeholder guard (rightly) blanks.
+  const graphBuilt = asOfLabel(status?.graph_updated);
+
   return (
     <section className="relative border-t border-white/10 py-24 md:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(55,222,245,0.12),transparent_32%),radial-gradient(circle_at_78%_72%,rgba(139,92,246,0.12),transparent_34%)]" />
@@ -49,7 +109,7 @@ export function ObservatoryPreview() {
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/70" />
                 </div>
-                <p className="text-xs text-slate-400">Snapshot 06:00 UTC</p>
+                {graphBuilt ? <p className="text-xs text-slate-400">Graph built {graphBuilt}</p> : null}
               </div>
 
               <div className="grid gap-4 p-4 lg:grid-cols-[0.7fr_1.3fr]">
@@ -72,15 +132,17 @@ export function ObservatoryPreview() {
                 </aside>
 
                 <div className="grid gap-4">
-                  <div className="grid gap-4 md:grid-cols-3">
-                    {activityRows.map((row) => (
-                      <div key={row.label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                        <p className="text-2xl font-semibold text-white">{row.value}</p>
-                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-300">{row.label}</p>
-                        <p className="mt-1 text-xs text-slate-500">{row.note}</p>
-                      </div>
-                    ))}
-                  </div>
+                  {rows.length > 0 ? (
+                    <div className={`grid gap-4 ${ROW_GRID[rows.length]}`}>
+                      {rows.map((row) => (
+                        <div key={row.key} title={row.definition} className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                          <p className="text-2xl font-semibold text-white">{formatCompact(row.value)}</p>
+                          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-300">{row.label}</p>
+                          <p className="mt-1 text-xs text-slate-500">{windowLabel}as of {asOfLabel(row.asOf)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
 
                   <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
                     <div className="flex items-center justify-between gap-4">

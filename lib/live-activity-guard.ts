@@ -108,3 +108,44 @@ export function isStale(
   if (age === null) return true;
   return age > maxAgeHours;
 }
+
+/**
+ * PER-FIGURE PUBLISHING (added 2026-09-15).
+ *
+ * isActivityPanelRenderable is all-or-nothing, which suited a panel whose
+ * figures were read against each other ("63k alert candidates from 0
+ * certificates"). The Observatory preview's activity rows are independent
+ * figures, and the producer now nulls any single figure that fails its bounds.
+ * Measured 2026-09-15: `certificates` was published null (2,067,773 over the
+ * 2,000,000/h ceiling) while `new_domains` and `routing_changes` were valid and
+ * fresh. All-or-nothing would have blanked two good figures for one bad one.
+ *
+ * So each figure stands alone: it renders only if it is a valid non-zero number
+ * AND its own as-of is inside the cadence budget. Nothing is substituted — a
+ * figure that fails is absent, never a placeholder.
+ */
+
+/**
+ * Budget for an hourly figure. Three hours: slack for a late run, short enough
+ * that a stalled certstream blob leaves the page instead of being republished
+ * under a fresh timestamp (measured 2026-08-22: the blob was 3.7h stale while
+ * activity.json carried an `updated` of "now").
+ */
+export const ACTIVITY_MAX_AGE_HOURS = 3;
+
+export type ActivityFigure = {
+  value: number | null | undefined;
+  asOf: string | null | undefined;
+};
+
+/** The figures fit to render, each judged on its own value and as-of. */
+export function publishableFigures<T extends ActivityFigure>(
+  figures: T[],
+  maxAgeHours: number = ACTIVITY_MAX_AGE_HOURS,
+  now: Date = new Date(),
+): Array<T & { value: number; asOf: string }> {
+  return figures.filter(
+    (f): f is T & { value: number; asOf: string } =>
+      isValidMetric(f.value) && !isStale(f.asOf, maxAgeHours, now),
+  );
+}

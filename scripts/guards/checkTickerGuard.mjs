@@ -16,6 +16,8 @@ import {
   asOfLabel,
   ageHours,
   isStale,
+  publishableFigures,
+  ACTIVITY_MAX_AGE_HOURS,
 } from "../../lib/live-activity-guard.ts";
 
 let n = 0;
@@ -88,5 +90,36 @@ check("an unstamped figure counts as stale, not as fresh", () =>
   assert.equal(isStale(undefined, 3, NOW), true));
 check("an unparseable stamp counts as stale", () =>
   assert.equal(isStale("whenever", 3, NOW), true));
+
+// Per-figure publishing (2026-09-15). The Observatory preview's rows are
+// independent figures: one bounds-rejected figure must drop out ALONE, and a
+// figure that fails is absent — never swapped for a stand-in value.
+const hoursAgo = (h) => new Date(NOW.getTime() - h * 3_600_000).toISOString();
+const fig = (key, value, asOf) => ({ key, value, asOf });
+
+check("hourly budget is three hours", () => assert.equal(ACTIVITY_MAX_AGE_HOURS, 3));
+check("a valid, fresh figure is published", () =>
+  assert.deepEqual(publishableFigures([fig("new_domains", 235680, hoursAgo(1))], 3, NOW).map((f) => f.key), ["new_domains"]));
+check("a nulled figure drops out without taking its siblings (the 2026-09-15 case)", () =>
+  assert.deepEqual(
+    publishableFigures([
+      fig("certificates", null, hoursAgo(0.4)),
+      fig("new_domains", 235680, hoursAgo(0.4)),
+      fig("routing_changes", 5963, hoursAgo(0.6)),
+    ], 3, NOW).map((f) => f.key),
+    ["new_domains", "routing_changes"],
+  ));
+check("a zero figure is not published", () =>
+  assert.equal(publishableFigures([fig("routing_changes", 0, hoursAgo(1))], 3, NOW).length, 0));
+check("a stale figure is not published", () =>
+  assert.equal(publishableFigures([fig("new_domains", 412, hoursAgo(4))], 3, NOW).length, 0));
+check("an unstamped figure is not published", () =>
+  assert.equal(publishableFigures([fig("new_domains", 412, undefined)], 3, NOW).length, 0));
+check("published figures are the originals, never substitutes", () => {
+  const input = [fig("new_domains", 235680, hoursAgo(1))];
+  assert.equal(publishableFigures(input, 3, NOW)[0], input[0]);
+});
+check("nothing publishable yields an empty list, not a placeholder", () =>
+  assert.deepEqual(publishableFigures([fig("certificates", null, null)], 3, NOW), []));
 
 console.log(`✓ Ticker render-guard assertions passed (${n} checks).`);
