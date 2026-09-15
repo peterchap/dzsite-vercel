@@ -78,9 +78,8 @@ function scanDeep(value: unknown, where: string): void {
   }
 }
 
-// ---- 1. Committed fallback content --------------------------------------
-{
-  const path = "lib/datasets/fallback.ts";
+// ---- 1. Committed content (doc fallbacks + the /datasets catalog) --------
+for (const path of ["lib/datasets/fallback.ts", "lib/datasets/catalog.ts"]) {
   let src = "";
   try {
     src = readFileSync(path, "utf8");

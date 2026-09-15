@@ -37,7 +37,7 @@ export default {
             title: "Title",
             type: "string",
             group: "overview",
-            description: "e.g. IP to ASN Intelligence — with Infrastructure Classification",
+            description: "e.g. IP to ASN Intelligence",
             validation: (r: any) => r.required(),
         },
         {
@@ -91,7 +91,7 @@ export default {
             title: "Table name",
             type: "string",
             group: "schema",
-            description: "The table as it appears in the share, e.g. DATAZAG_IP_ASN",
+            description: "The table as it appears in the share, e.g. ip_prefix_asn",
         },
         {
             name: "columns",
