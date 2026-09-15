@@ -54,8 +54,9 @@ export type CatalogEntry = {
   order: number;
 };
 
-const PORTAL_URL = process.env.NEXT_PUBLIC_PORTAL_URL || "https://portal.datazag.com";
-
+// To flip a route live:
+//   portal: { status: "available", url: process.env.NEXT_PUBLIC_PORTAL_URL || "https://portal.datazag.com" }
+//   marketplace: { status: "available", url: "<listing URL>" }
 const COMING_SOON: RouteStatus = { status: "coming-soon" };
 
 export const DATASET_CATALOG: CatalogEntry[] = [
@@ -63,7 +64,7 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     slug: "ip-asn-intelligence",
     name: "IP to ASN Intelligence",
     description:
-      "Map any IPv4 address to its prefix, autonomous system, operator, and infrastructure type. Refreshed daily.",
+      "Map any IPv4 address to its prefix, autonomous system, operator, and registration country. Refreshed daily.",
     tier: "Free",
     coverage: [
       { stat: "networksProfiled", label: "ASNs profiled" },
@@ -74,19 +75,19 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     order: 10,
   },
   {
-    slug: "domain-posture-intelligence",
+    slug: "domain-posture",
     name: "Domain Posture & Intelligence",
     description:
       "Security and mail posture for each domain, with the DNS and hosting context behind it.",
     tier: "Free and paid",
-    coverage: [{ stat: "domainsMonitored", label: "Live domains observed daily" }],
+    // No coverage figure. B is built from gold.posture_current, a rolling
+    // backfill (44% of the domain corpus on 2026-08-31), so the corpus figure
+    // would overstate it. Add one when the stats feed publishes a posture count.
     // Mail records and remediation are a view of this dataset, not a separate
     // production. They are listed here, not as their own card.
     includes: ["Mail records and remediation view"],
-    routes: {
-      marketplace: COMING_SOON,
-      portal: { status: "available", url: PORTAL_URL, label: "Customer portal" },
-    },
+    // 2026-09-15: portal access not confirmed, and publish.domain_intel is not exported yet.
+    routes: { marketplace: COMING_SOON, portal: COMING_SOON },
     order: 20,
   },
   {
@@ -95,10 +96,9 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     description:
       "Clean mailing lists before you send, using Datazag's live domain data. Built for email service providers.",
     tier: "Paid",
-    routes: {
-      marketplace: COMING_SOON,
-      portal: { status: "available", url: PORTAL_URL, label: "Customer portal" },
-    },
+    // 2026-09-15: no domain-grain suppression table exists yet. do_not_mail lives on
+    // intel.mx_intel at mail-server grain; the per-domain column is proposed, not built.
+    routes: { marketplace: COMING_SOON, portal: COMING_SOON },
     order: 30,
   },
   {
