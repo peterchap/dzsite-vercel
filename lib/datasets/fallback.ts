@@ -191,6 +191,10 @@ FROM your_ips;`,
   ],
   changelog: [
     {
+      date: "2026-09-16",
+      summary: "Available on Snowflake Marketplace as a free listing.",
+    },
+    {
       date: "2026-09-15",
       summary:
         "Documentation corrected to the shipped schema. Removed asn_name, asn_org, and asn_type, which the dataset does not include; the operator name is in isp. Added ipv4_only, tier, and data_completeness, and a join for nested prefixes.",
@@ -201,6 +205,7 @@ FROM your_ips;`,
         "Initial release. IPv4 coverage with prefix, ASN, operator name, registration country, and reputation_flag. Daily refresh.",
     },
   ],
+  listingUrl: "https://app.snowflake.com/marketplace/listing/GZSVZ1AUFU0",
   listingLabel: "Get it on Snowflake Marketplace",
   contactNote:
     "Need it somewhere other than Snowflake? Ask us about other delivery modes.",
