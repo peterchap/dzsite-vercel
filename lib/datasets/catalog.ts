@@ -70,8 +70,15 @@ export const DATASET_CATALOG: CatalogEntry[] = [
       { stat: "networksProfiled", label: "ASNs profiled" },
       { stat: "ipv4Indexed", label: "IPv4 addresses indexed" },
     ],
-    // 2026-09-14: listing in marketplace review, portal path not live yet.
-    routes: { marketplace: COMING_SOON, portal: COMING_SOON },
+    // 2026-09-16: Snowflake Marketplace listing approved and published. Portal path not live yet.
+    routes: {
+      marketplace: {
+        status: "available",
+        url: "https://app.snowflake.com/marketplace/listing/GZSVZ1AUFU0",
+        label: "Snowflake Marketplace",
+      },
+      portal: COMING_SOON,
+    },
     order: 10,
   },
   {
