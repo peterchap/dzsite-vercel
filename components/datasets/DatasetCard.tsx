@@ -89,9 +89,11 @@ export function DatasetCard({ entry, hasDocPage }: { entry: CatalogEntry; hasDoc
                 {c.label}
               </dt>
               <dd className="mt-2 font-mono text-lg font-bold tabular-nums text-white">{c.value}</dd>
-              <dd className="mt-1 text-xs text-slate-500">
-                Measured <time dateTime={c.asOf}>{asOfLabel(c.asOf)}</time>
-              </dd>
+              {c.asOf ? (
+                <dd className="mt-1 text-xs text-slate-500">
+                  Measured <time dateTime={c.asOf}>{asOfLabel(c.asOf)}</time>
+                </dd>
+              ) : null}
             </div>
           ))}
         </dl>
