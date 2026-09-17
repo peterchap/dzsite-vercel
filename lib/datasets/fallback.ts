@@ -40,9 +40,9 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
   slug: "ip-asn-intelligence",
   eyebrow: "Dataset documentation · Free",
   summary:
-    "Map any IPv4 address to its network prefix, autonomous system, operator, and registration country. Integer range-bound join keys, refreshed daily.",
+    "Map any IPv4 address to its network prefix, autonomous system, operator, and registry country. Integer range-bound join keys, refreshed daily.",
   overview: [
-    "Maps any IPv4 address to its network prefix, the autonomous system (ASN) announcing it, and the operator of that network. Each range also carries the AS registration country and a coarse reputation band.",
+    "Maps any IPv4 address to its network prefix, the autonomous system (ASN) announcing it, and the operator of that network. Each range also carries the country the registry records for its address block, and a coarse reputation band.",
     "Ships with integer range-bound join keys, so the lookup is an ordinary range join in your warehouse — no UDFs, no external calls, no per-row API cost.",
     "Natively built by Datazag. License-clean for redistribution, and refreshed daily.",
     "Coverage is IPv4, and it is complete: every ASN announcing routes on the public internet is profiled — all {{ASNS}} of them. There is no sampled subset and no long tail left out, so a lookup that returns nothing means the address is unannounced, not that we are missing the network.",
@@ -93,7 +93,7 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
       name: "country",
       type: "VARCHAR",
       description:
-        "ISO 3166-1 alpha-2 country where the autonomous system is registered. This is not a geolocation of the addresses.",
+        "ISO 3166-1 alpha-2 country the Regional Internet Registry records for the address block containing this range, where the block's holder is registered. Where that block carries no country, the announcing autonomous system's registry country is used. Not a geolocation of the addresses, and it can differ between ranges announced by the same autonomous system. RIPE NCC records a few EU-wide blocks as EU.",
     },
     {
       name: "reputation_flag",
@@ -170,8 +170,8 @@ FROM your_ips;`,
       tone: "neutral",
     },
     {
-      title: "country is where the AS is registered",
-      body: "country is the registration country of the autonomous system, not the location of the addresses. A network registered in one country routinely announces addresses used in others. Do not use it as IP geolocation.",
+      title: "country is the registry country of the address block",
+      body: "country is the country the Regional Internet Registry records for the address block that contains the range: where the block's holder is registered. One autonomous system can announce blocks registered in several countries, so country can differ between its ranges. It is not the location of the addresses. Do not use it as IP geolocation.",
       tone: "caveat",
     },
     {
@@ -190,6 +190,11 @@ FROM your_ips;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-09-17",
+      summary:
+        "country is now described as the registry country of each range's address block, which can differ between ranges of the same autonomous system. It was previously described as the autonomous system's registration country, which was inaccurate. isp no longer carries bare AS-number handles; where no usable name exists it is NULL.",
+    },
     {
       date: "2026-09-16",
       summary: "Available on Snowflake Marketplace as a free listing.",
