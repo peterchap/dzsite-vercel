@@ -64,7 +64,7 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     slug: "ip-asn-intelligence",
     name: "IP to ASN Intelligence",
     description:
-      "Map any IPv4 address to its prefix, autonomous system, operator, and registration country. Refreshed daily.",
+      "Map any IPv4 address to its prefix, autonomous system, operator, and registry country. Refreshed daily.",
     tier: "Free",
     coverage: [
       { stat: "networksProfiled", label: "ASNs profiled" },
