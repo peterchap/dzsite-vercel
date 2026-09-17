@@ -99,7 +99,7 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
       name: "reputation_flag",
       type: "VARCHAR",
       description:
-        "Coarse reputation band for the announcing AS: clean, watch, or risky. NULL where the AS has no reputation record — absence is never reported as clean.",
+        "Coarse reputation band: clean, watch, or risky. A teaser indicator, not a calibrated score. Large shared networks such as cloud, CDN, and hosting providers are assessed on abuse observed on the specific range rather than flagged wholesale. NULL where not assessed — absence is never reported as clean.",
     },
     {
       name: "ipv4_only",
@@ -176,7 +176,7 @@ FROM your_ips;`,
     },
     {
       title: "reputation_flag is a signpost, not a score",
-      body: "Three states — clean, watch, risky — deliberately coarse. It tells you where to look. It is not calibrated, carries no confidence value, and should not be thresholded as if it were a score. A NULL means we hold no reputation record for the network; it does not mean clean.",
+      body: "Three states — clean, watch, risky — deliberately coarse. It tells you where to look. It is not calibrated, carries no confidence value, and should not be thresholded as if it were a score. Large shared networks such as cloud, CDN, and hosting providers are judged on abuse observed on the specific range, so a major provider is not flagged wholesale for abuse elsewhere on its network. A NULL means the range or network has not been assessed; it does not mean clean.",
       tone: "caveat",
     },
   ],
@@ -190,6 +190,11 @@ FROM your_ips;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-09-17",
+      summary:
+        "reputation_flag no longer flags large shared networks wholesale: cloud, CDN, and hosting providers are assessed on abuse observed on the specific range. Smaller networks are still assessed as a whole.",
+    },
     {
       date: "2026-09-17",
       summary:
