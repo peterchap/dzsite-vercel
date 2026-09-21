@@ -109,8 +109,13 @@ export function DatasetDocPage({ dataset }: { dataset: DatasetDoc }) {
             {copy(d.summary, `${d.slug} → summary`)}
           </p>
 
-          {d.listingUrl ? (
+          {/* A dataset can be documented before it is listed — B was, deliberately, because
+              the docs URL has to resolve BEFORE a listing is submitted (the IP-to-ASN
+              listing was rejected once for a docs link that did not). So the note renders
+              on its own; only the button needs a listing to point at. */}
+          {d.listingUrl || d.contactNote ? (
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              {d.listingUrl ? (
               <a
                 href={d.listingUrl}
                 className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 shadow-sm transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
@@ -118,6 +123,7 @@ export function DatasetDocPage({ dataset }: { dataset: DatasetDoc }) {
                 {d.listingLabel ?? "View the listing"}
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
+              ) : null}
               {d.contactNote ? (
                 <p className="max-w-sm text-sm leading-6 text-slate-400">
                   {copy(d.contactNote, `${d.slug} → contactNote`)}
@@ -388,9 +394,12 @@ export function DatasetDocPage({ dataset }: { dataset: DatasetDoc }) {
               Changelog
             </SectionHeading>
             <ol className="max-w-3xl space-y-4">
-              {changelog.map((c) => (
+              {/* A release can carry several entries on one date — B shipped four on
+                  2026-09-21 — and keying on the date alone makes React drop all but one
+                  of them. The index is stable here: this list is sorted, not reordered. */}
+              {changelog.map((c, i) => (
                 <li
-                  key={c._key ?? c.date}
+                  key={c._key ?? `${c.date}-${i}`}
                   className="flex flex-col gap-1.5 border-l-2 border-white/10 pl-5 sm:flex-row sm:gap-6"
                 >
                   <time

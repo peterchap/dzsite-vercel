@@ -84,15 +84,22 @@ export const DATASET_CATALOG: CatalogEntry[] = [
   {
     slug: "domain-posture",
     name: "Domain Posture & Intelligence",
+    // 2026-09-21: was "Security and mail posture for each domain, with the DNS and
+    // hosting context behind it", and listed a "Mail records and remediation view".
+    // Neither ships. The dataset carries email-authentication records and one mail
+    // hostname; it carries no ASN, prefix, IP or provider column, so there is no
+    // hosting context in it, and the remediation view (C1) is designed and not built.
+    // A buyer reading the old line would have expected two products that do not exist.
     description:
-      "Security and mail posture for each domain, with the DNS and hosting context behind it.",
+      "What each domain publishes for email authentication and transport security — " +
+      "SPF, DMARC, MTA-STS, DNSSEC and BIMI — and what those records actually say.",
+    // True as of 2026-09-21 (centralake#74): B is tiered by COLUMN. Every domain is in
+    // the free tier; the paid tier adds columns, not rows. Until then `tier` was 'paid'
+    // on all 263M rows while this card said "Free and paid".
     tier: "Free and paid",
     // No coverage figure. B is built from gold.posture_current, a rolling
     // backfill (44% of the domain corpus on 2026-08-31), so the corpus figure
     // would overstate it. Add one when the stats feed publishes a posture count.
-    // Mail records and remediation are a view of this dataset, not a separate
-    // production. They are listed here, not as their own card.
-    includes: ["Mail records and remediation view"],
     // 2026-09-15: portal access not confirmed, and publish.domain_intel is not exported yet.
     routes: { marketplace: COMING_SOON, portal: COMING_SOON },
     order: 20,
