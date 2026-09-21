@@ -1,5 +1,92 @@
 import { NextResponse } from "next/server";
 import { sanityClient } from "@/sanity/client";
+import { escapeHtml, resolveSender } from "@/lib/email";
+
+/**
+ * The origin the confirmation link points at.
+ *
+ * NOT the request's own origin in production. Host is a caller-supplied
+ * header, and this link now goes out in mail signed with our domain, so a
+ * spoofed Host would have us mail a subscriber a link to somebody else's
+ * server. The canonical www host is the same default the rest of the site
+ * builds absolute links from.
+ */
+function confirmationOrigin(request: Request): string {
+    const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+    if (configured) return configured;
+
+    // Local dev has no NEXT_PUBLIC_SITE_URL, and a link to www.datazag.com
+    // would confirm nothing against a dev dataset, so there — and only there —
+    // the request host is the useful answer.
+    if (process.env.NODE_ENV !== "production") return new URL(request.url).origin;
+
+    return "https://www.datazag.com";
+}
+
+/**
+ * Send the double opt-in confirmation to the subscriber.
+ *
+ * Returns false when it did not get out. The caller needs that answer: this
+ * route used to log the link to the server console and tell the visitor an
+ * email was on its way, so nobody could ever reach "active" and nobody could
+ * see that. Every failure path below logs at error level, with the link, so a
+ * subscription can still be completed by hand from the server log.
+ */
+async function sendConfirmationEmail(email: string, confirmUrl: string): Promise<boolean> {
+    if (!process.env.RESEND_API_KEY) {
+        console.error("CONFIRMATION NOT EMAILED — RESEND_API_KEY is not set.", { email, confirmUrl });
+        return false;
+    }
+
+    try {
+        // Constructed per request, not at module scope: the Resend constructor
+        // throws on a missing key, which at module scope takes the whole route
+        // down with an import error instead of a handled 500.
+        const { Resend } = await import("resend");
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        // Belt and braces around the href: the token is a UUID we minted and
+        // the origin is ours in production, but neither is worth trusting raw
+        // inside an HTML attribute.
+        const safeUrl = escapeHtml(confirmUrl);
+
+        const { error } = await resend.emails.send({
+            from: resolveSender(),
+            to: email,
+            subject: "Confirm your Datazag subscription",
+            text: [
+                "Please confirm your subscription to the Datazag blog.",
+                "",
+                "Open this link to activate it:",
+                confirmUrl,
+                "",
+                "If you did not ask to subscribe, ignore this email. Nothing will be sent to you.",
+            ].join("\n"),
+            html: `
+        <h2>Confirm your subscription</h2>
+        <p>Please confirm your subscription to the Datazag blog.</p>
+        <p><a href="${safeUrl}">Activate my subscription</a></p>
+        <p>Or open this link: <br/>${safeUrl}</p>
+        <p>If you did not ask to subscribe, ignore this email. Nothing will be sent to you.</p>
+      `,
+        });
+
+        if (error) {
+            console.error("CONFIRMATION NOT EMAILED — Resend rejected the message.", {
+                error,
+                email,
+                confirmUrl,
+            });
+            return false;
+        }
+
+        return true;
+    } catch (err) {
+        // resolveSender() throws on a missing or test EMAIL_FROM, and lands here.
+        console.error("CONFIRMATION NOT EMAILED — the send failed.", { err, email, confirmUrl });
+        return false;
+    }
+}
 
 export async function POST(request: Request) {
     try {
@@ -24,7 +111,9 @@ export async function POST(request: Request) {
 
         const token = crypto.randomUUID();
 
-        // Create or update subscriber with pending status
+        // Create or update subscriber with pending status. This has to happen
+        // before the send: /api/subscribe/confirm looks the subscriber up by
+        // token, so a link mailed ahead of the document would not resolve.
         if (existing) {
             await sanityClient
                 .patch(existing._id)
@@ -40,11 +129,25 @@ export async function POST(request: Request) {
             });
         }
 
-        // --- EMAIL SENDING LOGIC ---
-        // In a real app, use Resend, SendGrid, etc.
-        const confirmUrl = `${new URL(request.url).origin}/api/subscribe/confirm?token=${token}`;
-        console.log(`[SIMULATED EMAIL] To: ${email} | Link: ${confirmUrl}`);
-        // ---------------------------
+        const confirmUrl = new URL(
+            `/api/subscribe/confirm?token=${encodeURIComponent(token)}`,
+            confirmationOrigin(request)
+        ).toString();
+
+        const delivered = await sendConfirmationEmail(email, confirmUrl);
+
+        if (!delivered) {
+            // Nothing claiming an email was sent. The subscriber row stays
+            // pending with a live token, so a later attempt from the same
+            // address just re-issues the link once sending works again.
+            return NextResponse.json(
+                {
+                    error:
+                        "We could not send the confirmation email, so you are not subscribed yet. Please try again in a few minutes.",
+                },
+                { status: 500 }
+            );
+        }
 
         return NextResponse.json({
             message: "We've sent a confirmation link to your email. Please click it to activate your subscription."
