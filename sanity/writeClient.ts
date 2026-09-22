@@ -27,6 +27,30 @@ import { apiVersion, dataset, projectId } from "./env";
  * SERVER ONLY. Never import this from a client component — the token would be
  * bundled into the browser.
  */
+/**
+ * What to check when Sanity rejects the token. Kept next to the client rather
+ * than duplicated into each route's log line.
+ */
+export const CREDENTIAL_FAILURE_HINT =
+  "The variable IS set, so the value is what Sanity refused: check for quotation " +
+  "marks wrapped around it in the deploy's environment (a .env file strips those, " +
+  "a hosting dashboard does not), a truncated paste, a revoked token, or one " +
+  "without the Editor role on this project.";
+
+/**
+ * Did Sanity refuse our credentials — 401 (the token is not valid) or 403 (it
+ * is valid but lacks the permission)?
+ *
+ * WHY THIS IS WORTH NAMING. Both mean the deploy is misconfigured, not that the
+ * visitor did anything wrong. Without this check a rejected token surfaces as
+ * the same generic 500 as any unexpected bug, and telling them apart took a
+ * round of probing production by hand. Once was enough.
+ */
+export function isSanityCredentialFailure(err: unknown): boolean {
+  const status = (err as { statusCode?: unknown } | null)?.statusCode;
+  return status === 401 || status === 403;
+}
+
 let cached: ReturnType<typeof createClient> | null = null;
 
 export function getSanityWriteClient(): ReturnType<typeof createClient> {
