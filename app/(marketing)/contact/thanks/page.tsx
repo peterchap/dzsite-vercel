@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { publishedContactRoutes } from "@/lib/contact-routes";
 import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
@@ -7,7 +8,25 @@ export const metadata: Metadata = {
   description: "Confirmation that a Datazag inquiry has been received.",
 };
 
-export default function ContactThanksPage() {
+/**
+ * Where to send someone whose inquiry did not make it out by email. First
+ * published route, which lib/contact-routes.ts orders sales-first — the same
+ * mailbox /api/enquiry was trying to reach.
+ */
+const fallbackRoute = publishedContactRoutes()[0];
+
+export default async function ContactThanksPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ delivery?: string }>;
+}) {
+  const params = searchParams ? await searchParams : {};
+
+  // /api/enquiry sets this when the forwarding email did not send. The inquiry
+  // is in the server log, but nothing has reached a person yet, so saying
+  // "thanks, we have it" here would be untrue.
+  const deliveryFailed = params.delivery === "failed" && Boolean(fallbackRoute);
+
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -17,27 +36,50 @@ export default function ContactThanksPage() {
       <section className="relative py-24 md:py-32">
         <Container>
           <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-2xl shadow-cyan-950/20 md:p-12">
-            <p className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100">
-              Inquiry received
-            </p>
-            <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white md:text-6xl">Thanks — we have received your inquiry.</h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Datazag will route it by the inquiry type you selected: report, alerts, infrastructure intelligence, API, data share, partner route or marketplace offer.
-            </p>
+            {deliveryFailed ? (
+              <>
+                <p className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">
+                  Please email us
+                </p>
+                <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white md:text-6xl">Your inquiry did not reach us.</h1>
+                <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+                  Something went wrong when we sent your inquiry to our team. We are sorry. Please email us directly and we will pick it up.
+                </p>
+                <a
+                  className="mt-6 inline-flex items-center justify-center rounded-2xl border border-amber-300/30 bg-amber-300/[0.08] px-5 py-3 text-lg font-semibold text-amber-100 transition hover:bg-amber-300/[0.14]"
+                  href={`mailto:${fallbackRoute.email}`}
+                >
+                  {fallbackRoute.email}
+                </a>
+              </>
+            ) : (
+              <>
+                <p className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100">
+                  Inquiry received
+                </p>
+                <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white md:text-6xl">Thanks — we have received your inquiry.</h1>
+                <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+                  Datazag will route it by the inquiry type you selected: report, alerts, infrastructure intelligence, API, data share, partner route or marketplace offer.
+                </p>
+              </>
+            )}
 
-            <div className="mt-8 grid gap-4 text-left md:grid-cols-3">
-              {[
-                { title: "Route", text: "We match the inquiry to the right product path." },
-                { title: "Review", text: "We use the scope and context you supplied to avoid a generic follow-up." },
-                { title: "Respond", text: "The next step may be a report, pilot, schema review, partner discussion or private offer." },
-              ].map((item, index) => (
-                <article key={item.title} className="rounded-2xl border border-white/10 bg-[#030619]/60 p-5">
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200">0{index + 1}</div>
-                  <h2 className="text-base font-semibold text-white">{item.title}</h2>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
-                </article>
-              ))}
-            </div>
+            {/* Route, review, respond only holds when the inquiry actually left. */}
+            {deliveryFailed ? null : (
+              <div className="mt-8 grid gap-4 text-left md:grid-cols-3">
+                {[
+                  { title: "Route", text: "We match the inquiry to the right product path." },
+                  { title: "Review", text: "We use the scope and context you supplied to avoid a generic follow-up." },
+                  { title: "Respond", text: "The next step may be a report, pilot, schema review, partner discussion or private offer." },
+                ].map((item, index) => (
+                  <article key={item.title} className="rounded-2xl border border-white/10 bg-[#030619]/60 p-5">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-200">0{index + 1}</div>
+                    <h2 className="text-base font-semibold text-white">{item.title}</h2>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            )}
 
             <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
               <a href="/reports/sample" className="inline-flex items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
