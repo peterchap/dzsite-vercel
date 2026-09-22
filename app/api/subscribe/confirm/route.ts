@@ -1,78 +1,109 @@
 import { NextResponse } from "next/server";
+
 import {
     CREDENTIAL_FAILURE_HINT,
     getSanityWriteClient,
     isSanityCredentialFailure,
 } from "@/sanity/writeClient";
 
+/**
+ * SUBSCRIPTION CONFIRMATION.
+ *
+ * WHY THIS IS A POST. Confirming used to happen on GET, straight from the link
+ * in the email. Two things went wrong with that, and both are worth keeping
+ * written down because each looks like a bug somewhere else.
+ *
+ * 1. Mail security scanners follow links. Datazag mail is Microsoft 365, and
+ *    Defender Safe Links fetches a link's target before handing the browser
+ *    on, so the scanner spent the one-time token and the subscriber's own
+ *    click arrived to find it gone — "expired or invalid", reported for a
+ *    confirmation that had in fact just succeeded.
+ *
+ * 2. Worse, the scanner had performed the double opt-in. The point of
+ *    confirming is evidence that a PERSON consented; a robot following a link
+ *    is not that evidence. Scanners follow links, they do not submit forms, so
+ *    the mail now points at /blog/confirm and a button there posts here.
+ *
+ * GET therefore mutates nothing. It redirects to that page, so any link
+ * already sent still works and no prefetch can confirm anybody.
+ */
+
+/** Where the subscriber ends up, carrying the outcome for the page to render. */
+function outcome(request: Request, state: string) {
+    const url = new URL("/blog/confirm", request.url);
+    url.searchParams.set("state", state);
+    return url;
+}
+
 export async function GET(request: Request) {
+    const token = new URL(request.url).searchParams.get("token");
+
+    const url = new URL("/blog/confirm", request.url);
+    if (token) url.searchParams.set("token", token);
+
+    // 303: whatever this link was, the browser should GET the page.
+    return NextResponse.redirect(url, 303);
+}
+
+export async function POST(request: Request) {
     try {
-        const { searchParams } = new URL(request.url);
-        const token = searchParams.get("token");
+        const formData = await request.formData();
+        const raw = formData.get("token");
+        const token = typeof raw === "string" ? raw.trim() : "";
 
         if (!token) {
-            return new Response("Invalid confirmation link", { status: 400 });
+            return NextResponse.redirect(outcome(request, "invalid"), 303);
         }
 
-        // Flipping status to "active" is a write, so this route needs the
-        // write-scoped token too — with the read-only one it looked the
-        // subscriber up fine and then 403'd on the patch, leaving them pending
-        // forever with a link that appeared to do nothing.
         let sanity;
         try {
             sanity = getSanityWriteClient();
         } catch (err) {
-            console.error("SUBSCRIPTION NOT CONFIRMED — Sanity writes are not configured.", {
-                err,
-                token,
-            });
-            return new Response(
-                "We could not confirm your subscription just now. Please try that link again later.",
-                { status: 503 }
-            );
+            console.error("SUBSCRIPTION NOT CONFIRMED — Sanity writes are not configured.", err);
+            return NextResponse.redirect(outcome(request, "unavailable"), 303);
         }
 
-        // Find subscriber with this token
-        // Types, not decoration: a fetch<> type argument stops the client
-        // inferring the query's $params type and the call fails to compile, and
-        // the params object needs a declared type for the same reason. The
-        // route previously reached for `as any` on the client to sidestep both.
+        // Matched on EITHER token field: the live one, or the one kept after a
+        // successful confirmation. Without the second, somebody who opens the
+        // link again — or whose scanner opened it first — is told the link is
+        // invalid when their subscription is perfectly active.
         const params: Record<string, string> = { token };
-        const subscriber: { _id: string } | null = await sanity.fetch(
-            `*[_type == "subscriber" && confirmationToken == $token][0]`,
+        const subscriber: { _id: string; status?: string } | null = await sanity.fetch(
+            `*[_type == "subscriber" && (confirmationToken == $token || usedConfirmationToken == $token)][0]{ _id, status }`,
             params
         );
 
         if (!subscriber) {
-            return new Response("Confirmation link expired or link is invalid", { status: 404 });
+            return NextResponse.redirect(outcome(request, "invalid"), 303);
         }
 
-        // Update status to active and clear token
+        if (subscriber.status === "active") {
+            return NextResponse.redirect(outcome(request, "already"), 303);
+        }
+
         await sanity
             .patch(subscriber._id)
-            .set({ status: "active" })
+            .set({
+                status: "active",
+                confirmedAt: new Date().toISOString(),
+                // Kept, not discarded, so opening the link again is idempotent.
+                usedConfirmationToken: token,
+            })
             .unset(["confirmationToken"])
             .commit();
 
-        // Redirect to blog with success message
-        return NextResponse.redirect(new URL("/blog?confirmed=true", request.url));
+        return NextResponse.redirect(outcome(request, "confirmed"), 303);
     } catch (error) {
-        // Same split as /api/subscribe: 503 means our deploy is wrong, 500
-        // means something unexpected broke. Told apart here once so nobody has
-        // to probe production by hand to tell them apart again.
         if (isSanityCredentialFailure(error)) {
             console.error(
                 "SUBSCRIPTION NOT CONFIRMED — Sanity rejected SANITY_WRITE_TOKEN. " +
                     CREDENTIAL_FAILURE_HINT,
                 error
             );
-            return new Response(
-                "We could not confirm your subscription just now. Please try that link again later.",
-                { status: 503 }
-            );
+            return NextResponse.redirect(outcome(request, "unavailable"), 303);
         }
 
         console.error("Confirmation error:", error);
-        return new Response("An error occurred during confirmation", { status: 500 });
+        return NextResponse.redirect(outcome(request, "error"), 303);
     }
 }
