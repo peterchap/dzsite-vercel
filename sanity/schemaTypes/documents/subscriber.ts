@@ -36,6 +36,20 @@ export default defineType({
             type: "string",
             readOnly: true,
         }),
+        defineField({
+            name: "usedConfirmationToken",
+            title: "Used Confirmation Token",
+            type: "string",
+            readOnly: true,
+            description:
+                "The token that confirmed this subscription, kept after use. Mail security scanners follow links in email, so a confirmation link is often opened twice — once by the scanner and once by the subscriber. Matching a used token lets the second visit say 'already confirmed' instead of 'invalid'.",
+        }),
+        defineField({
+            name: "confirmedAt",
+            title: "Confirmed At",
+            type: "datetime",
+            readOnly: true,
+        }),
     ],
     preview: {
         select: {

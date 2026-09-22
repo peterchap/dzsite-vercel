@@ -66,7 +66,7 @@ async function sendConfirmationEmail(email: string, confirmUrl: string): Promise
             text: [
                 "Please confirm your subscription to the Datazag blog.",
                 "",
-                "Open this link to activate it:",
+                "Open this link and press Confirm:",
                 confirmUrl,
                 "",
                 "If you did not ask to subscribe, ignore this email. Nothing will be sent to you.",
@@ -74,7 +74,7 @@ async function sendConfirmationEmail(email: string, confirmUrl: string): Promise
             html: `
         <h2>Confirm your subscription</h2>
         <p>Please confirm your subscription to the Datazag blog.</p>
-        <p><a href="${safeUrl}">Activate my subscription</a></p>
+        <p><a href="${safeUrl}">Confirm my subscription</a></p>
         <p>Or open this link: <br/>${safeUrl}</p>
         <p>If you did not ask to subscribe, ignore this email. Nothing will be sent to you.</p>
       `,
@@ -160,8 +160,11 @@ export async function POST(request: Request) {
             });
         }
 
+        // Points at the PAGE, not the API route. The page asks for a button
+        // press, which a mail security scanner following the link will not
+        // give — see app/(marketing)/blog/confirm/page.tsx.
         const confirmUrl = new URL(
-            `/api/subscribe/confirm?token=${encodeURIComponent(token)}`,
+            `/blog/confirm?token=${encodeURIComponent(token)}`,
             confirmationOrigin(request)
         ).toString();
 
