@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sanityClient } from "@/sanity/client";
+import { getSanityWriteClient } from "@/sanity/writeClient";
 import { escapeHtml, resolveSender } from "@/lib/email";
 
 /**
@@ -101,10 +101,29 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
         }
 
+        // Writes need the write-scoped token. Acquired here, before anything
+        // is attempted, so a deploy missing SANITY_WRITE_TOKEN says so plainly
+        // instead of surfacing as a 403 from the middle of the flow.
+        let sanity;
+        try {
+            sanity = getSanityWriteClient();
+        } catch (err) {
+            console.error("SUBSCRIPTION NOT SAVED — Sanity writes are not configured.", {
+                err,
+                email,
+            });
+            return NextResponse.json(
+                { error: "We could not record your subscription. Please try again in a few minutes." },
+                { status: 500 }
+            );
+        }
+
         // Check if already exists
-        const existing = await (sanityClient as any).fetch(
+        // Declared types rather than a fetch<> generic — see the confirm route.
+        const params: Record<string, string> = { email };
+        const existing: { _id: string; status?: string } | null = await sanity.fetch(
             `*[_type == "subscriber" && email == $email][0]`,
-            { email }
+            params
         );
 
         if (existing) {
@@ -120,12 +139,12 @@ export async function POST(request: Request) {
         // before the send: /api/subscribe/confirm looks the subscriber up by
         // token, so a link mailed ahead of the document would not resolve.
         if (existing) {
-            await sanityClient
+            await sanity
                 .patch(existing._id)
                 .set({ confirmationToken: token, status: "pending" })
                 .commit();
         } else {
-            await sanityClient.create({
+            await sanity.create({
                 _type: "subscriber",
                 email,
                 subscribedAt: new Date().toISOString(),
@@ -157,7 +176,7 @@ export async function POST(request: Request) {
         return NextResponse.json({
             message: "We've sent a confirmation link to your email. Please click it to activate your subscription."
         });
-    } catch (error: any) {
+    } catch (error) {
         console.error("Subscription error:", error);
         return NextResponse.json(
             { error: "Failed to subscribe. Please try again later." },
