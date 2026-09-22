@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { TECHNICAL_BRIEFING_ENQUIRY_TYPE } from "@/lib/contact-routes";
+import { resolveSender } from "@/lib/email";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,6 +13,82 @@ function checked(value: FormDataEntryValue | null) {
   return value === "on" || value === "true" || value === "1";
 }
 
+type InquiryPayload = {
+  source: string;
+  name: string;
+  email: string;
+  company: string;
+  scope: string;
+  enquiryType: string;
+  benchmarkMode: string;
+  message: string;
+  processingAuthorisation: boolean;
+  marketingOptIn: boolean;
+  page: string;
+  submittedAt: string;
+};
+
+/**
+ * Forward the inquiry to the mailbox that owns it.
+ *
+ * Returns false when it did not get out. The caller needs that answer: this
+ * route used to swallow every failure and show the thank you page anyway, so a
+ * missing key, an unverified domain or a rejected sender all looked exactly
+ * like success to the visitor and to us. Every failure path below logs the
+ * whole payload at error level, so an inquiry that missed the inbox can still
+ * be recovered from the server log.
+ */
+async function deliverByEmail(
+  payload: InquiryPayload,
+  { isBenchmark, isBriefing }: { isBenchmark: boolean; isBriefing: boolean },
+): Promise<boolean> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("INQUIRY NOT EMAILED — RESEND_API_KEY is not set.", payload);
+    return false;
+  }
+
+  try {
+    const { Resend } = await import("resend");
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    // NOTE: CONTACT_EMAIL_TO is deliberately no longer consulted. It used to
+    // sit ahead of the default and would quietly send everything to whatever
+    // it pointed at, which is the split this change removes. Set
+    // SALES_EMAIL_TO to override.
+    const to =
+      (isBenchmark && process.env.BENCHMARK_EMAIL_TO) ||
+      process.env.SALES_EMAIL_TO ||
+      "sales@datazag.com";
+    const subject = isBenchmark
+      ? `Benchmark qualification — ${payload.company}`
+      : isBriefing
+        ? `Technical briefing request — ${payload.company}`
+        : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
+    const lines = Object.entries(payload)
+      .filter(([, v]) => v !== "" && v !== false)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join("\n");
+
+    const { error } = await resend.emails.send({
+      from: resolveSender(),
+      to,
+      replyTo: payload.email,
+      subject,
+      text: lines,
+    });
+
+    if (error) {
+      console.error("INQUIRY NOT EMAILED — Resend rejected the message.", { error, payload });
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    // resolveSender() throws on a missing or test EMAIL_FROM, and lands here.
+    console.error("INQUIRY NOT EMAILED — the send failed.", { err, payload });
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
 
@@ -20,7 +97,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(new URL("/contact/thanks", request.url), 303);
   }
 
-  const payload = {
+  const payload: InquiryPayload = {
     source: clean(formData.get("source")) || "contact_form",
     name: clean(formData.get("name")),
     email: clean(formData.get("email")),
@@ -63,44 +140,13 @@ export async function POST(request: NextRequest) {
 
   console.info("Datazag inquiry received", payload);
 
-  // Forward by email (previously this route only logged, so submissions never
-  // reached anyone). Best-effort: an email failure must not lose the redirect —
-  // the payload above is still in the server log.
-  if (process.env.RESEND_API_KEY) {
-    try {
-      const { Resend } = await import("resend");
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      // NOTE: CONTACT_EMAIL_TO is deliberately no longer consulted. It used to
-      // sit ahead of the default and would quietly send everything to whatever
-      // it pointed at, which is the split this change removes. Set
-      // SALES_EMAIL_TO to override.
-      const to =
-        (isBenchmark && process.env.BENCHMARK_EMAIL_TO) ||
-        process.env.SALES_EMAIL_TO ||
-        "sales@datazag.com";
-      const subject = isBenchmark
-        ? `Benchmark qualification — ${payload.company}`
-        : isBriefing
-          ? `Technical briefing request — ${payload.company}`
-          : `Website inquiry (${payload.enquiryType}) — ${payload.company}`;
-      const lines = Object.entries(payload)
-        .filter(([, v]) => v !== "" && v !== false)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join("\n");
-      const { error } = await resend.emails.send({
-        from: process.env.EMAIL_FROM || "onboarding@resend.dev",
-        to,
-        replyTo: payload.email,
-        subject,
-        text: lines,
-      });
-      if (error) console.error("Inquiry email send failed", error);
-    } catch (err) {
-      console.error("Inquiry email send failed", err);
-    }
-  } else {
-    console.warn("RESEND_API_KEY not set — inquiry logged only, not emailed.");
-  }
+  const delivered = await deliverByEmail(payload, { isBenchmark, isBriefing });
 
-  return NextResponse.redirect(new URL("/contact/thanks", request.url), 303);
+  // A delivery that failed must not look like one that worked. The thank you
+  // page reads this flag and tells the visitor to use a direct address, which
+  // is the only thing that still gets their inquiry to a person.
+  const thanksUrl = new URL("/contact/thanks", request.url);
+  if (!delivered) thanksUrl.searchParams.set("delivery", "failed");
+
+  return NextResponse.redirect(thanksUrl, 303);
 }
