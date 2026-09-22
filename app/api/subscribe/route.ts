@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { getSanityWriteClient } from "@/sanity/writeClient";
+import {
+    CREDENTIAL_FAILURE_HINT,
+    getSanityWriteClient,
+    isSanityCredentialFailure,
+} from "@/sanity/writeClient";
 import { escapeHtml, resolveSender } from "@/lib/email";
 
 /**
@@ -113,8 +117,11 @@ export async function POST(request: Request) {
                 email,
             });
             return NextResponse.json(
-                { error: "We could not record your subscription. Please try again in a few minutes." },
-                { status: 500 }
+                {
+                    error: "We could not record your subscription. Please try again in a few minutes.",
+                    code: "storage_unavailable",
+                },
+                { status: 503 }
             );
         }
 
@@ -177,6 +184,25 @@ export async function POST(request: Request) {
             message: "We've sent a confirmation link to your email. Please click it to activate your subscription."
         });
     } catch (error) {
+        // A rejected token is a misconfigured deploy, not a bug, and used to
+        // land here indistinguishable from one. 503 rather than 500 says so
+        // from outside, without putting anything about the credential in a
+        // response the browser can read.
+        if (isSanityCredentialFailure(error)) {
+            console.error(
+                "SUBSCRIPTION NOT SAVED — Sanity rejected SANITY_WRITE_TOKEN. " +
+                    CREDENTIAL_FAILURE_HINT,
+                error
+            );
+            return NextResponse.json(
+                {
+                    error: "We could not record your subscription. Please try again in a few minutes.",
+                    code: "storage_rejected",
+                },
+                { status: 503 }
+            );
+        }
+
         console.error("Subscription error:", error);
         return NextResponse.json(
             { error: "Failed to subscribe. Please try again later." },

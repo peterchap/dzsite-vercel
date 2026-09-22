@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { getSanityWriteClient } from "@/sanity/writeClient";
+import {
+    CREDENTIAL_FAILURE_HINT,
+    getSanityWriteClient,
+    isSanityCredentialFailure,
+} from "@/sanity/writeClient";
 
 export async function GET(request: Request) {
     try {
@@ -24,7 +28,7 @@ export async function GET(request: Request) {
             });
             return new Response(
                 "We could not confirm your subscription just now. Please try that link again later.",
-                { status: 500 }
+                { status: 503 }
             );
         }
 
@@ -53,6 +57,21 @@ export async function GET(request: Request) {
         // Redirect to blog with success message
         return NextResponse.redirect(new URL("/blog?confirmed=true", request.url));
     } catch (error) {
+        // Same split as /api/subscribe: 503 means our deploy is wrong, 500
+        // means something unexpected broke. Told apart here once so nobody has
+        // to probe production by hand to tell them apart again.
+        if (isSanityCredentialFailure(error)) {
+            console.error(
+                "SUBSCRIPTION NOT CONFIRMED — Sanity rejected SANITY_WRITE_TOKEN. " +
+                    CREDENTIAL_FAILURE_HINT,
+                error
+            );
+            return new Response(
+                "We could not confirm your subscription just now. Please try that link again later.",
+                { status: 503 }
+            );
+        }
+
         console.error("Confirmation error:", error);
         return new Response("An error occurred during confirmation", { status: 500 });
     }
