@@ -53,6 +53,11 @@ async function sendConfirmationEmail(email: string, confirmUrl: string): Promise
         const { error } = await resend.emails.send({
             from: resolveSender(),
             to: email,
+            // EMAIL_FROM is a noreply@ on the notifications subdomain, which
+            // nobody reads. A subscriber who answers this mail — "I did not
+            // sign up", "take me off" — is owed a person, so replies go to a
+            // published route (lib/contact-routes.ts), not into a black hole.
+            replyTo: process.env.SUPPORT_EMAIL_TO || "support@datazag.com",
             subject: "Confirm your Datazag subscription",
             text: [
                 "Please confirm your subscription to the Datazag blog.",
