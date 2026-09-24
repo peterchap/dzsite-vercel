@@ -121,7 +121,7 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
     },
   ],
   schemaNote:
-    "The ip_start_int / ip_end_int range-bound naming matches the MaxMind and IPinfo convention, so this drops into join code you already have.",
+    "The ip_start_int / ip_end_int range-bound naming matches the MaxMind and IPinfo convention, so this drops into join code you already have. On Snowflake the share holds this one table in a schema called free, so qualify it as your_database.free.ip_prefix_asn or set your context first. The three integer columns arrive there as NUMBER(19,0) and the text columns as VARCHAR.",
   joinGuideTitle: "Join guide",
   joinGuideIntro:
     "Every row covers a contiguous range of addresses, bounded by two integers. Convert your IP to an integer once, then range-join. Announced prefixes can nest — a smaller prefix inside a larger one — so one address can match more than one row. Use the second query when you want exactly one row per address.",
@@ -226,7 +226,7 @@ FROM your_ips;`,
  * Keyed by slug. A slug in here is a URL we have promised to keep alive.
  */
 
-// 2026-09-21: centralake PRODUCTS["B"] (publish.domain_intel, 21 columns), read off the
+// 2026-09-24: centralake PRODUCTS["B"] (publish.domain_intel, 23 columns), read off the
 // built table rather than a brief. B is not on a marketplace yet — the rule at the top of
 // this file says only submitted datasets belong here, and this is the one case that earns
 // an exception: the free IP-to-ASN listing was REJECTED once for
@@ -246,7 +246,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
   overview: [
     "One row per registrable domain, carrying the email-authentication and transport-security records that domain publishes in DNS, and what each record says. Not whether a domain looks secure — what it has actually published, read from the live record.",
     "The distinction that makes it useful is between publishing a control and enforcing one. A domain can publish DMARC and ask receivers to do nothing about failures. This dataset separates the two: dmarc_present says a record exists, dmarc_policy and dmarc_enforced say whether it does anything. The same split runs through SPF, MTA-STS and BIMI.",
-    "The free tier is the whole estate, not a sample. Every domain we have observed is in it, with 16 of the 21 columns. The paid tier adds five columns of depth on the same rows — it does not add domains.",
+    "The free tier is the whole estate, not a sample. Every domain we have observed is in it, with 18 of the 23 columns. The paid tier adds five columns of depth on the same rows — it does not add domains.",
     "Observed by Datazag from public DNS. No third-party feed is redistributed through it, and every release passes an automated licensing gate that scans each published value before it leaves our boundary.",
     "Datazag observes {{DOMAINS}} live domains daily; this dataset is the posture layer of that corpus.",
   ],
@@ -255,7 +255,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
     { label: "Refresh", value: "Daily" },
     {
       label: "Free tier",
-      value: "16 of 21 columns",
+      value: "18 of 23 columns",
       note: "Every domain, not a sample — paid adds columns, not rows",
     },
     { label: "License", value: "Clean for redistribution" },
@@ -356,6 +356,18 @@ const DOMAIN_POSTURE: DatasetDoc = {
         "The hostname of the domain's primary mail exchanger, where it publishes one. A hostname only — this dataset carries no ASN, prefix or provider column.",
     },
     {
+      name: "mail_provider",
+      type: "VARCHAR",
+      description:
+        "The company that operates the domain's inbound mail, where we can identify it. This is the operator of the mail service rather than the domain's owner: a domain running its own mail on rented infrastructure is attributed to the service running it. Empty where the domain publishes no mail exchanger, or publishes one we could not attribute — mail_provider_source says which.",
+    },
+    {
+      name: "mail_provider_source",
+      type: "VARCHAR",
+      description:
+        "How the mail provider was determined: catalog where it comes from our curated matching rules, reverse_dns where it was inferred from the mail host's reverse DNS record. A reverse DNS inference names the infrastructure the mail runs on, which is usually but not always the same company as the mail operator. Where no provider is given this says why: unattributed if the domain publishes a mail exchanger we could not name, no_mx_published if it publishes none at all.",
+    },
+    {
       name: "posture_first_seen_at",
       type: "TIMESTAMP",
       description:
@@ -387,10 +399,10 @@ const DOMAIN_POSTURE: DatasetDoc = {
     },
   ],
   schemaNote:
-    "16 of these 21 columns are in the free tier, on every domain. The five marked Paid tier — spf_include_count, dmarc_rua, dmarc_pct, bimi_has_vmc and data_completeness — are the correctness layer: how close an SPF record is to its lookup limit, whether the owner is collecting reports, how much of the policy is actually applied, whether the BIMI mark is verified, and what we could and could not read per signal. The paid tier adds no domains.",
+    "18 of these 23 columns are in the free tier, on every domain. The five marked Paid tier — spf_include_count, dmarc_rua, dmarc_pct, bimi_has_vmc and data_completeness — are the correctness layer: how close an SPF record is to its lookup limit, whether the owner is collecting reports, how much of the policy is actually applied, whether the BIMI mark is verified, and what we could and could not read per signal. The paid tier adds no domains.",
   joinGuideTitle: "Join guide",
   joinGuideIntro:
-    "The grain is the registrable domain and it is unique, so this is a plain equi-join against your own domain list. Normalise your side to the registrable domain first — a row for mail.example.com will not match, because the table keys on example.com.",
+    "The grain is the registrable domain and it is unique, so this is a plain equi-join against your own domain list. Normalize your side to the registrable domain first — a row for mail.example.com will not match, because the table keys on example.com.",
   codeExamples: [
     {
       title: "Which of your domains publish DMARC but do not enforce it",
@@ -460,7 +472,7 @@ WHERE  NOT is_parked;`,
     },
     {
       title: "What this dataset does not contain",
-      body: "There is no ASN, prefix, IP address or hosting-provider column here, and no remediation guidance. primary_mx_host is a hostname and nothing more. If you need the network layer behind a domain, that is IP to ASN Intelligence, and joining the two is your own step.",
+      body: "There is no ASN, prefix or IP address column here, no hosting or DNS provider, and no remediation guidance. mail_provider names the company that runs a domain's inbound mail and nothing wider than that. If you need the network layer behind a domain, that is IP to ASN Intelligence, and joining the two is your own step.",
       tone: "neutral",
     },
   ],
@@ -473,6 +485,11 @@ WHERE  NOT is_parked;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-09-23",
+      summary:
+        "mail_provider and mail_provider_source added, both in the free tier. B already said which host takes a domain's mail; it now says who operates that host, and on what evidence — a curated matching rule or the mail host's reverse DNS.",
+    },
     {
       date: "2026-09-21",
       summary:
