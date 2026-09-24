@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { getDatasetSlugs } from "@/lib/datasets/load";
-import { isLegacyRedirectSource } from "@/lib/legacy-redirects";
+import { isRetiredPath } from "@/lib/legacy-redirects";
 import { sanityFetch } from "@/sanity/fetch";
 
 // www.datazag.com is the canonical apex — keep the www (see app/layout.tsx).
@@ -136,9 +136,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const page of cmsPages ?? []) {
     if (!page?.slug) continue;
     const slug = page.slug.replace(/^\/+/, "");
-    // A retired route 301s and a noindex route is excluded by its own metadata —
+    // A retired route 301s or 410s, and a noindex route is excluded by its own metadata —
     // neither belongs in the sitemap, whatever the CMS still holds.
-    if (isLegacyRedirectSource(slug) || NOINDEX_SLUGS.has(slug)) continue;
+    if (isRetiredPath(slug) || NOINDEX_SLUGS.has(slug)) continue;
     entries.push({
       url: abs(`/${slug}`),
       lastModified: toDate(page.updated),
