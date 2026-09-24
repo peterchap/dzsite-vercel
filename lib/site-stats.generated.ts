@@ -5,22 +5,22 @@
  * A null means the feed did not provide that field.
  */
 export const feedStats = {
-  domainsMonitored: 362784236 as number | null,
-  ipsHostingDomains: 13585332 as number | null,
-  ipv4Indexed: 3134402278 as number | null,
-  networksProfiled: 79072 as number | null,
+  domainsMonitored: 363565914 as number | null,
+  ipsHostingDomains: 13731760 as number | null,
+  ipv4Indexed: 3136999401 as number | null,
+  networksProfiled: 79196 as number | null,
   /** Per-figure as-of from the feed's `as_of` block — when each figure was
    *  measured, NOT when the file was built. A figure with no as-of does not
    *  get to borrow another figure's freshness. */
   asOf: {
-    domainsMonitored: "2026-08-31T15:25:31+00:00" as string | null,
-    ipsHostingDomains: "2026-08-31T15:25:31+00:00" as string | null,
-    ipv4Indexed: "2026-08-31T15:25:31+00:00" as string | null,
-    networksProfiled: "2026-08-31T15:25:31+00:00" as string | null,
+    domainsMonitored: "2026-09-24T00:27:17+00:00" as string | null,
+    ipsHostingDomains: "2026-09-24T00:27:17+00:00" as string | null,
+    ipv4Indexed: "2026-09-24T00:27:17+00:00" as string | null,
+    networksProfiled: "2026-09-24T00:27:17+00:00" as string | null,
   },
   /** `updated` timestamp reported by the feed itself — the file's build time. */
-  feedUpdated: "2026-08-31T15:25:34+00:00" as string | null,
+  feedUpdated: "2026-09-24T00:27:19+00:00" as string | null,
   /** When the refresh script last wrote this file. */
-  fetchedAt: "2026-08-31T15:27:25.797Z" as string | null,
+  fetchedAt: "2026-09-24T11:08:15.937Z" as string | null,
   source: "https://pub-f2251a15327b429780b7ee354ff19e1b.r2.dev/coverage.json" as string | null,
 };
