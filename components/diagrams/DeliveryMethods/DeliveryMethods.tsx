@@ -1,27 +1,47 @@
+import Link from "next/link";
+
+/**
+ * The four ways the graph reaches a customer.
+ *
+ * The API card used to read "lookup, score and enrich domains, infrastructure
+ * and platform indicators inside your products" — general enrichment, offered
+ * to everyone. The API is now sender diligence for email service providers, so
+ * the card says that, and the buyer who wanted general enrichment is sent to
+ * the datasets instead, which is the thing they can actually buy today.
+ *
+ * `href` is what does the routing: each card links to the page that sells it,
+ * rather than describing a product and leaving the reader to search for it.
+ */
 const deliveryMethods = [
   {
     title: "Reports",
     description: "Executive and technical views for domain posture, platform exposure and remediation.",
     items: ["Domain Health", "Platform Map", "DNS Review", "Recommendations"],
     tone: "cyan",
+    href: "/reports",
   },
   {
     title: "Alerts",
     description: "Real-time intelligence for SOC workflows, partner monitoring and platform abuse teams.",
     items: ["Webhooks", "SIEM", "Splunk", "Sentinel"],
     tone: "amber",
+    href: "/alerts",
   },
   {
     title: "API",
-    description: "Lookup, score and enrich domains, infrastructure and platform indicators inside your products.",
-    items: ["REST", "Bulk Lookup", "Risk Scoring", "Evidence"],
+    description:
+      "Sender diligence for email service providers: assess the domains a sender uses, and get the evidence behind the answer rather than an approve-or-reject verdict.",
+    items: ["REST", "Evidence", "Reason codes", "Recommendation"],
     tone: "violet",
+    href: "/esp-partners",
   },
   {
-    title: "Cloud Datasets",
-    description: "Continuously refreshed intelligence delivered into your analytics and marketplace stack.",
-    items: ["Snowflake", "Databricks", "Iceberg", "Delta"],
+    title: "Datasets",
+    description:
+      "Infrastructure intelligence in your own warehouse, to join against your own tables. This is the route for enrichment at scale.",
+    items: ["Snowflake", "Databricks", "Iceberg", "Direct from R2"],
     tone: "emerald",
+    href: "/datasets",
   },
 ];
 
@@ -50,7 +70,7 @@ export function DeliveryMethods() {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">One platform · multiple delivery methods</p>
           <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-4xl">The same intelligence graph powers every output.</h3>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-300 md:text-base">
-            Reports, alerts, APIs and datasets are not separate products. They are different ways to consume Datazag's continuously updated infrastructure intelligence.
+            Reports, alerts, APIs and datasets are not separate products. They are different ways to consume Datazag&rsquo;s continuously updated infrastructure intelligence.
           </p>
         </div>
 
@@ -70,7 +90,11 @@ export function DeliveryMethods() {
 
         <div className="mt-6 grid gap-4 md:mt-0 md:grid-cols-4">
           {deliveryMethods.map((method) => (
-            <article key={method.title} className={`grid min-h-[17rem] grid-rows-[auto_1fr_auto] rounded-2xl border p-5 ${methodClasses(method.tone)}`}>
+            <Link
+              key={method.title}
+              href={method.href}
+              className={`grid min-h-[17rem] grid-rows-[auto_1fr_auto] rounded-2xl border p-5 transition hover:brightness-125 ${methodClasses(method.tone)}`}
+            >
               <div>
                 <div className="mb-4 flex items-center gap-3">
                   <span className={`h-2.5 w-2.5 rounded-full ${dotClasses(method.tone)}`} />
@@ -86,7 +110,7 @@ export function DeliveryMethods() {
                   </div>
                 ))}
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

@@ -20,10 +20,12 @@
  *     and Wales, Scotland and Northern Ireland are separate legal systems, and
  *     "UK" reads as unsettled drafting.
  *
+ * SUPPLIED 24 Sep 2026: company number 13217786, incorporated 23 February
+ * 2021, registered office 12 South Drive, Wokingham, England, RG40 2DH. Terms
+ * §15, Privacy, the DPA and the trust centre all render them from here.
+ *
  * WHAT IS STILL NEEDED FROM PETER — fill these in and every legal page picks
  * them up. No other file needs touching:
- *   - companyNumber        Companies House registered number
- *   - registeredOffice     registered office address
  *   - icoRegistration      ICO registration number (Privacy)
  *   - dataHostingRegions   where customer data is hosted (Privacy)
  *   - transferBasis        international transfer mechanism (Privacy)
@@ -47,6 +49,8 @@ export type LegalEntity = {
   courts: string;
   companyNumber: string | null;
   registeredOffice: string | null;
+  /** ISO date of incorporation. Vendor assessments ask how long we have existed. */
+  incorporatedOn: string | null;
   icoRegistration: string | null;
   dataHostingRegions: string | null;
   transferBasis: string | null;
@@ -61,8 +65,9 @@ export const LEGAL_ENTITY: LegalEntity = {
   jurisdiction: "England and Wales",
   governingLaw: "the laws of England and Wales",
   courts: "the courts of England and Wales",
-  companyNumber: null,
-  registeredOffice: null,
+  companyNumber: "13217786",
+  registeredOffice: "12 South Drive, Wokingham, England, RG40 2DH",
+  incorporatedOn: "2021-02-23",
   icoRegistration: null,
   dataHostingRegions: null,
   transferBasis: null,
@@ -93,6 +98,10 @@ export function entityRows(): Array<{ label: string; value: string }> {
     { label: "Registered in", value: LEGAL_ENTITY.jurisdiction },
     { label: "Company number", value: LEGAL_ENTITY.companyNumber },
     { label: "Registered office", value: LEGAL_ENTITY.registeredOffice },
+    {
+      label: "Incorporated",
+      value: LEGAL_ENTITY.incorporatedOn ? formatLegalDate(LEGAL_ENTITY.incorporatedOn) : null,
+    },
   ];
   return rows.filter((r): r is { label: string; value: string } => Boolean(r.value?.trim()));
 }
