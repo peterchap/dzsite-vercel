@@ -13,7 +13,13 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { SLUG, content } from "./copy";
 import { EntityBlock } from "@/components/legal/EntityBlock";
-import { CERTIFICATIONS, documentedTrustAreas } from "@/lib/trust-posture";
+import {
+  CERTIFICATIONS,
+  DELIVERY_POSTURES,
+  PERSONAL_DATA_IN_CORPUS,
+  VENDOR_ASSESSMENTS,
+  documentedTrustAreas,
+} from "@/lib/trust-posture";
 
 export const metadata: Metadata = {
   title: "Trust & Governance — Datazag",
@@ -259,6 +265,35 @@ export default async function TrustPage() {
               </div>
             </div>
 
+            {/* Spec §7: lead with the architecture. Under the share model the
+                customer sends nothing here, which settles more of a vendor
+                assessment than a certificate does — and each mode carries its
+                own consequence so the share claim cannot be read as covering
+                the API. */}
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                Where your data goes, by delivery mode
+              </h3>
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
+                {DELIVERY_POSTURES.map((posture) => (
+                  <article key={posture.key} className="rounded-2xl border border-white/10 bg-[#050b22] p-5">
+                    <h4 className="text-base font-semibold text-white">{posture.mode}</h4>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{posture.dataFlow}</p>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">{posture.consequence}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            {PERSONAL_DATA_IN_CORPUS ? (
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                  Personal data in the corpus
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-slate-300">{PERSONAL_DATA_IN_CORPUS}</p>
+              </div>
+            ) : null}
+
             {documentedTrustAreas().length > 0 ? (
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
@@ -282,6 +317,11 @@ export default async function TrustPage() {
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
                 Certifications
               </h3>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                Read this against the delivery model above: on the share path your data never
+                reaches us, so the questions an assurance report usually answers about a
+                processor do not arise for it.
+              </p>
               {CERTIFICATIONS.heldToday.length > 0 ? (
                 <ul className="mt-4 grid gap-2">
                   {CERTIFICATIONS.heldToday.map((cert) => (
@@ -295,6 +335,9 @@ export default async function TrustPage() {
                   <p className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.06] p-5 text-sm leading-6 text-slate-200">
                     {CERTIFICATIONS.absenceStatement}
                   </p>
+                  {CERTIFICATIONS.enterpriseCommitment ? (
+                    <p className="mt-4 text-sm leading-6 text-slate-300">{CERTIFICATIONS.enterpriseCommitment}</p>
+                  ) : null}
                   <p className="mt-6 text-sm font-semibold text-white">What you can inspect instead:</p>
                   <ul className="mt-3 grid gap-2">
                     {CERTIFICATIONS.insteadPoints.map((point) => (
@@ -305,6 +348,22 @@ export default async function TrustPage() {
                   </ul>
                 </>
               )}
+            </div>
+
+            {/* Spec §7: procurement sends the spreadsheet regardless. Saying who
+                handles it is what makes a small company read as organized
+                rather than absent. */}
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
+                Answering vendor assessments
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{VENDOR_ASSESSMENTS.note}</p>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                <a href={`mailto:${VENDOR_ASSESSMENTS.contactEmail}`} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                  {VENDOR_ASSESSMENTS.contactEmail}
+                </a>
+                {VENDOR_ASSESSMENTS.turnaround ? ` — typically ${VENDOR_ASSESSMENTS.turnaround}.` : ""}
+              </p>
             </div>
           </div>
         </div>
