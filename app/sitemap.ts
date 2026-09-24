@@ -29,6 +29,7 @@ type StaticEntry = {
 const STATIC_ROUTES: StaticEntry[] = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/observatory", changeFrequency: "monthly", priority: 0.8 },
   { path: "/pricing", changeFrequency: "monthly", priority: 0.9 },
   { path: "/domain-intelligence", changeFrequency: "monthly", priority: 0.8 },
   { path: "/infrastructure-intelligence", changeFrequency: "monthly", priority: 0.8 },

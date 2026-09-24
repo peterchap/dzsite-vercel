@@ -1,0 +1,26 @@
+# The guards, on every push and pull request.
+#
+# They were only ever run by hand: `npm run guard` is not part of `build`, so
+# a retyped corpus figure or a British spelling reached production without
+# anything objecting. This runs the same command on every push so it objects
+# on the pull request instead. The dataset-figure guard skips its Sanity pass
+# when no credentials are present, which is the case here; everything else
+# is offline.
+name: Guards
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm run guard

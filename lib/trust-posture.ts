@@ -69,7 +69,7 @@ export const CERTIFICATIONS = {
   heldToday: [] as string[],
   /** The honest statement, shown when nothing is held. */
   absenceStatement:
-    "Datazag does not hold SOC 2, ISO 27001 or an equivalent third-party assurance report today, and no assurance programme is currently in progress. We would rather say so than imply otherwise.",
+    "Datazag does not hold SOC 2, ISO 27001 or an equivalent third-party assurance report today, and no assurance program is currently in progress. We would rather say so than imply otherwise.",
   /** What a buyer can inspect instead — all of it published on this page. */
   insteadPoints: [
     "Every finding carries its reason codes and the observation it was read from, so outputs can be checked rather than trusted.",

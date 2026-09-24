@@ -39,7 +39,7 @@ export const content: PageContent = {
   alreadyEngineered: {
     eyebrow: "Already engineered",
     title: "Less raw collection. More usable intelligence.",
-    body: "Datazag packages expansion, labelling, relationship analysis, history and evidence before the data reaches your warehouse or application.",
+    body: "Datazag packages expansion, labeling, relationship analysis, history and evidence before the data reaches your warehouse or application.",
     items: [
       { key: "dns-records", title: "Raw DNS records", text: "Expanded DNS, mail posture, provider labels and remediation context" },
       { key: "ip-address", title: "Raw IP address", text: "ASN, prefix, country, cloud, hosting and infrastructure risk" },
