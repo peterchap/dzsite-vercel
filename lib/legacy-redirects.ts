@@ -29,12 +29,6 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
       "Rebuilt as an empty stub with a localhost canonical; /how-it-works carries the real explanation.",
   },
   {
-    source: "/kyc",
-    destination: "/contact",
-    reason:
-      "Old-site KYC framing. WU-C7 defers /enterprise, so this routes to a human rather than into a skeleton page.",
-  },
-  {
     source: "/cloud-marketplaces",
     destination: "/datasets",
     reason: "Marketplace availability is documented per dataset on /datasets.",
@@ -46,13 +40,49 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   },
 ];
 
-/** Retired paths, for callers that only need to test membership. */
-export const LEGACY_REDIRECT_SOURCES: ReadonlySet<string> = new Set(
-  LEGACY_REDIRECTS.map((r) => r.source),
-);
+/**
+ * GONE, not moved (spec §8, 23 Sep 2026).
+ *
+ * A 301 says "this moved, and here is where". For a claim we no longer make
+ * that is the wrong sentence: /kyc redirecting to a live page reads as "our
+ * KYC offering is over here", which is the implication being retired. 410 says
+ * the page is gone and is not coming back — what we actually mean, and the
+ * status on which search engines drop an indexed URL fastest.
+ *
+ * The KYC framing has to go twice over. The ESP brief forbids KYC as a claim,
+ * and Datazag sells TO the vendors who perform KYC, so implying we do it
+ * competes with the customers being pitched.
+ *
+ * Each path here needs a route handler returning 410 (app/kyc/route.ts).
+ * Listing it here is what keeps it out of the sitemap.
+ */
+export type GoneRoute = {
+  /** The retired path, exactly as it was indexed. */
+  path: string;
+  /** Why it is gone rather than redirected. */
+  reason: string;
+  /** The one line shown to a human who lands on it. */
+  pointer: string;
+};
 
-/** Normalises "use-cases", "/use-cases" and "//use-cases" to "/use-cases". */
-export function isLegacyRedirectSource(pathOrSlug: string): boolean {
+export const GONE_ROUTES: GoneRoute[] = [
+  {
+    path: "/kyc",
+    reason:
+      "Datazag does not offer KYC, and sells to the vendors who do. A redirect would carry the claim to whatever page it landed on.",
+    pointer:
+      "Datazag does not offer KYC. If you assess the domains your senders use, the ESP page is the nearest thing we do offer.",
+  },
+];
+
+/** Retired paths of either kind, for callers that only need membership. */
+export const RETIRED_PATHS: ReadonlySet<string> = new Set([
+  ...LEGACY_REDIRECTS.map((r) => r.source),
+  ...GONE_ROUTES.map((r) => r.path),
+]);
+
+/** Normalizes "use-cases", "/use-cases" and "//use-cases" to "/use-cases". */
+export function isRetiredPath(pathOrSlug: string): boolean {
   const path = `/${pathOrSlug.replace(/^\/+/, "")}`;
-  return LEGACY_REDIRECT_SOURCES.has(path);
+  return RETIRED_PATHS.has(path);
 }
