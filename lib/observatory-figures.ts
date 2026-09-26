@@ -22,7 +22,19 @@ import { parquetReadObjects } from "hyparquet";
 import { compressors } from "hyparquet-compressors";
 
 export const OBSERVATORY_URL = "https://observatory.datazag.com";
-const STATISTICS_URL = `${OBSERVATORY_URL}/observatory_statistics.parquet`;
+
+/**
+ * Where the Observatory publishes. Since 2026-09-13 a publish uploads to a
+ * dated, immutable prefix on the CDN and then moves `latest.json` to point
+ * at it. The root copy on observatory.datazag.com is no longer rewritten by
+ * a publish: it froze at 2026-09-09, and reading it is how the homepage
+ * came to say "Data as of 2026-09-09" for weeks while the Observatory moved
+ * on. Follow the pointer; the root copy is only the fallback.
+ */
+const ARTIFACT_BASE =
+  process.env.OBSERVATORY_ARTIFACT_BASE ?? "https://cdn.getdatazag.com/observatory";
+const STATISTICS_FILE = "observatory_statistics.parquet";
+const FALLBACK_STATISTICS_URL = `${OBSERVATORY_URL}/${STATISTICS_FILE}`;
 
 export interface ObservatoryFigure {
   id: string;
@@ -78,14 +90,43 @@ function formatValue(value: number, unit: string | null): string {
   return formatCount(value);
 }
 
+/** Same shape the Observatory's own reader accepts: a YYYY-MM-DD version. */
+function isVersion(v: unknown): v is string {
+  return typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
+}
+
+/**
+ * The URL of the currently published statistics file. The pointer is
+ * re-read hourly, so a publish reaches the site within the hour; the
+ * versioned file it names is immutable. Any failure to read the pointer
+ * falls back to the root copy — stale is better than blank, and the panel
+ * shows its as-of date either way.
+ */
+async function resolveStatisticsUrl(): Promise<string> {
+  try {
+    const res = await fetch(`${ARTIFACT_BASE}/latest.json`, { next: { revalidate: 3600 } });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    const pointer = (await res.json()) as { version?: unknown; artifacts?: unknown };
+    if (!isVersion(pointer.version)) throw new Error("latest.json names no version");
+    if (Array.isArray(pointer.artifacts) && !pointer.artifacts.includes(STATISTICS_FILE)) {
+      throw new Error(`latest.json version ${pointer.version} does not list ${STATISTICS_FILE}`);
+    }
+    return `${ARTIFACT_BASE}/${pointer.version}/${STATISTICS_FILE}`;
+  } catch (err) {
+    console.warn("observatory-figures: could not resolve the published version, using the root copy:", err);
+    return FALLBACK_STATISTICS_URL;
+  }
+}
+
 /**
  * The picked figures, or null when the Observatory could not be read.
- * Cached by Next's fetch for a day, matching the Observatory's own
- * revalidation, so a deploy does not wait on it twice.
+ * The versioned file never changes, so the day-long cache only matters
+ * for the root-copy fallback.
  */
 export async function loadObservatoryFigures(): Promise<ObservatoryFigures | null> {
   try {
-    const res = await fetch(STATISTICS_URL, { next: { revalidate: 86400 } });
+    const url = await resolveStatisticsUrl();
+    const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const file = await res.arrayBuffer();
     const rows = (await parquetReadObjects({ file, compressors })) as Row[];
