@@ -201,6 +201,6 @@ export function StoryReportCta({ data: _data }: { data: ReportCtaProps }) {
   return <DomainHealthReportCta />;
 }
 
-export function StoryObservatory() {
-  return <ObservatoryPreview />;
+export function StoryObservatory({ exclude }: { exclude?: string[] } = {}) {
+  return <ObservatoryPreview exclude={exclude} />;
 }

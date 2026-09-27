@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { loadObservatoryFigures, OBSERVATORY_URL, type ObservatoryFigures } from "@/lib/observatory-figures";
 
 /**
@@ -17,8 +19,8 @@ import { loadObservatoryFigures, OBSERVATORY_URL, type ObservatoryFigures } from
  * daily (lib/observatory-figures). If they cannot be read, the panel keeps
  * its links and shows no numbers — never an invented one.
  */
-export async function ObservatoryPreview() {
-  const figures = await loadObservatoryFigures();
+export async function ObservatoryPreview({ exclude = [] }: { exclude?: string[] } = {}) {
+  const figures = await loadObservatoryFigures({ exclude });
 
   return (
     <section className="relative border-t border-white/10 py-24 md:py-32">
@@ -40,15 +42,15 @@ export async function ObservatoryPreview() {
               <a href={OBSERVATORY_URL} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
                 Open the Observatory
               </a>
-              <a href="/observatory" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
+              <Link href="/observatory" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
                 What it measures, and how to cite it
-              </a>
+              </Link>
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-400">
               The same graph mapped 150 domains from a single signal:{" "}
-              <a href="/intelligence/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+              <Link href="/intelligence/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
                 read the investigation →
-              </a>
+              </Link>
             </p>
           </div>
 

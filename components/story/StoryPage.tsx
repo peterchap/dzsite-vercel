@@ -2,18 +2,39 @@ import type { StoryContent } from "./types";
 import { mergeStoryContent } from "./content";
 import { CaseStudyTeaser } from "./CaseStudyTeaser";
 import { CoverageStrip } from "./CoverageStrip";
+import { IntelligenceSection } from "./IntelligenceSection";
 import { SegmentRouter } from "./SegmentRouter";
 import {
   StoryHero,
   StoryObservatory,
   StoryProducts,
-  StoryRelationshipIntelligence,
   StoryReportCta,
 } from "./sections";
 
 export type { StoryContent } from "./types";
 
 /*
+ * 2026-09-25 — INTELLIGENCE REPOSITIONING. The page now argues "we provide
+ * intelligence", not "we detect threats first":
+ *
+ *   Hero            see more of the internet, know what it means
+ *   CoverageStrip   SEE — coverage figures (R2 feed)
+ *   Intelligence    MEANS — interpretation figures (Observatory store)
+ *   CaseStudyTeaser proof by example
+ *   SegmentRouter   Email / Insurers / MSSPs / Enterprise
+ *   then delivery, the Observatory, and the report CTA.
+ *
+ * HELD off this page until measured: threat-detection / impersonation-alert
+ * claims (FP rate not re-measured), calibrated risk scores (SCORE-1), and any
+ * named finding still under coordinated disclosure.
+ *
+ * StoryRelationshipIntelligence (the signal → campaign pivot diagram) is
+ * UNMOUNTED to hold the block count at eight; it is threat-campaign framed,
+ * and the case study below links to the same pivot run for real. The
+ * component stays in the repo.
+ *
+ * The WU28-A journey notes below are kept as history.
+ *
  * WU28-A: the homepage makes ONE argument — the four-step enterprise journey —
  * and every segment/product is an exit from that story, not a competing story.
  *
@@ -60,7 +81,7 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
 
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
-      {/* Step 1 — we see attacker infrastructure forming. */}
+      {/* See more of the internet. Know what it means. */}
       <StoryHero
         data={{
           eyebrow: c.heroEyebrow,
@@ -73,27 +94,27 @@ export default function StoryPage({ content }: { content?: Partial<StoryContent>
           chips: c.heroChips,
         }}
       />
-      <CaseStudyTeaser />
 
-      {/* Coverage — the scale that makes the claim above possible, and a buyer's
-          qualifying question. NOT the hourly "internet right now" panel, which
-          stays on the Observatory; see the note in CoverageStrip.tsx for why the
-          two are different things. */}
+      {/* See — coverage, from the R2 feed, each figure with its definition. */}
       <CoverageStrip />
 
-      {/* Step 2 — how step 1 works. This IS the proposition, not a detail. */}
-      <StoryRelationshipIntelligence />
+      {/* Know what it means — interpretation, from the Observatory store. */}
+      <IntelligenceSection />
 
-      {/* Step 3 — explainable signals flow into controls you already operate. */}
+      {/* Proof by example — the published investigation. */}
+      <CaseStudyTeaser />
+
+      {/* Segment signposts — the only per-segment presence on the homepage. */}
+      <SegmentRouter />
+
+      {/* How it reaches you. */}
       <StoryProducts data={{ ...c.delivery, products: c.deliveryCards }} />
 
-      {/* Step 4 — <BenchmarkSection /> mounts HERE once its gates clear. */}
+      {/* <BenchmarkSection /> mounts HERE once its gates clear. */}
 
-      {/* The Observatory — and the live metrics that moved there. */}
-      <StoryObservatory />
-
-      {/* Segment router — the only per-segment presence on the homepage. */}
-      <SegmentRouter />
+      {/* The Observatory. asn_half_of_domains is already on the page in
+          IntelligenceSection, so the panel does not repeat it. */}
+      <StoryObservatory exclude={["asn_half_of_domains"]} />
 
       {/* Self-serve / mid-market CTA. */}
       <StoryReportCta

@@ -12,22 +12,30 @@ export const defaultStoryContent: StoryContent = {
   //     and they intersect ~50 times. n=7 at the RED band.
   // Both are in checkClaimGuard's BANNED list now, so they cannot come back by copy edit.
   // They return only via /trust/methodology, from gold.claim_metrics, with n and a date.
+  //
+  // 2026-09-25: REPOSITIONED from threat detection to intelligence. The previous hero
+  // ("Your threat feeds see attacks. We see them being built.") led with a detection
+  // claim the evidence does not yet carry — impersonation alerts have not been
+  // re-measured for false positives since the guards went in. The hero now claims only
+  // what the page below proves: coverage (CoverageStrip) and interpretation
+  // (IntelligenceSection), both read from published stores. Detection and calibrated
+  // scoring claims stay OFF this page until they are measured. No "first"/"before
+  // anyone" comparison either: that is a lead-time claim, and lead time is gated on
+  // gold.claim_metrics like the retired chips above.
   heroEyebrow: "Internet Infrastructure Intelligence",
-  heroTitle: "Your threat feeds see attacks. We see them being built.",
+  heroTitle: "See more of the internet. Know what it means.",
   heroIntro:
-    "Datazag maps malicious infrastructure at certificate issuance — surfacing whole campaigns before the first domain attacks — and delivers scored, annotated intelligence straight into your SIEM, warehouse and controls.",
+    `Datazag measures ${DOMAINS_DISPLAY} live domains, the global routing table and the mail systems behind them, every day. Then we read it: what each domain is, what it depends on, and what changed. You get meaning, not just records.`,
   heroStatement:
     "",
   primaryCta: { label: "Get your free report", href: "/#free-report" },
-  secondaryCta: { label: "Read the investigation", href: "/intelligence/one-signal-150-domains" },
-  heroPills: ["Detect earlier", "Block with evidence", "Act before launch"],
+  secondaryCta: { label: "See what the data shows", href: "/#intelligence" },
+  heroPills: ["See more", "Know what it means", "Act on it"],
+  // Mechanism only — each is true by construction and checkable on the Observatory.
   heroChips: [
-    { label: "150 domains from one signal — 0 in public domain feeds", href: "/intelligence/one-signal-150-domains" },
-    // The two lead-time chips that sat here are pulled — see the note above. What
-    // replaces them is mechanism, not a rate: both are true by construction and neither
-    // needs a trailing window to defend.
-    { label: "Detection at certificate issuance, before DNS resolves" },
-    { label: "Every alert ships with its evidence" },
+    { label: "Every figure dated, defined and sourced", href: "/observatory" },
+    { label: "New domains found through certificates as they are issued" },
+    { label: "Labels machines can act on, each with a stated method" },
   ],
   insight: {
     kicker: "Why it matters",
@@ -60,7 +68,7 @@ export const defaultStoryContent: StoryContent = {
   delivery: {
     kicker: "Into your stack",
     title: "Explainable signals flow into controls you already operate.",
-    body: ["The same intelligence engine delivers scored, annotated records as reports, alerts, APIs and data shares — formats of one thing, not separate products."],
+    body: ["The same intelligence engine delivers labeled, annotated records as reports, alerts, APIs and data shares — formats of one thing, not separate products."],
   },
   partners: {
     kicker: "Who it helps",

@@ -7,8 +7,9 @@ import { publishedStats, statsAsOfLabel } from "@/lib/site-stats";
  * This is a buyer's qualifying question, asked early and answered with a number:
  * can you see enough of the internet for your claims to mean anything? A vendor
  * that cannot answer it is not yet in the evaluation. So the figures belong on
- * the homepage, next to the argument they underwrite — the hero claims one
- * signal reached 150 domains, and this is the corpus that made that possible.
+ * the homepage, next to the argument they underwrite — the hero claims we see
+ * more of the internet, and this is the "see". IntelligenceSection, directly
+ * below, is the "know what it means".
  *
  * WHAT THIS IS NOT. WU-C9 moved the "internet right now" panel — certificates
  * observed, new domains, routing changes in the last hour — off the homepage to
@@ -47,11 +48,11 @@ export function CoverageStrip() {
         <div className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Coverage</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-            The graph behind that answer.
+            What we see.
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-            Finding the other 149 domains means already holding the ones they connect to.
-            This is what Datazag observes, and what each figure counts.
+            Intelligence is only as good as what it can see. This is what Datazag observes,
+            and exactly what each figure counts.
           </p>
         </div>
 

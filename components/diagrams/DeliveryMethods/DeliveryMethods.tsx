@@ -22,7 +22,7 @@ const deliveryMethods = [
   },
   {
     title: "Alerts",
-    description: "Real-time intelligence for SOC workflows, partner monitoring and platform abuse teams.",
+    description: "Continuous intelligence for SOC workflows, partner monitoring and platform abuse teams.",
     items: ["Webhooks", "SIEM", "Splunk", "Sentinel"],
     tone: "amber",
     href: "/alerts",
