@@ -58,8 +58,8 @@ export interface ObservatoryFigures {
 /** The figures the main site shows, and the page each lives on. */
 const PICKS: Array<{ id: string; path: string; shortLabel: string }> = [
   { id: "corpus_domains", path: "/", shortLabel: "resolving domains measured" },
-  { id: "dmarc_enforced", path: "/mail", shortLabel: "of DMARC records at enforcement" },
-  { id: "moas_stable", path: "/actors", shortLabel: "of multi-origin prefixes are stable multi-homing" },
+  { id: "dmarc_enforced", path: "/email", shortLabel: "of DMARC records at enforcement" },
+  { id: "moas_stable", path: "/security", shortLabel: "of multi-origin prefixes are stable multi-homing" },
   { id: "asn_half_of_domains", path: "/infrastructure", shortLabel: "networks carry half of all attributable domains" },
 ];
 
@@ -119,21 +119,38 @@ async function resolveStatisticsUrl(): Promise<string> {
 }
 
 /**
- * The picked figures, or null when the Observatory could not be read.
- * The versioned file never changes, so the day-long cache only matters
+ * Every row of the published statistics file, or null when it could not be
+ * read. The versioned file never changes, so the day-long cache only matters
  * for the root-copy fallback.
  */
-export async function loadObservatoryFigures(): Promise<ObservatoryFigures | null> {
+async function loadStatisticsRows(): Promise<Row[] | null> {
   try {
     const url = await resolveStatisticsUrl();
     const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const file = await res.arrayBuffer();
-    const rows = (await parquetReadObjects({ file, compressors })) as Row[];
+    return (await parquetReadObjects({ file, compressors })) as Row[];
+  } catch (err) {
+    console.warn("observatory-figures: could not read the Observatory statistics:", err);
+    return null;
+  }
+}
+
+function measuredRow(rows: Row[], id: string): Row | null {
+  return rows.find((r) => str(r.stat_id) === id && r.is_measured === true) ?? null;
+}
+
+/** The picked figures, or null when the Observatory could not be read. */
+export async function loadObservatoryFigures(
+  { exclude = [] }: { exclude?: string[] } = {},
+): Promise<ObservatoryFigures | null> {
+  try {
+    const rows = await loadStatisticsRows();
+    if (!rows) return null;
 
     const figures: ObservatoryFigure[] = [];
-    for (const pick of PICKS) {
-      const row = rows.find((r) => str(r.stat_id) === pick.id && r.is_measured === true);
+    for (const pick of PICKS.filter((p) => !exclude.includes(p.id))) {
+      const row = measuredRow(rows, pick.id);
       const value = row ? num(row.value) : null;
       if (!row || value === null) continue;
       figures.push({
@@ -157,4 +174,88 @@ export async function loadObservatoryFigures(): Promise<ObservatoryFigures | nul
     console.warn("observatory-figures: could not read the Observatory statistics:", err);
     return null;
   }
+}
+
+/**
+ * THE HOMEPAGE'S INTELLIGENCE FIGURES (homepage repositioning, 2026-09-25).
+ *
+ * The homepage argues that Datazag sells interpretation, not records. These
+ * are the figures that make that argument without asking to be believed:
+ * each is a measured Observatory statistic, each is read here rather than
+ * typed, and each links to the page that states its method and caveats.
+ *
+ * COUNTS, NOT SHARES. The funnel and the certificate lane are rendered from
+ * the row's `numerator` — the Observatory publishes these as a share of a
+ * named population, and the count is the same measurement read the other
+ * way. The brief quoted the funnel as 178M → 169M → 159M; the store is the
+ * source, so the first stage reads whatever mx_present measured today.
+ *
+ * ALL-OR-NOTHING WHERE A GROUP IS AN ARGUMENT. A funnel with a missing
+ * stage, or a concentration pair with one half, reads as a different claim
+ * from the one the section makes, so a group with any figure missing is
+ * dropped whole. The section renders nothing if every group is gone.
+ */
+export interface CountFigure {
+  id: string;
+  /** The count, formatted: "158.9M", "229". */
+  value: string;
+  asOf: string | null;
+  /** The population the count is drawn from, in the Observatory's words. */
+  population: string | null;
+  href: string;
+}
+
+export interface IntelligenceFigures {
+  asOf: string | null;
+  /** Names no zone file lists, found through certificate transparency. */
+  certificateOnly: CountFigure | null;
+  /** Publish MX → can receive mail → can receive mail and not parked. */
+  mailFunnel: [CountFigure, CountFigure, CountFigure] | null;
+  /** Networks carrying half, and nine in ten, of attributable domains. */
+  concentration: { half: CountFigure; ninety: CountFigure } | null;
+}
+
+function countFigure(rows: Row[], id: string, path: string): CountFigure | null {
+  const row = measuredRow(rows, id);
+  const count = row ? num(row.numerator) : null;
+  if (!row || count === null || count <= 0) return null;
+  return {
+    id,
+    value: formatCount(count),
+    asOf: str(row.as_of),
+    population: str(row.denominator_label),
+    href: `${OBSERVATORY_URL}${path}#${id}`,
+  };
+}
+
+export async function loadIntelligenceFigures(): Promise<IntelligenceFigures | null> {
+  const rows = await loadStatisticsRows();
+  if (!rows) return null;
+
+  const certificateOnly = countFigure(rows, "domains_from_ct", "/domains");
+
+  const mx = countFigure(rows, "mx_present", "/email");
+  const deliverable = countFigure(rows, "mx_deliverable", "/email");
+  const active = countFigure(rows, "mx_deliverable_unparked", "/email");
+  const mailFunnel: IntelligenceFigures["mailFunnel"] =
+    mx && deliverable && active ? [mx, deliverable, active] : null;
+
+  const half = countFigure(rows, "asn_half_of_domains", "/infrastructure");
+  const ninety = countFigure(rows, "asn_ninety_of_domains", "/infrastructure");
+  const concentration = half && ninety ? { half, ninety } : null;
+
+  if (!certificateOnly && !mailFunnel && !concentration) return null;
+
+  const all = [
+    certificateOnly,
+    ...(mailFunnel ?? []),
+    ...(concentration ? [concentration.half, concentration.ninety] : []),
+  ].filter((f): f is CountFigure => f !== null);
+
+  const asOf = all
+    .map((f) => f.asOf)
+    .filter((d): d is string => Boolean(d))
+    .sort()
+    .pop() ?? null;
+  return { asOf, certificateOnly, mailFunnel, concentration };
 }

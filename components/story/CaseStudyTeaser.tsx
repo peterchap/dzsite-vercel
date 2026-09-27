@@ -4,7 +4,7 @@ import { CASE_STUDY } from "@/app/(marketing)/intelligence/one-signal-150-domain
 
 /**
  * Homepage proof block (WU23 §5). Sits directly under the hero and is the
- * receipt for the hero's "we see them being built" claim. Supersedes the
+ * worked example of the interpretation the sections above describe. Supersedes the
  * generic Detection Advantage timeline as the primary proof slot.
  */
 export function CaseStudyTeaser() {
@@ -32,7 +32,7 @@ export function CaseStudyTeaser() {
             </div>
 
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.24em] text-cyan-200/70">Case study</p>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-cyan-200/70">Proof by example</p>
               <p className="mt-3 max-w-2xl text-lg font-medium leading-7 text-white md:text-xl">
                 {CASE_STUDY.teaserLine}
               </p>

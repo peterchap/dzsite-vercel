@@ -7,21 +7,26 @@ import Link from "next/link";
  * ESP pitches live on their dedicated pages).
  */
 
+//
+// 2026-09-25 (intelligence repositioning): ordered Email / Insurers / MSSPs per the
+// brief, and each line now sells intelligence rather than detection. "Earlier alerts"
+// came off the MSSP tile — it is a lead-time claim, gated like the hero's. The insurer
+// line says exposure, not scoring: calibrated risk scores are gated on SCORE-1.
 const SEGMENTS = [
   {
-    title: "MSSPs",
-    line: "White-label investigations and earlier alerts across your whole client base.",
-    href: "/mssp-partners",
+    title: "Email",
+    line: "Know which domains can take mail, who runs it, and which are parked.",
+    href: "/esp-partners",
   },
   {
     title: "Insurers",
-    line: "External infrastructure signal for underwriting and portfolio monitoring.",
+    line: "External exposure and provider concentration, for underwriting and portfolio monitoring.",
     href: "/cyber-risk-underwriting",
   },
   {
-    title: "ESPs",
-    line: "Safer sending and onboarding decisions from infrastructure intelligence.",
-    href: "/esp-partners",
+    title: "MSSPs",
+    line: "Infrastructure intelligence and investigations you can offer across your client base.",
+    href: "/mssp-partners",
   },
   {
     // WU-C7: /enterprise is deferred and still a skeleton, so the largest buyer
@@ -29,7 +34,7 @@ const SEGMENTS = [
     // skeleton is noindexed meanwhile (app/(marketing)/[...slug]/page.tsx).
     // Point this back at /enterprise when that page ships.
     title: "Enterprise",
-    line: "Scored, explainable intelligence delivered into the stack you already run.",
+    line: "Explainable intelligence delivered into the stack you already run.",
     href: "/domain-intelligence",
   },
 ] as const;
@@ -41,7 +46,7 @@ export function SegmentRouter() {
         <div className="mb-8 max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Who it&rsquo;s for</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-            One intelligence layer. Four ways in.
+            One intelligence layer. Start where you work.
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
