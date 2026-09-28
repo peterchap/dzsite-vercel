@@ -3,37 +3,43 @@ import type { PageContent } from "@/sanity/seedMarketingCopy";
 export const SLUG = "esp-partners";
 export const TITLE = "ESP Partners";
 
+// 2026-09-28 — repositioned to EMAIL INTELLIGENCE (homepage brief, 2026-09-25).
+// The page sold scoring and early abuse detection; neither is measured. It now
+// sells what the corpus can show: which domains can take mail, who runs it,
+// which are parked, what they enforce, and what infrastructure sits behind them.
+// No "score", "early", "real-time" or "stop" claims — see the homepage notes in
+// components/story/content.ts for why each is held.
 export const content: PageContent = {
   hero: {
-    eyebrow: "ESP Partners",
-    title: "Add domain, link and infrastructure intelligence to your email platform.",
-    body: "Datazag helps Email Service Providers score signup domains, outbound links, landing pages and infrastructure before fast abuse damages sender reputation.",
-    secondaryBody: "Keep the customer experience under your brand while Datazag powers the risk signals, alerts, evidence and enrichment underneath.",
+    eyebrow: "Email intelligence · ESP partners",
+    title: "Know what every domain on your platform really is.",
+    body: "Can it take mail? Who runs its mail? Is it parked? Does it enforce DMARC? What infrastructure sits behind it? Datazag answers these for the domains your customers sign up with, send from and link to.",
+    secondaryBody: "You get the evidence, not an approve-or-reject verdict. Keep the customer experience under your brand while Datazag supplies the email, risk and threat intelligence underneath.",
     primaryCta: { label: "Start an ESP partner pilot", href: "/contact" },
     secondaryCta: { label: "Explore ESP services", href: "#services" },
   },
   partnerValue: {
     eyebrow: "Partner value",
     title: "Protect reputation. Create new customer value.",
-    body: "Use Datazag to reduce the cost and speed of abuse detection, then package the same intelligence into customer-facing trust, hygiene and protection services.",
+    body: "Use Datazag to make onboarding and abuse decisions on evidence, then package the same intelligence into trust, hygiene and protection services for your customers.",
     items: [
-      { key: "stop-abuse", title: "Stop fast abuse", text: "Score signup domains, campaign links and landing pages before bad actors can burn sender reputation and disappear." },
+      { key: "vet-senders", title: "Vet senders with evidence", text: "Check signup and sending domains against their mail setup, parking status and infrastructure history. Every finding shows the record it came from." },
       { key: "protect-deliverability", title: "Protect deliverability", text: "Give abuse, compliance and deliverability teams external context for the domains, links and infrastructure moving through the platform." },
-      { key: "launch-services", title: "Launch new services", text: "Add brand protection, customer hygiene reports, link-risk checks and deliverability intelligence as paid customer-facing offers." },
+      { key: "launch-services", title: "Launch new services", text: "Add brand protection, customer hygiene reports, link checks and deliverability intelligence as paid customer-facing offers." },
       { key: "embed-workflow", title: "Embed into your workflow", text: "Use API, webhooks, reports, exports or cloud data shares across onboarding, pre-send checks, abuse review and analytics pipelines." },
     ],
   },
   serviceCatalogue: {
     eyebrow: "Partner service catalog",
     title: "Create services around trust, abuse and deliverability.",
-    body: "Choose the first commercial motion: signup screening, pre-send link checks, early abuse alerts, customer hygiene, deliverability intelligence or brand protection.",
+    body: "Choose the first commercial motion: signup checks, pre-send link checks, infrastructure change alerts, customer hygiene, deliverability intelligence or brand protection.",
     items: [
-      { key: "signup-screening", title: "Signup risk screening", text: "Check customer domains, websites, DNS posture, email setup and infrastructure history before low-cost accounts can abuse the platform.", tags: ["Customer domains", "Website context", "DNS posture", "Hosting signals", "Risk reasons"] },
-      { key: "presend-links", title: "Pre-send link checks", text: "Score outbound links, landing pages, redirect chains and suspicious subdomains before or during campaign send.", tags: ["Campaign links", "Landing domains", "Redirect chains", "New domains", "Block candidates"] },
-      { key: "early-abuse", title: "Early abuse alerts", text: "Surface risky domain, certificate, DNS and infrastructure changes that may indicate abuse before the campaign has fully developed.", tags: ["Early alerts", "Certificates", "DNS changes", "Infrastructure links", "Reason codes"] },
-      { key: "smtp-enrichment", title: "SMTP log enrichment", text: "Join send logs and campaign history with domain, DNS, infrastructure and risk intelligence for deeper abuse and deliverability analytics.", tags: ["Sending domains", "Recipient patterns", "Risk fields", "History", "Warehouse joins"] },
-      { key: "data-hygiene", title: "Customer data hygiene", text: "Identify suspicious, weak or low-quality customer data before it creates deliverability, fraud or platform-trust problems.", tags: ["List quality", "Domain quality", "Disposable signals", "DNS posture", "Remediation notes"] },
-      { key: "brand-protection", title: "Brand protection add-on", text: "Offer customers monitoring for brand impersonation, suspicious domains and evidence packs under your own product experience.", tags: ["Customer brands", "Impersonation alerts", "Evidence packs", "Abuse contacts", "Reports"] },
+      { key: "signup-screening", title: "Signup checks", text: "Check customer domains, websites, DNS, mail setup and infrastructure history at signup and at tier upgrades.", tags: ["Mail setup", "Mail provider", "Parking status", "DNS posture", "Evidence"] },
+      { key: "presend-links", title: "Pre-send link checks", text: "Check outbound links, landing pages, redirect chains and new subdomains before or during send.", tags: ["Campaign links", "Landing domains", "Redirect chains", "New domains", "Evidence"] },
+      { key: "change-alerts", title: "Infrastructure change alerts", text: "Get told when the certificates, DNS or hosting behind your senders' domains change, with the evidence attached.", tags: ["Certificates", "DNS changes", "Hosting changes", "Infrastructure links", "Evidence"] },
+      { key: "smtp-enrichment", title: "SMTP log enrichment", text: "Join send logs and campaign history with email, infrastructure and risk intelligence for deeper abuse and deliverability analytics.", tags: ["Sending domains", "Recipient patterns", "Risk fields", "History", "Warehouse joins"] },
+      { key: "data-hygiene", title: "Customer data hygiene", text: "Find domains that cannot take mail, are parked or are badly configured before they hurt deliverability.", tags: ["Can take mail", "Parked domains", "Null MX", "DNS posture", "Remediation notes"] },
+      { key: "brand-protection", title: "Brand protection add-on", text: "Offer customers monitoring for lookalike domains and certificates built against their brand, with evidence packs, under your own product.", tags: ["Customer brands", "Lookalike domains", "Evidence packs", "Abuse contacts", "Reports"] },
       { key: "deliverability-intel", title: "Deliverability intelligence", text: "Give deliverability and customer-success teams better context for risk, reputation, customer behavior and domain posture.", tags: ["Domain posture", "Infrastructure risk", "Trend analysis", "Customer reports", "Account reviews"] },
     ],
   },
@@ -43,7 +49,7 @@ export const content: PageContent = {
     body: "You own the customer, policy and enforcement decisions. Datazag supplies external domain, link, DNS, certificate and infrastructure intelligence through the delivery route that fits your platform.",
     items: [
       { key: "customer-relationship", title: "Customer relationship", points: ["ESP owns the customer experience", "Datazag supports behind the scenes"] },
-      { key: "policy-enforcement", title: "Policy and enforcement", points: ["ESP controls thresholds, review, throttling and blocking", "Datazag supplies risk, reasons and context"] },
+      { key: "policy-enforcement", title: "Policy and enforcement", points: ["ESP controls thresholds, review, throttling and blocking", "Datazag supplies evidence, reasons and context"] },
       { key: "external-intel", title: "External intelligence", points: ["ESP avoids building internet-scale collection", "Datazag observes domains, DNS, certificates and infrastructure"] },
       { key: "customer-products", title: "Customer products", points: ["ESP brands the dashboard, reports and add-ons", "Datazag powers findings, alerts and evidence"] },
       { key: "analytics-workflows", title: "Analytics workflows", points: ["ESP owns data model, warehouse and operational decisions", "Datazag supplies API, webhook, report and data-share delivery"] },
@@ -69,7 +75,7 @@ export const content: PageContent = {
     items: [
       { key: "protect-sending", title: "Protect core sending", text: "Reduce abuse, support load and reputation damage that can erode the value of the platform." },
       { key: "attach-premium", title: "Attach premium features", text: "Sell link-risk checks, customer hygiene, brand protection or deliverability intelligence to existing customers." },
-      { key: "reuse-layer", title: "Reuse one intelligence layer", text: "Apply the same data across signup checks, pre-send scoring, alerts, reports and analytics." },
+      { key: "reuse-layer", title: "Reuse one intelligence layer", text: "Apply the same data across signup checks, pre-send checks, alerts, reports and analytics." },
       { key: "package-trust", title: "Package trust services", text: "Sell evidence, monitoring, hygiene, reporting and remediation rather than raw data access." },
     ],
   },
@@ -91,8 +97,8 @@ export const content: PageContent = {
     body: "Datazag collects and explains external infrastructure signals. ESPs convert those signals into controls, analytics, customer services and recurring value.",
     items: [
       { key: "screen", title: "Screen", text: "Check customer domains, websites, DNS and infrastructure during signup, onboarding or tier upgrades." },
-      { key: "score", title: "Score", text: "Evaluate campaign links, landing pages, redirect chains and sending domains before or during send." },
-      { key: "decide", title: "Decide", text: "Feed risk, reason codes and confidence into allow, warn, throttle, block or review workflows." },
+      { key: "check", title: "Check", text: "Look at campaign links, landing pages, redirect chains and sending domains before or during send." },
+      { key: "decide", title: "Decide", text: "Feed the evidence and reason codes into allow, warn, throttle, block or review workflows." },
       { key: "analyse", title: "Analyze", text: "Enrich SMTP logs, campaign history and abuse queues with domain and infrastructure intelligence." },
       { key: "monetise", title: "Monetise", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
     ],
@@ -100,13 +106,13 @@ export const content: PageContent = {
   delivery: {
     eyebrow: "Delivery",
     title: "Use the route that fits your platform.",
-    body: "The same intelligence layer can support signup checks, pre-send scoring, alerting, customer portals, managed reports, log enrichment and data-driven products.",
+    body: "The same intelligence layer can support signup checks, pre-send checks, alerting, customer portals, managed reports, log enrichment and data-driven products.",
     items: [
-      { key: "api", title: "API", text: "Real-time scoring and enrichment for signup checks, link scanning, customer portals, policy engines and review queues." },
-      { key: "webhooks", title: "Webhooks", text: "Push early alerts and infrastructure changes into abuse, compliance, deliverability or customer-success workflows." },
+      { key: "api", title: "API", text: "Domain lookups for signup checks, link checks, customer portals, policy engines and review queues. Each answer comes with its evidence." },
+      { key: "webhooks", title: "Webhooks", text: "Push alerts and infrastructure changes into abuse, compliance, deliverability or customer-success workflows." },
       { key: "reports-exports", title: "Reports and exports", text: "Generate white-label hygiene reports, brand-protection evidence packs and account-review material for customers." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for warehouse analytics, SMTP log enrichment, customer segmentation and large-scale joins." },
-      { key: "managed-alerts", title: "Managed alert feed", text: "Receive reasoned alerts for risky domains, suspicious certificates, infrastructure shifts and impersonation candidates." },
+      { key: "managed-alerts", title: "Managed alert feed", text: "Receive alerts for risky domains, new certificates, infrastructure shifts and lookalike domains, each with its evidence." },
     ],
   },
   pilotPath: {
@@ -123,7 +129,7 @@ export const content: PageContent = {
   finalCta: {
     eyebrow: "Next step",
     title: "Build the ESP partner motion around your platform.",
-    body: "Start with one workflow, validate the intelligence, then decide whether the production motion is signup risk, pre-send link checks, abuse alerts, deliverability analytics or a customer-facing protection service.",
+    body: "Start with one workflow, validate the intelligence, then decide whether the production motion is signup checks, pre-send link checks, change alerts, deliverability analytics or a customer-facing protection service.",
     primaryCta: { label: "Start an ESP partner pilot", href: "/contact" },
   },
 };

@@ -12,30 +12,39 @@ import Link from "next/link";
 // brief, and each line now sells intelligence rather than detection. "Earlier alerts"
 // came off the MSSP tile — it is a lead-time claim, gated like the hero's. The insurer
 // line says exposure, not scoring: calibrated risk scores are gated on SCORE-1.
+//
+// 2026-09-28: each tile names the intelligence line its page leads with — email,
+// risk, threat — and Enterprise gets all three as data. Keep these in step with
+// the page eyebrows (esp-partners, cyber-risk-underwriting, mssp-partners copy.ts).
 const SEGMENTS = [
   {
     title: "Email",
+    pillar: "Email intelligence",
     line: "Know which domains can take mail, who runs it, and which are parked.",
     href: "/esp-partners",
   },
   {
     title: "Insurers",
+    pillar: "Risk intelligence",
     line: "External exposure and provider concentration, for underwriting and portfolio monitoring.",
     href: "/cyber-risk-underwriting",
   },
   {
     title: "MSSPs",
-    line: "Infrastructure intelligence and investigations you can offer across your client base.",
+    pillar: "Threat intelligence",
+    line: "Threat alerts, brand protection and email security reviews you can offer across your client base.",
     href: "/mssp-partners",
   },
   {
     // WU-C7: /enterprise is deferred and still a skeleton, so the largest buyer
     // segment is routed to the page that actually makes the argument. The
     // skeleton is noindexed meanwhile (app/(marketing)/[...slug]/page.tsx).
-    // Point this back at /enterprise when that page ships.
+    // Point this back at /enterprise when that page ships. (Linked direct to
+    // /infrastructure-intelligence: /domain-intelligence only redirects there.)
     title: "Enterprise",
-    line: "Explainable intelligence delivered into the stack you already run.",
-    href: "/domain-intelligence",
+    pillar: "All three, as data",
+    line: "Threat, email and risk intelligence in your own warehouse.",
+    href: "/infrastructure-intelligence",
   },
 ] as const;
 
@@ -56,7 +65,8 @@ export function SegmentRouter() {
               href={segment.href}
               className="group rounded-2xl border border-white/10 bg-white/[0.035] p-5 transition hover:border-cyan-300/30 hover:bg-white/[0.06]"
             >
-              <h3 className="text-lg font-semibold text-white">{segment.title}</h3>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-200/70">{segment.pillar}</p>
+              <h3 className="mt-2 text-lg font-semibold text-white">{segment.title}</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400">{segment.line}</p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-200">
                 Explore

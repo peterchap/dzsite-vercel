@@ -17,9 +17,9 @@ import { DetectionQualityCondensed } from "@/components/story/DetectionQualitySe
 import { SLUG, content } from "./copy";
 
 export const metadata: Metadata = {
-  title: "MSSP Partners — Datazag",
+  title: "Threat intelligence for MSSPs — Datazag",
   description:
-    "Add infrastructure intelligence and early alerts to managed security services. Datazag helps MSSPs reduce analyst workload and launch partner-branded services.",
+    "Add threat, email and risk intelligence to your managed services. Alerts, brand protection and email security reviews, each with its evidence, under your brand.",
 };
 
 // Hardcoded fallbacks preserve the exact current copy when no marketingPageCopy
@@ -190,7 +190,7 @@ export default async function MsspPartnersPage() {
               </div>
             ))}
           </div>
-          {/* WU27-A: condensed Detection Quality block (locked copy, not CMS-editable). */}
+          {/* WU27-A condensed block, reworded 2026-09-28 with sign-off (not CMS-editable). */}
           <div className="mt-8">
             <DetectionQualityCondensed />
           </div>

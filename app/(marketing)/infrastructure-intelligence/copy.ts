@@ -3,11 +3,18 @@ import type { PageContent } from "@/sanity/seedMarketingCopy";
 export const SLUG = "infrastructure-intelligence";
 export const TITLE = "Infrastructure Intelligence";
 
+// 2026-09-28 — repositioned around the three intelligence lines (threat, email,
+// risk), delivered as data (homepage brief, 2026-09-25). Also brought back in
+// line with the SHIPPED schema: no published dataset carries risk_score,
+// threat_band, confidence or reason codes (see lib/datasets/fallback.ts —
+// reputation_flag is explicitly "a signpost, not a score"), so this page no
+// longer advertises them as columns. "Early" and "real-time" are held, as on
+// the homepage.
 export const content: PageContent = {
   hero: {
     eyebrow: "Infrastructure Intelligence",
-    title: "Cloud-native cyber intelligence datasets.",
-    body: "Datazag delivers enriched domains, DNS, certificates, infrastructure, risk, relationships and history as cloud data shares, marketplace-ready datasets, APIs and curated views.",
+    title: "Threat, email and risk intelligence, in your own warehouse.",
+    body: "Datazag delivers classified domains, mail posture, network attribution, certificates, relationships and history as cloud data shares, marketplace datasets and curated views.",
     secondaryBody: "Use the data in your own lakehouse, warehouse, SIEM, analytics platform or product without building the infrastructure graph yourself.",
     primaryCta: { label: "Explore datasets", href: "#datasets" },
     secondaryCta: { label: "Start evaluating", href: "#evaluate" },
@@ -15,10 +22,10 @@ export const content: PageContent = {
   dataProductValue: {
     eyebrow: "Data product value",
     title: "Useful intelligence, already joined and ready to query.",
-    body: "The value is not a raw list of domains or IPs. It is the enriched context, relationship mapping, risk reasoning and historical state that make the data usable inside real workflows.",
+    body: "The value is not a raw list of domains or IPs. It is the classification, relationship mapping, risk context and historical state that make the data usable inside real workflows.",
     items: [
       { key: "warehouse", title: "Bring intelligence to your warehouse", text: "Use Datazag datasets directly in cloud analytics, SIEM enrichment, threat hunting, fraud systems and data science workflows." },
-      { key: "skip-engineering", title: "Skip the raw-data engineering", text: "DNS, certificates, hosting, ASN, provider labels, risk scores, reason codes and relationships are already joined into usable views." },
+      { key: "skip-engineering", title: "Skip the raw-data engineering", text: "DNS, certificates, hosting, ASN, mail provider, parking status and relationships are already joined into usable views." },
       { key: "query-state", title: "Query current and historical state", text: "Use snapshots, deltas and point-in-time context to understand what changed, when it changed and how infrastructure evolved." },
       { key: "evaluate-product", title: "Evaluate as a product, not a feed", text: "Start with sample schemas, small extracts or curated views before moving into full cloud data shares or marketplace delivery." },
     ],
@@ -28,12 +35,12 @@ export const content: PageContent = {
     title: "The field groups technical buyers ask for first.",
     body: "Each dataset family can be delivered as a full table, curated view, sample extract, API-backed enrichment path or product-specific schema.",
     items: [
-      { key: "domain-intelligence", title: "Domain Intelligence", text: "Domain posture, risk, provider footprint, DNS state, email controls, history and relationship fields for enrichment and scoring.", tags: ["Domain", "First seen", "DNS posture", "Email posture", "Provider labels", "Risk score", "Reason codes"] },
+      { key: "domain-intelligence", title: "Domain Intelligence", text: "Domain posture, provider footprint, DNS state, email controls, history and relationship fields for enrichment and analysis.", tags: ["Domain", "First seen", "DNS posture", "Email posture", "Mail provider", "Parking status"] },
       { key: "dns-mail", title: "DNS and Mail Posture", text: "Expanded DNS, MX, NS, TXT and email-authentication context for reporting, hygiene, compliance and portfolio analysis.", tags: ["A / AAAA", "MX", "NS", "TXT", "SPF", "DKIM", "DMARC", "BIMI", "MTA-STS"] },
-      { key: "certificate", title: "Certificate Intelligence", text: "Certificate Transparency events, SAN expansion, issuer context, platform hints and relationship pivots for early infrastructure discovery.", tags: ["Issuer", "SANs", "Fingerprint", "Not before", "Not after", "New issuance", "Related domains"] },
+      { key: "certificate", title: "Certificate Intelligence", text: "Certificate Transparency events, SAN expansion, issuer context, platform hints and relationship pivots for infrastructure discovery.", tags: ["Issuer", "SANs", "Fingerprint", "Not before", "Not after", "New issuance", "Related domains"] },
       { key: "infrastructure-labels", title: "Infrastructure Labels", text: "IP, ASN, prefix, cloud, hosting, CDN, country and provider attribution for logs, flows, customer records and security events.", tags: ["IP", "ASN", "Prefix", "Country", "Cloud", "Hosting", "CDN", "DNS provider", "Registrar"] },
       { key: "relationship-graph", title: "Relationship Graph", text: "Shared infrastructure, related domains, shared certificates, DNS relationships and evidence paths for campaign discovery and investigation.", tags: ["Related domains", "Shared IPs", "Shared certs", "Shared DNS", "Clusters", "Evidence paths"] },
-      { key: "risk-history", title: "Risk and History", text: "Risk scores, threat bands, reasons, confidence context, snapshots, deltas and change indicators for model validation and time-aware analysis.", tags: ["Risk score", "Threat band", "Reasons", "Confidence", "Snapshots", "Deltas", "Time travel"] },
+      { key: "risk-history", title: "Risk and History", text: "Network reputation signposts, snapshots, deltas and change indicators for time-aware analysis.", tags: ["Reputation flag", "Snapshots", "Deltas", "First seen", "Last seen", "Time travel"] },
     ],
   },
   alreadyEngineered: {
@@ -44,9 +51,9 @@ export const content: PageContent = {
       { key: "dns-records", title: "Raw DNS records", text: "Expanded DNS, mail posture, provider labels and remediation context" },
       { key: "ip-address", title: "Raw IP address", text: "ASN, prefix, country, cloud, hosting and infrastructure risk" },
       { key: "single-domain", title: "Single domain", text: "Related domains, shared certificates, provider footprint and relationship paths" },
-      { key: "certificate-event", title: "Certificate event", text: "SAN expansion, platform hints, issuer context and early infrastructure pivots" },
+      { key: "certificate-event", title: "Certificate event", text: "SAN expansion, platform hints, issuer context and infrastructure pivots" },
       { key: "point-in-time", title: "Point-in-time label", text: "Snapshots, deltas, first-seen, last-seen and change indicators" },
-      { key: "opaque-score", title: "Opaque score", text: "Risk score, threat band, confidence and reason codes" },
+      { key: "bare-flag", title: "Bare yes/no flag", text: "Reputation signpost, judged on the specific range and network it names" },
     ],
   },
   curatedProducts: {
@@ -54,10 +61,10 @@ export const content: PageContent = {
     title: "Start with the table that matches the workflow.",
     body: "Curated products reduce engineering effort by packaging the right fields for common security, fraud, platform, portfolio and analytics use cases.",
     items: [
-      { key: "domain-risk", title: "Domain Risk Dataset", text: "A joinable domain-level table for SOC enrichment, fraud scoring, ESP controls, customer hygiene and portfolio monitoring.", status: "Iceberg · Delta · Parquet · API" },
+      { key: "domain-risk", title: "Domain Risk Dataset", text: "A joinable domain-level table for SOC enrichment, fraud checks, ESP controls, customer hygiene and portfolio monitoring.", status: "Iceberg · Delta · Parquet · API" },
       { key: "dns-posture", title: "DNS Posture Dataset", text: "Expanded DNS and email-authentication findings for remediation reporting, domain hygiene and systemic portfolio-risk analysis.", status: "Iceberg · Delta · Reports" },
       { key: "infra-reputation", title: "Infrastructure Reputation Dataset", text: "IP, ASN, prefix, provider and relationship context for investigating suspicious hosting, related assets and infrastructure reuse.", status: "Iceberg · Delta · Cloud share" },
-      { key: "cert-newdomain", title: "Certificate and New Domain Dataset", text: "Certificate and newly observed domain intelligence for early alerting, platform impersonation discovery and watchlist monitoring.", status: "Alerts · Iceberg · Delta" },
+      { key: "cert-newdomain", title: "Certificate and New Domain Dataset", text: "Certificate and newly observed domain intelligence for alerting, platform impersonation discovery and watchlist monitoring.", status: "Alerts · Iceberg · Delta" },
       { key: "portfolio-view", title: "Portfolio Intelligence View", text: "Curated views for domains, subsidiaries, suppliers, client estates and acquisition targets, with posture and trend context included.", status: "Reports · Cloud share · Custom view" },
     ],
   },
@@ -73,7 +80,7 @@ export const content: PageContent = {
     items: [
       { key: "cloud-shares", title: "Cloud data shares", status: "Primary data product", text: "Native cloud-native datasets for analytical teams that want to join Datazag intelligence with their own logs, assets, alerts and customer records.", href: "/contact", cta: "Request data share access", tags: ["Iceberg", "Delta", "Parquet", "Incremental updates", "Snapshots", "Time travel", "Bring your own compute", "SQL-ready joins"] },
       { key: "marketplace", title: "Marketplace delivery", status: "For cloud buyers", text: "Marketplace-ready packaging for teams buying through Snowflake, Databricks, Azure, AWS or Google Cloud procurement routes.", href: "/contact", cta: "Discuss marketplace access" },
-      { key: "api", title: "API enrichment", status: "For products and workflows", text: "Real-time lookup and enrichment for portals, fraud systems, SIEM workflows, policy engines and partner platforms.", href: "/pricing", cta: "View API pricing" },
+      { key: "api", title: "API enrichment", status: "For products and workflows", text: "Lookup and enrichment for portals, fraud systems, SIEM workflows, policy engines and partner platforms.", href: "/pricing", cta: "View API pricing" },
       { key: "reports-alerts", title: "Reports and alerts", status: "For evaluation and operations", text: "Start with reports, then move priority domains, brands, platforms or infrastructure into operational alerting.", href: "/reports", cta: "View reports" },
     ],
   },
@@ -83,7 +90,7 @@ export const content: PageContent = {
     body: "The same cloud-native datasets can support security operations, ESP abuse controls, portfolio reporting, diligence and analytical modelling.",
     items: [
       { key: "threat-hunting", title: "Threat hunting and SOC enrichment", text: "Join domains, IPs and alerts with provider labels, relationships, reasons and historical context." },
-      { key: "esp-abuse", title: "ESP and platform abuse controls", text: "Score customer domains, links, landing pages and infrastructure using explainable domain and provider intelligence." },
+      { key: "esp-abuse", title: "ESP and platform abuse controls", text: "Check customer domains, links, landing pages and infrastructure using explainable domain and provider intelligence." },
       { key: "portfolio-risk", title: "Portfolio and supplier risk", text: "Analyze posture and exposure across many domains, subsidiaries, suppliers, clients or acquisition targets." },
       { key: "insurance-diligence", title: "Cyber insurance and diligence", text: "Use historical and portfolio-wide evidence for underwriting, renewal, exposure analysis and M&A security review." },
       { key: "data-science", title: "Data science and AI workflows", text: "Use stable features, historical slices and reason fields for modelling, agents, analytics and decision support." },

@@ -15,7 +15,7 @@ import { DOMAINS_DISPLAY } from "@/lib/site-stats";
  *    makes the pivot claim credible.
  *
  * Full variant: homepage, in the slot after the case-study teaser.
- * Condensed variant (chips row + dial paragraph): MSSP page.
+ * Condensed variant (chips row + its own reworded paragraph): MSSP page.
  */
 
 const STAGES = [
@@ -98,13 +98,25 @@ export function DetectionQualitySection() {
   );
 }
 
-/** Condensed variant for the MSSP page: stages as a single row of four chips + the dial paragraph. */
+/**
+ * The condensed variant's paragraph, REWORDED 2026-09-28 with founder sign-off
+ * (intelligence repositioning). The MSSP page now sells threat intelligence,
+ * and this block says what an alert CARRIES rather than how good it is: the
+ * checks it passed and the evidence behind each. Dropped from the locked
+ * dial paragraph: "confidence score", "block high-confidence automatically"
+ * and "at machine speed" — each implies a measured quality or latency that
+ * does not yet exist. The full variant on /alerts keeps the locked WU27 copy.
+ */
+const CONDENSED_PARAGRAPH =
+  "A domain does not become an alert because one signal fired. It must pass four checks, and the alert lists what each one found. You set the threshold and decide what to block and what to review. If we are wrong, you can see why — and tell us.";
+
+/** Condensed variant for the MSSP page: stages as a single row of four chips + the evidence paragraph. */
 export function DetectionQualityCondensed() {
   return (
     <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Detection quality</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Threat intelligence</p>
       <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-        Every alert earns its confidence score.
+        Every alert shows its evidence.
       </h3>
       <ol className="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
         {STAGES.map((stage) => (
@@ -117,7 +129,7 @@ export function DetectionQualityCondensed() {
           </li>
         ))}
       </ol>
-      <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-400">{DIAL_PARAGRAPH}</p>
+      <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-400">{CONDENSED_PARAGRAPH}</p>
     </div>
   );
 }

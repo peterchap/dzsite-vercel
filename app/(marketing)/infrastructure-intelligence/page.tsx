@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type React from "react";
 
 import {
@@ -17,7 +18,7 @@ import { SLUG, content } from "./copy";
 export const metadata: Metadata = {
   title: "Infrastructure Intelligence — Datazag",
   description:
-    "Cloud-native cyber intelligence datasets for domains, DNS, certificates, infrastructure, risk, history and relationship analysis.",
+    "Threat, email and risk intelligence as cloud datasets: classified domains, mail posture, network attribution, certificates, relationships and history, ready to join.",
 };
 
 function FieldName({ children }: { children: React.ReactNode }) {
@@ -59,20 +60,27 @@ function DataStackPanel() {
   );
 }
 
+/*
+ * The sample query uses the SHIPPED domain_intel table and its documented
+ * columns (lib/datasets/fallback.ts). It used to select risk_score,
+ * threat_band and reason_codes from a datazag.domain_risk table and filter on
+ * risk_score >= 80 — no published dataset has those columns, and thresholding
+ * a score we do not calibrate is exactly what the dataset docs warn against.
+ */
 function CodeBlock() {
   return (
     <pre className="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-[#020512] p-5 text-sm leading-6 text-slate-300"><code>{`SELECT
-  logs.domain,
-  dz.risk_score,
-  dz.threat_band,
-  dz.hosting_provider,
-  dz.primary_asn,
-  dz.related_domain_count,
-  dz.reason_codes
-FROM security_logs logs
-LEFT JOIN datazag.domain_risk dz
-  ON logs.domain = dz.domain
-WHERE dz.risk_score >= 80;`}</code></pre>
+  s.sender_domain,
+  p.mail_provider,
+  p.primary_mx_host,
+  p.is_parked,
+  p.dmarc_policy,
+  p.dmarc_enforced
+FROM   signups s
+JOIN   domain_intel p
+  ON   p.domain = s.sender_domain
+WHERE  p.is_parked
+   OR  NOT p.dmarc_enforced;`}</code></pre>
   );
 }
 
@@ -263,7 +271,7 @@ export default async function InfrastructureIntelligencePage() {
             <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/70">Example output</p>
               <div className="mt-5 grid gap-3">
-                {[["risk_score", "94"], ["threat_band", "critical"], ["hosting_provider", "Bulletproof Hosting Ltd"], ["primary_asn", "AS64500"], ["related_domain_count", "15"], ["reason_codes", "new_domain, shared_infra, risky_asn"]].map(([key, value]) => (
+                {[["sender_domain", "example.net"], ["mail_provider", "NULL"], ["primary_mx_host", "mx.example.net"], ["is_parked", "true"], ["dmarc_policy", "none"], ["dmarc_enforced", "false"]].map(([key, value]) => (
                   <div key={key} className="grid grid-cols-[0.45fr_0.55fr] gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
                     <code className="text-xs text-cyan-100">{key}</code>
                     <p className="text-sm font-semibold text-white">{value}</p>
@@ -367,7 +375,7 @@ export default async function InfrastructureIntelligencePage() {
               <article key={path.key} className="flex min-h-[15rem] flex-col rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
                 <h3 className="text-xl font-semibold text-white">{path.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{path.text}</p>
-                <a href="/contact" className="mt-auto inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start here</a>
+                <Link href="/contact" className="mt-auto inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Start here</Link>
               </article>
             ))}
           </div>

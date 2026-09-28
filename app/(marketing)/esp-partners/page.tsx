@@ -13,12 +13,13 @@ import {
 } from "@/lib/marketing-copy";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { MailFunnelStrip } from "@/components/story/MailFunnelStrip";
 import { SLUG, content } from "./copy";
 
 export const metadata: Metadata = {
-  title: "ESP Partners — Datazag",
+  title: "Email intelligence for ESPs — Datazag",
   description:
-    "Add domain, link and infrastructure intelligence to email platforms. Datazag helps ESPs detect abuse earlier, protect deliverability and launch partner-branded services.",
+    "Email intelligence for ESPs: which domains can take mail, who runs their mail, which are parked and what infrastructure sits behind them — with the evidence, under your brand.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -123,6 +124,9 @@ export default async function EspPartnersPage() {
           <PartnerStackPanel />
         </div>
       </section>
+
+      {/* Email intelligence, shown rather than described — store-backed. */}
+      <MailFunnelStrip />
 
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
