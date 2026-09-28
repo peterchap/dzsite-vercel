@@ -9,16 +9,28 @@ export const TITLE = "Cyber Risk Underwriting";
  * Every claim here is grounded in something the site already documents and
  * ships — estate discovery with confidence tiers, provider concentration
  * weighted by provider, the DNS and email control ladder, reason codes on every
- * finding (app/reports/copy.ts, app/(marketing)/infrastructure-intelligence).
+ * finding (app/reports/copy.ts, app/(marketing)/datasets).
  * Nothing on this page describes a capability that does not exist, and nothing
  * quantifies a loss ratio, a lift or an accuracy rate — no such measurement
  * exists, and the retired-claim guard exists because one was published once.
+ *
+ * 2026-09-28: framed as RISK INTELLIGENCE (homepage brief). "Score" verbs
+ * removed — the page's own position is "evidence, not a score", and calibrated
+ * scoring is gated on SCORE-1. The impersonation card no longer compares
+ * timing ("rather than after a campaign lands"): lead time is unmeasured.
+ *
+ * 2026-09-28 (site-edits brief): market claims may state established general
+ * truths; claims about Datazag's data need Datazag's evidence. Datazag holds no
+ * claims or loss data, so no sentence here may read as a loss finding of ours.
+ * Softened on that rule: the BEC line ("is where the claims are" implied loss
+ * attribution), "usually", "leading indicator", "least able to", "never"
+ * and "the rest" (implied complete discovery).
  */
 export const content: PageContent = {
   hero: {
-    eyebrow: "Cyber risk underwriting",
+    eyebrow: "Risk intelligence · Cyber underwriting",
     title: "Underwrite what the applicant actually owns.",
-    body: "A submission describes the estate the applicant knows about. Datazag evidences the rest from public infrastructure — the domains, providers and control gaps that never reach the questionnaire — before you bind, and every time it changes after you do.",
+    body: "A submission describes the estate the applicant knows about. Datazag finds more of it in public infrastructure — domains, providers and control gaps that do not reach the questionnaire — before you bind, and every time it changes after you do.",
     secondaryBody: "No questionnaire, no agent, no asset inventory. Every finding carries the evidence that produced it, so a declination or a rate load can be explained to a broker.",
     primaryCta: { label: "Request a portfolio assessment", href: "/contact" },
     secondaryCta: { label: "See a sample report", href: "/reports/sample" },
@@ -32,7 +44,7 @@ export const content: PageContent = {
       {
         key: "pre-bind",
         title: "Pre-bind assessment",
-        text: "Score a submission against what is publicly observable rather than what was self-reported. Estate discovery surfaces the domains the applicant did not declare; posture analysis shows whether the controls they claim are actually published in DNS.",
+        text: "Assess a submission against what is publicly observable rather than what was self-reported. Estate discovery surfaces the domains the applicant did not declare; posture analysis shows whether the controls they claim are actually published in DNS.",
         tags: ["Estate discovery", "Email authentication", "Provider concentration", "Certificate hygiene", "Reason codes"],
       },
       {
@@ -53,13 +65,13 @@ export const content: PageContent = {
   signals: {
     eyebrow: "What an underwriter acts on",
     title: "Specific, checkable, and tied to a control an insured can fix.",
-    body: "These are the signals that change a price or a condition, not a generic risk score. Each is read from public infrastructure and each carries the record it was read from.",
+    body: "These are signals that can inform a price or a condition, not a generic risk score. Each is read from public infrastructure and each carries the record it was read from.",
     items: [
-      { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, evidenced through certificate, mail and registration relationships and sorted into confidence tiers. Adverse selection usually lives in the gap between the declared estate and the real one." },
-      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are actually published and enforcing, rather than present and permissive — the difference between a policy that blocks impersonation and one that only reports it. Business email compromise is where the claims are." },
+      { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, evidenced through certificate, mail and registration relationships and sorted into confidence tiers. Adverse selection can hide in the gap between the declared estate and the real one." },
+      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are actually published and enforcing, rather than present and permissive — the difference between a policy that blocks impersonation and one that only reports it. Business email compromise remains a significant source of cyber loss." },
       { key: "concentration", title: "Provider concentration", text: "How much of the estate depends on one provider, weighted by which provider that is. A majority on a hyperscale platform is a different risk from the same share on a commodity registrar." },
-      { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls are due to fail unattended. An operational calendar is a leading indicator of how the insured runs their estate." },
-      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates built to impersonate the insured's brand or the platforms it depends on, observed at certificate issuance rather than after a campaign lands." },
+      { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls are due to fail unattended. The expiry calendar shows how the insured runs their estate." },
+      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates built to impersonate the insured's brand or the platforms it depends on, found through the certificates issued for them." },
       { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC) — a maturity path you can write conditions against, not a pass/fail." },
     ],
   },
@@ -67,9 +79,9 @@ export const content: PageContent = {
   portfolio: {
     eyebrow: "Across the book",
     title: "The exposure that only exists between risks.",
-    body: "Individual submissions can each look acceptable while the book quietly concentrates. Aggregation is the exposure cyber underwriters are least able to see and least able to reinsure against once written.",
+    body: "Individual submissions can each look acceptable while the book quietly concentrates. Aggregation is hard to see one submission at a time, and hard to manage once the risks are written.",
     items: [
-      { key: "shared-dependency", title: "Shared dependency", text: "How many insureds sit behind the same mail provider, DNS provider, hosting platform or CDN — the correlated failure that turns many small claims into one event." },
+      { key: "shared-dependency", title: "Shared dependency", text: "How many insureds sit behind the same mail provider, DNS provider, hosting platform or CDN — the correlated failure that can turn many small claims into one event." },
       { key: "posture-distribution", title: "Posture distribution", text: "Where the book sits on the control ladder, so appetite and pricing can be set against the distribution rather than against individual outliers." },
       { key: "drift", title: "Portfolio drift", text: "How the book's posture moves between reporting periods, including insureds whose controls regressed after binding." },
       { key: "accumulation-view", title: "Accumulation view", text: "Segment the book by provider, sector, estate size or control maturity and see the same evidence rolled up, with every roll-up tracing back to the per-domain findings underneath it." },
@@ -97,7 +109,7 @@ export const content: PageContent = {
     items: [
       { key: "submission-report", title: "Submission report", text: "A per-risk assessment at quote, covering the discovered estate, posture and concentration." },
       { key: "portfolio-report", title: "Portfolio report", text: "The book-level view, segmented how you underwrite it." },
-      { key: "api", title: "API", text: "Score a domain inline in a pricing or triage workflow." },
+      { key: "api", title: "API", text: "Check a domain inline in a pricing or triage workflow, with the evidence returned." },
       { key: "alerts", title: "Alerts", text: "Material in-period changes routed to the owning underwriter." },
       { key: "data-share", title: "Data share", text: "The underlying evidence in your warehouse for actuarial and accumulation work." },
     ],

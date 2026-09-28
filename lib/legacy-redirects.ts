@@ -38,6 +38,17 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     destination: "/alerts",
     reason: "\"Log Analytics\" is retired lexicon (WU-C4); the live equivalent is /alerts.",
   },
+  {
+    source: "/infrastructure-intelligence",
+    destination: "/datasets",
+    reason:
+      "It was an overview of the datasets under a product name, and 'Infrastructure Intelligence' collides with the site-wide intelligence positioning. /datasets is the one canonical datasets overview, with live coverage and honest per-route availability (2026-09-28).",
+  },
+  {
+    source: "/domain-intelligence",
+    destination: "/datasets",
+    reason: "Older name for the same datasets overview; previously redirected to /infrastructure-intelligence. Points straight at /datasets to avoid a chain.",
+  },
 ];
 
 /**

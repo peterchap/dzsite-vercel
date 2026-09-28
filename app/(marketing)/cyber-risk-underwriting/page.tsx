@@ -11,14 +11,15 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { PageShell } from "@/components/layout/PageShell";
+import { loadIntelligenceFigures } from "@/lib/observatory-figures";
 import { SLUG, content } from "./copy";
 
 // The page had no title and no meta description — it rendered as a bare
 // "Cyber Risk Underwriting" (standing criterion 4).
 export const metadata: Metadata = {
-  title: "Cyber Risk Underwriting — Datazag",
+  title: "Risk intelligence for cyber underwriting — Datazag",
   description:
-    "Infrastructure evidence for cyber underwriting: discover the estate an applicant did not declare, check the controls they claim, and monitor posture across the policy term. Pre-bind assessment, in-period monitoring and portfolio accumulation.",
+    "Risk intelligence for cyber underwriting: discover the estate an applicant did not declare, check the controls they claim, and monitor posture across the policy term. Pre-bind assessment, in-period monitoring and portfolio accumulation.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -115,6 +116,8 @@ function EvidencePanel() {
 
 export default async function CyberRiskUnderwritingPage() {
   const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+  // Internet-wide concentration, from the Observatory store (never typed). Null → the callout is omitted.
+  const concentration = (await loadIntelligenceFigures())?.concentration ?? null;
 
   const hero = getCopySection(pageCopy, "hero");
   const decisions = getCopySection(pageCopy, "decisions");
@@ -229,6 +232,17 @@ export default async function CyberRiskUnderwritingPage() {
               </article>
             ))}
           </div>
+          {concentration ? (
+            <p className="mt-6 max-w-3xl rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5 text-sm leading-6 text-slate-300">
+              The same concentration exists across the internet.{" "}
+              <strong className="text-white">{concentration.half.value}</strong> networks carry half of all domains
+              that sit on a network, and <strong className="text-white">{concentration.ninety.value}</strong> carry
+              nine in ten.{" "}
+              <a href={concentration.half.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                Method and caveats →
+              </a>
+            </p>
+          ) : null}
         </div>
       </section>
 

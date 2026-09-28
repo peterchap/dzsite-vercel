@@ -26,7 +26,6 @@ const coreNavLinks: NavLink[] = [
         children: [
             { label: "How It Works", href: "/how-it-works" },
             { label: "Observatory", href: "/observatory" },
-            { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
             { label: "Datasets", href: "/datasets" },
         ],
     },
@@ -72,7 +71,8 @@ function isOldDefaultNav(navLinks?: NavLink[]) {
     return (
         labels.includes("domain intelligence") ||
         labels.includes("documentation") && labels.includes("blog") && !labels.includes("brand protection") ||
-        !labels.includes("infrastructure intelligence") ||
+        labels.includes("infrastructure intelligence") ||
+        !labels.includes("datasets") ||
         !labels.includes("how it works") ||
         !labels.includes("data")
     );

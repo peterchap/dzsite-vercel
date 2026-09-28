@@ -149,9 +149,9 @@ export function StoryProducts({ data }: { data: ProductsProps }) {
     <StorySection section={data}>
       <DeliveryMethods />
       <ContinueExploring
-        title="Domain Intelligence"
-        description="Explore the datasets, formats and infrastructure coverage behind the platform."
-        href="/domain-intelligence"
+        title="Datasets"
+        description="See every dataset, its live coverage, and where you can get it today."
+        href="/datasets"
       />
     </StorySection>
   );

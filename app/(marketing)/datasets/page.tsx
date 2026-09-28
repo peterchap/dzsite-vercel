@@ -7,7 +7,9 @@ import { getDatasets } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
 
 /**
- * /datasets — the public catalog of Datazag data products.
+ * /datasets — the public catalog of Datazag data products, and the ONE datasets
+ * overview on the site. /infrastructure-intelligence and /domain-intelligence
+ * 301 here (lib/legacy-redirects.ts): do not rebuild a second overview page.
  *
  * ⚠️ DURABLE URL. Referenced from marketplace listings; do not move it.
  *
@@ -71,7 +73,8 @@ export default async function DatasetsIndexPage() {
             Datasets
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Every Datazag dataset is served direct from R2. Get it through the customer portal, or
+            The threat, email and risk intelligence behind this site, as data you can join to your
+            own. Every Datazag dataset is served direct from R2. Get it through the customer portal, or
             through Databricks and Snowflake once a listing is live. One artifact, two routes, one
             coverage figure.
           </p>

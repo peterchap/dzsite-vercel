@@ -9,7 +9,6 @@ const defaultProductLinks: NavLink[] = [
     { label: "Reports", href: "/reports" },
     { label: "Threat Alerts", href: "/alerts" },
     { label: "Brand Protection", href: "/brand-protection" },
-    { label: "Infrastructure Intelligence", href: "/infrastructure-intelligence" },
     { label: "Datasets", href: "/datasets" },
     { label: "Pricing", href: "/pricing" },
 ];
@@ -40,7 +39,7 @@ function linkLabels(links: NavLink[] = []) {
 function shouldUseDefaultProductLinks(links: NavLink[] = []) {
     if (links.length === 0) return true;
     const labels = linkLabels(links);
-    return labels.includes("domain intelligence") || !labels.includes("brand protection") || !labels.includes("infrastructure intelligence");
+    return labels.includes("domain intelligence") || labels.includes("infrastructure intelligence") || !labels.includes("brand protection") || !labels.includes("datasets");
 }
 
 function shouldUseDefaultTrustLinks(links: NavLink[] = []) {
