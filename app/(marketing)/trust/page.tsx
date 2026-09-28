@@ -11,6 +11,7 @@ import {
 } from "@/lib/marketing-copy";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
+import { FP_STATUS } from "@/lib/fp-status";
 import { SLUG, content } from "./copy";
 import { EntityBlock } from "@/components/legal/EntityBlock";
 import {
@@ -222,6 +223,8 @@ export default async function TrustPage() {
               </article>
             ))}
           </div>
+          {/* The site-wide FP status (lib/fp-status.ts), code-owned so it cannot drift in the CMS. */}
+          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-slate-400">{FP_STATUS}</p>
         </div>
       </section>
 

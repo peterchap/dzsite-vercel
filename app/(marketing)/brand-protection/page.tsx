@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type React from "react";
 
 import { copyCta, copyText, getCopyItem, getCopySection, type MarketingPageCopy, type MarketingCopySection } from "@/lib/marketing-copy";
+import { FP_STATUS } from "@/lib/fp-status";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 
@@ -41,7 +42,7 @@ const alertStages = [
     step: "4",
     title: "Customer de-escalation update",
     trigger: "The customer recognizes the finding as legitimate, authorized, duplicate, irrelevant or known-good.",
-    delivered: "The incident can be de-escalated at any point. The reason is retained so partner sites and approved campaigns reduce future noise.",
+    delivered: "The incident can be de-escalated at any point. The reason is retained so partner sites and approved campaigns are not raised again.",
     status: "De-escalated",
   },
 ];
@@ -79,7 +80,7 @@ const deliveredObjects = [
   {
     key: "de-escalation-control",
     title: "De-escalation control",
-    text: "A clear route to mark legitimate partner sites, authorized campaigns, duplicates or known-good infrastructure so future noise is reduced.",
+    text: "A clear route to mark legitimate partner sites, authorized campaigns, duplicates or known-good infrastructure so the same finding is not raised again.",
     tags: ["Legitimate", "Partner site", "Known-good", "Suppress"],
   },
 ];
@@ -87,9 +88,9 @@ const deliveredObjects = [
 const incidentStates = [
   { key: "new", title: "New", text: "First detected before or after DNS exists and awaiting routing or review." },
   { key: "polling", title: "Polling", text: "No DNS records or no website yet. Datazag keeps checking for DNS, hosting, website and content changes." },
-  { key: "monitoring", title: "Monitoring", text: "Low-confidence or early-stage infrastructure being watched for activation, DNS, hosting or content changes." },
+  { key: "monitoring", title: "Monitoring", text: "Infrastructure that is not yet ready to act on, watched for activation, DNS, hosting or content changes." },
   { key: "investigating", title: "Investigating", text: "Analyst, customer or partner review is needed before action." },
-  { key: "block-notice", title: "Block notice", text: "High-confidence infrastructure is suitable for block-list, SIEM, SOAR or customer-warning workflows." },
+  { key: "block-notice", title: "Block notice", text: "Infrastructure you have chosen to act on, with the evidence ready for block-list, SIEM, SOAR or customer-warning workflows." },
   { key: "evidence-pack", title: "Evidence pack", text: "Evidence and abuse contacts are being packaged so the organization can manage its own provider, registrar or legal response." },
   { key: "action-requested", title: "Action requested", text: "The customer, authorized partner, abuse desk, registrar or provider has been asked to take action by the organization managing the case." },
   { key: "resolved", title: "Resolved", text: "The infrastructure is no longer active, has been remediated or has reached the agreed closure condition." },
@@ -361,7 +362,7 @@ export default async function BrandProtectionPage() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">Incident control</p>
                 <h3 className="mt-3 text-3xl font-semibold text-white md:text-4xl">De-escalate legitimate site</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorized partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history and can reduce future noise.</p>
+                <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">When a finding is an authorized partner, campaign or supplier site, the customer can de-escalate it instead of treating it as malicious. The reason is retained in the incident history, so the same finding is not raised again.</p>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {resolvedDeEscalationReasons.map((item) => (
@@ -373,6 +374,8 @@ export default async function BrandProtectionPage() {
               </div>
             </div>
           </div>
+          {/* The site-wide FP status (lib/fp-status.ts). */}
+          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-slate-400">{FP_STATUS}</p>
         </div>
       </section>
 

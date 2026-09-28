@@ -71,7 +71,7 @@ export const content: PageContent = {
       { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are actually published and enforcing, rather than present and permissive — the difference between a policy that blocks impersonation and one that only reports it. Business email compromise remains a significant source of cyber loss." },
       { key: "concentration", title: "Provider concentration", text: "How much of the estate depends on one provider, weighted by which provider that is. A majority on a hyperscale platform is a different risk from the same share on a commodity registrar." },
       { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls are due to fail unattended. The expiry calendar shows how the insured runs their estate." },
-      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates built to impersonate the insured's brand or the platforms it depends on, found through the certificates issued for them." },
+      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates that use the insured's brand or the platforms it depends on, each shown with its evidence for review." },
       { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC) — a maturity path you can write conditions against, not a pass/fail." },
     ],
   },
@@ -85,6 +85,26 @@ export const content: PageContent = {
       { key: "posture-distribution", title: "Posture distribution", text: "Where the book sits on the control ladder, so appetite and pricing can be set against the distribution rather than against individual outliers." },
       { key: "drift", title: "Portfolio drift", text: "How the book's posture moves between reporting periods, including insureds whose controls regressed after binding." },
       { key: "accumulation-view", title: "Accumulation view", text: "Segment the book by provider, sector, estate size or control maturity and see the same evidence rolled up, with every roll-up tracing back to the per-domain findings underneath it." },
+    ],
+  },
+
+  // 2026-09-28 (homepage brief): M&A cyber due diligence, as a use case under
+  // the same exposure intelligence — not a separate segment. Demonstrated, not
+  // hypothetical: estate and exposure reports have been shown to this buyer and
+  // drawn interest. That is ALL it may claim: no customers, no deals, no
+  // "trusted by acquirers". Scoped as evidence for diligence, never an
+  // acquisition-risk score (SCORE-1). Estate discovery is evidence-based, so
+  // it never promises "every domain".
+  diligence: {
+    eyebrow: "M&A due diligence",
+    title: "An acquirer inherits the whole estate.",
+    body: "The same evidence answers an acquirer's questions before a deal closes: what the target owns, how it is configured, and which providers it depends on. The forgotten parts of an estate are where risk hides, and the target may no longer track them itself.",
+    secondaryBody: "Evidence for diligence, not an acquisition risk score. Each finding shows the record it came from, so it can be raised with the target and checked.",
+    items: [
+      { key: "forgotten-estate", title: "The forgotten estate", text: "Domains the target owns but may no longer track, found through shared certificates, mail and registration records. Discovery is evidence-based: we show what we can link, not a promise of every domain." },
+      { key: "inherited-posture", title: "Inherited posture", text: "Whether email authentication, certificates and DNS controls are in place across the estate, not just on the main domain." },
+      { key: "dependencies", title: "Provider dependencies", text: "Which mail, DNS, hosting and CDN providers the estate relies on, and how much of it sits with each one." },
+      { key: "advisors", title: "For advisors", text: "Diligence firms can run the same assessment across many deals, with every finding in the same format." },
     ],
   },
 

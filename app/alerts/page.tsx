@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import { FP_STATUS } from "@/lib/fp-status";
 import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
 import {
@@ -20,7 +21,7 @@ import { DetectionQualitySection } from "@/components/story/DetectionQualitySect
 export const metadata: Metadata = {
   title: "Threat Alerts — Datazag",
   description:
-    "Early alerts for platform abuse, brand impersonation, suspicious subdomains and emerging attack infrastructure, with reason codes and evidence for operational workflows.",
+    "Alerts for platform abuse, brand impersonation, suspicious subdomains and attack infrastructure, each with reason codes and evidence for operational workflows.",
 };
 
 // Kept hardcoded as a visual specimen of a real alert.
@@ -127,9 +128,9 @@ export default async function AlertsPage() {
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, "Threat Alerts")}</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, "Catch suspicious infrastructure before it reaches users.")}</h1>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, content.hero.title!)}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              {copyText(hero?.body, "Datazag monitors domains, DNS, certificates and infrastructure changes for early signs of platform abuse, brand impersonation and suspicious keyword-led infrastructure.")}
+              {copyText(hero?.body, content.hero.body!)}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
               {copyText(hero?.secondaryBody, "Each alert is delivered with reason codes, infrastructure context and a recommended action path so teams can block, investigate, watchlist, escalate or de-escalate with evidence.")}
@@ -147,7 +148,7 @@ export default async function AlertsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={copyText(operationalValue?.eyebrow, "Operational value")}
-            title={copyText(operationalValue?.title, "Earlier signals. Clearer actions. Less alert noise.")}
+            title={copyText(operationalValue?.title, content.operationalValue.title!)}
             body={copyText(operationalValue?.body, "Alerts are only useful when the receiving team knows what changed, why it matters and what action is appropriate.")}
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -278,9 +279,9 @@ export default async function AlertsPage() {
       <section className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow={copyText(falsePositives?.eyebrow, "False-positive controls")}
+            eyebrow={copyText(falsePositives?.eyebrow, content.falsePositives.eyebrow!)}
             title={copyText(falsePositives?.title, "Filtering happens before the alert reaches the team.")}
-            body={copyText(falsePositives?.body, "Brand and platform terms collide with legitimate infrastructure every day. The alerting layer needs evidence, allowlists and feedback paths to stay operationally useful.")}
+            body={copyText(falsePositives?.body, content.falsePositives.body!)}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {resolvedFalsePositives.map((row) => (
@@ -290,6 +291,8 @@ export default async function AlertsPage() {
               </article>
             ))}
           </div>
+          {/* The site-wide FP status (lib/fp-status.ts), code-owned so it cannot drift in the CMS. */}
+          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-slate-400">{FP_STATUS}</p>
         </div>
       </section>
 
@@ -329,9 +332,8 @@ export default async function AlertsPage() {
         </div>
       </section>
 
-      {/* WU-C9: the four detection checks moved here off the homepage. Copy is
-          unchanged — it is LOCKED per the WU27 spec; this is a relocation, not
-          a rewrite. Alerts is where the confidence claim needs backing. */}
+      {/* WU-C9: the four detection checks moved here off the homepage. Reworded
+          2026-09-28 to the site-wide FP framing (see DetectionQualitySection). */}
       <DetectionQualitySection />
 
       <section className="border-t border-white/10 py-24 md:py-32">

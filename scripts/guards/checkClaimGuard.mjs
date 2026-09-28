@@ -62,6 +62,22 @@ const BANNED = [
     why: "the retired '~10s from certificate to scored alert' claim" },
   { re: /(?:seconds|instant(?:ly|aneous)?)\s+from\s+certificate/i,
     why: "an unmeasured certificate-to-alert latency claim" },
+
+  // ── False-positive framing, 2026-09-28 (lib/fp-status.ts) ───────────────
+  // The <1% entries above caught one number. A legacy CMS page shipped "<5% false
+  // positives" straight past them, so any OUR-rate construction is banned now,
+  // whatever the number. Industry statistics about OTHER tools ("user reports run
+  // 85-95% false positives") are not our accuracy and are not matched.
+  { re: /(?:<|&lt;|≤|under|below|less than)\s*\d+(?:\.\d+)?\s*%[^.]{0,25}false[\s-]positive/i,
+    why: "an unmeasured false-positive rate (any number)" },
+  { re: /false[\s-]positives?\s+(?:rate\s+)?(?:under|below|less than|<|of\s+(?:under|below|less than))\s*\d/i,
+    why: "an unmeasured false-positive rate (any number)" },
+  { re: /false[\s-]positives?\s+(?:are\s+)?(?:removed|suppressed|eliminated)/i,
+    why: "a claim that false positives are removed — the after-guard rate is not measured" },
+  { re: /\bsub-?\s*\d+\s*-?\s*s(?:ec(?:ond)?s?)?\b[^.]{0,20}detection/i,
+    why: "an unmeasured detection-latency claim (e.g. 'sub-60s detection')" },
+  { re: /high[\s-]confidence\s+(?:verdicts?|signals?|alerts?)/i,
+    why: "an alert-quality claim — confidence is not measured (lib/fp-status.ts)" },
 ];
 
 const EXEMPT = [/[\\/]__tests__[\\/]/, /[\\/]guards[\\/]/];

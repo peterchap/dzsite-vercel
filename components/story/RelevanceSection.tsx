@@ -21,7 +21,8 @@ const SCOPE_INPUTS = [
   },
 ] as const;
 
-const WATCHLIST_TRAITS = ["Scored", "Reason codes", "Confidence tiers", "Deduplicated"] as const;
+// 2026-09-28: "Scored" removed — calibrated scoring is gated on SCORE-1 (see lib/fp-status.ts for the framing).
+const WATCHLIST_TRAITS = ["Evidence attached", "Reason codes", "Confidence tiers", "Deduplicated"] as const;
 
 export function RelevanceSection() {
   return (

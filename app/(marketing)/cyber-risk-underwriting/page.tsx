@@ -17,9 +17,9 @@ import { SLUG, content } from "./copy";
 // The page had no title and no meta description — it rendered as a bare
 // "Cyber Risk Underwriting" (standing criterion 4).
 export const metadata: Metadata = {
-  title: "Risk intelligence for cyber underwriting — Datazag",
+  title: "Risk intelligence for cyber underwriting and M&A diligence — Datazag",
   description:
-    "Risk intelligence for cyber underwriting: discover the estate an applicant did not declare, check the controls they claim, and monitor posture across the policy term. Pre-bind assessment, in-period monitoring and portfolio accumulation.",
+    "Risk intelligence for cyber underwriting: discover the estate an applicant did not declare, check the controls they claim, and monitor posture across the policy term. Pre-bind assessment, in-period monitoring, portfolio accumulation and M&A due diligence.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -123,6 +123,7 @@ export default async function CyberRiskUnderwritingPage() {
   const decisions = getCopySection(pageCopy, "decisions");
   const signals = getCopySection(pageCopy, "signals");
   const portfolio = getCopySection(pageCopy, "portfolio");
+  const diligence = getCopySection(pageCopy, "diligence");
   const evidence = getCopySection(pageCopy, "evidence");
   const delivery = getCopySection(pageCopy, "delivery");
   const cta = getCopySection(pageCopy, "cta");
@@ -136,6 +137,7 @@ export default async function CyberRiskUnderwritingPage() {
   const decisionCards = resolveCopyCards(content.decisions.items!, decisions);
   const signalCards = resolveCopyCards(content.signals.items!, signals);
   const portfolioCards = resolveCopyCards(content.portfolio.items!, portfolio);
+  const diligenceCards = resolveCopyCards(content.diligence.items!, diligence);
   const evidenceCards = resolveCopyCards(content.evidence.items!, evidence);
   const deliveryCards = resolveCopyCards(content.delivery.items!, delivery);
 
@@ -243,6 +245,28 @@ export default async function CyberRiskUnderwritingPage() {
               </a>
             </p>
           ) : null}
+        </div>
+      </section>
+
+      {/* M&A due diligence — same exposure intelligence, different buyer and moment. */}
+      <section id="diligence" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow={copyText(diligence?.eyebrow, content.diligence.eyebrow!)}
+            title={copyText(diligence?.title, content.diligence.title!)}
+            body={copyText(diligence?.body, content.diligence.body!)}
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {diligenceCards.map((card) => (
+              <article key={card.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-6">
+                <h3 className="text-lg font-semibold text-white">{card.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{card.text}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-slate-400">
+            {copyText(diligence?.secondaryBody, content.diligence.secondaryBody!)}
+          </p>
         </div>
       </section>
 

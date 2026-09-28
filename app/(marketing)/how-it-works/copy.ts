@@ -22,7 +22,7 @@ export const content: PageContent = {
       { key: "evaluate", title: "Evaluate risk and context", text: "Datazag scores naming, DNS, infrastructure, website and historical evidence to decide whether a finding should be monitored, escalated or de-escalated.", tags: ["Risk", "Reason codes", "Confidence", "Triage"] },
       { key: "package", title: "Package evidence", text: "Findings are delivered with explainable evidence: reason codes, DNS state, provider context, screenshots, abuse contacts, related assets and lifecycle changes where available.", tags: ["Evidence", "Screenshots", "Abuse contacts", "Lifecycle"] },
       { key: "deliver", title: "Deliver into the workflow", text: "The same intelligence layer can become a report, an alert, an API response, a webhook event, a data share or a partner-branded service.", tags: ["Reports", "Alerts", "API", "Data shares"] },
-      { key: "feedback", title: "Update and learn from feedback", text: "Incidents and datasets update as infrastructure changes. Customer context and de-escalation decisions help reduce noise and improve future routing.", tags: ["Polling", "Updates", "De-escalation", "Baselines"] },
+      { key: "feedback", title: "Update and learn from feedback", text: "Incidents and datasets update as infrastructure changes. Customer context and de-escalation decisions are fed back into future routing.", tags: ["Polling", "Updates", "De-escalation", "Baselines"] },
     ],
   },
   signalMaturity: {
@@ -43,14 +43,14 @@ export const content: PageContent = {
     items: [
       { key: "report", title: "Report path", text: "For a domain, portfolio, supplier group or acquisition target, Datazag packages findings into a business-readable assessment with DNS, platform, infrastructure and remediation context.", cta: "View reports", href: "/reports" },
       { key: "alert", title: "Alert path", text: "For operational monitoring, Datazag opens and updates alerts as DNS, infrastructure, website evidence and customer decisions appear.", cta: "View alerts", href: "/alerts" },
-      { key: "brand", title: "Brand protection path", text: "For owned brands, Datazag detects impersonation, supplies evidence packs and abuse contacts, and lets customers de-escalate legitimate partner sites.", cta: "View brand protection", href: "/brand-protection" },
+      { key: "brand", title: "Brand protection path", text: "For owned brands, Datazag monitors for impersonation, supplies evidence packs and abuse contacts, and lets customers de-escalate legitimate partner sites.", cta: "View brand protection", href: "/brand-protection" },
       { key: "data", title: "Data product path", text: "For analytics and data teams, Datazag publishes infrastructure intelligence as SQL-ready datasets, samples, private offers or cloud data shares.", cta: "View datasets", href: "/datasets" },
     ],
   },
   principles: {
     eyebrow: "Principles",
     title: "Designed to complement the security stack.",
-    body: "Datazag is an external infrastructure layer. It helps existing security, fraud, platform and data workflows make better decisions.",
+    body: "Datazag is an external infrastructure data layer. It helps existing security, fraud, platform and data workflows make better decisions.",
     items: [
       { key: "outside-in", title: "Outside-in first", text: "Datazag looks at the infrastructure visible from outside the organization, where many impersonation and abuse signals start forming." },
       { key: "evidence", title: "Evidence over assertion", text: "Findings should show the reason, the observed infrastructure and the supporting context behind a score or alert." },
