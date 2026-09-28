@@ -1,9 +1,13 @@
 import Link from "next/link"
 import { Shield, Database, Activity, Globe, ArrowRight } from "lucide-react"
 
+// Reference copy of the old homepage. Kept reachable for the team, but never
+// indexed: it pitches the retired "Domain Intelligence Platform" positioning
+// and would compete with / in search (nav brief, 2026-09-28).
 export const metadata = {
     title: 'Legacy Home | Datazag',
     description: 'Legacy homepage for reference.',
+    robots: { index: false, follow: false },
 }
 
 export default function LegacyHomepage() {

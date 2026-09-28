@@ -21,7 +21,22 @@ import { loadIntelligenceFigures, OBSERVATORY_URL } from "@/lib/observatory-figu
  * as the homepage, so the numbers match across pages. A layer whose figure is
  * unavailable renders without a number rather than with an invented one.
  */
-export async function CorpusAdvantage() {
+type Props = {
+  /** Section eyebrow. Defaults are the MSSP page's. */
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+};
+
+/**
+ * Also used on /alerts and /brand-protection (2026-09-28): an alert is only as
+ * good as what it is checked against, so those pages lead with the same asset.
+ */
+export async function CorpusAdvantage({
+  eyebrow = "What your service stands on",
+  title = "Very few organizations hold all of this.",
+  intro = "Your clients’ domains are checked against all of these layers, not a single feed. Each layer is useful. Held together, with the links between them, they are hard to rebuild.",
+}: Props = {}) {
   const figures = await loadIntelligenceFigures();
   const ct = figures?.certificateOnly ?? null;
   const s = PUBLISHED_STATS;
@@ -67,14 +82,9 @@ export async function CorpusAdvantage() {
     <section className="border-t border-white/10 py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">What your service stands on</p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">
-            Very few organizations hold all of this.
-          </h2>
-          <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">
-            Your clients&rsquo; domains are checked against all of these layers, not a single feed. Each layer is
-            useful. Held together, with the links between them, they are hard to rebuild.
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{eyebrow}</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
+          <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">{intro}</p>
         </div>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

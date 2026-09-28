@@ -4,12 +4,20 @@ import { Mail, Linkedin, Twitter, Github } from "lucide-react";
 import { BrandingLogo } from "@/components/site/BrandingLogo";
 import Link from "next/link";
 
+// Mirrors the header (2026-09-28 nav brief): Solutions and Data & Intelligence
+// are the two axes; Company carries the rest. See components/site/Header.tsx.
+const defaultSolutionLinks: NavLink[] = [
+    { label: "Email & Martech", href: "/esp-partners" },
+    { label: "Insurers", href: "/cyber-risk-underwriting" },
+    { label: "MSSPs", href: "/mssp-partners" },
+];
+
 const defaultProductLinks: NavLink[] = [
-    { label: "How It Works", href: "/how-it-works" },
+    { label: "All datasets", href: "/datasets" },
     { label: "Reports", href: "/reports" },
     { label: "Threat Alerts", href: "/alerts" },
     { label: "Brand Protection", href: "/brand-protection" },
-    { label: "Datasets", href: "/datasets" },
+    { label: "Observatory", href: "/observatory" },
     { label: "Pricing", href: "/pricing" },
 ];
 
@@ -23,10 +31,8 @@ const defaultTrustLinks: NavLink[] = [
 
 const defaultCompanyLinks: NavLink[] = [
     { label: "About", href: "/about" },
-    { label: "Observatory", href: "/observatory" },
-    { label: "Intelligence", href: "/intelligence/one-signal-150-domains" },
-    { label: "MSSP Partners", href: "/mssp-partners" },
-    { label: "ESP Partners", href: "/esp-partners" },
+    { label: "How It Works", href: "/how-it-works" },
+    { label: "Case study", href: "/intelligence/one-signal-150-domains" },
     { label: "Blog", href: "/blog" },
     { label: "Documentation", href: "/docs" },
     { label: "Contact", href: "/contact" },
@@ -39,7 +45,7 @@ function linkLabels(links: NavLink[] = []) {
 function shouldUseDefaultProductLinks(links: NavLink[] = []) {
     if (links.length === 0) return true;
     const labels = linkLabels(links);
-    return labels.includes("domain intelligence") || labels.includes("infrastructure intelligence") || !labels.includes("brand protection") || !labels.includes("datasets");
+    return labels.includes("domain intelligence") || labels.includes("infrastructure intelligence") || !labels.includes("brand protection") || !labels.includes("all datasets");
 }
 
 function shouldUseDefaultTrustLinks(links: NavLink[] = []) {
@@ -119,8 +125,9 @@ export function Footer({
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
-                        <FooterColumn title="Product" links={resolvedProductLinks} />
+                    <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8">
+                        <FooterColumn title="Solutions" links={defaultSolutionLinks} />
+                        <FooterColumn title="Data & Intelligence" links={resolvedProductLinks} />
                         <FooterColumn title="Trust & Legal" links={resolvedTrustLinks} />
                         <FooterColumn title="Company" links={resolvedCompanyLinks} />
                     </div>
