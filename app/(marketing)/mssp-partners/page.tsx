@@ -13,13 +13,13 @@ import {
 } from "@/lib/marketing-copy";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
-import { DetectionQualityCondensed } from "@/components/story/DetectionQualitySection";
+import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { SLUG, content } from "./copy";
 
 export const metadata: Metadata = {
-  title: "Threat intelligence for MSSPs — Datazag",
+  title: "MSSP Partners: your service in front, our intelligence behind it — Datazag",
   description:
-    "Add threat, email and risk intelligence to your managed services. Alerts, brand protection and email security reviews, each with its evidence, under your brand.",
+    "Build managed services on the domain corpus, DNS history, certificate transparency, BGP and provider attribution few organizations hold. SOC enrichment, cross-client exposure and email security reviews, under your brand.",
 };
 
 // Hardcoded fallbacks preserve the exact current copy when no marketingPageCopy
@@ -45,13 +45,13 @@ function PartnerStackPanel() {
       <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Your managed service</p>
         <h3 className="mt-3 text-2xl font-semibold text-white">Partner-branded offer</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-300">Reports, alerts, portals, remediation workflows and account-review material delivered under your brand.</p>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Reports, enrichment, portals, remediation workflows and account-review material delivered under your brand.</p>
       </div>
       <div className="mx-auto h-8 w-px bg-cyan-300/30" />
       <div className="rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Powered by Datazag</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {["Domains", "DNS", "Certificates", "Infrastructure", "Relationships", "Alerts", "Evidence"].map((item) => (
+          {["Domains", "DNS history", "Certificates", "BGP routing", "Providers", "Relationships", "Evidence"].map((item) => (
             <div key={item} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200">{item}</div>
           ))}
         </div>
@@ -128,6 +128,9 @@ export default async function MsspPartnersPage() {
         </div>
       </section>
 
+      {/* The scarce asset, store-backed. Replaces the detection-sequence block (site-edits brief, Edit 2). */}
+      <CorpusAdvantage />
+
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
@@ -189,10 +192,6 @@ export default async function MsspPartnersPage() {
                 <div className="text-sm leading-6 text-slate-300">{row.points[1]}</div>
               </div>
             ))}
-          </div>
-          {/* WU27-A condensed block, reworded 2026-09-28 with sign-off (not CMS-editable). */}
-          <div className="mt-8">
-            <DetectionQualityCondensed />
           </div>
         </div>
       </section>

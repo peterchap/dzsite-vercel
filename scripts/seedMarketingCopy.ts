@@ -14,7 +14,6 @@ import dotenv from "dotenv";
 import { buildMarketingCopyDoc, type PageContent } from "../sanity/seedMarketingCopy";
 import * as about from "../app/(marketing)/about/copy";
 import * as trust from "../app/(marketing)/trust/copy";
-import * as infra from "../app/(marketing)/infrastructure-intelligence/copy";
 import * as mssp from "../app/(marketing)/mssp-partners/copy";
 import * as esp from "../app/(marketing)/esp-partners/copy";
 import * as reports from "../app/reports/copy";
@@ -28,7 +27,6 @@ type PageReg = { slug: string; title: string; content: PageContent };
 const PAGES: PageReg[] = [
   { slug: about.SLUG, title: about.TITLE, content: about.content },
   { slug: trust.SLUG, title: trust.TITLE, content: trust.content },
-  { slug: infra.SLUG, title: infra.TITLE, content: infra.content },
   { slug: mssp.SLUG, title: mssp.TITLE, content: mssp.content },
   { slug: esp.SLUG, title: esp.TITLE, content: esp.content },
   { slug: reports.SLUG, title: reports.TITLE, content: reports.content },

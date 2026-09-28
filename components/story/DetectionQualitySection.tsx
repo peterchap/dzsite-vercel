@@ -14,8 +14,10 @@ import { DOMAINS_DISPLAY } from "@/lib/site-stats";
  *  - the FN line's concession ("the failure you never see") stays — it is what
  *    makes the pivot claim credible.
  *
- * Full variant: homepage, in the slot after the case-study teaser.
- * Condensed variant (chips row + its own reworded paragraph): MSSP page.
+ * Full variant: /alerts (moved off the homepage in WU-C9).
+ * The condensed MSSP variant was REMOVED on 2026-09-28: /mssp-partners now sells
+ * the corpus (components/partners/CorpusAdvantage.tsx), and detection claims
+ * are held there until the false-positive measurement backs them.
  */
 
 const STAGES = [
@@ -95,41 +97,5 @@ export function DetectionQualitySection() {
         </div>
       </div>
     </section>
-  );
-}
-
-/**
- * The condensed variant's paragraph, REWORDED 2026-09-28 with founder sign-off
- * (intelligence repositioning). The MSSP page now sells threat intelligence,
- * and this block says what an alert CARRIES rather than how good it is: the
- * checks it passed and the evidence behind each. Dropped from the locked
- * dial paragraph: "confidence score", "block high-confidence automatically"
- * and "at machine speed" — each implies a measured quality or latency that
- * does not yet exist. The full variant on /alerts keeps the locked WU27 copy.
- */
-const CONDENSED_PARAGRAPH =
-  "A domain does not become an alert because one signal fired. It must pass four checks, and the alert lists what each one found. You set the threshold and decide what to block and what to review. If we are wrong, you can see why — and tell us.";
-
-/** Condensed variant for the MSSP page: stages as a single row of four chips + the evidence paragraph. */
-export function DetectionQualityCondensed() {
-  return (
-    <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Threat intelligence</p>
-      <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-        Every alert shows its evidence.
-      </h3>
-      <ol className="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
-        {STAGES.map((stage) => (
-          <li
-            key={stage.n}
-            className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#030619]/50 px-4 py-3"
-          >
-            <span className="font-mono text-xs font-bold text-cyan-300">{stage.n}</span>
-            <span className="text-sm font-semibold text-slate-200">{stage.label}</span>
-          </li>
-        ))}
-      </ol>
-      <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-400">{CONDENSED_PARAGRAPH}</p>
-    </div>
   );
 }

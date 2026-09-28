@@ -32,19 +32,20 @@ const SEGMENTS = [
   {
     title: "MSSPs",
     pillar: "Threat intelligence",
-    line: "Threat alerts, brand protection and email security reviews you can offer across your client base.",
+    line: "SOC enrichment, cross-client exposure and email security reviews, under your brand.",
     href: "/mssp-partners",
   },
   {
     // WU-C7: /enterprise is deferred and still a skeleton, so the largest buyer
     // segment is routed to the page that actually makes the argument. The
     // skeleton is noindexed meanwhile (app/(marketing)/[...slug]/page.tsx).
-    // Point this back at /enterprise when that page ships. (Linked direct to
-    // /infrastructure-intelligence: /domain-intelligence only redirects there.)
+    // Point this back at /enterprise when that page ships. Until then it goes to
+    // /datasets, the one canonical datasets overview (the Infrastructure
+    // Intelligence page was folded into it on 2026-09-28).
     title: "Enterprise",
     pillar: "All three, as data",
     line: "Threat, email and risk intelligence in your own warehouse.",
-    href: "/infrastructure-intelligence",
+    href: "/datasets",
   },
 ] as const;
 

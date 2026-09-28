@@ -44,7 +44,7 @@ export const content: PageContent = {
       { key: "report", title: "Report path", text: "For a domain, portfolio, supplier group or acquisition target, Datazag packages findings into a business-readable assessment with DNS, platform, infrastructure and remediation context.", cta: "View reports", href: "/reports" },
       { key: "alert", title: "Alert path", text: "For operational monitoring, Datazag opens and updates alerts as DNS, infrastructure, website evidence and customer decisions appear.", cta: "View alerts", href: "/alerts" },
       { key: "brand", title: "Brand protection path", text: "For owned brands, Datazag detects impersonation, supplies evidence packs and abuse contacts, and lets customers de-escalate legitimate partner sites.", cta: "View brand protection", href: "/brand-protection" },
-      { key: "data", title: "Data product path", text: "For analytics and data teams, Datazag publishes infrastructure intelligence as SQL-ready datasets, samples, private offers or cloud data shares.", cta: "View datasets", href: "/infrastructure-intelligence" },
+      { key: "data", title: "Data product path", text: "For analytics and data teams, Datazag publishes infrastructure intelligence as SQL-ready datasets, samples, private offers or cloud data shares.", cta: "View datasets", href: "/datasets" },
     ],
   },
   principles: {

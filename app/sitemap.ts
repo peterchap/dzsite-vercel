@@ -31,8 +31,6 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.9 },
   { path: "/observatory", changeFrequency: "monthly", priority: 0.8 },
   { path: "/pricing", changeFrequency: "monthly", priority: 0.9 },
-  { path: "/domain-intelligence", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/infrastructure-intelligence", changeFrequency: "monthly", priority: 0.8 },
   { path: "/brand-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/datasets", changeFrequency: "weekly", priority: 0.8 },
   { path: "/intelligence/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
