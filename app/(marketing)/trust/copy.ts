@@ -130,11 +130,11 @@ export const content: PageContent = {
       { key: "public-data", title: "Public internet data", text: "Most intelligence products are built from externally observable infrastructure, not from customer inboxes, endpoint telemetry or private network traffic." },
       { key: "report-requests", title: "Report requests", text: "For free reports, the submitted work email is used to derive the domain, process the request and deliver the report." },
       { key: "marketing-consent", title: "Marketing consent", text: "Marketing follow-up should be separate from the processing needed to generate a requested report." },
-      { key: "customer-context", title: "Customer context", text: "Customer-supplied brands, domains, watchlists or approved baselines are used to make outputs more relevant and reduce false positives." },
+      { key: "customer-context", title: "Customer context", text: "Customer-supplied brands, domains, watchlists or approved baselines are used to make outputs more relevant to that customer." },
     ],
   },
   falsePositives: {
-    eyebrow: "False-positive controls",
+    eyebrow: "False positives",
     title: "Useful intelligence needs tuning and challenge paths.",
     body: "Security teams need confidence that platform names, brand terms and provider patterns are not being treated as malicious without context.",
     items: [

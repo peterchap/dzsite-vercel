@@ -71,7 +71,7 @@ export const content: PageContent = {
       { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are actually published and enforcing, rather than present and permissive — the difference between a policy that blocks impersonation and one that only reports it. Business email compromise remains a significant source of cyber loss." },
       { key: "concentration", title: "Provider concentration", text: "How much of the estate depends on one provider, weighted by which provider that is. A majority on a hyperscale platform is a different risk from the same share on a commodity registrar." },
       { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls are due to fail unattended. The expiry calendar shows how the insured runs their estate." },
-      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates built to impersonate the insured's brand or the platforms it depends on, found through the certificates issued for them." },
+      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates that use the insured's brand or the platforms it depends on, each shown with its evidence for review." },
       { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC) — a maturity path you can write conditions against, not a pass/fail." },
     ],
   },

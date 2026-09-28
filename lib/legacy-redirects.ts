@@ -49,6 +49,42 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     destination: "/datasets",
     reason: "Older name for the same datasets overview; previously redirected to /infrastructure-intelligence. Points straight at /datasets to avoid a chain.",
   },
+
+  // ── 2026-09-28: legacy CMS pages retired for unmeasured claims ─────────────
+  // Pre-repositioning Sanity `page` docs rendered by [...slug], live and in the
+  // sitemap, carrying claims the site no longer makes (see lib/fp-status.ts).
+  // Retired rather than patched, with founder sign-off. The CMS docs are left in
+  // place, so removing an entry here brings a page back exactly as it was.
+  {
+    source: "/phishing-alerts",
+    destination: "/alerts",
+    reason: "Claimed a sub-minute detection latency, a two-hour detection window, a thousand-to-ten alert reduction and alert confidence. None is measured.",
+  },
+  {
+    source: "/security-teams",
+    destination: "/alerts",
+    reason: "Claimed a false-positive figure under five percent and a two-hour detection window, both unmeasured. The hero also carried stray text.",
+  },
+  {
+    source: "/incident-intelligence",
+    destination: "/alerts",
+    reason: "Old incident-report explainer from the previous positioning; /alerts documents what an alert contains.",
+  },
+  {
+    source: "/mssp-partner-faq",
+    destination: "/mssp-partners",
+    reason: "Claimed MSSPs can 'detect phishing and brand abuse before email delivery', a detection and lead-time claim held pending FP measurement.",
+  },
+  {
+    source: "/home2",
+    destination: "/",
+    reason: "A second, older homepage that was still indexed.",
+  },
+  {
+    source: "/founding-program",
+    destination: "/pricing",
+    reason: "Published '40-50% below future standard rates' and '40-50% margins', commercial terms the partner pages say are handled privately.",
+  },
 ];
 
 /**
