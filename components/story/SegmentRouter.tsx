@@ -24,9 +24,11 @@ const SEGMENTS = [
     href: "/esp-partners",
   },
   {
-    title: "Insurers",
+    // 2026-09-28: M&A due diligence sits under this tile — same exposure
+    // intelligence, different buyer and moment (not its own segment yet).
+    title: "Insurers & M&A",
     pillar: "Risk intelligence",
-    line: "External exposure and provider concentration, for underwriting and portfolio monitoring.",
+    line: "Exposure and provider concentration for underwriting, portfolio monitoring and M&A due diligence.",
     href: "/cyber-risk-underwriting",
   },
   {

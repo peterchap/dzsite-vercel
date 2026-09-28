@@ -88,6 +88,26 @@ export const content: PageContent = {
     ],
   },
 
+  // 2026-09-28 (homepage brief): M&A cyber due diligence, as a use case under
+  // the same exposure intelligence — not a separate segment. Demonstrated, not
+  // hypothetical: estate and exposure reports have been shown to this buyer and
+  // drawn interest. That is ALL it may claim: no customers, no deals, no
+  // "trusted by acquirers". Scoped as evidence for diligence, never an
+  // acquisition-risk score (SCORE-1). Estate discovery is evidence-based, so
+  // it never promises "every domain".
+  diligence: {
+    eyebrow: "M&A due diligence",
+    title: "An acquirer inherits the whole estate.",
+    body: "The same evidence answers an acquirer's questions before a deal closes: what the target owns, how it is configured, and which providers it depends on. The forgotten parts of an estate are where risk hides, and the target may no longer track them itself.",
+    secondaryBody: "Evidence for diligence, not an acquisition risk score. Each finding shows the record it came from, so it can be raised with the target and checked.",
+    items: [
+      { key: "forgotten-estate", title: "The forgotten estate", text: "Domains the target owns but may no longer track, found through shared certificates, mail and registration records. Discovery is evidence-based: we show what we can link, not a promise of every domain." },
+      { key: "inherited-posture", title: "Inherited posture", text: "Whether email authentication, certificates and DNS controls are in place across the estate, not just on the main domain." },
+      { key: "dependencies", title: "Provider dependencies", text: "Which mail, DNS, hosting and CDN providers the estate relies on, and how much of it sits with each one." },
+      { key: "advisors", title: "For advisors", text: "Diligence firms can run the same assessment across many deals, with every finding in the same format." },
+    ],
+  },
+
   evidence: {
     eyebrow: "Evidence, not a score",
     title: "Every finding can be shown to the broker.",
