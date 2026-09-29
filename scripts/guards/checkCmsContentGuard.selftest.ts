@@ -120,6 +120,9 @@ const claimCases: Array<[string, RegExp]> = [
   ["Sub-60s detection", /Sub-60s detection/],
   ["High-Confidence Alerts", /High-Confidence Alerts/],
   ["Less than 1% false positives", /Less than 1%/],
+  ["Detect phishing infrastructure within ~60 seconds of SSL certificate issuance", /within ~60 seconds of SSL/],
+  ["Zero-hour detection (~60 seconds from SSL issuance)", /~60 seconds from SSL/],
+  ["Within 5 seconds of receiving certificate", /Within 5 seconds of receiving certificate/],
 ];
 for (const [text, found] of claimCases) {
   check(`claim rule catches "${text}"`, () => {
@@ -139,6 +142,8 @@ check("claim rules leave mechanism copy alone", () => {
         "Known-good infrastructure is filtered out before an alert is raised.",
         "Every alert shows its evidence, so you can judge it yourself.",
         "User reports run 85-95% false positives in legacy tools.",
+        "We read new certificates from the public logs as they are published.",
+        "The feed refreshes every 60 seconds from the CT log.",
       ],
     },
   ]);

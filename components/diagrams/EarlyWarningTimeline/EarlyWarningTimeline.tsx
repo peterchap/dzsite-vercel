@@ -55,7 +55,7 @@ export function EarlyWarningTimeline() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Datazag Detection Advantage</p>
             <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-4xl">Detect the threat before it goes live.</h3>
             <p className="mt-4 text-sm leading-6 text-slate-300 md:text-base">
-              Datazag identifies suspicious infrastructure within ~10 seconds of SSL certificate publication, often hours or days before conventional detection pipelines observe active abuse.
+              Datazag reads new SSL certificates as they are published, so suspicious infrastructure can be flagged before it goes live.
             </p>
           </div>
           <div className="rounded-2xl border border-cyan-300/25 bg-cyan-300/[0.08] px-5 py-4 text-center shadow-2xl shadow-cyan-950/20">

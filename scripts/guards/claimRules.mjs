@@ -64,4 +64,12 @@ export const CLAIM_RULES = [
     why: "an unmeasured detection-latency claim (e.g. 'sub-60s detection')" },
   { re: /high[\s-]confidence\s+(?:verdicts?|signals?|alerts?)/i,
     why: "an alert-quality claim — confidence is not measured (lib/fp-status.ts)" },
+
+  // ── Certificate-to-detection latency, 2026-09-29 ────────────────────────
+  // The '~10s … scored alert' rule above needs the word "alert" or "scored". Orphaned
+  // CMS docs carried the same claim without it: "within ~60 seconds of SSL certificate
+  // issuance", "~60 seconds from SSL issuance", "Within 5 seconds of receiving
+  // certificate". Latency is not measured (see the lead-time notes above).
+  { re: /(?:~|≈|within|in)\s*~?\s*\d+\s*(?:s|secs?|seconds?)\b[^.]{0,30}?\b(?:of|from|after)\b[^.]{0,15}?\b(?:SSL|TLS|cert(?:ificate)?s?)\b/i,
+    why: "an unmeasured certificate-to-detection latency claim (e.g. '~60 seconds of SSL issuance')" },
 ];
