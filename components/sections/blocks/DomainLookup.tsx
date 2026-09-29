@@ -31,7 +31,7 @@ export default function DomainLookup({ isDark, title, content, placeholder, butt
             // Store results in sessionStorage to facilitate redirect to the results page
             sessionStorage.setItem('apiResults', JSON.stringify(data));
             sessionStorage.setItem('initialQuery', domain);
-            router.push('/domain-search');
+            router.push('/domain-search'); // retired: 301s to /datasets (lib/legacy-redirects.ts)
         } catch (err) {
             console.error(err);
             setError("Domain not found or API error. Please try again.");

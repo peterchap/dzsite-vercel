@@ -109,6 +109,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     destination: "/observatory",
     reason: "An empty CMS page that rendered 'No content found yet. Add a hero or sections in Studio.' to visitors. Published findings live in the Observatory.",
   },
+  {
+    source: "/domain-search",
+    destination: "/datasets",
+    reason: "Old light-theme lookup-results page ('Domain Intelligence'), reached only from the legacy DomainLookup CMS block, which now appears only on a page that already redirects. Retired 2026-09-29; domain data is offered through /datasets.",
+  },
 ];
 
 /**
