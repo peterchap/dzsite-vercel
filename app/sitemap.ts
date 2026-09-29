@@ -14,6 +14,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *   /benchmark                  — robots: noindex until the metrics mature
  *   /legacy-home                — reference copy of the old homepage
  *   /home, /internet-never-stands-still — server redirects to /
+ *   /domain-search              — retired, 301 to /datasets (legacy-redirects)
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
  *   /enterprise                 — noindex skeleton, deferred (WU-C7)
@@ -37,7 +38,6 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/alerts", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports/sample", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/domain-search", changeFrequency: "monthly", priority: 0.6 },
   { path: "/esp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
