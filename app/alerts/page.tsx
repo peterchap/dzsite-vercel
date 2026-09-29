@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { FP_STATUS } from "@/lib/fp-status";
 import { DOMAINS_DISPLAY } from "@/lib/site-stats";
 
@@ -19,9 +20,9 @@ import { SLUG, content } from "./copy";
 import { DetectionQualitySection } from "@/components/story/DetectionQualitySection";
 
 export const metadata: Metadata = {
-  title: "Threat Alerts — Datazag",
+  title: "Threat intelligence alerts — Datazag",
   description:
-    "Alerts for platform abuse, brand impersonation, suspicious subdomains and attack infrastructure, each with reason codes and evidence for operational workflows.",
+    "Threat intelligence delivered as alerts: infrastructure aimed at your platforms, brands and suppliers, checked against the full domain corpus and delivered with the evidence.",
 };
 
 // Kept hardcoded as a visual specimen of a real alert.
@@ -127,7 +128,7 @@ export default async function AlertsPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
-            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, "Threat Alerts")}</p>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, content.hero.eyebrow!)}</p>
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, content.hero.title!)}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
               {copyText(hero?.body, content.hero.body!)}
@@ -143,6 +144,13 @@ export default async function AlertsPage() {
           <AlertStackPanel />
         </div>
       </section>
+
+      {/* The asset behind every alert, store-backed (intelligence positioning, 2026-09-28). */}
+      <CorpusAdvantage
+        eyebrow="What every alert is checked against"
+        title="The same corpus behind all our intelligence."
+        intro="An alert is only as good as what it is checked against. Candidates are checked against these layers before they reach you."
+      />
 
       <section className="border-t border-white/10 py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

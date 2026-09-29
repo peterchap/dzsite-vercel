@@ -3,16 +3,18 @@ import type { PageContent } from "@/sanity/seedMarketingCopy";
 export const SLUG = "alerts";
 export const TITLE = "Threat Alerts";
 
-// 2026-09-28 — aligned to the site-wide false-positive framing (lib/fp-status.ts).
+// 2026-09-28 — repositioned as THREAT INTELLIGENCE delivered as alerts (intelligence
+// positioning): the alert is the delivery format, the corpus it is checked against
+// is the asset. Also aligned to the site-wide false-positive framing (lib/fp-status.ts).
 // No quality, rate, timing or noise-reduction claims: the FP rate has not been
 // re-measured since the guards went in. Mechanism and alert contents only.
 // NOTE: editors have rewritten alertClasses in Sanity, so do NOT reseed this
 // page wholesale — patch fields (see the 2026-09-28 commit for the pattern).
 export const content: PageContent = {
   hero: {
-    eyebrow: "Threat Alerts",
-    title: "Alerts on suspicious infrastructure, with the evidence attached.",
-    body: "Datazag monitors domains, DNS, certificates and infrastructure changes for signs of platform abuse, brand impersonation and suspicious keyword-led infrastructure.",
+    eyebrow: "Threat intelligence · Alerts",
+    title: "Threat intelligence, delivered as alerts.",
+    body: "Datazag watches domains, certificates, DNS and routing for infrastructure aimed at your platforms, brands and suppliers. Each candidate is checked against our full domain corpus, its DNS history, certificates and networks, and arrives with the evidence.",
     secondaryBody: "Each alert is delivered with reason codes, infrastructure context and a recommended action path so teams can block, investigate, watchlist, escalate or de-escalate with evidence.",
     primaryCta: { label: "Request alert access", href: "/contact" },
     secondaryCta: { label: "Explore alert types", href: "#alert-types" },

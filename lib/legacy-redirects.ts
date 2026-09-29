@@ -85,6 +85,30 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     destination: "/pricing",
     reason: "Published '40-50% below future standard rates' and '40-50% margins', commercial terms the partner pages say are handled privately.",
   },
+
+  // ── 2026-09-28: nav brief page-inventory reconciliation ────────────────────
+  // Pages that were in the sitemap but mapped to no nav item, because each is
+  // a duplicate or an empty stub of a canonical page. One home per concept.
+  {
+    source: "/contact-us",
+    destination: "/contact",
+    reason: "A second contact page (CMS). /contact is the canonical form.",
+  },
+  {
+    source: "/partner",
+    destination: "/mssp-partners",
+    reason: "Legacy partner page selling 'real-time phishing detection'. The partner offer now lives on the segment pages.",
+  },
+  {
+    source: "/health-report",
+    destination: "/#free-report",
+    reason: "A stub that only carried a heading. The free report form lives on the homepage.",
+  },
+  {
+    source: "/q1-2026-platform-impersonation-analysis",
+    destination: "/observatory",
+    reason: "An empty CMS page that rendered 'No content found yet. Add a hero or sections in Studio.' to visitors. Published findings live in the Observatory.",
+  },
 ];
 
 /**

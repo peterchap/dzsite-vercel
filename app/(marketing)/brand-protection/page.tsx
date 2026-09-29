@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import type React from "react";
 
 import { copyCta, copyText, getCopyItem, getCopySection, type MarketingPageCopy, type MarketingCopySection } from "@/lib/marketing-copy";
+import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { FP_STATUS } from "@/lib/fp-status";
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 
 export const metadata: Metadata = {
-  title: "Brand Protection — Datazag",
+  title: "Brand Protection: brand intelligence — Datazag",
   description:
-    "Brand impersonation detection with staged alerts, updateable incidents, evidence packs, abuse contacts, de-escalation and customer-managed response workflows.",
+    "Brand intelligence: see the infrastructure using your brand, as a case that updates as evidence appears, with evidence packs, abuse contacts and de-escalation.",
 };
 
 const alertStages = [
@@ -86,7 +87,7 @@ const deliveredObjects = [
 ];
 
 const incidentStates = [
-  { key: "new", title: "New", text: "First detected before or after DNS exists and awaiting routing or review." },
+  { key: "new", title: "New", text: "First seen, before or after DNS exists, and awaiting routing or review." },
   { key: "polling", title: "Polling", text: "No DNS records or no website yet. Datazag keeps checking for DNS, hosting, website and content changes." },
   { key: "monitoring", title: "Monitoring", text: "Infrastructure that is not yet ready to act on, watched for activation, DNS, hosting or content changes." },
   { key: "investigating", title: "Investigating", text: "Analyst, customer or partner review is needed before action." },
@@ -108,7 +109,7 @@ const serviceBoundary = [
   {
     key: "datazag-provides",
     title: "Datazag provides",
-    text: "Detection, staged alerts, polling, incident updates, reason codes, evidence pack, abuse contacts and lifecycle updates.",
+    text: "Findings, staged alerts, polling, incident updates, reason codes, evidence pack, abuse contacts and lifecycle updates.",
   },
   {
     key: "customer-manages",
@@ -215,7 +216,7 @@ function IncidentPanel() {
       <div className="rounded-[1.5rem] border border-cyan-300/25 bg-cyan-300/[0.08] p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Example incident</p>
         <h3 className="mt-3 text-2xl font-semibold text-white">INC-1782384515-13ec9b</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-300">Brand impersonation detected before DNS. Polling active. The alert will update when DNS and website evidence appears.</p>
+        <p className="mt-3 text-sm leading-6 text-slate-300">Lookalike name found before DNS. Polling active. The alert will update when DNS and website evidence appears.</p>
         <div className="mt-5 grid gap-2 sm:grid-cols-2">
           <div className="rounded-xl border border-cyan-300/20 bg-[#030619]/60 px-4 py-3 text-sm font-semibold text-cyan-50">Polling DNS + website</div>
           <div className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white">De-escalate any time</div>
@@ -268,10 +269,10 @@ export default async function BrandProtectionPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-center lg:px-8">
           <div>
-            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, "Brand Protection")}</p>
-            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, "Detect brand impersonation and update the alert as evidence appears.")}</h1>
+            <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">{copyText(hero?.eyebrow, "Brand intelligence · Brand Protection")}</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">{copyText(hero?.title, "See the infrastructure using your brand.")}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              {copyText(hero?.body, "Datazag Brand Protection detects brand impersonation in stages: before DNS exists, when DNS and infrastructure appear, when a website becomes visible, and when the customer confirms or de-escalates the finding.")}
+              {copyText(hero?.body, "Datazag watches new domains, certificates, DNS and hosting for your brands, products and executives. Each finding opens a case that updates in stages: when a name first appears, when DNS and infrastructure appear, when a website goes live, and when you confirm or de-escalate it.")}
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
               {copyText(hero?.secondaryBody, "Datazag is not a takedown service. We provide staged alerts, the evidence pack, abuse contacts and incident updates so your organization or authorized partner can manage blocking, abuse reporting, legal review, takedown requests and de-escalation.")}
@@ -284,6 +285,13 @@ export default async function BrandProtectionPage() {
           <IncidentPanel />
         </div>
       </section>
+
+      {/* The asset behind every finding, store-backed (intelligence positioning, 2026-09-28). */}
+      <CorpusAdvantage
+        eyebrow="What your brand is checked against"
+        title="The same corpus behind all our intelligence."
+        intro="Lookalike names are easy to find. Knowing which ones matter takes context. Every finding is placed against these layers."
+      />
 
       <section id="alert-lifecycle" className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -318,8 +326,8 @@ export default async function BrandProtectionPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow={copyText(serviceBoundarySection?.eyebrow, "Service boundary")}
-            title={copyText(serviceBoundarySection?.title, "Detection and evidence, not outsourced takedown.")}
-            body={copyText(serviceBoundarySection?.body, "Datazag identifies brand impersonation, maintains the incident record and supplies the evidence pack and abuse contacts. The organization or its authorized partner remains in control of provider contact, legal decisions, takedown requests and customer communications.")}
+            title={copyText(serviceBoundarySection?.title, "Intelligence and evidence, not outsourced takedown.")}
+            body={copyText(serviceBoundarySection?.body, "Datazag finds infrastructure using your brand, maintains the incident record and supplies the evidence pack and abuse contacts. The organization or its authorized partner remains in control of provider contact, legal decisions, takedown requests and customer communications.")}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {resolvedServiceBoundary.map((item) => (
@@ -384,7 +392,7 @@ export default async function BrandProtectionPage() {
           <SectionHeader
             eyebrow={copyText(alertDeliverables?.eyebrow, "Alert deliverables")}
             title={copyText(alertDeliverables?.title, "Four outputs from one alert workflow.")}
-            body={copyText(alertDeliverables?.body, "The same underlying detection can produce an operational incident, an evidence pack, lifecycle updates and a de-escalation trail.")}
+            body={copyText(alertDeliverables?.body, "The same finding can produce an operational incident, an evidence pack, lifecycle updates and a de-escalation trail.")}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {resolvedDeliveredObjects.map((object) => (
