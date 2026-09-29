@@ -67,28 +67,14 @@ const CLAIMS: Rule[] = (CLAIM_RULES as Array<{ re: RegExp; why: string }>).map((
  */
 export type UnrenderedDoc = { id: string; reason: string; route?: string; unused?: string[] };
 
+// The pricingPage, howItWorksHero and brand-protection page docs were listed here
+// until 2026-09-29, when they were deleted from Sanity. page.home stays: the Studio
+// "Home" pane and /api/check read it by ID.
 export const UNRENDERED_DOCS: UnrenderedDoc[] = [
-  {
-    id: "00e3bc8d-733e-4666-ad7f-00547935342b",
-    reason: "pricingPage doc. No query reads the pricingPage type; /pricing is a static route.",
-    route: "app/(marketing)/pricing/page.tsx",
-    unused: ["pricingPage"],
-  },
-  {
-    id: "b132116f-70c6-4de8-ae45-65142ffe17e4",
-    reason: "howItWorksHero doc. Its queries exist in sanity/queries.ts, but no page imports them; /how-it-works reads marketingPageCopy.",
-    route: "app/(marketing)/how-it-works/page.tsx",
-    unused: ["howItWorksHero", "howItWorksPageDataQuery"],
-  },
   {
     id: "page.home",
     reason: "page doc with slug 'home'. app/home/page.tsx redirects /home to /, and / reads homepageAtmosphere.",
     route: "app/home/page.tsx",
-  },
-  {
-    id: "28c0881a-6c20-44bf-96ab-841302c7f5a5",
-    reason: "page doc with slug 'brand-protection'. The static /brand-protection route wins over [...slug] and reads marketingPageCopy.",
-    route: "app/(marketing)/brand-protection/page.tsx",
   },
 ];
 
