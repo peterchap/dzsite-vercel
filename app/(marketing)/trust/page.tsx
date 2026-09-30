@@ -25,7 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "Trust & Governance — Datazag",
   description:
-    "How Datazag handles observable infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts, APIs and data shares.",
+    "How Datazag handles infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts, APIs and data shares.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {

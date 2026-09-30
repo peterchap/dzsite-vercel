@@ -17,9 +17,9 @@ import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { SLUG, content } from "./copy";
 
 export const metadata: Metadata = {
-  title: "MSSP Partners: your service in front, our intelligence behind it — Datazag",
+  title: "Threat intelligence for MSSPs — Datazag",
   description:
-    "Build managed services on the domain corpus, DNS history, certificate transparency, BGP and provider attribution few organizations hold. SOC enrichment, cross-client exposure and email security reviews, under your brand.",
+    "Build managed services on a domain corpus, DNS history, certificates, BGP and provider data few hold. SOC enrichment and email reviews, under your brand.",
 };
 
 // Hardcoded fallbacks preserve the exact current copy when no marketingPageCopy

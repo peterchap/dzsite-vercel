@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Mail, ShieldCheck, HeartHandshake, Eye } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Responsible Disclosure | Datazag",
+    title: "Responsible Disclosure — Datazag",
     description: "Datazag takes the security of its systems and data seriously and welcomes responsible disclosure of security vulnerabilities.",
 };
 

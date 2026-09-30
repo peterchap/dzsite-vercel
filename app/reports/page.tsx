@@ -18,7 +18,7 @@ import { SLUG, content } from "./copy";
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "Start free with the Domain Health Report on one domain. The Domain Risk Report gives the full single-domain assessment; the Cross-Estate Domain Risk Report finds the estate you actually own and the systemic risk across it.",
+    "Start free with a Domain Health Report on one domain. Go deeper with a Domain Risk Report, or map the estate you own with a Cross-Estate Domain Risk Report.",
 };
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report

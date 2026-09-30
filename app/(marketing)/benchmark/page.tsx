@@ -20,7 +20,7 @@ import type { ReactNode } from "react";
  */
 
 export const metadata: Metadata = {
-  title: "Benchmark Datazag Against Your Current Feeds | Datazag",
+  title: "Benchmark Datazag against your current feeds — Datazag",
   description:
     "A fixed-scope evaluation: your protected platforms, brands and feed history in — a lead-time and unique-detection benchmark report out. The meeting ends with evidence, not a demonstration.",
   // GATE: unlinked review page — flip to index,follow when WU28-B §4 clears.

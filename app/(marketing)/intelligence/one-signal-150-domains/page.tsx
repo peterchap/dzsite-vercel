@@ -9,9 +9,9 @@ export const dynamic = "force-static";
 export function generateMetadata(): Metadata {
   return {
     metadataBase: new URL(CASE_STUDY.siteUrl),
-    title: "One Signal, 150 Domains — Infrastructure Intelligence Case Study | Datazag",
+    title: "One Signal, 150 Domains: a case study — Datazag",
     description:
-      "One certificate → a 150-domain malicious hosting cluster → 0 in public domain feeds. How Datazag pivoted a single signal into an entire criminal hosting operation before any feed caught it.",
+      "One certificate led to a 150-domain malicious hosting cluster that was in no public domain feed. How Datazag followed a single signal to the whole operation.",
     alternates: { canonical: caseStudyUrl() },
     robots: { index: true, follow: true },
     openGraph: {

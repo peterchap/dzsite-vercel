@@ -19,7 +19,7 @@ import { SLUG, content } from "./copy";
 export const metadata: Metadata = {
   title: "Email intelligence for ESPs — Datazag",
   description:
-    "Email intelligence for ESPs: which domains can take mail, who runs their mail, which are parked and what infrastructure sits behind them — with the evidence, under your brand.",
+    "Email intelligence for ESPs: which domains take mail, who runs their mail, which are parked and what sits behind them, with the evidence, under your brand.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {

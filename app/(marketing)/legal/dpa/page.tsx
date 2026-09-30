@@ -6,7 +6,7 @@ import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
 import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
-    title: "Data Processing Agreement | Datazag",
+    title: "Data Processing Agreement — Datazag",
     description: "This Data Processing Agreement (“DPA”) describes how Datazag processes personal data on behalf of customers in accordance with applicable data protection laws.",
 };
 

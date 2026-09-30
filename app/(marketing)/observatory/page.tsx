@@ -22,7 +22,7 @@ import { loadObservatoryFigures, OBSERVATORY_URL } from "@/lib/observatory-figur
 export const metadata: Metadata = {
   title: "The Datazag Observatory — open internet measurements",
   description:
-    "What the Datazag Observatory measures, over what population, how often, why it is published openly, and how to cite it. Daily statistics on email authentication, routing hygiene, hosting concentration, domain parking and impersonation.",
+    "Open, daily internet measurements: email authentication, routing hygiene, hosting concentration, parking and impersonation. What we measure and how to cite it.",
   alternates: { canonical: "/observatory" },
 };
 

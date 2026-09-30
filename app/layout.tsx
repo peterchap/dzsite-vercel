@@ -27,6 +27,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "./" },
   title: "Datazag — Infrastructure Intelligence",
   description:
     "Infrastructure Intelligence for external domain, DNS, certificate, hosting, provider and platform risk.",
