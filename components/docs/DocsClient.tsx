@@ -46,10 +46,10 @@ const PARAMS = [
 ];
 
 const FIELDS = [
-    { key: "risk_score", type: "integer", desc: "Overall risk rating (0-100). Higher score indicates higher probability of abuse." },
-    { key: "flags.is_phishing", type: "boolean", desc: "True if flagged on real-time phishing intelligence blacklists." },
+    { key: "risk_score", type: "integer", desc: "Risk rating (0–100). A higher score means more risk signals are present. It is not a calibrated probability." },
+    { key: "flags.is_phishing", type: "boolean", desc: "True if the domain appears in third-party phishing intelligence." },
     { key: "flags.is_disposable", type: "boolean", desc: "True if domain belongs to a temporary or disposable email provider." },
-    { key: "flags.is_mailable", type: "boolean", desc: "Indicates if the domain is suitable for sending and receiving legitimate email." },
+    { key: "flags.is_mailable", type: "boolean", desc: "True if the domain has a working mail setup: valid MX records, and no disposable-provider or malicious flags." },
     { key: "flags.is_mailbox_provider", type: "boolean", desc: "True for well-known providers like Gmail, Outlook, Proton, etc." },
     { key: "flags.is_parked", type: "boolean", desc: "True if the domain resolves to a generic parking page or is for sale." },
 ];
@@ -207,8 +207,8 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 The Datazag API is a RESTful interface onto the same infrastructure graph that produces
                                 Datazag reports and alerts. Every field below is derived from public internet infrastructure —
                                 nameservers, mail routing, email-authentication records, addressing and network placement —
-                                rather than from a static list. KYC, fraud and deliverability are things teams DO with it;
-                                they are not what it is.
+                                rather than from a static list. It describes a domain. What you decide about that domain
+                                stays your call.
                             </p>
                             {/* WU-C3: the figure states its own population. This page previously
                                 carried two different corpus numbers eleven lines apart, which a
@@ -230,15 +230,15 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                     <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-blue-600 transition-colors">
                                         <Shield className="h-6 w-6 text-blue-600 group-hover:text-white" />
                                     </div>
-                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Fraud Prevention</h4>
-                                    <p className="text-sm text-slate-500 leading-relaxed">Real-time domain scoring (0–100) identifies phishing, disposable, and typo-squatted domains instantly.</p>
+                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Infrastructure</h4>
+                                    <p className="text-sm text-slate-500 leading-relaxed">Where a domain lives: its nameserver, hosting address and country, and whether it resolves at all.</p>
                                 </div>
                                 <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 group hover:border-emerald-100 transition-colors">
                                     <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-emerald-600 transition-colors">
                                         <Zap className="h-6 w-6 text-emerald-600 group-hover:text-white" />
                                     </div>
-                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Deliverability Intelligence</h4>
-                                    <p className="text-sm text-slate-500 leading-relaxed">Validate SPF/DMARC health and categorize mailbox providers to optimize marketing ROI.</p>
+                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Mail and authentication</h4>
+                                    <p className="text-sm text-slate-500 leading-relaxed">Whether a domain publishes SPF and DMARC, and whether it runs its own mail or sits on a mailbox provider.</p>
                                 </div>
                             </div>
                         </div>
@@ -363,33 +363,32 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                     text={<>Flag for security audit if <code className="font-bold">risk_score &ge; 70</code> or the domain is new (&lt; 30 days).</>}
                                 />
                                 <LogicCard
-                                    title="Preferred"
+                                    title="Positive signal"
                                     color="emerald"
                                     icon={<CheckCircleIcon />}
-                                    text={<>Allow-lists users where <code className="font-bold">has_spf</code> and <code className="font-bold">has_dmarc</code> are both true.</>}
+                                    text={<>True <code className="font-bold">has_spf</code> and <code className="font-bold">has_dmarc</code> show a maintained domain. They do not show a trustworthy owner — attackers publish them too.</>}
                                 />
                             </div>
                         </div>
                     </Section>
 
                     <Section id="use-cases" title="What teams build with it">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            <div className="space-y-6">
-                                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold border border-blue-100">01</div>
-                                <h3 className="text-2xl font-extrabold text-slate-900">KYC & Compliance</h3>
-                                <p className="text-slate-500 leading-relaxed">
-                                    Prevent platform abuse by blocking domains typically associated with botnets and temporary accounts.
-                                    Use the global rank signal to verify the authority of corporate email signups.
-                                </p>
-                            </div>
-                            <div className="space-y-6">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-700 font-bold border border-emerald-100">02</div>
-                                <h3 className="text-2xl font-extrabold text-slate-900">Revenue Operations</h3>
-                                <p className="text-slate-500 leading-relaxed">
-                                    Automatically enrich inbound leads with infrastructure health. Discard un-mailable leads before
-                                    they touch your CRM to maintain high IP reputation and reduce bounce rates.
-                                </p>
-                            </div>
+                        {/* The KYC and lead-cleansing cards sold the previous company. Datazag
+                            sells to the vendors who do KYC (see GONE_ROUTES in lib/legacy-redirects.ts). */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                            <UseCase n="01" title="Threat triage">
+                                Enrich a suspicious domain in a SOC or investigation queue with its nameserver, hosting and
+                                phishing flag. Keep the response as the record of why it was escalated.
+                            </UseCase>
+                            <UseCase n="02" title="Sender checks">
+                                Email platforms check the domains their senders use: is mail authentication published, and is
+                                the domain on a disposable provider? The flags feed your policy. They are not the policy.
+                            </UseCase>
+                            <UseCase n="03" title="Portfolio risk">
+                                Insurers and diligence teams check many domains at once. For more than a few thousand, use the{" "}
+                                <a href="#datasets" className="font-semibold text-slate-700 hover:text-blue-600">datasets</a>{" "}
+                                instead of the API.
+                            </UseCase>
                         </div>
                     </Section>
 
@@ -407,11 +406,7 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 <div className="flex flex-col justify-center space-y-6 p-6">
                                     <div className="space-y-2">
                                         <h5 className="font-bold text-slate-900">Default Rate Limits</h5>
-                                        <p className="text-slate-500 text-sm">5,000 requests per hour per key. For bulk cleaning, we recommend our Snowflake sharing layer.</p>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <h5 className="font-bold text-slate-900">Global Coverage</h5>
-                                        <p className="text-slate-500 text-sm">Lookup performance is consistent across USA, EU, and APAC via our edge-caching layer.</p>
+                                        <p className="text-slate-500 text-sm">5,000 requests per hour per key. For bulk work, use the datasets in your own warehouse.</p>
                                     </div>
                                 </div>
                             </div>
@@ -596,14 +591,14 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                             />
                             <FaqItem
                                 question="Do you support subdomains?"
-                                answer="Full hostnames are supported. The API intelligently analyzes the specific host while cross-referencing parent domain risk signals for a complete profile."
+                                answer="Yes, full hostnames work. The response describes the host you ask about, with signals from its parent domain where they apply."
                             />
                             <FaqItem
                                 question="Is batch processing available?"
-                                answer="Yes. For processing millions of records, we provide native Snowflake Data Shares, S3 Parquet feeds, and Google BigQuery datasets."
+                                answer="Yes. For large volumes, use the datasets: the same data as tables in your own warehouse. The datasets section shows where each one is available."
                             />
                             <FaqItem
-                                question="What identifies the 'is_mailable' flag?"
+                                question="What sets the 'is_mailable' flag?"
                                 answer="It's a synthesis of MX record validity, SPF/DMARC health, and the absence of malicious flags or disposable provider associations."
                             />
                         </div>
@@ -615,6 +610,14 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
 }
 
 // --- Reusable Internal Components ---
+
+const UseCase = ({ n, title, children }: { n: string, title: string, children: React.ReactNode }) => (
+    <div className="space-y-5">
+        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-700 font-bold border border-slate-200">{n}</div>
+        <h3 className="text-2xl font-extrabold text-slate-900">{title}</h3>
+        <p className="text-slate-500 leading-relaxed">{children}</p>
+    </div>
+);
 
 const Section = ({ id, title, children }: { id: string, title: string, children: React.ReactNode }) => (
     <section id={id} className="scroll-mt-40 group">
