@@ -119,7 +119,7 @@ export const content: PageContent = {
     eyebrow: "Compound exposure",
     title: "One provider for DNS and mail is one failure that removes two functions.",
     body: "That is worse than two separate concentrations of the same size. Datazag reports it as its own finding, so it is not hidden inside two provider shares.",
-    secondaryBody: "Concentration does not depend on refresh speed. Enterprise DNS changes rarely, so a nameserver record observed two months ago is almost certainly still correct.",
+    secondaryBody: "Concentration does not depend on refresh speed. Enterprise DNS changes rarely, so a nameserver record observed a month ago is almost certainly still correct.",
   },
 
   reverse: {
@@ -153,7 +153,10 @@ export const content: PageContent = {
     items: [
       { key: "hourly", title: "Hourly", text: "Internet infrastructure: routing and network data." },
       { key: "daily", title: "Daily", text: "New, retiring and high-risk domains, and subdomains found in new certificates." },
-      { key: "bimonthly", title: "Every two months", text: "Stable attributes that rarely change, such as nameservers and mail providers." },
+      // Key kept as "bimonthly": it is the CMS itemKey. The text is "at least monthly" because
+      // that is the pipeline's refresh target (riskscore lake_corpus.py) and what was measured:
+      // p95 record age was 31.3 days on 2026-09-30 (coverage.json record_age_p95_hours).
+      { key: "bimonthly", title: "At least monthly", text: "Stable attributes that rarely change, such as nameservers and mail providers." },
     ],
   },
 
