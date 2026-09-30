@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 
 
 type PredictiveLayerSectionProps = {
@@ -18,6 +18,7 @@ type PredictiveLayerSectionProps = {
 
 
 export default function PredictiveLayerSection(props: PredictiveLayerSectionProps) {
+  const { DOMAINS_DISPLAY } = useSiteStats();
   const {
     anchor = "predictive-layer",
     headline = "Datazag is the predictive layer alongside your stack.",

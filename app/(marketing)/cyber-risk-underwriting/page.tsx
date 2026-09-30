@@ -17,7 +17,8 @@ import { getDatasets } from "@/lib/datasets/load";
 import { DELIVERY_POSTURES } from "@/lib/trust-posture";
 import { formatLegalDate } from "@/lib/legal-entity";
 import { SLUG, content } from "./copy";
-import { RECORD_AGE, isRecordAgePublishable } from "./freshness";
+import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 export const metadata: Metadata = {
   title: "Cyber insurance risk intelligence: portfolio concentration and underwriting — Datazag",
@@ -191,6 +192,8 @@ export default async function CyberRiskUnderwritingPage() {
   // Internet-wide concentration, from the Observatory store (never typed). Null → the callout is omitted.
   const concentrationFigures = (await loadIntelligenceFigures())?.concentration ?? null;
   // Link a dataset row to its doc page only when that page resolves — the same rule /datasets uses.
+  // Measured record age, from the live feed (hourly). Renders nothing until the feed carries it.
+  const RECORD_AGE = recordAgeFrom(await getSiteStats());
   const docSlugs = new Set((await getDatasets().catch(() => [])).map((d) => d.slug));
 
   const section = (key: string) => getCopySection(pageCopy, key);

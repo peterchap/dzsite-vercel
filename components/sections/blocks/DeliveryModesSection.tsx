@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Code, ArrowRight } from "lucide-react";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 
 type DeliveryMode = {
   phase: string;
@@ -58,6 +58,7 @@ const getAccentStyles = (color: string) => {
 };
 
 export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
+  const { DOMAINS_DISPLAY } = useSiteStats();
   const {
     anchor = "delivery-modes",
     headline = "One engine. Three ways to put it to work.",

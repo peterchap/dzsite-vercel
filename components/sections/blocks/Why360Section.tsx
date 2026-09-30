@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Database, Activity, Shield } from "lucide-react";
 import { PortableText } from '@portabletext/react';
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 
 type DataLayer = {
   title: string;
@@ -36,6 +36,7 @@ const layerThemes = [
 ];
 
 export default function Why360Section(props: Why360SectionProps) {
+  const { DOMAINS_DISPLAY } = useSiteStats();
   const {
     eyebrow = "THE STRATEGY",
     sectionHeadline = "Why 360? The threat outside, the surface inside.",

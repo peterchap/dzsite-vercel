@@ -1,5 +1,5 @@
 import { asOfLabel } from "@/lib/live-activity-guard";
-import { publishedStats, statsAsOfLabel } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * COVERAGE — how much of the internet Datazag actually observes.
@@ -36,11 +36,12 @@ import { publishedStats, statsAsOfLabel } from "@/lib/site-stats";
  * producer could not give us is absent rather than stale — and if none are
  * publishable, the whole section renders nothing.
  */
-export function CoverageStrip() {
-  const stats = publishedStats();
+export async function CoverageStrip() {
+  const live = await getSiteStats();
+  const stats = live.publishedStats;
   if (stats.length === 0) return null;
 
-  const measured = statsAsOfLabel();
+  const measured = live.statsAsOfLabel;
 
   return (
     <section className="relative border-t border-white/10 py-16 md:py-20">

@@ -1,4 +1,4 @@
-import { feedStats } from "@/lib/site-stats.generated";
+import type { SiteStats } from "@/lib/site-stats-core";
 
 /**
  * MEASURED RECORD AGE — the freshness figure the insurer page publishes
@@ -11,8 +11,8 @@ import { feedStats } from "@/lib/site-stats.generated";
  * `record_age_p50_hours` / `record_age_p95_hours`): time since each domain in
  * the measured corpus was last resolved, same population as the domain count.
  *
- * NEVER TYPED. The values arrive through scripts/refreshSiteStats.mjs like
- * every other published figure. While the feed does not carry them — or
+ * NEVER TYPED. The values arrive with every other published figure, from the
+ * live feed at request time (lib/site-stats-live.ts, hourly). While the feed does not carry them — or
  * either is out of bounds — the page renders nothing. Same rule as
  * lib/legal-entity.ts: unknown is absent, never a placeholder or estimate.
  */
@@ -38,11 +38,15 @@ export function formatAge(hours: number | null): string | null {
   return `${Math.ceil(hours / 24)} days`;
 }
 
-export const RECORD_AGE: RecordAge = {
-  median: formatAge(feedStats.recordAgeP50Hours),
-  p95: formatAge(feedStats.recordAgeP95Hours),
-  measuredAt: feedStats.asOf.recordAge ? feedStats.asOf.recordAge.slice(0, 10) : null,
-};
+/** The record-age line for a stats bundle — pass the live one from getSiteStats(). */
+export function recordAgeFrom(stats: SiteStats): RecordAge {
+  const { p50Hours, p95Hours, asOf } = stats.recordAge;
+  return {
+    median: formatAge(p50Hours),
+    p95: formatAge(p95Hours),
+    measuredAt: asOf ? asOf.slice(0, 10) : null,
+  };
+}
 
 export function isRecordAgePublishable(age: RecordAge): age is { median: string; p95: string; measuredAt: string } {
   return Boolean(age.median && age.p95 && age.measuredAt);

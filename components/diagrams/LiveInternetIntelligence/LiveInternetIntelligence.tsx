@@ -4,7 +4,7 @@ import {
   isStale,
   safeSnapshotLabel,
 } from "@/lib/live-activity-guard";
-import { publishedStats } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 // activity.json also carries `alerts` (brand + platform impersonation counts).
 // It is deliberately not surfaced: platform impersonations are dominated by
@@ -119,7 +119,7 @@ export async function LiveInternetIntelligence() {
   // the producer could not give us is absent from this panel entirely — it does
   // not render as zero, and it does not render a constant from a previous
   // reconciliation. An empty tile is honest; a stale one is not.
-  const coverageMetrics = publishedStats().map((stat) => ({
+  const coverageMetrics = (await getSiteStats()).publishedStats.map((stat) => ({
     value: stat.display,
     label: stat.label,
     asOf: asOfLabel(stat.measuredAt),

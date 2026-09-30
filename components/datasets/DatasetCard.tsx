@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { isAvailable, type CatalogEntry, type RouteStatus } from "@/lib/datasets/catalog";
-import { DISPLAY_STATS, STATS_AS_OF } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * One card on the /datasets index. Renders a catalog entry and nothing else:
@@ -44,7 +44,8 @@ function RouteRow({ name, route }: { name: string; route: RouteStatus }) {
   );
 }
 
-export function DatasetCard({ entry, hasDocPage }: { entry: CatalogEntry; hasDocPage: boolean }) {
+export async function DatasetCard({ entry, hasDocPage }: { entry: CatalogEntry; hasDocPage: boolean }) {
+  const { DISPLAY_STATS, STATS_AS_OF } = await getSiteStats();
   const available = isAvailable(entry);
   const coverage = (entry.coverage ?? []).map((c) => ({
     ...c,

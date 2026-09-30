@@ -1,4 +1,4 @@
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * Step 2 of the enterprise journey (WU28-A §3.3): "We identify what's relevant
@@ -24,7 +24,8 @@ const SCOPE_INPUTS = [
 // 2026-09-28: "Scored" removed — calibrated scoring is gated on SCORE-1 (see lib/fp-status.ts for the framing).
 const WATCHLIST_TRAITS = ["Evidence attached", "Reason codes", "Confidence tiers", "Deduplicated"] as const;
 
-export function RelevanceSection() {
+export async function RelevanceSection() {
+  const { DOMAINS_DISPLAY } = await getSiteStats();
   return (
     <section className="relative border-t border-white/10 py-20 md:py-28">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(55,222,245,0.09),transparent_32%),radial-gradient(circle_at_84%_74%,rgba(139,92,246,0.08),transparent_34%)]" />

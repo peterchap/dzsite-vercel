@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from "react";
-import { DOMAINS_DISPLAY, PUBLISHED_STATS } from "@/lib/site-stats";
+import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 import type { DatasetSummary } from "@/lib/datasets/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -116,6 +116,8 @@ const TOC = [
 ];
 
 export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
+    // Live coverage figures (hourly), from the provider in app/layout.tsx.
+    const { DOMAINS_DISPLAY, PUBLISHED_STATS } = useSiteStats();
     const curl = useMemo(() => `curl -H "X-API-Key: YOUR_API_KEY" https://api.datazag.com/api/example.com`, []);
     const python = useMemo(() => `import requests\n\nurl = "https://api.datazag.com/api/example.com"\nheaders = {"X-API-Key": "YOUR_API_KEY"}\nr = requests.get(url, headers=headers, timeout=30)\nprint(r.json())`, []);
     const node = useMemo(() => `const url = 'https://api.datazag.com/api/example.com';\nconst response = await fetch(url, {\n  headers: { 'X-API-Key': 'YOUR_API_KEY' }\n});\nconsole.log(await response.json());`, []);

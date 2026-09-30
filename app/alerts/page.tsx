@@ -3,7 +3,7 @@ import type React from "react";
 
 import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { FP_STATUS } from "@/lib/fp-status";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 import {
   copyCta,
@@ -38,9 +38,10 @@ const alertExampleFields = [
   ["Confidence", "48/100"],
 ];
 
-const alertExampleReasons = [
+// The corpus figure is read at render so it follows the live feed.
+const alertExampleReasons = (domains: string) => [
   "Platform impersonation targeting 'exchange' (Category: Microsoft 365)",
-  `Domain not found in known ${DOMAINS_DISPLAY} corpus`,
+  `Domain not found in known ${domains} corpus`,
   "infra: ELEVATED_NETWORK_TYPE",
   "infra: CERTSTREAM_ANOMALY",
   "infra: MALICIOUS_IP_DENSITY",
@@ -85,6 +86,7 @@ function AlertStackPanel() {
 }
 
 export default async function AlertsPage() {
+  const { DOMAINS_DISPLAY } = await getSiteStats();
   const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
 
   const hero = getCopySection(pageCopy, "hero");
@@ -247,7 +249,7 @@ export default async function AlertsPage() {
               <div className="border-t border-white/10 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Reason codes</p>
                 <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-300">
-                  {alertExampleReasons.map((reason) => <li key={reason}>• {reason}</li>)}
+                  {alertExampleReasons(DOMAINS_DISPLAY).map((reason) => <li key={reason}>• {reason}</li>)}
                 </ul>
               </div>
               <div className="border-t border-white/10 bg-cyan-300/[0.06] p-5">

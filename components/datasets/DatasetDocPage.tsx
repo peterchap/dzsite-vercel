@@ -8,6 +8,7 @@ import {
   resolveStatTokens,
   resolveStatTokensAll,
 } from "@/lib/datasets/stat-tokens";
+import { getSiteStats } from "@/lib/site-stats-live";
 import type { DatasetDoc } from "@/lib/datasets/types";
 
 /**
@@ -22,13 +23,6 @@ import type { DatasetDoc } from "@/lib/datasets/types";
  * lib/site-stats.ts, and no figure is ever typed into copy by hand.
  */
 
-/** Resolve tokens and flag any figure an editor typed instead of tokenizing. */
-function copy(text: string | undefined | null, where: string): string | undefined {
-  if (typeof text !== "string") return undefined;
-  const resolved = resolveStatTokens(text);
-  assertNoRawFigures(text, where);
-  return resolved;
-}
 
 function SectionHeading({
   num,
@@ -49,10 +43,20 @@ function SectionHeading({
   );
 }
 
-export function DatasetDocPage({ dataset }: { dataset: DatasetDoc }) {
+export async function DatasetDocPage({ dataset }: { dataset: DatasetDoc }) {
   const d = dataset;
+  // Live figures (hourly) — tokens resolve against the same bundle every other surface renders.
+  const stats = await getSiteStats();
 
-  const overview = resolveStatTokensAll(d.overview);
+  /** Resolve tokens and flag any figure an editor typed instead of tokenizing. */
+  const copy = (text: string | undefined | null, where: string): string | undefined => {
+    if (typeof text !== "string") return undefined;
+    const resolved = resolveStatTokens(text, stats);
+    assertNoRawFigures(text, where);
+    return resolved;
+  };
+
+  const overview = resolveStatTokensAll(d.overview, stats);
   d.overview?.forEach((p, i) => assertNoRawFigures(p, `${d.slug} → overview[${i}]`));
 
   const facts = (d.facts ?? []).map((f, i) => ({
