@@ -10,7 +10,7 @@ import {
 export const metadata: Metadata = {
   title: "Contact — Datazag",
   description:
-    "Contact Datazag about reports, alerts, brand protection, infrastructure intelligence, API access, cloud data products, partnerships and marketplace private offers.",
+    "Contact Datazag about reports, alerts, brand protection, API access, cloud datasets, partnerships and marketplace private offers.",
 };
 
 const enquiryRoutes = [

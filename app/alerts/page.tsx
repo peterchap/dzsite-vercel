@@ -22,7 +22,7 @@ import { DetectionQualitySection } from "@/components/story/DetectionQualitySect
 export const metadata: Metadata = {
   title: "Threat intelligence alerts — Datazag",
   description:
-    "Threat intelligence delivered as alerts: infrastructure aimed at your platforms, brands and suppliers, checked against the full domain corpus and delivered with the evidence.",
+    "Threat intelligence as alerts: infrastructure aimed at your platforms, brands and suppliers, checked against the full domain corpus and sent with the evidence.",
 };
 
 // Kept hardcoded as a visual specimen of a real alert.

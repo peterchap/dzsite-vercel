@@ -6,7 +6,7 @@ import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
 import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | Datazag",
+    title: "Privacy Policy — Datazag",
     description: "This Privacy Policy explains how Datazag collects, uses, and protects personal data when you interact with our website, platform, and services.",
 };
 

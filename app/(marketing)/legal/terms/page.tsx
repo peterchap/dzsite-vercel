@@ -6,7 +6,7 @@ import { EntityBlock, LegalDateline } from "@/components/legal/EntityBlock";
 import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
-    title: "Terms of Service | Datazag",
+    title: "Terms of Service — Datazag",
     description: "These Terms govern access to and use of Datazag’s products, services, datasets, and APIs.",
 };
 

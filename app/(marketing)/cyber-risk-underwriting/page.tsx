@@ -21,9 +21,9 @@ import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
 import { getSiteStats } from "@/lib/site-stats-live";
 
 export const metadata: Metadata = {
-  title: "Cyber insurance risk intelligence: portfolio concentration and underwriting — Datazag",
+  title: "Cyber insurance risk intelligence — Datazag",
   description:
-    "See which providers your insureds share, weighted by resilience and exit friction, and which policies are exposed when one fails. Pre-bind assessment and in-period review from public infrastructure, with the evidence for every finding.",
+    "See which providers your insureds share, weighted by resilience and exit friction, and which policies are exposed when one fails, with evidence for each.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {

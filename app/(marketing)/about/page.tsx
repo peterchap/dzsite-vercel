@@ -15,7 +15,7 @@ import { SLUG, content } from "./copy";
 export const metadata: Metadata = {
   title: "About — Datazag",
   description:
-    "Datazag builds infrastructure intelligence for external domain, DNS, certificate, hosting and provider risk, delivered through reports, alerts, APIs, datasets and partner services.",
+    "Datazag builds intelligence on domains, DNS, certificates, hosting and providers, delivered as reports, alerts, APIs, datasets and partner services.",
 };
 
 function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {

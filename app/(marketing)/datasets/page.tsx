@@ -29,7 +29,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Datasets | Datazag",
+  title: "Datasets — Datazag",
   description:
     "Datazag datasets, served direct from R2. See live coverage, tier, and access through the customer portal or Databricks and Snowflake marketplaces.",
   alternates: { canonical: new URL("/datasets", SITE_URL).toString() },

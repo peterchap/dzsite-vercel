@@ -7,7 +7,7 @@ import { homepageAtmosphereQuery } from "@/sanity/queries";
 const fallbackMetadata: Metadata = {
   title: "Datazag — See more of the internet. Know what it means.",
   description:
-    "Datazag measures live domains, the global routing table and mail infrastructure every day, and turns them into intelligence: what each domain is, what it depends on, and what changed.",
+    "Datazag measures live domains, global routing and mail infrastructure every day, and turns them into intelligence: what each domain is and what changed.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

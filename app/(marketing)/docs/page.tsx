@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Infrastructure Intelligence API — Datazag",
     description:
-        "Developer documentation for every Datazag delivery route: the Intelligence API, alert webhooks, reports and cloud datasets. DNS state, mail and authentication posture, hosting and network placement for any domain.",
+        "Developer docs for every Datazag delivery route: the API, alert webhooks, reports and cloud datasets. DNS, mail, hosting and network data for any domain.",
 };
 
 export default async function DocsPage() {

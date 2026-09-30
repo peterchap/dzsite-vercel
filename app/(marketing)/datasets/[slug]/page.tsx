@@ -6,6 +6,7 @@ import { getDataset, getDatasetSlugs } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
 import { getSiteStats } from "@/lib/site-stats-live";
 import { ORGANIZATION_ID } from "@/lib/organization";
+import { metaDescription } from "@/lib/seo";
 
 /**
  * /datasets/<slug> — dataset documentation.
@@ -37,13 +38,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const dataset = await getDataset(slug);
   const stats = await getSiteStats();
-  if (!dataset) return { title: "Dataset not found | Datazag" };
+  if (!dataset) return { title: "Dataset not found — Datazag" };
 
   const canonical = new URL(`/datasets/${dataset.slug}`, SITE_URL).toString();
   const title =
-    dataset.seo?.metaTitle ?? `${resolveStatTokens(dataset.title, stats)} | Datazag Datasets`;
+    dataset.seo?.metaTitle ?? `${resolveStatTokens(dataset.title, stats)} — Datazag`;
   const description =
-    dataset.seo?.metaDescription ?? resolveStatTokens(dataset.summary, stats);
+    dataset.seo?.metaDescription ?? metaDescription(resolveStatTokens(dataset.summary, stats));
 
   return {
     metadataBase: new URL(SITE_URL),
