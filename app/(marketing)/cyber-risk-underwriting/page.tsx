@@ -266,9 +266,14 @@ export default async function CyberRiskUnderwritingPage() {
 
             {/* Two readers, two questions. */}
             <div className="grid gap-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
-                {copyText(readers?.eyebrow, content.readers.eyebrow!)}
-              </p>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
+                  {copyText(readers?.eyebrow, content.readers.eyebrow!)}
+                </p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
+                  {copyText(readers?.title, content.readers.title!)}
+                </h2>
+              </div>
               {readerCards.map((card) => (
                 <div key={card.key} className="rounded-2xl border border-white/10 bg-[#07102b]/80 p-6">
                   <p className="text-xl font-semibold text-white">{card.title}</p>
