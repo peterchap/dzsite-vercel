@@ -19,6 +19,7 @@ import * as esp from "../app/(marketing)/esp-partners/copy";
 import * as reports from "../app/reports/copy";
 import * as alerts from "../app/alerts/copy";
 import * as howItWorks from "../app/(marketing)/how-it-works/copy";
+import * as insurers from "../app/(marketing)/cyber-risk-underwriting/copy";
 
 dotenv.config({ path: ".env.local" });
 
@@ -32,6 +33,7 @@ const PAGES: PageReg[] = [
   { slug: reports.SLUG, title: reports.TITLE, content: reports.content },
   { slug: alerts.SLUG, title: alerts.TITLE, content: alerts.content },
   { slug: howItWorks.SLUG, title: howItWorks.TITLE, content: howItWorks.content },
+  { slug: insurers.SLUG, title: insurers.TITLE, content: insurers.content },
 ];
 
 const client = createClient({
