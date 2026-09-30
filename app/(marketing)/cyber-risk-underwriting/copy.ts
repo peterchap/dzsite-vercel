@@ -4,60 +4,84 @@ export const SLUG = "cyber-risk-underwriting";
 export const TITLE = "Cyber Risk Underwriting";
 
 /**
- * Insurer page copy (WU-C7).
+ * Insurer page copy (WU-C7, rebuilt to insurer brief v2 on 2026-09-30).
  *
- * Every claim here is grounded in something the site already documents and
- * ships — estate discovery with confidence tiers, provider concentration
- * weighted by provider, the DNS and email control ladder, reason codes on every
- * finding (app/reports/copy.ts, app/(marketing)/datasets).
- * Nothing on this page describes a capability that does not exist, and nothing
- * quantifies a loss ratio, a lift or an accuracy rate — no such measurement
- * exists, and the retired-claim guard exists because one was published once.
+ * TWO READERS. The page used to serve only the underwriter ("should we write
+ * this risk?"). v2 leads with the portfolio analyst ("what happens to the book
+ * if one provider fails?"), because scoring one insured from outside is a
+ * crowded market and showing shared dependency across a book is not. The
+ * individual-risk promise stays, beneath it.
  *
- * 2026-09-28: framed as RISK INTELLIGENCE (homepage brief). "Score" verbs
- * removed — the page's own position is "evidence, not a score", and calibrated
- * scoring is gated on SCORE-1. The impersonation card no longer compares
- * timing ("rather than after a campaign lands"): lead time is unmeasured.
+ * CLAIM RULES CARRIED FORWARD (2026-09-28): market claims may state
+ * established general truths (Dyn 2016 is one); claims about Datazag's data
+ * need Datazag's evidence. Datazag holds no claims or loss data, so the page
+ * reports EXPOSURE (which insureds, which functions) and never prices a loss.
+ * No loss ratio, lift or accuracy rate. "Evidence, not a score" (SCORE-1).
  *
- * 2026-09-28 (site-edits brief): market claims may state established general
- * truths; claims about Datazag's data need Datazag's evidence. Datazag holds no
- * claims or loss data, so no sentence here may read as a loss finding of ours.
- * Softened on that rule: the BEC line ("is where the claims are" implied loss
- * attribution), "usually", "leading indicator", "least able to", "never"
- * and "the rest" (implied complete discovery).
+ * CLAIM RULES ADDED BY v2:
+ *   - DNS history starts in August 2026. Drift-since-bind is not claimable
+ *     until a full policy period has passed, so monitoring is described as
+ *     accruing from the start of the policy. The old "renewal and
+ *     remediation" card compared periods and was removed for that reason.
+ *   - Cadence is described as matched to how fast each thing changes, never
+ *     as a single refresh cycle. The measured record-age distribution renders
+ *     from ./freshness.ts and only once someone fills it in.
+ *   - Unobserved is never clean. Every row carries the time it was observed.
+ *   - The privacy claim is the SHARE PATH's only. It renders from
+ *     lib/trust-posture.ts (DELIVERY_POSTURES), the same wording /trust uses,
+ *     so the two pages cannot drift into different claims.
+ *   - The datasets table renders from lib/datasets/catalog.ts. Only catalog
+ *     entries appear, with their real availability. Estate expansion and
+ *     dangling records are NOT datasets yet and are not listed as ones.
+ *   - Input is a list of domains, one or more per insured (decided
+ *     2026-09-30). The page never promises matching company names to domains.
+ *     The reverse index runs from that domain list.
+ *   - NO ALERTS of any kind for insurers (2026-09-30): neither provider-change
+ *     nor estate-growth alerts exist. They may come later as a subscription
+ *     service. Until then "in-period" means re-running the assessment, and
+ *     delivery is Assess + Enrich. Add a Detect card back only once it ships.
+ *
+ * CMS (2026-09-30): seeded as marketingPageCopy.cyber-risk-underwriting via
+ * scripts/seedMarketingCopy.ts. Seed only AFTER this copy is deployed: the CMS
+ * decides which item keys render, so a doc seeded ahead of the code drops the
+ * cards the live code still expects.
  */
 export const content: PageContent = {
   hero: {
-    eyebrow: "Risk intelligence · Cyber underwriting",
-    title: "Underwrite what the applicant actually owns.",
-    body: "A submission describes the estate the applicant knows about. Datazag finds more of it in public infrastructure — domains, providers and control gaps that do not reach the questionnaire — before you bind, and every time it changes after you do.",
-    secondaryBody: "No questionnaire, no agent, no asset inventory. Every finding carries the evidence that produced it, so a declination or a rate load can be explained to a broker.",
-    primaryCta: { label: "Request a portfolio assessment", href: "/contact" },
-    secondaryCta: { label: "See a sample report", href: "/reports/sample" },
+    eyebrow: "Risk intelligence · Cyber insurance",
+    title: "The risk in a book is also in what the policies share.",
+    body: "Every insured depends on providers for mail, DNS, hosting and certificates. When many insureds depend on the same provider, one outage becomes many claims at once. Datazag shows those shared dependencies across your book, with the evidence for each insured underneath.",
+    secondaryBody: "For underwriters, the same evidence answers a simpler question: what does this applicant actually run, before you bind and during the term?",
+    primaryCta: { label: "See a sample estate report", href: "/reports/sample#cross-estate" },
+    secondaryCta: { label: "Request sample data", href: "/contact" },
+  },
+
+  readers: {
+    eyebrow: "Two readers",
+    title: "Two questions, one evidence base.",
+    items: [
+      { key: "underwriter", title: "Should we write this risk?", text: "The underwriter, before binding and during the term.", tags: ["Pre-bind assessment", "In-period review"] },
+      { key: "analyst", title: "What happens to the book if one provider fails?", text: "The portfolio and accumulation analyst.", tags: ["Concentration", "Reverse index", "Scenarios"] },
+    ],
   },
 
   decisions: {
-    eyebrow: "Where it lands",
-    title: "Two underwriting decisions, one evidence base.",
-    body: "Infrastructure evidence is useful at exactly two moments: when you are pricing a risk you cannot inspect, and when that risk changes mid-term without telling you.",
+    eyebrow: "Underwriting",
+    title: "Underwrite what the applicant actually runs.",
+    body: "A submission describes the estate the applicant knows about. Datazag finds more of it in public infrastructure: domains, providers and control gaps that do not reach the questionnaire.",
+    secondaryBody: "No questionnaire, no agent, no asset inventory. Every finding carries the evidence that produced it, so a declination or a rate load can be explained to a broker.",
     items: [
       {
         key: "pre-bind",
         title: "Pre-bind assessment",
-        text: "Assess a submission against what is publicly observable rather than what was self-reported. Estate discovery surfaces the domains the applicant did not declare; posture analysis shows whether the controls they claim are actually published in DNS.",
+        text: "Check a submission against what is publicly visible, not only what was self-reported. Estate discovery finds domains the applicant did not declare. Posture analysis shows whether the controls they claim are actually published in DNS.",
         tags: ["Estate discovery", "Email authentication", "Provider concentration", "Certificate hygiene", "Reason codes"],
       },
       {
         key: "in-period",
-        title: "In-period monitoring",
-        text: "A risk priced in January is not the risk you carry in July. Track posture regressions, newly exposed infrastructure, expiring controls and provider migrations across the policy term, and route the material ones.",
-        tags: ["Posture change", "New exposure", "Expiry calendar", "Provider migration", "Alert routing"],
-      },
-      {
-        key: "renewal",
-        title: "Renewal and remediation",
-        text: "Bring the same evidence to the renewal conversation. Where posture improved, price it. Where a warranty was given and the DNS never changed, you can show that too.",
-        tags: ["Period comparison", "Warranty evidence", "Remediation tracking"],
+        title: "In-period review",
+        text: "A risk priced in January is not the risk you carry in July. Run the assessment again during the term to see new exposure and controls that are about to expire.",
+        tags: ["New exposure", "Expiry calendar"],
       },
     ],
   },
@@ -65,36 +89,87 @@ export const content: PageContent = {
   signals: {
     eyebrow: "What an underwriter acts on",
     title: "Specific, checkable, and tied to a control an insured can fix.",
-    body: "These are signals that can inform a price or a condition, not a generic risk score. Each is read from public infrastructure and each carries the record it was read from.",
+    body: "These signals can inform a price or a condition. They are not a generic risk score. Each is read from public infrastructure and carries the record it was read from.",
     items: [
-      { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, evidenced through certificate, mail and registration relationships and sorted into confidence tiers. Adverse selection can hide in the gap between the declared estate and the real one." },
-      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are actually published and enforcing, rather than present and permissive — the difference between a policy that blocks impersonation and one that only reports it. Business email compromise remains a significant source of cyber loss." },
-      { key: "concentration", title: "Provider concentration", text: "How much of the estate depends on one provider, weighted by which provider that is. A majority on a hyperscale platform is a different risk from the same share on a commodity registrar." },
-      { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls are due to fail unattended. The expiry calendar shows how the insured runs their estate." },
-      { key: "impersonation", title: "Impersonation infrastructure", text: "Lookalike domains and certificates that use the insured's brand or the platforms it depends on, each shown with its evidence for review." },
-      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC) — a maturity path you can write conditions against, not a pass/fail." },
+      { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, linked through certificate, mail and registration records and sorted into confidence tiers. Adverse selection can hide in the gap between the declared estate and the real one." },
+      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are published and enforcing, not just present. One policy blocks impersonation; the other only reports it. Business email compromise remains a significant source of cyber loss." },
+      { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls will fail if nobody acts. The expiry calendar shows how the insured runs their estate." },
+      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC). A maturity path you can write conditions against, not a pass or fail." },
     ],
   },
 
-  portfolio: {
-    eyebrow: "Across the book",
-    title: "The exposure that only exists between risks.",
-    body: "Individual submissions can each look acceptable while the book quietly concentrates. Aggregation is hard to see one submission at a time, and hard to manage once the risks are written.",
+  concentration: {
+    eyebrow: "Concentration",
+    title: "Provider share is not the same as provider risk.",
+    body: "Anyone can count how many insureds use a provider. Datazag weights that share by two things: how resilient the provider is, and how hard it is to leave. Exit friction stands in for restoration time, and restoration time drives business interruption severity.",
+    secondaryBody: "This is not hypothetical. In October 2016 an attack on the DNS provider Dyn made many major websites unreachable at the same time, across many unrelated companies.",
     items: [
-      { key: "shared-dependency", title: "Shared dependency", text: "How many insureds sit behind the same mail provider, DNS provider, hosting platform or CDN — the correlated failure that can turn many small claims into one event." },
-      { key: "posture-distribution", title: "Posture distribution", text: "Where the book sits on the control ladder, so appetite and pricing can be set against the distribution rather than against individual outliers." },
-      { key: "drift", title: "Portfolio drift", text: "How the book's posture moves between reporting periods, including insureds whose controls regressed after binding." },
-      { key: "accumulation-view", title: "Accumulation view", text: "Segment the book by provider, sector, estate size or control maturity and see the same evidence rolled up, with every roll-up tracing back to the per-domain findings underneath it." },
+      { key: "mailbox", title: "Mailbox provider", text: "Where each insured's mail is hosted." },
+      { key: "gateway", title: "Email security gateway", text: "The filtering service in front of the mailbox." },
+      { key: "nameserver", title: "Authoritative DNS", text: "Who answers for the insured's domains." },
+      { key: "dnssec", title: "DNSSEC dependency", text: "Whose signing keeps a signed zone resolving." },
+      { key: "cdn", title: "CDN", text: "Who serves the insured's websites." },
+      { key: "hosting", title: "Hosting network", text: "The network (ASN) each service runs on." },
+      { key: "ca", title: "Certificate authority", text: "Who issues the insured's certificates." },
+      { key: "registrar", title: "Registrar", text: "Who holds the insured's domain registrations." },
     ],
   },
 
-  // 2026-09-28 (homepage brief): M&A cyber due diligence, as a use case under
-  // the same exposure intelligence — not a separate segment. Demonstrated, not
-  // hypothetical: estate and exposure reports have been shown to this buyer and
-  // drawn interest. That is ALL it may claim: no customers, no deals, no
-  // "trusted by acquirers". Scoped as evidence for diligence, never an
-  // acquisition-risk score (SCORE-1). Estate discovery is evidence-based, so
-  // it never promises "every domain".
+  compound: {
+    eyebrow: "Compound exposure",
+    title: "One provider for DNS and mail is one failure that removes two functions.",
+    body: "That is worse than two separate concentrations of the same size. Datazag reports it as its own finding, so it is not hidden inside two provider shares.",
+    secondaryBody: "Concentration does not depend on refresh speed. Enterprise DNS changes rarely, so a nameserver record observed two months ago is almost certainly still correct.",
+  },
+
+  reverse: {
+    eyebrow: "Reverse index",
+    title: "When a provider has an incident, start from the provider.",
+    body: "After a provider outage, the first question is: what is our exposure? Working that out from policy files is slow. Datazag answers from the other direction. Name a provider, and see which domains on your list depend on it, and for what.",
+    items: [
+      { key: "incident", title: "Incident exposure", text: "Which insureds' domains depend on the affected provider, for DNS, mail or hosting, with the evidence for each." },
+      { key: "scenario", title: "Scenario testing", text: "Name a provider and an outage, for example \"authoritative DNS unavailable for twelve hours\". See which insureds lose which functions. The result feeds systemic-scenario and reinsurance reporting." },
+      { key: "boundary", title: "Exposure, not loss", text: "Datazag reports which policies are exposed and how. It holds no claims or loss data, so pricing the scenario stays with your own models." },
+    ],
+  },
+
+  change: {
+    eyebrow: "Change during the term",
+    title: "The estate grows after you bind.",
+    body: "Enterprise DNS changes rarely. The estate is what changes: new subdomains, new certificates and new hosting under a domain you already cover. Datazag reads Certificate Transparency logs continuously, so a new certificate under an insured's domain is seen as it is logged.",
+    secondaryBody: "Changes show up in the next report and in the tables. Our DNS history starts in August 2026, so change is measured from then, not before.",
+    items: [
+      { key: "subdomains", title: "New subdomains", text: "Names that appear in new certificates, then resolved to see where they point." },
+      { key: "certificates", title: "New certificates", text: "Issued for an insured's domains, with the issuing authority." },
+      { key: "hosting", title: "New hosting", text: "Services appearing on networks or providers the insured did not use before." },
+    ],
+  },
+
+  freshness: {
+    eyebrow: "Freshness",
+    title: "Refreshed as often as each thing changes.",
+    body: "Different data changes at different speeds, so it is refreshed at different speeds. Portfolios can be moved to a faster schedule.",
+    secondaryBody: "Every row carries the time it was observed. A domain we have not checked recently shows as not checked. It never shows as clean.",
+    items: [
+      { key: "hourly", title: "Hourly", text: "Internet infrastructure: routing and network data." },
+      { key: "daily", title: "Daily", text: "New, retiring and high-risk domains, and subdomains found in new certificates." },
+      { key: "bimonthly", title: "Every two months", text: "Stable attributes that rarely change, such as nameservers and mail providers." },
+    ],
+  },
+
+  datasets: {
+    eyebrow: "For analysts",
+    title: "The same data, as tables.",
+    body: "Each dataset is documented on its own page. Availability is shown per dataset, and is only marked available when a route is live.",
+    // Keyed by catalog slug (lib/datasets/catalog.ts). A slug missing from the
+    // catalog renders nothing.
+    items: [
+      { key: "provider-intelligence", title: "Which providers does each insured depend on?", text: "DNS, mail, hosting and CDN providers behind each domain." },
+      { key: "domain-posture", title: "What does each insured publish for email security?", text: "SPF, DMARC, MTA-STS, DNSSEC and BIMI, and what those records actually say." },
+      { key: "ip-asn-intelligence", title: "Which network does each service run on?", text: "Maps an IP address to its network, operator and registry country." },
+    ],
+  },
+
   diligence: {
     eyebrow: "M&A due diligence",
     title: "An acquirer inherits the whole estate.",
@@ -111,35 +186,39 @@ export const content: PageContent = {
   evidence: {
     eyebrow: "Evidence, not a score",
     title: "Every finding can be shown to the broker.",
-    body: "A number an underwriter cannot explain is a number an underwriter cannot use. Datazag attaches the observation behind each finding — the record, the source and the time it was read — so a rate load, a condition or a declination survives the conversation that follows it.",
-    secondaryBody: "You set the thresholds. Datazag supplies the evidence and the reasoning; the underwriting decision stays yours.",
+    body: "A number an underwriter cannot explain is a number an underwriter cannot use. Datazag attaches the observation behind each finding: the record, the source and the time it was read. A rate load, a condition or a declination survives the conversation that follows it.",
+    secondaryBody: "You set the thresholds. Datazag supplies the evidence and the reasoning. The underwriting decision stays yours.",
     primaryCta: { label: "Talk to us about your book", href: "/contact" },
     items: [
       { key: "reason-codes", title: "Reason codes", text: "Every finding states why it fired." },
       { key: "source-record", title: "Source record", text: "The DNS, certificate or routing observation it was read from." },
-      { key: "confidence", title: "Confidence tier", text: "How strongly an asset is attributed to the insured." },
+      { key: "confidence", title: "Confidence tier", text: "How strongly an asset is linked to the insured." },
       { key: "challengeable", title: "Challengeable", text: "A broker can dispute a finding against its evidence." },
     ],
   },
 
   delivery: {
-    eyebrow: "How it reaches your desk",
-    title: "Into the workflow you already underwrite in.",
-    body: "Assessment at the point of quote, monitoring across the term, and the portfolio layer wherever your accumulation analysis already lives.",
+    eyebrow: "Delivery",
+    title: "Start with one report. Add the rest when you need it.",
+    body: "A report answers questions about one moment. The reverse index and accumulation trends need the data itself, kept as a series. So delivery comes in two parts.",
     items: [
-      { key: "submission-report", title: "Submission report", text: "A per-risk assessment at quote, covering the discovered estate, posture and concentration." },
-      { key: "portfolio-report", title: "Portfolio report", text: "The book-level view, segmented how you underwrite it." },
-      { key: "api", title: "API", text: "Check a domain inline in a pricing or triage workflow, with the evidence returned." },
-      { key: "alerts", title: "Alerts", text: "Material in-period changes routed to the owning underwriter." },
-      { key: "data-share", title: "Data share", text: "The underlying evidence in your warehouse for actuarial and accumulation work." },
+      { key: "assess", title: "Assess", text: "Reports on a submission or a sample of the book, with discovery, posture and concentration shown separately.", tags: ["Report"] },
+      { key: "enrich", title: "Enrich", text: "The underlying tables in your own warehouse, refreshed on the schedule above, for accumulation trends and actuarial work.", tags: ["Tables in your warehouse"] },
     ],
+  },
+
+  privacy: {
+    eyebrow: "Where your book goes",
+    title: "Two delivery routes, two privacy positions.",
+    body: "Your book can stay in your own Snowflake or Databricks account. The claim below is specific to that route, and it does not cover the others.",
+    secondaryBody: "A report works like the API: you send us the domains, so Datazag processes them under the data-processing agreement.",
   },
 
   cta: {
     eyebrow: "Start here",
-    title: "Bring us a book and we will show you what is in it.",
-    body: "Send a sample of the estate — a set of insureds, a segment, or a single submission you are pricing now. You get the assessment back as evidence you can read, with the discovery, posture and concentration layers shown separately.",
-    primaryCta: { label: "Request a portfolio assessment", href: "/contact" },
-    secondaryCta: { label: "See a sample report", href: "/reports/sample" },
+    title: "Test it against your book.",
+    body: "Send a list of domains for a sample of your book, one or more per insured. We find the rest of each estate from there, and return the discovery, posture and concentration layers separately.",
+    primaryCta: { label: "See a sample estate report", href: "/reports/sample#cross-estate" },
+    secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 };
