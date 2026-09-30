@@ -6,6 +6,7 @@ import { DATASET_CATALOG } from "@/lib/datasets/catalog";
 import { getDatasets } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
 import { getSiteStats } from "@/lib/site-stats-live";
+import { ORGANIZATION_ID } from "@/lib/organization";
 
 /**
  * /datasets — the public catalog of Datazag data products, and the ONE datasets
@@ -48,7 +49,7 @@ export default async function DatasetsIndexPage() {
     "@type": "DataCatalog",
     name: "Datazag Datasets",
     url: new URL("/datasets", SITE_URL).toString(),
-    creator: { "@type": "Organization", name: "Datazag", url: SITE_URL },
+    creator: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "Datazag", url: SITE_URL },
     dataset: catalog
       .filter((e) => docSlugs.has(e.slug))
       .map((e) => ({
