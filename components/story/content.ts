@@ -1,5 +1,11 @@
 import type { StoryContent } from "./types";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import type { SiteStats } from "@/lib/site-stats-core";
+import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
+
+// Figures in this copy are {{TOKENS}} (the dataset-copy convention, see
+// lib/datasets/stat-tokens.ts), resolved at render against the LIVE stats by
+// resolveStoryTokens below. A figure interpolated here at module load would be
+// frozen at the last build.
 
 export const defaultStoryContent: StoryContent = {
   // WU24: coverage wedge leads; lead-time (48h/~10s) demoted to a proof chip.
@@ -25,7 +31,7 @@ export const defaultStoryContent: StoryContent = {
   heroEyebrow: "Internet Infrastructure Intelligence",
   heroTitle: "See more of the internet. Know what it means.",
   heroIntro:
-    `Datazag measures ${DOMAINS_DISPLAY} live domains, the global routing table and the mail systems behind them, every day. Then we read it: what each domain is, what it depends on, and what changed. You get meaning, not just records.`,
+    `Datazag measures {{DOMAINS}} live domains, the global routing table and the mail systems behind them, every day. Then we read it: what each domain is, what it depends on, and what changed. You get meaning, not just records.`,
   heroStatement:
     "",
   primaryCta: { label: "Get your free report", href: "/#free-report" },
@@ -101,7 +107,7 @@ export const defaultStoryContent: StoryContent = {
     { marker: "05", title: "Traditional detection", text: "Most controls see the threat after it reaches users or systems." },
   ],
   proofPoints: [
-    { title: `${DOMAINS_DISPLAY} domains`, text: "Every observation can be correlated against the Datazag domain corpus." },
+    { title: "{{DOMAINS}} domains", text: "Every observation can be correlated against the Datazag domain corpus." },
     { title: "Explainable", text: "Risk output is paired with reason codes and supporting evidence." },
     { title: "Continuous", text: "Internet infrastructure, DNS and network telemetry refresh continuously." },
     { title: "Cloud-native", text: "Reports, alerts, APIs and data products come from the same intelligence layer." },
@@ -154,4 +160,22 @@ export function mergeStoryContent(content?: Partial<StoryContent> | null): Story
     partnerAudiences: content?.partnerAudiences?.length ? content.partnerAudiences : defaultStoryContent.partnerAudiences,
     applications: content?.applications?.length ? content.applications : defaultStoryContent.applications,
   };
+}
+
+/**
+ * Resolve {{TOKENS}} anywhere in the merged content, CMS overrides included,
+ * against the live stats. Only strings that contain a token are touched, so
+ * every other string reaches the page exactly as authored.
+ */
+export function resolveStoryTokens<T>(value: T, stats: SiteStats): T {
+  if (typeof value === "string") {
+    return (value.includes("{{") ? resolveStatTokens(value, stats) : value) as T;
+  }
+  if (Array.isArray(value)) return value.map((v) => resolveStoryTokens(v, stats)) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, resolveStoryTokens(v, stats)]),
+    ) as T;
+  }
+  return value;
 }

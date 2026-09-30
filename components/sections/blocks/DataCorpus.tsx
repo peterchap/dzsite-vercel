@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Activity, Database, Zap, Code, Shield, Hexagon, Network, Globe } from "lucide-react";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 
 type DataFeature = {
     title: string;
@@ -59,6 +59,7 @@ export default function DataCorpus({
     ctaLabel,
     ctaHref,
 }: DataCorpusProps) {
+    const { DOMAINS_DISPLAY } = useSiteStats();
     const [isHoveringCta, setIsHoveringCta] = useState(false);
     const [mounted, setMounted] = useState(false);
 

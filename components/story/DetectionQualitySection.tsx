@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { CASE_STUDY } from "@/app/(marketing)/intelligence/one-signal-150-domains/data";
 import { FP_STATUS } from "@/lib/fp-status";
-import { DOMAINS_DISPLAY } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * Detection section (WU27-A), REWORDED 2026-09-28 with founder sign-off to the
@@ -29,7 +29,8 @@ import { DOMAINS_DISPLAY } from "@/lib/site-stats";
  * are held there until the false-positive measurement backs them.
  */
 
-const STAGES = [
+/** The stages, with the corpus figure read at render so it follows the live feed. */
+const stages = (domains: string) => [
   {
     n: "01",
     label: "DNS profile match",
@@ -38,7 +39,7 @@ const STAGES = [
   {
     n: "02",
     label: "Infrastructure risk",
-    line: `Where does it live? Hosting network, IP abuse history, certificate patterns — checked against ${DOMAINS_DISPLAY} domains of prior observation.`,
+    line: `Where does it live? Hosting network, IP abuse history, certificate patterns — checked against ${domains} domains of prior observation.`,
   },
   {
     n: "03",
@@ -55,7 +56,7 @@ const STAGES = [
 const DIAL_PARAGRAPH =
   "Every alert lists what each check found. You set the threshold, and you decide what to block and what to review.";
 
-function StageCard({ stage }: { stage: (typeof STAGES)[number] }) {
+function StageCard({ stage }: { stage: ReturnType<typeof stages>[number] }) {
   return (
     <li className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
       <div className="flex items-center gap-3">
@@ -67,7 +68,8 @@ function StageCard({ stage }: { stage: (typeof STAGES)[number] }) {
   );
 }
 
-export function DetectionQualitySection() {
+export async function DetectionQualitySection() {
+  const STAGES = stages((await getSiteStats()).DOMAINS_DISPLAY);
   return (
     <section id="detection-quality" className="relative border-t border-white/10 py-20 md:py-28">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(55,222,245,0.09),transparent_32%),radial-gradient(circle_at_14%_78%,rgba(16,185,129,0.08),transparent_34%)]" />

@@ -19,6 +19,7 @@ import {
   BOUNDS,
   IPV4_ADDRESS_SPACE,
 } from "../../lib/site-stats";
+import { computeSiteStats, parseCoverage } from "../../lib/site-stats-core";
 
 let n = 0;
 const check = (desc: string, fn: () => void) => {
@@ -199,6 +200,70 @@ check("no displayed figure is missing from PUBLISHED_STATS", () => {
       `${key} is displayed but has no entry in PUBLISHED_STATS — it has no definition`,
     );
   }
+});
+
+// ── the LIVE path (lib/site-stats-live.ts, 2026-09-30) ─────────────────────────
+// Pages render coverage.json read at request time. It must pass through the SAME
+// gate as the build snapshot, and a bad feed must fall back rather than publish.
+const liveFeed = (over: Record<string, unknown> = {}) =>
+  parseCoverage(
+    {
+      domains: 368_899_047,
+      infrastructure_ips: 13_790_175,
+      ips: 3_137_402_342,
+      asns: 79_340,
+      record_age_p50_hours: 298,
+      record_age_p95_hours: 751,
+      updated: "2026-09-30T16:12:28+00:00",
+      as_of: { domains: "2026-09-30T16:12:25+00:00", record_age_p50_hours: "2026-09-30T16:12:25+00:00" },
+      ...over,
+    },
+    "2026-09-30T16:20:00Z",
+    "test",
+  );
+
+check("live coverage.json maps onto the same fields the build snapshot uses", () => {
+  const live = computeSiteStats(liveFeed(), "live");
+  assert.ok(live);
+  assert.equal(live.origin, "live");
+  assert.equal(live.SITE_STATS.domainsMonitored, 368_899_047);
+  assert.equal(live.DOMAINS_DISPLAY, "360M+");
+  assert.equal(live.STATS_AS_OF.domainsMonitored, "2026-09-30T16:12:25+00:00");
+  // A figure with no as-of of its own takes the file's build time, never another figure's.
+  assert.equal(live.STATS_AS_OF.networksProfiled, "2026-09-30T16:12:28+00:00");
+  assert.deepEqual(live.recordAge, { p50Hours: 298, p95Hours: 751, asOf: "2026-09-30T16:12:25+00:00" });
+});
+
+check("the live path applies the same bounds: an impossible IPv4 count is unpublished", () => {
+  const live = computeSiteStats(liveFeed({ ips: 4_309_015_115 }), "live");
+  assert.ok(live);
+  assert.equal(live.SITE_STATS.ipv4Indexed, null);
+  assert.ok(!live.publishedStats.some((p) => p.key === "ipv4Indexed"));
+});
+
+check("an unpublishable live corpus figure returns null, so the caller falls back", () => {
+  assert.equal(computeSiteStats(liveFeed({ domains: 0 }), "live"), null);
+  assert.equal(computeSiteStats(liveFeed({ domains: 5_000_000_000 }), "live"), null);
+  assert.equal(computeSiteStats(parseCoverage(null, "t", "test"), "live"), null);
+});
+
+check("record age is all-or-nothing, and out-of-bound ages are dropped", () => {
+  const oneSided = computeSiteStats(liveFeed({ record_age_p95_hours: null }), "live");
+  assert.deepEqual(oneSided?.recordAge, { p50Hours: null, p95Hours: null, asOf: null });
+  const impossible = computeSiteStats(liveFeed({ record_age_p95_hours: 401 * 24 }), "live");
+  assert.deepEqual(impossible?.recordAge, { p50Hours: null, p95Hours: null, asOf: null });
+});
+
+check("the bundle is plain data, so it can cross into client components", () => {
+  const live = computeSiteStats(liveFeed(), "live");
+  assert.deepEqual(JSON.parse(JSON.stringify(live)), live);
+});
+
+check("the committed snapshot and a re-parse of the same values agree", () => {
+  const snap = computeSiteStats(feedStats, "snapshot");
+  assert.ok(snap);
+  assert.equal(snap.DOMAINS_DISPLAY, DOMAINS_DISPLAY);
+  assert.deepEqual(snap.publishedStats, publishedStats());
 });
 
 console.log(`✓ Site-stats guard passed — ${n} assertions (corpus displays as ${DOMAINS_DISPLAY}, as of ${SITE_STATS.statsAsOf}).`);

@@ -23,13 +23,17 @@
  * URL that a live marketplace listing points at) and throws in development and
  * during the seed, where somebody is there to fix it.
  */
-import { DISPLAY_STATS, STATS_AS_OF } from "@/lib/site-stats";
+import { DISPLAY_STATS, SNAPSHOT_STATS, STATS_AS_OF } from "@/lib/site-stats";
+import type { SiteStats } from "@/lib/site-stats-core";
 
 /**
  * Token name -> canonical display string, or `null` when the feed gave us no
  * publishable figure. A null token resolves to NOTHING — never to a stale
  * constant and never to a zero (see lib/site-stats.ts). The sentence around it
  * reads a little thinner; it does not carry a number that is not true.
+ *
+ * These two maps are the SNAPSHOT (build-time) values. Pages pass the live
+ * bundle from getSiteStats() to resolveStatTokens, which reads tokensFor(it).
  */
 export const STAT_TOKENS: Record<string, string | null> = {
   DOMAINS: DISPLAY_STATS.domainsMonitored,
@@ -46,6 +50,12 @@ export const STAT_TOKEN_AS_OF: Record<string, string | null> = {
   IPS_HOSTING: STATS_AS_OF.ipsHostingDomains,
 };
 
+/** Token map for any stats bundle — live at request time, or the snapshot. */
+export function tokensFor(stats: SiteStats): Record<string, string | null> {
+  const d = stats.DISPLAY_STATS;
+  return { DOMAINS: d.domainsMonitored, IPV4: d.ipv4Indexed, ASNS: d.networksProfiled, IPS_HOSTING: d.ipsHostingDomains };
+}
+
 const TOKEN_RE = /\{\{\s*([A-Z0-9_]+)\s*\}\}/g;
 
 /**
@@ -55,13 +65,14 @@ const TOKEN_RE = /\{\{\s*([A-Z0-9_]+)\s*\}\}/g;
 const CORPUS_LITERAL = /\d{3}M\+?(?![A-Za-z])/;
 
 /** Replace {{TOKEN}} markers with canonical figures. Unknown tokens are left alone. */
-export function resolveStatTokens(input: string): string;
-export function resolveStatTokens(input: string | undefined | null): string | undefined;
-export function resolveStatTokens(input: string | undefined | null): string | undefined {
+export function resolveStatTokens(input: string, stats?: SiteStats): string;
+export function resolveStatTokens(input: string | undefined | null, stats?: SiteStats): string | undefined;
+export function resolveStatTokens(input: string | undefined | null, stats: SiteStats = SNAPSHOT_STATS): string | undefined {
   if (typeof input !== "string") return undefined;
+  const tokens = tokensFor(stats);
   const replaced = input.replace(TOKEN_RE, (whole, name: string) => {
-    if (!(name in STAT_TOKENS)) return whole; // unknown token: leave it alone
-    const value = STAT_TOKENS[name];
+    if (!(name in tokens)) return whole; // unknown token: leave it alone
+    const value = tokens[name];
     if (value === null) {
       // Unpublishable figure. Emit nothing rather than a constant or a zero.
       console.error(
@@ -77,11 +88,11 @@ export function resolveStatTokens(input: string | undefined | null): string | un
 }
 
 /** Array convenience — resolves every string, drops empties. */
-export function resolveStatTokensAll(input?: (string | null | undefined)[] | null): string[] {
+export function resolveStatTokensAll(input?: (string | null | undefined)[] | null, stats: SiteStats = SNAPSHOT_STATS): string[] {
   if (!Array.isArray(input)) return [];
   return input
     .filter((s): s is string => typeof s === "string" && s.trim().length > 0)
-    .map((s) => resolveStatTokens(s));
+    .map((s) => resolveStatTokens(s, stats));
 }
 
 /**

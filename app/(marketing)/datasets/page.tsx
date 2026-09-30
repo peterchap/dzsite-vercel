@@ -5,6 +5,7 @@ import { DatasetCard } from "@/components/datasets/DatasetCard";
 import { DATASET_CATALOG } from "@/lib/datasets/catalog";
 import { getDatasets } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * /datasets — the public catalog of Datazag data products, and the ONE datasets
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DatasetsIndexPage() {
+  const stats = await getSiteStats();
   const docs = await getDatasets();
   const docSlugs = new Set(docs.map((d) => d.slug));
   const catalog = [...DATASET_CATALOG].sort((a, b) => a.order - b.order);
@@ -104,9 +106,9 @@ export default async function DatasetsIndexPage() {
                     href={`/datasets/${ds.slug}`}
                     className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25 hover:bg-white/[0.04]"
                   >
-                    <h3 className="text-lg font-semibold text-white">{resolveStatTokens(ds.title)}</h3>
+                    <h3 className="text-lg font-semibold text-white">{resolveStatTokens(ds.title, stats)}</h3>
                     <p className="mt-2 flex-1 text-sm leading-6 text-slate-400">
-                      {resolveStatTokens(ds.summary)}
+                      {resolveStatTokens(ds.summary, stats)}
                     </p>
                     <span className="mt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-sky-300">
                       Read the documentation

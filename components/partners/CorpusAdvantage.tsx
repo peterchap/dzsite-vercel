@@ -1,4 +1,4 @@
-import { PUBLISHED_STATS } from "@/lib/site-stats";
+import { getSiteStats } from "@/lib/site-stats-live";
 import { loadIntelligenceFigures, OBSERVATORY_URL } from "@/lib/observatory-figures";
 
 /**
@@ -39,7 +39,7 @@ export async function CorpusAdvantage({
 }: Props = {}) {
   const figures = await loadIntelligenceFigures();
   const ct = figures?.certificateOnly ?? null;
-  const s = PUBLISHED_STATS;
+  const s = (await getSiteStats()).PUBLISHED_STATS;
 
   const layers: Array<{ title: string; figure: string | null; unit?: string; text: string }> = [
     {

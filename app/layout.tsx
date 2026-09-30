@@ -33,18 +33,25 @@ export const metadata: Metadata = {
 };
 
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
+import { SiteStatsProvider } from "@/components/providers/SiteStatsProvider";
+import { getSiteStats } from "@/lib/site-stats-live";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Live coverage figures, cached hourly (lib/site-stats-live.ts). Client
+  // components read them through useSiteStats().
+  const stats = await getSiteStats();
   return (
     <html lang="en-US">
       <body className={`${inter.variable} ${outfit.variable} ${manrope.variable} antialiased`}>
-        <CurrencyProvider>
-          {children}
-        </CurrencyProvider>
+        <SiteStatsProvider stats={stats}>
+          <CurrencyProvider>
+            {children}
+          </CurrencyProvider>
+        </SiteStatsProvider>
       </body>
     </html>
   );

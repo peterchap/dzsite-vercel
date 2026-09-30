@@ -1,5 +1,6 @@
 import type { StoryContent } from "./types";
-import { mergeStoryContent } from "./content";
+import { mergeStoryContent, resolveStoryTokens } from "./content";
+import { getSiteStats } from "@/lib/site-stats-live";
 import { CaseStudyTeaser } from "./CaseStudyTeaser";
 import { CoverageStrip } from "./CoverageStrip";
 import { IntelligenceSection } from "./IntelligenceSection";
@@ -76,8 +77,9 @@ export type { StoryContent } from "./types";
  * corpus sources, and moving them converts a homepage block into Observatory
  * traffic. The component and its render-guards remain in the repo.
  */
-export default function StoryPage({ content }: { content?: Partial<StoryContent> | null }) {
-  const c = mergeStoryContent(content);
+export default async function StoryPage({ content }: { content?: Partial<StoryContent> | null }) {
+  // Figures in the copy are {{TOKENS}}, resolved against the live stats (hourly).
+  const c = resolveStoryTokens(mergeStoryContent(content), await getSiteStats());
 
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { DatasetDocPage } from "@/components/datasets/DatasetDocPage";
 import { getDataset, getDatasetSlugs } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
+import { getSiteStats } from "@/lib/site-stats-live";
 
 /**
  * /datasets/<slug> — dataset documentation.
@@ -34,13 +35,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const dataset = await getDataset(slug);
+  const stats = await getSiteStats();
   if (!dataset) return { title: "Dataset not found | Datazag" };
 
   const canonical = new URL(`/datasets/${dataset.slug}`, SITE_URL).toString();
   const title =
-    dataset.seo?.metaTitle ?? `${resolveStatTokens(dataset.title)} | Datazag Datasets`;
+    dataset.seo?.metaTitle ?? `${resolveStatTokens(dataset.title, stats)} | Datazag Datasets`;
   const description =
-    dataset.seo?.metaDescription ?? resolveStatTokens(dataset.summary);
+    dataset.seo?.metaDescription ?? resolveStatTokens(dataset.summary, stats);
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -68,6 +70,7 @@ export async function generateMetadata({
 export default async function DatasetPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const dataset = await getDataset(slug);
+  const stats = await getSiteStats();
   if (!dataset) notFound();
 
   // Dataset structured data — this page documents a real, downloadable
@@ -76,15 +79,15 @@ export default async function DatasetPage({ params }: { params: Promise<{ slug: 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    name: resolveStatTokens(dataset.title),
-    description: resolveStatTokens(dataset.summary),
+    name: resolveStatTokens(dataset.title, stats),
+    description: resolveStatTokens(dataset.summary, stats),
     url: new URL(`/datasets/${dataset.slug}`, SITE_URL).toString(),
     creator: { "@type": "Organization", name: "Datazag", url: SITE_URL },
     isAccessibleForFree: true,
     variableMeasured: dataset.columns.map((c) => ({
       "@type": "PropertyValue",
       name: c.name,
-      description: resolveStatTokens(c.description),
+      description: resolveStatTokens(c.description, stats),
     })),
     ...(dataset.listingUrl
       ? { distribution: [{ "@type": "DataDownload", contentUrl: dataset.listingUrl }] }
