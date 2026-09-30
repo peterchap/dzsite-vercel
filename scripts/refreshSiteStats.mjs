@@ -64,6 +64,10 @@ const BOUNDS = {
   ipsHostingDomains: [100_000, IPV4_ADDRESS_SPACE],
   ipv4Indexed: [1_000_000_000, IPV4_ADDRESS_SPACE],
   networksProfiled: [10_000, 120_000],
+  // Record age in hours, mirroring the producer's COVERAGE_BOUNDS. Used by the
+  // freshness line on /cyber-risk-underwriting (app/(marketing)/cyber-risk-underwriting/freshness.ts).
+  recordAgeP50Hours: [1, 400 * 24],
+  recordAgeP95Hours: [1, 400 * 24],
 };
 
 const OUT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "lib", "site-stats.generated.ts");
@@ -97,6 +101,9 @@ export const feedStats = {
   ipsHostingDomains: ${field(stats.ipsHostingDomains)},
   ipv4Indexed: ${field(stats.ipv4Indexed)},
   networksProfiled: ${field(stats.networksProfiled)},
+  /** Median and p95 age, in hours, of the DNS record served per domain. */
+  recordAgeP50Hours: ${field(stats.recordAgeP50Hours)},
+  recordAgeP95Hours: ${field(stats.recordAgeP95Hours)},
   /** Per-figure as-of from the feed's \`as_of\` block — when each figure was
    *  measured, NOT when the file was built. A figure with no as-of does not
    *  get to borrow another figure's freshness. */
@@ -105,6 +112,7 @@ export const feedStats = {
     ipsHostingDomains: ${strField(stats.asOf.ipsHostingDomains)},
     ipv4Indexed: ${strField(stats.asOf.ipv4Indexed)},
     networksProfiled: ${strField(stats.asOf.networksProfiled)},
+    recordAge: ${strField(stats.asOf.recordAge)},
   },
   /** \`updated\` timestamp reported by the feed itself — the file's build time. */
   feedUpdated: ${strField(stats.feedUpdated)},
@@ -146,6 +154,8 @@ async function main() {
     ipsHostingDomains: metric("ipsHostingDomains", coverage.infrastructure_ips),
     ipv4Indexed: metric("ipv4Indexed", coverage.ips),
     networksProfiled: metric("networksProfiled", coverage.asns),
+    recordAgeP50Hours: metric("recordAgeP50Hours", coverage.record_age_p50_hours),
+    recordAgeP95Hours: metric("recordAgeP95Hours", coverage.record_age_p95_hours),
   };
 
   const stats = {
@@ -156,6 +166,11 @@ async function main() {
       ipsHostingDomains: asOf("infrastructure_ips", values.ipsHostingDomains),
       ipv4Indexed: asOf("ips", values.ipv4Indexed),
       networksProfiled: asOf("asns", values.networksProfiled),
+      // One stamp for the pair: both come from the same scan. Null unless BOTH are present.
+      recordAge:
+        values.recordAgeP50Hours !== null && values.recordAgeP95Hours !== null
+          ? asOf("record_age_p50_hours", values.recordAgeP50Hours)
+          : null,
     },
     fetchedAt: new Date().toISOString(),
     source: url,
