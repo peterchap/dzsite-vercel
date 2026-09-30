@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
 import { SiteStatsProvider } from "@/components/providers/SiteStatsProvider";
 import { getSiteStats } from "@/lib/site-stats-live";
+import { organizationJsonLd } from "@/lib/organization";
 
 export default async function RootLayout({
   children,
@@ -47,6 +48,8 @@ export default async function RootLayout({
   return (
     <html lang="en-US">
       <body className={`${inter.variable} ${outfit.variable} ${manrope.variable} antialiased`}>
+        {/* Who Datazag is, for search engines (lib/organization.ts). */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
         <SiteStatsProvider stats={stats}>
           <CurrencyProvider>
             {children}

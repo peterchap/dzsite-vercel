@@ -5,6 +5,7 @@ import { DatasetDocPage } from "@/components/datasets/DatasetDocPage";
 import { getDataset, getDatasetSlugs } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
 import { getSiteStats } from "@/lib/site-stats-live";
+import { ORGANIZATION_ID } from "@/lib/organization";
 
 /**
  * /datasets/<slug> — dataset documentation.
@@ -82,7 +83,7 @@ export default async function DatasetPage({ params }: { params: Promise<{ slug: 
     name: resolveStatTokens(dataset.title, stats),
     description: resolveStatTokens(dataset.summary, stats),
     url: new URL(`/datasets/${dataset.slug}`, SITE_URL).toString(),
-    creator: { "@type": "Organization", name: "Datazag", url: SITE_URL },
+    creator: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "Datazag", url: SITE_URL },
     isAccessibleForFree: true,
     variableMeasured: dataset.columns.map((c) => ({
       "@type": "PropertyValue",
