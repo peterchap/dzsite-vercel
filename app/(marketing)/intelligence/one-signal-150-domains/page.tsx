@@ -113,8 +113,9 @@ export default function OneSignal150DomainsPage() {
             <p className="mt-5 text-base leading-7 text-slate-300">
               But the domain resolved into <Ioc>AS213790</Ioc>, an Iranian network our pipeline scores{" "}
               <b className="text-white">1.0 for bulletproof behavior</b> with an{" "}
-              <b className="text-white">abuse score of 95 / 100</b> — parts of which Spamhaus DROP
-              independently lists as criminal-controlled address space. The U.S. Social Security
+              <b className="text-white">abuse score of 95 / 100</b>. After we found it, we ran a
+              one-off check against Spamhaus DROP, which independently lists parts of that network as
+              criminal-controlled address space. The U.S. Social Security
               Administration does not host on Iranian bulletproof infrastructure. The surface lied.
               The infrastructure didn&rsquo;t.
             </p>

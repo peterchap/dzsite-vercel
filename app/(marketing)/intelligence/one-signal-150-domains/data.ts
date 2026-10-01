@@ -4,7 +4,8 @@
  * Shared by the page, its generated OG image, and the homepage teaser card so
  * the stat triptych and headline never drift. Rebuilt native and on-domain from
  * the original artifact, with the WU23 §3 mandatory edits applied:
- *  - Spamhaus corroboration moved into section 01 (circularity fix, §3.1)
+ *  - Spamhaus corroboration moved into section 01 (circularity fix, §3.1), framed
+ *    as a one-off check run after the Iranian network was found (2026-10-01)
  *  - "0 in public DOMAIN feeds" everywhere (§3.2)
  *  - "IP reputation 95/100" → "Abuse score 95 / 100" (§3.3)
  *  - H1 "crime host" → "criminal hosting cluster" (§3.4)
