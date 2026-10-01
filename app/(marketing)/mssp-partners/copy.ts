@@ -113,7 +113,7 @@ export const content: PageContent = {
       { key: "enrich", title: "Enrich", text: "Each observation is linked to its hosting, network, provider, related domains and history." },
       { key: "explain", title: "Explain", text: "Outputs include the evidence behind them, so each finding can be checked." },
       { key: "deliver", title: "Deliver", text: "You receive API responses, webhook events, reports or data shares through the route that fits your service model." },
-      { key: "monetise", title: "Monetise", text: "You package it as SOC enrichment, email security reviews, exposure reporting or portal intelligence." },
+      { key: "monetise", title: "Monetize", text: "You package it as SOC enrichment, email security reviews, exposure reporting or portal intelligence." },
     ],
   },
   delivery: {

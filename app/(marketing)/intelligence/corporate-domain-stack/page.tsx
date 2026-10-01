@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 
 const TITLE = "One company runs the nameservers, website and mail for one corporate domain in five";
 /** e.g. "N.N million": built from the study data, never typed (checkCorpusDrift guards literals). */
-const millions = (n: number) => `${(Math.floor(n / 100_000) / 10).toFixed(1)} million`;
+const millions = (n: number) => `${(Math.round(n / 100_000) / 10).toFixed(1)} million`;
 
 const DESCRIPTION =
   `For ${STUDY.headline.oneCompanyThreeLayers.share} of corporate domains, one company runs the nameservers, the website and the mail. ` +
@@ -158,7 +158,7 @@ export default async function CorporateDomainStackPage() {
         <P lede>
           A domain that is reachable at all relies on three commercial layers. <strong className="text-white">Nameservers</strong> answer
           for the name; if they stop, nothing on the domain resolves. The <strong className="text-white">website</strong> sits behind a
-          content-delivery edge or directly on a hosting network. The <strong className="text-white">mail path</strong> takes the
+          content-delivery edge or directly on a hosting network. The <strong className="text-white">mail path</strong>{" "}takes the
           domain&rsquo;s email. Each is a dependency the owner cannot swap quickly. The question that matters is how often they belong to the
           same company.
         </P>
@@ -182,8 +182,8 @@ export default async function CorporateDomainStackPage() {
         </P>
         <P>
           The larger pattern is older and less discussed. <strong className="text-white">For one corporate domain in five
-          ({fmt(s.headline.oneCompanyThreeLayers.domains)}), the same registrar or host answers the nameservers, serves the website and takes
-          the mail.</strong> Three named dependencies, one company, one control plane.
+          ({fmt(s.headline.oneCompanyThreeLayers.domains)}), one registrar or host runs all three layers.</strong> It answers the
+          nameservers, serves the website and takes the mail. Three named dependencies, one company, one control plane.
         </P>
         {concentration ? (
           <P>
@@ -191,7 +191,7 @@ export default async function CorporateDomainStackPage() {
             <a href={concentration.half.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
               {concentration.half.value} networks
             </a>{" "}
-            carry half of all domains that sit on a network, and{" "}
+            carry half of all domains on a network.{" "}
             <a href={concentration.ninety.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
               {concentration.ninety.value}
             </a>{" "}
@@ -200,16 +200,16 @@ export default async function CorporateDomainStackPage() {
           </P>
         ) : null}
         <blockquote className="my-8 max-w-3xl border-l-2 border-amber-300 pl-6 text-xl leading-8 text-white">
-          A portfolio that models Cloudflare as the correlated dependency, and the domain&rsquo;s host as an administrative detail, has the
-          scale of the two exposures the wrong way round.
+          Many portfolios treat Cloudflare as the correlated dependency and the host as a detail. They have the two exposures the wrong way
+          round.
         </blockquote>
       </Section>
 
       <Section>
         <Label num="02">The bundle is national</Label>
         <P lede>
-          The one-company stack is not spread evenly. It is a European, hosting-led pattern, and in the largest markets it is a dominant way a
-          corporate domain is run.
+          The one-company stack is not spread evenly. It is a European pattern, led by hosting companies. In the largest markets, it is a
+          dominant way to run a corporate domain.
         </P>
         <Table
           caption="Share of each market's corporate domains where one company runs nameservers, website and mail. Every national market with more than 900,000 corporate domains, down to the next largest share: Canada, at 10.6%."
@@ -223,8 +223,8 @@ export default async function CorporateDomainStackPage() {
         </P>
         <P>
           The worldwide mailbox platforms barely appear in this pattern. They run a great deal of corporate mail, but almost none of the
-          nameservers or websites behind it. The domains most exposed to a single company are held by the hosts that sell the domain, the site
-          and the mailbox as one product.
+          nameservers or websites behind it. The most exposed domains sit with hosts that sell the domain, the site and the mailbox
+          as one product.
         </P>
       </Section>
 
@@ -242,14 +242,15 @@ export default async function CorporateDomainStackPage() {
           </figcaption>
         </figure>
         <P>
-          Cloudflare holds more than 85% of the fronted segment in every market over 50,000 websites except Japan and Korea, where it still leads.
+          Cloudflare holds more than 85% of the fronted segment in every market over 50,000 websites. Japan and Korea are the exceptions, and
+          it still leads there.
           What changes by territory is how much of a market is fronted at all: {s.edge.indonesiaFronted} of Indonesian websites against{" "}
           {s.edge.germanyFronted} of German ones.
         </P>
         <Note title="A fifth of the edge was never chosen by the domain owner">
           <p className="mb-3">
-            About one domain in five behind Cloudflare ({fmt(s.edge.notChosen)}) sits on addresses Cloudflare announces for platforms and
-            customers, outside its own published ranges. The largest single block is the address Shopify storefronts resolve to, which alone
+            About one domain in five behind Cloudflare ({fmt(s.edge.notChosen)}) sits outside its own published ranges. These are addresses
+            Cloudflare announces for platforms and customers. The largest single block is the address Shopify storefronts resolve to, which alone
             carries <strong className="text-white">{fmt(s.edge.shopifyBlock)} domains</strong>.
           </p>
           <p>A Shopify merchant depends on Cloudflare without having contracted with it, and no vendor questionnaire would surface that.</p>
@@ -268,13 +269,13 @@ export default async function CorporateDomainStackPage() {
         <P>
           <strong className="text-white">{s.dns.singleOperator} of operating domains rely on a single nameserver operator.</strong> Of the{" "}
           {s.dns.twoOperators} that list two, two-thirds come from one website platform that runs its own nameservers across two providers: the
-          owner inherits that redundancy rather than choosing it. Every enterprise that deliberately pairs providers is, at most,{" "}
-          {s.dns.deliberatePairsAtMost} of the population.
+          owner inherits that redundancy rather than choosing it. Domains whose owners chose two providers make up{" "}
+          {s.dns.deliberatePairsAtMost} of the population at most.
         </P>
         <P>
-          That shapes how a nameserver event belongs in a model. For nearly every domain, the operator answers or the name does not resolve, and
-          with it the website, the mail and every other service on the domain. This is not hypothetical: in October 2016, an attack on the DNS
-          provider Dyn made many major websites unreachable at the same time, across many unrelated companies.
+          That shapes how a nameserver event belongs in a model. For nearly every domain, either the operator answers or the name does not
+          resolve. If it does not resolve, the website, the mail and every other service on the domain go with it. This is not hypothetical.
+          In October 2016, an attack on the DNS provider Dyn took many major websites offline at once, across unrelated companies.
         </P>
         <Note title="A third of the population runs on DNS nobody chose">
           <p>
@@ -296,9 +297,9 @@ export default async function CorporateDomainStackPage() {
           rows={s.dnsByMarket.map((r) => [r.market, fmt(r.domains), r.leader, r.kind, r.share])}
         />
         <P>
-          A Canadian or Indian portfolio carries around half of a single registrar&rsquo;s nameserver event, through default settings rather
-          than purchasing decisions. And in Brazil, the leading nameserver operator is <strong className="text-white">the national registry
-          itself</strong>, whose DNS answers for a quarter of the market: a sovereign dependency no vendor list would show.
+          A Canadian or Indian portfolio carries around half of one registrar&rsquo;s nameserver event. That comes from default settings, not
+          purchasing decisions. In Brazil, the leading nameserver operator is <strong className="text-white">the national registry
+          itself</strong>. Its DNS answers for a quarter of the market. That is a sovereign dependency no vendor list would show.
         </P>
       </Section>
 
@@ -309,16 +310,16 @@ export default async function CorporateDomainStackPage() {
           customer list.
         </P>
         <P>
-          A domain&rsquo;s nameserver records name who answers for it. Its address record shows which network its website sits in, and for the
-          major edge networks that address falls inside ranges the vendors publish themselves. Its mail records name who accepts its mail.
-          Nameserver hosts are attributed to operators through a crosswalk curated in-house, which merges one operator&rsquo;s nameservers
-          when they span several domain names. Parked domains and domains held for sale are removed first. The corporate cut is the
-          domains that also publish a working mail server and an SPF record: the ones a business runs.
+          A domain&rsquo;s nameserver records name who answers for it. Its address record shows which network hosts its website. For the
+          major edge networks, that address falls inside ranges the vendors publish. Its mail records name who accepts its mail. We map
+          nameserver hosts to operators with a crosswalk we curate. It merges an operator&rsquo;s nameservers when they span several domain
+          names. Parked domains and domains held for sale are removed first. The corporate cut is the domains that also publish a working
+          mail server and an SPF record. These are the ones a business runs.
         </P>
         <P>
-          Datazag tracks {fmt(s.corpus.tracked)} domains. {fmt(s.corpus.resolved)} resolved at their latest observation; the other{" "}
-          {fmt(s.corpus.notResolved)} returned NXDOMAIN, SERVFAIL or a timeout. DNS and edge were observed from {longDate(s.observedFrom)} to{" "}
-          {observed}, one observation per domain (the latest).
+          On {observed}, Datazag tracked {fmt(s.corpus.tracked)} domains. {fmt(s.corpus.resolved)} resolved at their latest observation.
+          The other {fmt(s.corpus.notResolved)} returned NXDOMAIN, SERVFAIL or a timeout. DNS records were observed from{" "}
+          {longDate(s.observedFrom)} to {observed}. Each domain counts once, at its latest observation.
         </P>
         <ul className="my-6 max-w-3xl list-disc space-y-3 pl-5 text-base leading-7 text-slate-300 marker:text-cyan-300">
           <li><strong className="text-white">Domains, not organizations.</strong> One organization may hold hundreds of defensive registrations behind one operator: one claim, not hundreds.</li>
@@ -326,7 +327,7 @@ export default async function CorporateDomainStackPage() {
           <li><strong className="text-white">Registrar-default nameservers count as a dependency,</strong> because they are one.</li>
           <li><strong className="text-white">A small share of nameservers is not yet named.</strong> {s.dns.unnamedOperatorShare} of operating domains touch an operator identified only by its domain name. The largest is {s.dns.largestUnnamed} of the population, so nothing of accumulation size is hiding.</li>
           <li><strong className="text-white">Country-code domains stand in for territory; .com does not.</strong> Confirm territorial figures against a book&rsquo;s own domicile data.</li>
-          <li><strong className="text-white">No change over time.</strong> This is one observation per domain. Movement between operators is not claimed, because the history that would support it is not yet captured at the grain it needs.</li>
+          <li><strong className="text-white">No change over time.</strong> This is one observation per domain. We do not claim movement between operators. The history that would show it is not yet captured in enough detail.</li>
         </ul>
       </Section>
 
@@ -334,9 +335,9 @@ export default async function CorporateDomainStackPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="max-w-[24ch] text-3xl font-semibold tracking-tight text-white md:text-4xl">Run your own book against it</h2>
           <P lede>
-            The dataset is one row per domain, joinable on the domain itself, with the operator in each layer. We can run a book against the
-            population and return its operator concentration across nameservers, edge and mail, by territory, with the correlated stacks
-            identified. A domain list is all that is required.
+            The dataset is one row per domain, joinable on the domain itself, with the operator in each layer. Send us a book&rsquo;s domains.
+            We return its operator concentration across nameservers, edge and mail, by territory. The correlated stacks are flagged. A domain
+            list is all we need.
           </P>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/cyber-risk-underwriting" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
@@ -347,9 +348,9 @@ export default async function CorporateDomainStackPage() {
             </Link>
           </div>
           <p className="mt-12 max-w-3xl border-t border-white/10 pt-6 text-xs leading-6 text-slate-500">
-            Figures observed to {observed} across {fmt(s.corpus.tracked)} tracked domains, of which {fmt(s.corpus.resolved)} resolved at their
-            latest observation and {fmt(s.corpus.operating)} are operating domains. The corporate cut is the {fmt(s.corpus.corporate)} domains that
-            resolve, are not parked, and publish a working mail server and an SPF record. Operator identity is derived from observed DNS records and vendors&rsquo; own published address ranges, against a
+            Figures observed to {observed} across {fmt(s.corpus.tracked)} tracked domains. Of these, {fmt(s.corpus.resolved)} resolved at their
+            latest observation and {fmt(s.corpus.operating)} are operating domains. The corporate cut is {fmt(s.corpus.corporate)}{" "}domains.
+            They resolve, are not parked, and publish a working mail server and an SPF record. Operator identity is derived from observed DNS records and vendors&rsquo; own published address ranges, against a
             crosswalk maintained by Datazag. Operator shares describe the number of domains that depend on each operator; they are not
             statements about revenue, customer count or service quality.
           </p>

@@ -126,7 +126,7 @@ export const content: PageContent = {
       { key: "check", title: "Check", text: "Look at campaign links, landing pages, redirect chains and sending domains before or during send." },
       { key: "decide", title: "Decide", text: "Feed the evidence and reason codes into allow, warn, throttle, block or review workflows." },
       { key: "analyse", title: "Analyze", text: "Enrich SMTP logs, campaign history and abuse queues with domain and infrastructure intelligence." },
-      { key: "monetise", title: "Monetise", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
+      { key: "monetise", title: "Monetize", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
     ],
   },
   delivery: {

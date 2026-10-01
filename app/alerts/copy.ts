@@ -25,9 +25,9 @@ export const content: PageContent = {
     body: "Alerts are only useful when the receiving team knows what changed, why it matters and what action is appropriate.",
     items: [
       { key: "see-earlier", title: "Follow infrastructure as it changes", text: "Monitor domains, DNS, certificates and hosting, and follow a candidate as it develops." },
-      { key: "separate-response", title: "Separate the response", text: "Platform abuse, brand impersonation and suspicious keyword infrastructure need different operational actions." },
+      { key: "separate-response", title: "Separate the response", text: "Platform abuse, brand impersonation and attacker infrastructure need different operational actions." },
       { key: "reduce-noise", title: "Check matches against known-good", text: "Candidate alerts are checked against known-good infrastructure, brand baselines, platform patterns and cloud footprints." },
-      { key: "deliver-workflows", title: "Deliver into workflows", text: "Send reasoned alerts to SOC queues, partner portals, Palo Alto, Microsoft Sentinel, Splunk, webhooks, APIs or data shares." },
+      { key: "deliver-workflows", title: "Deliver into workflows", text: "Send reasoned alerts to SOC queues, partner portals, Microsoft Sentinel, webhooks or data shares." },
     ],
   },
   alertClasses: {
@@ -37,8 +37,7 @@ export const content: PageContent = {
     items: [
       { key: "platform-impersonation", title: "Platform impersonation", trigger: "Block, enrich detections, watch related infrastructure and de-escalate known-good findings.", text: "Attackers often borrow trust from cloud, identity, email, payment, storage and collaboration platforms. The practical response is usually blocking and detection rather than takedown unless the customer owns the affected brand.", tags: ["Platform terms", "Login lures", "Known-good comparison", "Cloud allowlists", "Related infrastructure"] },
       { key: "brand-impersonation", title: "Brand impersonation", trigger: "Prepare evidence, capture website state, identify abuse contacts and support takedown workflows.", text: "When the alert targets a brand the customer owns or represents, the workflow can move beyond blocking into evidence capture, abuse reporting and remediation tracking.", tags: ["Owned brands", "Aliases", "Suspicious wording", "Website evidence", "Abuse contacts"] },
-      { key: "keyword-subdomain", title: "Keyword and subdomain infrastructure", trigger: "Investigate, block or watchlist suspicious lure terms that do not cleanly match a monitored brand.", text: "The apex domain may be parked or generic while the active subdomain carries the lure: login, secure, verify, billing, wallet, update or support.", tags: ["Suspicious subdomains", "Parked apex", "DNS activation", "Novelty", "Hosting context"] },
-      { key: "infra-anomalies", title: "Infrastructure anomalies", trigger: "Escalate suspicious domains and IPs found around bad actor infrastructure.", text: "When a candidate is linked to risky infrastructure, Datazag checks related IPs, prefixes, ASNs, DNS relationships and hosted domains to find other connected assets.", tags: ["Related domains", "Related IPs", "Shared hosting", "Prefix changes", "BGP/MOAS signals"] },
+      { key: "infra-anomalies", title: "Infrastructure alerts", trigger: "Escalate suspicious domains and IPs found around bad actor infrastructure.", text: "When a candidate is linked to risky infrastructure, Datazag checks related IPs, prefixes, ASNs, DNS relationships and hosted domains to find other connected assets.", tags: ["Related domains", "Related IPs", "Shared hosting", "Prefix changes", "BGP/MOAS signals"] },
       { key: "customer-watchlists", title: "Customer watchlists", trigger: "Monitor customer-specific brands, suppliers, platforms, domains and high-risk terms with tailored thresholds.", text: "Customer context changes how alerts are interpreted. A term that is harmless for one organization may be important for another.", tags: ["Customer brands", "Suppliers", "Terms", "Domains", "Approved baselines"] },
     ],
   },
@@ -105,9 +104,8 @@ export const content: PageContent = {
     title: "Use the route that fits the workflow.",
     body: "Alerts can be consumed as live operational events, enrichment calls, evidence packs or analytical datasets depending on the team using them.",
     items: [
-      { key: "webhooks", title: "Webhooks", text: "Push alert events into launch integrations for Palo Alto, Microsoft Sentinel and Splunk, or into custom ticketing, SOAR and portal workflows." },
-      { key: "api", title: "API", text: "Enrich and retrieve alert context inside products, review queues and case-management tools." },
-      { key: "siem", title: "SIEM and SOC tools", text: "Route alerts and reason fields into detection, investigation and response workflows, including Sentinel and Splunk environments." },
+      { key: "webhooks", title: "Webhooks", text: "Push alert events to your own endpoint, for ticketing, SOAR and portal workflows." },
+      { key: "siem", title: "Microsoft Sentinel", text: "Sentinel pulls Datazag indicators over TAXII 2.1 into its threat-intelligence table. The Datazag solution in the Content Hub adds a matching rule and a hunting query." },
       { key: "reports-evidence", title: "Reports and evidence packs", text: "Package findings for executives, customers, takedown workflows and account reviews." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for analytics, hunting, enrichment and historical review." },
     ],
@@ -115,7 +113,7 @@ export const content: PageContent = {
   finalCta: {
     eyebrow: "Next step",
     title: "Start with the alert classes that match your workflow.",
-    body: "Begin with platform abuse, brand impersonation, keyword infrastructure, infrastructure anomalies or customer-specific watchlists, then route the alerts into the workflow that can act on them.",
+    body: "Begin with platform abuse, brand impersonation, attacker infrastructure or customer-specific watchlists, then route the alerts into the workflow that can act on them.",
     primaryCta: { label: "Request alert access", href: "/contact" },
   },
 };

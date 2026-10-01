@@ -52,12 +52,12 @@ const alertProducts = [
     href: "/contact",
   },
   {
-    name: "Keyword Alerts",
+    name: "Infrastructure Alerts",
     price: "{{PRICE:49900}}",
     cadence: "/mo",
-    description: "Keyword-led suspicious infrastructure monitoring for terms such as login, payroll, invoice, VPN, support or HR.",
-    features: ["Customer-defined keywords", "New domains and certificates", "Subdomain context", "Webhook delivery"],
-    cta: "Discuss keyword alerts",
+    description: "Alerts on attacker infrastructure. When a network, prefix or host is linked to abuse, we find the other domains and IPs on it.",
+    features: ["Related domains and IPs", "Shared hosting", "Prefix and BGP signals", "Webhook delivery"],
+    cta: "Discuss infrastructure alerts",
     href: "/contact",
   },
   {
@@ -95,7 +95,7 @@ const dataShares = [
 
 const evaluation = [
   ["Report first", "Start with the free Domain Health Report or a paid report when you need a concrete assessment before monitoring."],
-  ["Alert stream", "Use alerts when the workflow is operational: platform abuse, keywords, brand impersonation and incident updates."],
+  ["Alert stream", "Use alerts when the workflow is operational: platform abuse, attacker infrastructure, brand impersonation and incident updates."],
   ["Data share", "Use cloud datasets when the buyer wants SQL-ready intelligence inside a warehouse, lakehouse or marketplace procurement route."],
 ];
 
@@ -110,7 +110,7 @@ const faq = [
   },
   {
     question: "Can I buy through a cloud marketplace?",
-    answer: "Yes. Cloud data products can be packaged for direct data shares or marketplace routes, including Snowflake, Databricks, Azure, AWS, Google Cloud or compatible lake formats where appropriate.",
+    answer: "Yes. Cloud data products are offered through Snowflake, Databricks and Azure, or delivered directly from Cloudflare R2.",
   },
   {
     question: "Can partners resell Datazag data?",
@@ -231,7 +231,7 @@ export function PricingV2() {
             {dataShares.map((plan) => <CompactPlanCard key={plan.name} plan={plan} />)}
           </div>
           <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 text-sm leading-6 text-slate-300">
-            Marketplace routes can include Snowflake, Databricks, Azure, AWS, Google Cloud and compatible Iceberg, Delta or Parquet delivery depending on customer requirements.
+            Routes are Snowflake, Databricks and Azure, or direct delivery from Cloudflare R2 as Iceberg, Delta or Parquet.
           </div>
         </div>
       </section>
