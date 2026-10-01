@@ -1,95 +1,19 @@
 'use client';
 
-import { useMemo, useState } from "react";
+/**
+ * /docs — reports and datasets. The API reference and the alert webhook
+ * contract were removed on 2026-10-01; /docs/search-stream
+ * now redirects here. Do not re-add endpoint or webhook docs without a
+ * product decision behind them.
+ */
 import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 import { DOCS_FAQ } from "./faq";
 import type { DatasetSummary } from "@/lib/datasets/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CopyButton } from "@/components/ui/copy-button";
-import { HelpCircle, Zap, Shield, Rocket, ClipboardList, AlertCircle, Link as LinkIcon, Terminal, Code2, Cpu } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { HelpCircle, Shield, Zap, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
-
-// --- Data for the documentation page ---
-const SAMPLE_RESPONSE = `{
-  "domain": "example.com",
-  "ns": "ns1.provider.net",
-  "soa": "hostmaster@example.com",
-  "status": "active",
-  "suffix": "com",
-  "ip": "192.0.2.1",
-  "country_dm": "US",
-  "risk_score": 20,
-  "flags": {
-    "is_mailbox_provider": false,
-    "is_phishing": false,
-    "is_mailable": true,
-    "is_disposable": false,
-    "has_dmarc": true,
-    "has_spf": true
-  }
-}`;
-
-const ERROR_ROWS = [
-    { code: 400, message: "Bad Request", desc: "Malformed domain or parameters" },
-    { code: 401, message: "Unauthorized", desc: "Invalid or missing API key" },
-    { code: 404, message: "Not Found", desc: "Domain not found" },
-    { code: 429, message: "Too Many Requests", desc: "Rate limit exceeded" },
-    { code: 500, message: "Internal Server Error", desc: "Unexpected server error" },
-];
-
-const PARAMS = [
-    { name: "domain", type: "string", required: true, desc: "Domain host to query, e.g. example.com" },
-    { name: "exclude", type: "string", required: false, desc: "Comma-separated list of fields to trim from the response" },
-];
-
-const FIELDS = [
-    { key: "risk_score", type: "integer", desc: "Risk rating (0–100). A higher score means more risk signals are present. It is not a calibrated probability." },
-    { key: "flags.is_phishing", type: "boolean", desc: "True if the domain appears in third-party phishing intelligence." },
-    { key: "flags.is_disposable", type: "boolean", desc: "True if domain belongs to a temporary or disposable email provider." },
-    { key: "flags.is_mailable", type: "boolean", desc: "True if the domain has a working mail setup: valid MX records, and no disposable-provider or malicious flags." },
-    { key: "flags.is_mailbox_provider", type: "boolean", desc: "True for well-known providers like Gmail, Outlook, Proton, etc." },
-    { key: "flags.is_parked", type: "boolean", desc: "True if the domain resolves to a generic parking page or is for sale." },
-];
-
-/**
- * ALERT DELIVERY ROUTES — mirrors app/alerts/copy.ts. Alerts are not a REST
- * resource you poll; they are pushed, or consumed through a route the team
- * already operates. Documenting a GET /alerts endpoint would have been
- * inventing an API.
- */
-const ALERT_ROUTES = [
-    { name: "Webhooks", desc: "Signed HTTP POST per alert event. Launch integrations for Palo Alto, Microsoft Sentinel and Splunk, plus custom ticketing, SOAR and portal workflows.", primary: true },
-    { name: "API", desc: "Score, enrich and retrieve alert context inside products, review queues and case-management tools." },
-    { name: "SIEM and SOC tools", desc: "Route alerts and their reason fields into detection, investigation and response workflows." },
-    { name: "Reports and evidence packs", desc: "Package findings for executives, customers, takedown workflows and account reviews." },
-    { name: "Cloud data shares", desc: "Iceberg or Delta datasets for analytics, hunting, enrichment and historical review." },
-];
-
-/** Webhook contract facts — see /docs/search-stream for the full reference. */
-const WEBHOOK_CONTRACT = [
-    { label: "Transport", value: "HTTPS POST, JSON body" },
-    { label: "Verification", value: "HMAC signature over the RAW request bytes" },
-    { label: "Your timeout", value: "Respond 200 within 5 seconds" },
-    { label: "Retries", value: "3 attempts if we do not receive a 200" },
-    { label: "Deduplication", value: "Key on alert_id — retries reuse it" },
-];
-
-const ALERT_EVENT_SHAPE = `{
-  "alert_id": "evt_889234-ab12-44c1",
-  "timestamp": "2023-10-27T14:30:00Z",
-  "event_type": "phishing_candidate_detected",
-  "severity": "high",
-  "brand_monitored": "Acme Corp",
-  "threat_data": { "url": "...", "domain": "...", "ip_address": "...", "asn": "..." },
-  "detection_logic": {
-    "score": 95,
-    "triggers": ["logo_match", "keyword_stuffing", "newly_registered_domain"]
-  }
-}`;
 
 /**
  * REPORTS — deliberately NOT documented as an API, because there is not one.
@@ -104,13 +28,6 @@ const REPORT_ROUTES = [
 
 const TOC = [
     { id: "overview", label: "Overview" },
-    { id: "auth", label: "Authentication" },
-    { id: "endpoint", label: "Endpoint" },
-    { id: "logic", label: "Decision Logic" },
-    { id: "use-cases", label: "What teams build" },
-    { id: "performance", label: "Performance" },
-    { id: "errors", label: "Errors" },
-    { id: "alerts", label: "Alerts" },
     { id: "reports", label: "Reports" },
     { id: "datasets", label: "Datasets" },
     { id: "faq", label: "FAQ" },
@@ -119,9 +36,6 @@ const TOC = [
 export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
     // Live coverage figures (hourly), from the provider in app/layout.tsx.
     const { DOMAINS_DISPLAY, PUBLISHED_STATS } = useSiteStats();
-    const curl = useMemo(() => `curl -H "X-API-Key: YOUR_API_KEY" https://api.datazag.com/api/example.com`, []);
-    const python = useMemo(() => `import requests\n\nurl = "https://api.datazag.com/api/example.com"\nheaders = {"X-API-Key": "YOUR_API_KEY"}\nr = requests.get(url, headers=headers, timeout=30)\nprint(r.json())`, []);
-    const node = useMemo(() => `const url = 'https://api.datazag.com/api/example.com';\nconst response = await fetch(url, {\n  headers: { 'X-API-Key': 'YOUR_API_KEY' }\n});\nconsole.log(await response.json());`, []);
 
     return (
         <div className="bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
@@ -129,40 +43,20 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
             <header className="border-b bg-slate-50/40 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
                 <div className="container mx-auto max-w-6xl px-6 py-24 lg:py-36 relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                        <Badge variant="secondary" className="px-3 bg-blue-50 text-blue-600 border-blue-100 font-bold uppercase tracking-wider text-[10px]">Developer Portal</Badge>
-                        <span className="text-slate-500">/</span>
-                        <span className="text-sm font-medium text-slate-500">v1.2 Reference</span>
-                    </div>
+                    <Badge variant="secondary" className="mb-6 px-3 bg-blue-50 text-blue-600 border-blue-100 font-bold uppercase tracking-wider text-[10px]">Documentation</Badge>
                     <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
-                        Infrastructure Intelligence <span className="text-blue-600">API</span>
+                        Reports and <span className="text-blue-600">datasets</span>
                     </h1>
                     <p className="mt-8 max-w-3xl text-xl text-slate-600 leading-relaxed font-medium">
-                        The query interface to the Datazag infrastructure graph. Ask it about a domain
-                        and it answers from what is publicly observable — DNS state, mail and
-                        authentication posture, hosting and network placement, and a risk score derived
-                        from {DOMAINS_DISPLAY} domains of prior observation.
-                    </p>
-                    {/* The same graph reaches you four ways. Naming them up front
-                        stops a developer reading the whole API reference before
-                        discovering that alerts are pushed and datasets are SQL. */}
-                    <p className="mt-6 max-w-3xl text-base text-slate-500 leading-relaxed font-medium">
-                        The same graph reaches you four ways, and this page documents all of them:{" "}
-                        <a href="#endpoint" className="font-bold text-slate-700 hover:text-blue-600">the API</a> for a
-                        question you ask,{" "}
-                        <a href="#alerts" className="font-bold text-slate-700 hover:text-blue-600">alerts</a> for events
-                        pushed to you,{" "}
-                        <a href="#reports" className="font-bold text-slate-700 hover:text-blue-600">reports</a> as
-                        documents, and{" "}
-                        <a href="#datasets" className="font-bold text-slate-700 hover:text-blue-600">datasets</a> as SQL
-                        in your own warehouse.
+                        How Datazag data reaches you. Reports are documents about a domain or an estate. Datasets
+                        are tables in your own warehouse, built from {DOMAINS_DISPLAY} domains of observation.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">
                         <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-slate-900 hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
-                            <a href="https://portal.datazag.com/register">Create API Key</a>
+                            <Link href="/datasets">Browse datasets</Link>
                         </Button>
                         <Button asChild size="lg" variant="outline" className="rounded-xl h-14 px-10 font-bold border-slate-200 bg-white hover:bg-slate-50">
-                            <a href="#endpoint">Explore Reference</a>
+                            <Link href="/reports/sample">See a sample report</Link>
                         </Button>
                     </div>
                 </div>
@@ -186,19 +80,6 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 ))}
                             </ul>
                         </div>
-                        <div className="pt-8 border-t border-slate-100">
-                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Other APIs</h3>
-                            <ul className="space-y-4">
-                                <li><a href="/docs/search-stream" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Search Stream Webhooks</a></li>
-                            </ul>
-                        </div>
-                        <div className="pt-8 border-t border-slate-100">
-                            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Resources</h3>
-                            <ul className="space-y-4">
-                                <li><a href="#" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors"><Terminal className="h-4 w-4" /> SDK Libraries</a></li>
-                                <li><a href="#" className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors"><Code2 className="h-4 w-4" /> Postman Collection</a></li>
-                            </ul>
-                        </div>
                     </nav>
                 </aside>
 
@@ -207,11 +88,10 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                     <Section id="overview" title="Overview">
                         <div className="prose prose-slate max-w-none space-y-6">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                The Datazag API is a RESTful interface onto the same infrastructure graph that produces
-                                Datazag reports and alerts. Every field below is derived from public internet infrastructure —
-                                nameservers, mail routing, email-authentication records, addressing and network placement —
-                                rather than from a static list. It describes a domain. What you decide about that domain
-                                stays your call.
+                                Datazag observes public internet infrastructure: nameservers, mail routing,
+                                email-authentication records, addressing and network placement. It does not
+                                work from a static list. Reports and datasets are two ways to receive what it
+                                sees. Both describe a domain. What you decide about that domain stays your call.
                             </p>
                             {/* WU-C3: the figure states its own population. This page previously
                                 carried two different corpus numbers eleven lines apart, which a
@@ -247,263 +127,13 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                         </div>
                     </Section>
 
-                    <Section id="auth" title="Authentication">
-                        <div className="space-y-8">
-                            <p className="text-lg text-slate-600 leading-relaxed">
-                                Datazag uses API keys to allow access to the API. Every request must include your private key in the header.
-                            </p>
-                            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                                <p className="text-sm font-bold text-slate-600 mb-4 uppercase tracking-widest">Header Name</p>
-                                <div className="flex items-center justify-between">
-                                    <code className="text-xl font-bold font-mono text-blue-600">X-API-Key</code>
-                                    <Badge className="bg-blue-600 font-bold">Required</Badge>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                <AuthNotice icon={<AlertCircle className="h-4 w-4 text-amber-500" />} text="Never expose your API key in client-side code." />
-                            </div>
-                            <CodeBlock language="bash" text={'X-API-Key: YOUR_API_KEY'} />
-                        </div>
-                    </Section>
-
-                    <Section id="endpoint" title="The Domain Endpoint">
-                        <div className="space-y-12">
-                            <p className="text-lg text-slate-600 leading-relaxed">
-                                Retrieve a comprehensive profile for any hostname. Our system automatically resolves redirects
-                                and parses parent domain context for subdomains.
-                            </p>
-
-                            <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 font-mono text-lg shadow-sm group">
-                                <Badge className="px-4 py-1.5 bg-blue-600 text-[11px] font-black italic">GET</Badge>
-                                <span className="text-slate-600">/api/</span>
-                                <span className="text-slate-900 font-bold">{'{domain}'}</span>
-                            </div>
-
-                            <div className="space-y-6">
-                                <h3 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                                    <Cpu className="h-5 w-5 text-slate-400" />
-                                    Query Parameters
-                                </h3>
-                                <DataTable
-                                    columns={["Parameter", "Type", "Required", "Description"]}
-                                    data={PARAMS.map(p => [
-                                        <code className="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded">{p.name}</code>,
-                                        <span className="text-slate-600 font-mono text-xs">{p.type}</span>,
-                                        p.required ? <span className="text-blue-600 font-bold text-xs">Required</span> : <span className="text-slate-500 font-bold text-xs italic">Optional</span>,
-                                        <span className="text-slate-600 font-medium">{p.desc}</span>
-                                    ])}
-                                />
-                            </div>
-
-                            <div className="pt-8">
-                                <h3 className="text-2xl font-bold text-slate-900 mb-8">Implementation Examples</h3>
-                                <Tabs defaultValue="curl" className="w-full">
-                                    <TabsList className="bg-slate-100 p-1.5 rounded-2xl mb-6 inline-flex">
-                                        <TabsTrigger value="curl" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">cURL</TabsTrigger>
-                                        <TabsTrigger value="python" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Python</TabsTrigger>
-                                        <TabsTrigger value="node" className="rounded-xl px-6 py-2.5 text-slate-600 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-md font-bold text-sm">Node.js</TabsTrigger>
-                                    </TabsList>
-                                    <TabsContent value="curl" className="mt-0 ring-offset-0 focus-visible:ring-0">
-                                        <CodeBlock language="bash" text={curl} title="cURL Example" />
-                                    </TabsContent>
-                                    <TabsContent value="python" className="mt-0 ring-offset-0 focus-visible:ring-0">
-                                        <CodeBlock language="python" text={python} title="Python (Requests)" />
-                                    </TabsContent>
-                                    <TabsContent value="node" className="mt-0 ring-offset-0 focus-visible:ring-0">
-                                        <CodeBlock language="javascript" text={node} title="Node.js (Fetch API)" />
-                                    </TabsContent>
-                                </Tabs>
-                            </div>
-
-                            <div className="pt-8">
-                                <h3 className="text-2xl font-bold text-slate-900 mb-8">Success Response</h3>
-                                <CodeBlock language="json" text={SAMPLE_RESPONSE} title="JSON Payload" />
-
-                                <div className="mt-12 space-y-6">
-                                    <h4 className="text-xl font-bold text-slate-900 underline decoration-blue-500/30 underline-offset-8">Output Glossary</h4>
-                                    <DataTable
-                                        columns={["Property", "Data Type", "Definition"]}
-                                        data={FIELDS.map(f => [
-                                            <code className="text-slate-900 font-black">{f.key}</code>,
-                                            <span className="text-slate-600 font-mono text-[10px] uppercase tracking-tighter">{f.type}</span>,
-                                            <span className="text-slate-600 font-medium leading-relaxed">{f.desc}</span>
-                                        ])}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </Section>
-
-                    <Section id="logic" title="Intelligent Decision logic">
-                        <div className="space-y-8">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                The API supplies signals. The thresholds are yours. Below is a starting point for an
-                                internal risk engine, not a policy we set on your behalf — the patterns that fit a
-                                payments signup and a B2B trial are not the same, and neither is the cost of getting
-                                one wrong.
-                            </p>
-                            <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6">
-                                <p className="text-sm leading-relaxed text-slate-700">
-                                    <span className="font-bold text-slate-900">A flag is an observation, not a verdict.</span>{" "}
-                                    <code className="font-bold">is_disposable</code> says a domain belongs to a temporary
-                                    mail provider — whether that should block a signup is a policy question about your
-                                    users, not a risk finding. <code className="font-bold">is_phishing</code> reflects
-                                    third-party phishing intelligence, which can be stale or wrong. Treat both as inputs
-                                    you can weight, override and audit.
-                                </p>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <LogicCard
-                                    title="Strongest signal"
-                                    color="rose"
-                                    icon={<XCircleIcon />}
-                                    text={<>A true <code className="font-bold">is_phishing</code> is the strongest single input. Many teams block on it outright; keep the response so a decision can be explained or reversed.</>}
-                                />
-                                <LogicCard
-                                    title="Manual Review"
-                                    color="amber"
-                                    icon={<AlertTriangleIcon />}
-                                    text={<>Flag for security audit if <code className="font-bold">risk_score &ge; 70</code> or the domain is new (&lt; 30 days).</>}
-                                />
-                                <LogicCard
-                                    title="Positive signal"
-                                    color="emerald"
-                                    icon={<CheckCircleIcon />}
-                                    text={<>True <code className="font-bold">has_spf</code> and <code className="font-bold">has_dmarc</code> show a maintained domain. They do not show a trustworthy owner — attackers publish them too.</>}
-                                />
-                            </div>
-                        </div>
-                    </Section>
-
-                    <Section id="use-cases" title="What teams build with it">
-                        {/* The KYC and lead-cleansing cards sold the previous company. Datazag
-                            sells to the vendors who do KYC (see GONE_ROUTES in lib/legacy-redirects.ts). */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                            <UseCase n="01" title="Threat triage">
-                                Enrich a suspicious domain in a SOC or investigation queue with its nameserver, hosting and
-                                phishing flag. Keep the response as the record of why it was escalated.
-                            </UseCase>
-                            <UseCase n="02" title="Sender checks">
-                                Email platforms check the domains their senders use: is mail authentication published, and is
-                                the domain on a disposable provider? The flags feed your policy. They are not the policy.
-                            </UseCase>
-                            <UseCase n="03" title="Portfolio risk">
-                                Insurers and diligence teams check many domains at once. For more than a few thousand, use the{" "}
-                                <a href="#datasets" className="font-semibold text-slate-700 hover:text-blue-600">datasets</a>{" "}
-                                instead of the API.
-                            </UseCase>
-                        </div>
-                    </Section>
-
-                    <Section id="performance" title="Scaling & Performance">
-                        <div className="space-y-12">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="p-10 rounded-3xl bg-slate-900 text-white shadow-2xl">
-                                    <Zap className="h-10 w-10 text-blue-400 mb-8" />
-                                    <h4 className="text-2xl font-bold mb-4 italic">Response Size</h4>
-                                    <p className="text-slate-400 mb-6 leading-relaxed">Responses carry the full infrastructure block by default. Request only the fields you score on to keep payloads small.</p>
-                                    <div className="flex items-center gap-2 text-xs font-mono text-blue-300 bg-blue-500/10 p-4 rounded-xl border border-blue-500/20">
-                                        <span className="text-blue-400 font-bold">PRO TIP:</span> Use ?exclude=infrastructure to drop the infrastructure block.
-                                    </div>
-                                </div>
-                                <div className="flex flex-col justify-center space-y-6 p-6">
-                                    <div className="space-y-2">
-                                        <h5 className="font-bold text-slate-900">Default Rate Limits</h5>
-                                        <p className="text-slate-500 text-sm">5,000 requests per hour per key. For bulk work, use the datasets in your own warehouse.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Section>
-
-                    <Section id="errors" title="Common Error Codes">
-                        <DataTable
-                            columns={["Status", "Message", "Definition"]}
-                            data={ERROR_ROWS.map(e => [
-                                <span className="font-bold text-slate-900">{e.code}</span>,
-                                <span className="font-bold text-rose-600">{e.message}</span>,
-                                <span className="text-slate-500 font-medium">{e.desc}</span>
-                            ])}
-                        />
-                    </Section>
-
-                    {/* ── ALERTS ────────────────────────────────────────────
-                        Alerts are PUSHED. There is no alerts REST resource, so
-                        this documents the webhook contract and the routes that
-                        actually exist rather than inventing endpoints. */}
-                    <Section id="alerts" title="Alerts">
-                        <div className="space-y-10">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                Alerts are not something you poll for. Datazag pushes an event when
-                                infrastructure matching your watchlist is observed, and you consume it
-                                through whichever route your team already operates.
-                            </p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {ALERT_ROUTES.map((route) => (
-                                    <div
-                                        key={route.name}
-                                        className={cn(
-                                            "p-6 rounded-2xl border",
-                                            route.primary
-                                                ? "border-blue-200 bg-blue-50/60"
-                                                : "border-slate-100 bg-slate-50",
-                                        )}
-                                    >
-                                        <h4 className="font-bold text-slate-900">{route.name}</h4>
-                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{route.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="space-y-6">
-                                <h3 className="text-2xl font-bold text-slate-900">The webhook contract</h3>
-                                <DataTable
-                                    columns={["Property", "Value"]}
-                                    data={WEBHOOK_CONTRACT.map((row) => [
-                                        <span key="l" className="font-bold text-slate-900">{row.label}</span>,
-                                        <span key="v" className="text-slate-600 font-medium">{row.value}</span>,
-                                    ])}
-                                />
-                                <p className="text-sm leading-relaxed text-slate-500">
-                                    Verify the signature against the <strong>raw request bytes</strong>. Hashing
-                                    a parsed and re-serialized body is the single most common integration
-                                    failure — read the body before any JSON middleware runs.
-                                </p>
-                            </div>
-
-                            <div className="space-y-6">
-                                <h3 className="text-2xl font-bold text-slate-900">Event shape</h3>
-                                <CodeBlock language="json" text={ALERT_EVENT_SHAPE} title="Alert event" />
-                                <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6">
-                                    <p className="text-sm leading-relaxed text-slate-700">
-                                        <span className="font-bold text-slate-900">detection_logic.triggers is the reason code list.</span>{" "}
-                                        It states what actually fired — not just how high the score was — so an
-                                        analyst can agree or disagree with a specific finding rather than with a
-                                        number. This is the field to surface in a queue.
-                                    </p>
-                                </div>
-                                <p className="text-sm leading-relaxed text-slate-500">
-                                    Full reference, including signature verification, retry semantics and
-                                    troubleshooting:{" "}
-                                    <Link href="/docs/search-stream" className="font-bold text-blue-600 hover:underline">
-                                        Search Stream webhook documentation
-                                    </Link>
-                                    .
-                                </p>
-                            </div>
-                        </div>
-                    </Section>
-
                     {/* ── REPORTS ───────────────────────────────────────────
                         Reports are documents, not an endpoint. Saying so beats
                         implying an API a developer will hunt for. */}
                     <Section id="reports" title="Reports">
                         <div className="space-y-8">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                Reports are produced documents rather than an API resource. There is no
-                                reports endpoint to call — the delivery route differs by report, and each
-                                one is listed below.
+                                Reports are documents. How each one is delivered is listed below.
                             </p>
                             <DataTable
                                 columns={["Report", "Scope", "How it is delivered"]}
@@ -514,9 +144,7 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 ])}
                             />
                             <p className="text-sm leading-relaxed text-slate-500">
-                                Building report findings into your own product? The same underlying signals
-                                are available through the API above and the datasets below — that is the
-                                supported integration path.{" "}
+                                Building report findings into your own product? Use the datasets below.{" "}
                                 <Link href="/reports" className="font-bold text-blue-600 hover:underline">
                                     Report catalog
                                 </Link>{" "}
@@ -534,9 +162,9 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                     <Section id="datasets" title="Datasets">
                         <div className="space-y-8">
                             <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                                Datasets are SQL, not HTTP. They arrive as cloud data shares and marketplace
-                                listings for warehouse and lakehouse use — bulk analysis, historical review
-                                and enrichment joins that would be impractical one API call at a time.
+                                Datasets are SQL tables. They arrive as cloud data shares and marketplace
+                                listings for warehouse and lakehouse use: bulk analysis, historical review
+                                and enrichment joins.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -601,14 +229,6 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
 
 // --- Reusable Internal Components ---
 
-const UseCase = ({ n, title, children }: { n: string, title: string, children: React.ReactNode }) => (
-    <div className="space-y-5">
-        <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-700 font-bold border border-slate-200">{n}</div>
-        <h3 className="text-2xl font-extrabold text-slate-900">{title}</h3>
-        <p className="text-slate-500 leading-relaxed">{children}</p>
-    </div>
-);
-
 const Section = ({ id, title, children }: { id: string, title: string, children: React.ReactNode }) => (
     <section id={id} className="scroll-mt-40 group">
         <div className="flex items-center gap-3 mb-10">
@@ -623,23 +243,6 @@ const Section = ({ id, title, children }: { id: string, title: string, children:
             {children}
         </div>
     </section>
-);
-
-const CodeBlock = ({ language, text, title }: { language: string, text: string, title?: string }) => (
-    <div className="relative group overflow-hidden rounded-3xl border border-slate-200 shadow-2xl">
-        <div className="flex items-center justify-between bg-white px-6 py-3 border-b border-slate-100">
-            <div className="flex items-center gap-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-slate-100"></span>
-                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest leading-none">{title || language}</span>
-            </div>
-            <CopyButton text={text} className="h-9 w-9 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" />
-        </div>
-        <div className="relative">
-            <pre className="overflow-x-auto p-8 font-mono text-sm leading-8 text-slate-800 bg-white">
-                <code className="block">{text}</code>
-            </pre>
-        </div>
-    </div>
 );
 
 const DataTable = ({ columns, data }: { columns: string[], data: (string | React.ReactNode)[][] }) => (
@@ -665,23 +268,6 @@ const DataTable = ({ columns, data }: { columns: string[], data: (string | React
     </div>
 );
 
-const LogicCard = ({ title, color, icon, text }: { title: string, color: 'rose' | 'amber' | 'emerald', icon: React.ReactNode, text: React.ReactNode }) => {
-    const colors = {
-        rose: "bg-rose-50 border-rose-100 text-rose-900 icon-bg-rose-100 shadow-rose-900/5",
-        amber: "bg-amber-50 border-amber-100 text-amber-900 icon-bg-amber-100 shadow-amber-900/5",
-        emerald: "bg-emerald-50 border-emerald-100 text-emerald-900 icon-bg-emerald-100 shadow-emerald-900/5",
-    };
-    return (
-        <div className={cn("p-8 rounded-3xl border-2 shadow-xl transition-transform hover:-translate-y-1", colors[color])}>
-            <div className="flex items-center gap-3 mb-4">
-                {icon}
-                <h4 className="font-black uppercase tracking-widest text-[11px]">{title}</h4>
-            </div>
-            <p className="text-sm leading-relaxed font-medium opacity-80">{text}</p>
-        </div>
-    );
-};
-
 const FaqItem = ({ question, answer }: { question: string, answer: string }) => (
     <div className="space-y-4 p-2">
         <h4 className="flex items-center gap-3 font-extrabold text-slate-900 text-lg">
@@ -691,28 +277,5 @@ const FaqItem = ({ question, answer }: { question: string, answer: string }) => 
         <p className="text-slate-500 pl-8 font-medium leading-relaxed border-l-2 border-slate-50 ml-2.5 italic">
             {answer}
         </p>
-    </div>
-);
-
-const AuthNotice = ({ icon, text }: { icon: React.ReactNode, text: string }) => (
-    <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-100 bg-white/50 text-xs font-semibold text-slate-500">
-        {icon}
-        {text}
-    </div>
-);
-
-const XCircleIcon = () => (
-    <div className="p-2 rounded-lg bg-rose-200/50">
-        <AlertCircle className="h-4 w-4 text-rose-600" />
-    </div>
-);
-const AlertTriangleIcon = () => (
-    <div className="p-2 rounded-lg bg-amber-200/50">
-        <AlertCircle className="h-4 w-4 text-amber-600" />
-    </div>
-);
-const CheckCircleIcon = () => (
-    <div className="p-2 rounded-lg bg-emerald-200/50">
-        <AlertCircle className="h-4 w-4 text-emerald-600" />
     </div>
 );
