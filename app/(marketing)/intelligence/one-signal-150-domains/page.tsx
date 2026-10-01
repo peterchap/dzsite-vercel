@@ -113,8 +113,9 @@ export default function OneSignal150DomainsPage() {
             <p className="mt-5 text-base leading-7 text-slate-300">
               But the domain resolved into <Ioc>AS213790</Ioc>, an Iranian network our pipeline scores{" "}
               <b className="text-white">1.0 for bulletproof behavior</b> with an{" "}
-              <b className="text-white">abuse score of 95 / 100</b> — parts of which Spamhaus DROP
-              independently lists as criminal-controlled address space. The U.S. Social Security
+              <b className="text-white">abuse score of 95 / 100</b>. After we found it, we ran a
+              one-off check against Spamhaus DROP, which independently lists parts of that network as
+              criminal-controlled address space. The U.S. Social Security
               Administration does not host on Iranian bulletproof infrastructure. The surface lied.
               The infrastructure didn&rsquo;t.
             </p>
@@ -218,49 +219,27 @@ export default function OneSignal150DomainsPage() {
         </div>
       </section>
 
-      {/* ---------- 04 The part that matters: we were first ---------- */}
+      {/* ---------- 04 Not yet reported ----------
+          A dated fact, not a scoreboard. The head-to-head bars against named
+          feeds were removed on 2026-10-01: the page does not score Datazag
+          against other vendors. Early-detection checks against Google Web
+          Risk are internal only and stay off the site. */}
       <section className="relative border-b border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel num="04">The part that matters: we were first</SectionLabel>
+          <SectionLabel num="04">Not yet reported</SectionLabel>
           <p className="max-w-3xl text-xl leading-relaxed text-white md:text-2xl">
-            We checked every domain and IP against the public threat feeds the industry runs on —
-            OpenPhish, URLhaus, ThreatFox, Feodo Tracker, Spamhaus, FireHOL.
+            We checked all 150 domains against the open phishing and malware domain feeds on{" "}
+            {c.timestamps.feedSnapshot}. None of them were listed.
           </p>
-
-          <div className="mt-8 grid gap-5">
-            {c.comparison.map((row) => (
-              <div key={row.label} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-                <div className="flex flex-wrap items-baseline justify-between gap-3">
-                  <span className="text-base font-bold text-white">{row.label}</span>
-                  <span className="font-mono text-sm text-slate-400">{row.metric}</span>
-                </div>
-                <div className="mt-5 grid gap-3">
-                  <ComparisonBar who="Datazag" tone="ahead" pct={100} value={row.datazag} />
-                  <ComparisonBar who={row.feedWho} tone="known" pct={row.feedPct} value={row.feed} empty={row.feedPct === 0} />
-                </div>
-              </div>
-            ))}
-            <div className="flex flex-wrap gap-5 font-mono text-xs text-slate-400">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-3 w-3 rounded-sm bg-emerald-400" />Datazag infrastructure detection
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-3 w-3 rounded-sm bg-amber-400" />Public threat feeds
-              </span>
-            </div>
-          </div>
-
           <div className="mt-8 grid max-w-3xl gap-4">
             <p className="text-base leading-7 text-slate-300">
-              <b className="text-white">Public domain feeds are reactive.</b> A domain gets listed{" "}
-              <i>after</i> it&rsquo;s been reported attacking someone. Every one of these 150 was still
-              invisible to them — the operation was mapped while it was still being built.
+              <b className="text-white">Domain feeds list a domain after it is reported.</b> Someone has
+              to see it attack first. These 150 had not been reported yet, so the operation was mapped
+              from its infrastructure, not from reports.
             </p>
             <p className="text-base leading-7 text-slate-300">
-              <b className="text-white">Public IP lists corroborate, but don&rsquo;t cover.</b>{" "}
-              Spamhaus DROP independently flags 2 of the 5 netblocks — strong third-party validation
-              that the network is criminal. Yet even Spamhaus misses 3 of the 5, including the block
-              serving the fake Apple, the BNP Paribas lookalike, and a Tor service.
+              This is one investigation, checked once. It does not measure how much earlier Datazag
+              finds domains in general.
             </p>
           </div>
         </div>
@@ -341,45 +320,11 @@ export default function OneSignal150DomainsPage() {
           <p className="mt-3 max-w-[72ch] text-xs leading-6 text-slate-500">
             Findings from a single investigation conducted by the Datazag detection pipeline.
             Indicators are defanged; domains named are assessed as malicious infrastructure. Feed
-            snapshot taken {c.timestamps.feedSnapshot}. Public-feed comparison reflects ingested feed
-            snapshots (OpenPhish, URLhaus, ThreatFox, Feodo Tracker, Spamhaus DROP/ASN-DROP, FireHOL)
-            and may differ from live feed state. Published {c.timestamps.publishedShort}.
+            check taken {c.timestamps.feedSnapshot} against snapshots of open phishing and malware domain
+            feeds, which may differ from their live state. Published {c.timestamps.publishedShort}.
           </p>
         </div>
       </section>
     </main>
-  );
-}
-
-function ComparisonBar({
-  who,
-  tone,
-  pct,
-  value,
-  empty = false,
-}: {
-  who: string;
-  tone: "ahead" | "known";
-  pct: number;
-  value: string;
-  empty?: boolean;
-}) {
-  const fill = tone === "ahead" ? "bg-emerald-400 text-slate-950" : "bg-amber-400 text-slate-950";
-  return (
-    <div className="grid grid-cols-[110px_1fr] items-center gap-3.5 sm:grid-cols-[132px_1fr]">
-      <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-slate-400">{who}</span>
-      <div className="relative h-7 overflow-hidden rounded-md border border-white/10 bg-[#030619]/60">
-        {empty ? (
-          <span className="flex h-full items-center px-3 font-mono text-xs font-bold text-slate-400">{value}</span>
-        ) : (
-          <span
-            className={`absolute inset-y-0 left-0 flex items-center rounded-md px-3 font-mono text-xs font-bold ${fill}`}
-            style={{ width: `${pct}%` }}
-          >
-            {value}
-          </span>
-        )}
-      </div>
-    </div>
   );
 }

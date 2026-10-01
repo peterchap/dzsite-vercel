@@ -4,7 +4,8 @@
  * Shared by the page, its generated OG image, and the homepage teaser card so
  * the stat triptych and headline never drift. Rebuilt native and on-domain from
  * the original artifact, with the WU23 §3 mandatory edits applied:
- *  - Spamhaus corroboration moved into section 01 (circularity fix, §3.1)
+ *  - Spamhaus corroboration moved into section 01 (circularity fix, §3.1), framed
+ *    as a one-off check run after the Iranian network was found (2026-10-01)
  *  - "0 in public DOMAIN feeds" everywhere (§3.2)
  *  - "IP reputation 95/100" → "Abuse score 95 / 100" (§3.3)
  *  - H1 "crime host" → "criminal hosting cluster" (§3.4)
@@ -78,25 +79,6 @@ export const CASE_STUDY = {
     },
   ],
 
-  // Section 04 — Datazag vs public feeds comparison.
-  comparison: [
-    {
-      label: "150 attacking domains",
-      metric: "listed in public domain feeds",
-      datazag: "150 found",
-      feedWho: "Public feeds",
-      feed: "0 listed",
-      feedPct: 0,
-    },
-    {
-      label: "5 malicious netblocks",
-      metric: "flagged by public IP reputation lists",
-      datazag: "5 mapped",
-      feedWho: "Spamhaus / FireHOL",
-      feed: "2 listed",
-      feedPct: 40,
-    },
-  ],
 } as const;
 
 export function caseStudyUrl(): string {
