@@ -3,7 +3,6 @@ import type React from "react";
 
 import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { FP_STATUS } from "@/lib/fp-status";
-import { getSiteStats } from "@/lib/site-stats-live";
 
 import {
   copyCta,
@@ -25,7 +24,9 @@ export const metadata: Metadata = {
     "Threat intelligence as alerts: infrastructure aimed at your platforms, brands and suppliers, checked against the full domain corpus and sent with the evidence.",
 };
 
-// Kept hardcoded as a visual specimen of a real alert.
+// A specimen built on a real alert's shape. The domain and the IP are reserved
+// example values (RFC 2606 .example, RFC 5737 TEST-NET-3), so the page never
+// names a live third-party domain. Keep the confidence consistent with RED.
 const alertExampleFields = [
   ["Incident ID", "INC-1782384515-13ec9b"],
   ["Classification", "RED → ISSUE_BLOCK_NOTICE"],
@@ -34,14 +35,13 @@ const alertExampleFields = [
   ["ASN Risk Score", "1.00 · critical"],
   ["ASN", "AS14618 Amazon AES"],
   ["Registration", "—"],
-  ["Detected Hosting Infrastructure", "52.20.84.62 (behind aws)"],
-  ["Confidence", "48/100"],
+  ["Detected Hosting Infrastructure", "203.0.113.42 (fronted by AWS)"],
+  ["Confidence", "92/100"],
 ];
 
-// The corpus figure is read at render so it follows the live feed.
-const alertExampleReasons = (domains: string) => [
+const alertExampleReasons = [
   "Platform impersonation targeting 'exchange' (Category: Microsoft 365)",
-  `Domain not found in known ${domains} corpus`,
+  "Not seen in the Datazag domain corpus before this alert",
   "infra: ELEVATED_NETWORK_TYPE",
   "infra: CERTSTREAM_ANOMALY",
   "infra: MALICIOUS_IP_DENSITY",
@@ -86,7 +86,6 @@ function AlertStackPanel() {
 }
 
 export default async function AlertsPage() {
-  const { DOMAINS_DISPLAY } = await getSiteStats();
   const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
 
   const hero = getCopySection(pageCopy, "hero");
@@ -236,7 +235,7 @@ export default async function AlertsPage() {
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
               <div className="border-b border-white/10 bg-white/[0.035] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/70">PLATFORM | RED</p>
-                <h3 className="mt-3 text-2xl font-semibold text-white">Platform Risk Escalated | exchange.ws</h3>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Platform Risk Escalated | exchange-signin.example</h3>
               </div>
               <div className="grid gap-3 p-5 sm:grid-cols-2">
                 {alertExampleFields.map(([label, value]) => (
@@ -249,12 +248,13 @@ export default async function AlertsPage() {
               <div className="border-t border-white/10 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">Reason codes</p>
                 <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-300">
-                  {alertExampleReasons(DOMAINS_DISPLAY).map((reason) => <li key={reason}>• {reason}</li>)}
+                  {alertExampleReasons.map((reason) => <li key={reason}>• {reason}</li>)}
                 </ul>
               </div>
               <div className="border-t border-white/10 bg-cyan-300/[0.06] p-5">
-                <p className="text-sm font-semibold text-cyan-100">E2E Latency: 4.415s | DNS Resolution Phase: -1ms</p>
+                <p className="text-sm font-semibold text-cyan-100">End-to-end latency: 4.4s, from first observation to alert</p>
               </div>
+              <p className="border-t border-white/10 px-5 py-3 text-xs text-slate-500">Illustrative alert. The domain and IP address are reserved example values.</p>
             </div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
               {resolvedAnnotations.map((annotation, index) => (
