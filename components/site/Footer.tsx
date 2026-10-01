@@ -3,6 +3,7 @@ import { normalizeHref } from "@/lib/links";
 import { Mail, Linkedin, Twitter, Github } from "lucide-react";
 import { BrandingLogo } from "@/components/site/BrandingLogo";
 import Link from "next/link";
+import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 // Mirrors the header (2026-09-28 nav brief): Solutions and Data & Intelligence
 // are the two axes; Company carries the rest. See components/site/Header.tsx.
@@ -67,7 +68,7 @@ export function Footer({
     companyLinks = [],
     footerAbout,
     securityEmail,
-    copyright,
+    copyright: _copyright,
     social,
 }: {
     title?: string;
@@ -81,7 +82,12 @@ export function Footer({
     social?: { linkedin?: string; x?: string; github?: string };
 }) {
     const currentYear = new Date().getFullYear();
-    const displayCopyright = copyright?.replace("{year}", currentYear.toString()) ?? `© ${currentYear} ${title ?? "Datazag"}. All rights reserved.`;
+    const displayCopyright = `© ${currentYear} ${LEGAL_ENTITY.legalName}. All rights reserved.`;
+    const companyDetails = [
+        `Registered in ${LEGAL_ENTITY.jurisdiction}`,
+        LEGAL_ENTITY.companyNumber ? `Company number ${LEGAL_ENTITY.companyNumber}` : null,
+        LEGAL_ENTITY.registeredOffice ? `Registered office: ${LEGAL_ENTITY.registeredOffice}` : null,
+    ].filter(Boolean).join(" · ");
     const resolvedProductLinks = shouldUseDefaultProductLinks(productLinks) ? defaultProductLinks : productLinks;
     const resolvedTrustLinks = shouldUseDefaultTrustLinks(trustLinks) ? defaultTrustLinks : trustLinks;
     const resolvedCompanyLinks = shouldUseDefaultCompanyLinks(companyLinks, footerLinks) ? defaultCompanyLinks : companyLinks.length > 0 ? companyLinks : footerLinks;
@@ -134,8 +140,11 @@ export function Footer({
 
                 <div className="mt-24 border-t border-white/10 pt-12">
                     <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                            {displayCopyright}
+                        <div className="text-center md:text-left">
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                {displayCopyright}
+                            </div>
+                            <p className="mt-2 text-xs text-slate-500">{companyDetails}</p>
                         </div>
 
                         <div className="flex items-center gap-8">

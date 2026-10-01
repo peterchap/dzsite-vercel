@@ -37,7 +37,7 @@ export default function DataProcessingAgreementPage() {
                             This Data Processing Agreement (“DPA”) forms part of the agreement between Datazag and the customer and applies where Datazag processes personal data on behalf of the customer in the course of providing its services.
                         </p>
                         <p className="mt-4">
-                            This DPA is intended to ensure compliance with applicable data protection laws, including the EU General Data Protection Regulation (“GDPR”) and equivalent regulations in other jurisdictions.
+                            This DPA is intended to ensure compliance with applicable data protection laws. These include the UK General Data Protection Regulation (“UK GDPR”) and the Data Protection Act 2018, the EU General Data Protection Regulation (“EU GDPR”) where it applies, and equivalent regulations in other jurisdictions.
                         </p>
                     </LegalSection>
 

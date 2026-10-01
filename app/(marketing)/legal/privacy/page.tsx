@@ -77,6 +77,10 @@ export default function PrivacyPolicyPage() {
                                 description="Information required to create and manage user accounts, including authentication details and access logs."
                             />
                             <DataPoint
+                                title="Free report requests"
+                                description="Your work email address and the domain you submit when you request a free Domain Health Report. We use them to generate the report, email you a private link to it, and keep it available behind that link. We contact you about related services only if you opt in."
+                            />
+                            <DataPoint
                                 title="Usage and technical data"
                                 description="IP address, device information, browser type, and usage metadata related to access of our website or services."
                             />
@@ -95,6 +99,7 @@ export default function PrivacyPolicyPage() {
                         <ul className="list-disc pl-5 space-y-2 text-slate-300">
                             <li>Provide and operate our website and services</li>
                             <li>Respond to inquiries and demo requests</li>
+                            <li>Generate and deliver the free reports you request</li>
                             <li>Manage customer relationships and accounts</li>
                             <li>Improve our products, services, and security</li>
                             <li>Monitor and protect our infrastructure from abuse</li>
@@ -191,6 +196,12 @@ export default function PrivacyPolicyPage() {
                         </ul>
                         <p className="mt-6">
                             Requests can be made using the contact details below.
+                        </p>
+                        <p className="mt-4">
+                            You also have the right to complain to a data protection authority. In the UK, that is the
+                            Information Commissioner&rsquo;s Office (ICO), at{" "}
+                            <a href="https://ico.org.uk/make-a-complaint/" className="font-semibold text-blue-400 hover:underline">ico.org.uk</a>.
+                            We would welcome the chance to address your concern first.
                         </p>
                     </LegalSection>
 
