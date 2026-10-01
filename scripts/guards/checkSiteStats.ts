@@ -19,7 +19,8 @@ import {
   BOUNDS,
   IPV4_ADDRESS_SPACE,
 } from "../../lib/site-stats";
-import { computeSiteStats, parseCoverage } from "../../lib/site-stats-core";
+import { computeSiteStats, parseCoverage, OBSERVATORY_DOMAINS_DEFINITION } from "../../lib/site-stats-core";
+import { formatCount } from "../../lib/observatory-figures";
 
 let n = 0;
 const check = (desc: string, fn: () => void) => {
@@ -27,14 +28,18 @@ const check = (desc: string, fn: () => void) => {
   n++;
 };
 
-// fmtStat floors — never rounds up (the public claim must stay defensible).
-check("368M floors to 360M+", () => assert.equal(fmtStat(368_000_000), "360M+"));
-check("369,999,999 still floors to 360M+", () => assert.equal(fmtStat(369_999_999), "360M+"));
-check("325.6M floors to 320M+", () => assert.equal(fmtStat(325_631_907), "320M+"));
-check("3.129B floors to 3.1B", () => assert.equal(fmtStat(3_129_369_541), "3.1B"));
-check("3,199,999,999 still floors to 3.1B", () => assert.equal(fmtStat(3_199_999_999), "3.1B"));
-check("10.5M floors to 10M+", () => assert.equal(fmtStat(10_500_000), "10M+"));
-check("78,756 floors to 78k", () => assert.equal(fmtStat(78_756), "78k"));
+// fmtStat is the OBSERVATORY'S format (2026-10-01): one decimal for millions and
+// billions, rounded, no "+". It must agree with formatCount in
+// lib/observatory-figures.ts, or the two sites print the same figure two ways.
+check("the Observatory's corpus count renders as the Observatory prints it", () =>
+  assert.equal(fmtStat(369_354_185), formatCount(369_354_185)));
+check("millions: one decimal, rounded", () => assert.equal(fmtStat(13_790_175), "13.8M"));
+check("billions: one decimal, rounded", () => assert.equal(fmtStat(3_137_402_342), "3.1B"));
+check("no trailing plus", () => assert.ok(!fmtStat(368_899_047).includes("+")));
+for (const n of [999_999, 1_000_000, 15_655_350, 99_950_000, 369_354_185, 999_999_999, 1_000_000_000, 4_294_967_296]) {
+  check(`fmtStat agrees with the Observatory formatter at ${n}`, () => assert.equal(fmtStat(n), n >= 1_000_000 ? formatCount(n) : fmtStat(n)));
+}
+check("thousands still floor to whole thousands", () => assert.equal(fmtStat(79_340), "79k"));
 check("sub-1k renders literally", () => assert.equal(fmtStat(999), "999"));
 
 // Domains floor rule: the effective figure never drops below the committed
@@ -60,7 +65,8 @@ check("the published corpus figure comes from the feed, unmodified", () => {
 check("a corpus figure is publishable at all", () =>
   assert.ok(SITE_STATS.domainsMonitored !== null, "an unpublishable corpus figure fails the build"));
 
-check("corpus display is 360M+", () => assert.equal(DISPLAY_STATS.domainsMonitored, "360M+"));
+check("corpus display is the formatted corpus figure", () =>
+  assert.equal(DISPLAY_STATS.domainsMonitored, fmtStat(SITE_STATS.domainsMonitored as number)));
 // The corpus counts RESOLVING domains only. If the producer ever regresses to
 // counting every row, the figure jumps back over 400M — assert it cannot.
 // Bounds alone cannot catch this: 402M sits inside (100M, 2B) quite happily.
@@ -124,7 +130,8 @@ check("all display stats formatted", () => {
     // null is a legitimate value now: the feed had nothing publishable, so the
     // figure renders NOTHING. Only a present string has to be well-formed.
     if (value === null) continue;
-    assert.ok(/^\d+(\.\d)?(B|M\+|k)$|^\d{1,3}$/.test(value), `${key} malformed: ${value}`);
+    // The Observatory's format (2026-10-01): "369.4M", "3.1B", "79k" — no "+".
+    assert.ok(/^\d+\.\d(B|M)$|^\d+k$|^\d{1,3}$/.test(value), `${key} malformed: ${value}`);
   }
 });
 
@@ -227,7 +234,7 @@ check("live coverage.json maps onto the same fields the build snapshot uses", ()
   assert.ok(live);
   assert.equal(live.origin, "live");
   assert.equal(live.SITE_STATS.domainsMonitored, 368_899_047);
-  assert.equal(live.DOMAINS_DISPLAY, "360M+");
+  assert.equal(live.DOMAINS_DISPLAY, "368.9M");
   assert.equal(live.STATS_AS_OF.domainsMonitored, "2026-09-30T16:12:25+00:00");
   // A figure with no as-of of its own takes the file's build time, never another figure's.
   assert.equal(live.STATS_AS_OF.networksProfiled, "2026-09-30T16:12:28+00:00");
@@ -252,6 +259,15 @@ check("record age is all-or-nothing, and out-of-bound ages are dropped", () => {
   assert.deepEqual(oneSided?.recordAge, { p50Hours: null, p95Hours: null, asOf: null });
   const impossible = computeSiteStats(liveFeed({ record_age_p95_hours: 401 * 24 }), "live");
   assert.deepEqual(impossible?.recordAge, { p50Hours: null, p95Hours: null, asOf: null });
+});
+
+check("an Observatory-sourced domain figure carries the Observatory's definition", () => {
+  const obs = computeSiteStats(liveFeed(), "live", "observatory");
+  assert.ok(obs);
+  assert.equal(obs.domainsSource, "observatory");
+  assert.equal(obs.PUBLISHED_STATS.domainsMonitored.definition, OBSERVATORY_DOMAINS_DEFINITION);
+  const cov = computeSiteStats(liveFeed(), "live");
+  assert.notEqual(cov?.PUBLISHED_STATS.domainsMonitored.definition, OBSERVATORY_DOMAINS_DEFINITION);
 });
 
 check("the bundle is plain data, so it can cross into client components", () => {
