@@ -4,8 +4,8 @@
  * Research pages are code (app/(marketing)/intelligence/<slug>), not Sanity
  * blog posts, so /blog could not see them: on 2026-10-01 the first post went
  * live and /blog still said "No articles published yet". Every surface that
- * lists research reads this array: /intelligence, /blog, the sitemap and
- * llms.txt. Add a piece here in the same PR that adds its page.
+ * lists research reads this array: /blog (the one listing; /intelligence
+ * 301s there), the sitemap and llms.txt. Add a piece here in the same PR that adds its page.
  *
  * ONLY LIVE PIECES. An entry is a link a visitor can follow, so it goes in
  * when its page ships, never ahead of it.

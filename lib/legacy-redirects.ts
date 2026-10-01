@@ -110,6 +110,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "An empty CMS page that rendered 'No content found yet. Add a hero or sections in Studio.' to visitors. Published findings live in the Observatory.",
   },
   {
+    source: "/intelligence",
+    destination: "/blog",
+    reason: "The research index duplicated /blog, which already lists every research piece. Merged 2026-10-01. Pieces keep their /intelligence/<slug> URLs, which the Observatory registry links to.",
+  },
+  {
     source: "/domain-search",
     destination: "/datasets",
     reason: "Old light-theme lookup-results page ('Domain Intelligence'), reached only from the legacy DomainLookup CMS block, which now appears only on a page that already redirects. Retired 2026-09-29; domain data is offered through /datasets.",
