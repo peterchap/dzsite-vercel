@@ -11,7 +11,7 @@ const domainSummary = [
   ["Domain", "example-business.co.uk"],
   ["Report type", "Free single-domain health report"],
   ["Primary exposure", "Microsoft 365 and payment-platform lures relevant to visible platform footprint"],
-  ["DNS defense", "DMARC present but not enforcing; SPF and DKIM require alignment review"],
+  ["DNS defense", "DMARC present but not enforcing; SPF needs review"],
   ["First action", "Harden email authentication and review stale DNS records"],
 ];
 
@@ -28,13 +28,13 @@ const domainSections = [
   },
   {
     title: "DNS and email defense analysis",
-    text: "The public DNS records show basic mail authentication is present but not hardened. The domain should move gradually from monitoring to enforcement after SPF and DKIM alignment is verified.",
-    points: ["DMARC: p=none, not enforcing", "SPF: present, review includes and lookup depth", "DKIM: provider keys visible, alignment check required", "MTA-STS and BIMI not detected"],
+    text: "The public DNS records show basic mail authentication is present but not hardened. The domain should move gradually from monitoring to enforcement once every sending service is confirmed.",
+    points: ["DMARC: p=none, not enforcing", "SPF: present, review includes and lookup depth", "DKIM: not tested, because selectors can't be listed from outside", "MTA-STS and BIMI not detected"],
   },
   {
     title: "Remediation priorities",
     text: "The first fixes are practical: verify mail authentication alignment, move DMARC towards enforcement, review stale CNAMEs and monitor platform-led impersonation around visible vendors.",
-    points: ["Priority 1: verify SPF/DKIM alignment", "Priority 2: move DMARC towards quarantine/reject", "Priority 3: review stale CNAMEs and unused subdomains", "Priority 4: enable alerts for detected platform lures"],
+    points: ["Priority 1: confirm every sending service authenticates", "Priority 2: move DMARC towards quarantine/reject", "Priority 3: review stale CNAMEs and unused subdomains", "Priority 4: enable alerts for detected platform lures"],
   },
 ];
 

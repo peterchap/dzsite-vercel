@@ -98,9 +98,9 @@ export const content: PageContent = {
     body: "These signals can inform a price or a condition. They are not a generic risk score. Each is read from public infrastructure and carries the record it was read from.",
     items: [
       { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, linked through certificate, mail and registration records and sorted into confidence tiers. Adverse selection can hide in the gap between the declared estate and the real one." },
-      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are published and enforcing, not just present. One policy blocks impersonation; the other only reports it. Business email compromise remains a significant source of cyber loss." },
+      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF and DMARC are published and enforcing, not just present. One policy blocks impersonation; the other only reports it. Business email compromise remains a significant source of cyber loss." },
       { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls will fail if nobody acts. The expiry calendar shows how the insured runs their estate." },
-      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC). A maturity path you can write conditions against, not a pass or fail." },
+      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF and DMARC) to hardening (CAA and DNSSEC). A maturity path you can write conditions against, not a pass or fail." },
     ],
   },
 
@@ -143,7 +143,7 @@ export const content: PageContent = {
     eyebrow: "Change during the term",
     title: "The estate grows after you bind.",
     body: "Enterprise DNS changes rarely. The estate is what changes: new subdomains, new certificates and new hosting under a domain you already cover. Datazag reads Certificate Transparency logs continuously, so a new certificate under an insured's domain is seen as it is logged.",
-    secondaryBody: "Changes show up in the next report and in the tables. Our DNS history starts in August 2026, so change is measured from then, not before.",
+    secondaryBody: "Changes show up in the next report and in the tables. Our daily posture history starts on 20 August 2026, so change is measured from then, not before.",
     items: [
       { key: "subdomains", title: "New subdomains", text: "Names that appear in new certificates, then resolved to see where they point." },
       { key: "certificates", title: "New certificates", text: "Issued for an insured's domains, with the issuing authority." },

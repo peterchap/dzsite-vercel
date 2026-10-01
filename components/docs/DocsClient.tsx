@@ -1,10 +1,16 @@
 'use client';
 
 /**
- * /docs — reports and datasets. The API reference and the alert webhook
- * contract were removed on 2026-10-01; /docs/search-stream
+ * /docs — reports, datasets and the Microsoft Sentinel feed. The API reference
+ * and the alert webhook contract were removed on 2026-10-01; /docs/search-stream
  * now redirects here. Do not re-add endpoint or webhook docs without a
  * product decision behind them.
+ *
+ * SENTINEL is documented because it ships: a pull-only STIX 2.1 / TAXII 2.1 feed
+ * read by Sentinel's built-in TAXII connector into ThreatIntelIndicators, plus the
+ * Datazag Content Hub solution (Azure/Azure-Sentinel PR #14888, merged 2026-08-28).
+ * It is NOT OCSF and NOT a push. Facts below mirror Solutions/Datazag in that repo
+ * and dnsproject/alerts/stix_export.py; change them only when those change.
  */
 import { useSiteStats } from "@/components/providers/SiteStatsProvider";
 import { DOCS_FAQ } from "./faq";
@@ -26,10 +32,51 @@ const REPORT_ROUTES = [
     { name: "Cross-Estate Domain Risk Report", how: "Requested through sales. Opens with estate discovery, so the scope is agreed before it runs.", scope: "Portfolio, estate or supplier group" },
 ];
 
+const TAXII_API_ROOT = "https://taxii.datazag.com/api/";
+
+const TAXII_COLLECTIONS = [
+    { name: "Platform impersonation", id: "c7ad8fef-c704-4b36-9526-5d7c3bd018c4" },
+    { name: "Attacker infrastructure", id: "eedf8709-5e4f-4ed4-b840-5eaafa236b70" },
+    { name: "Brand impersonation", id: "Issued per organization, with your credentials" },
+];
+
+/** The shape Sentinel stores in ThreatIntelIndicators.Data. Reserved example values. */
+const STIX_EXAMPLE = `{
+  "type": "indicator",
+  "spec_version": "2.1",
+  "id": "indicator--3f1c2a9e-7b4d-5e8f-9a10-2b3c4d5e6f70",
+  "created_by_ref": "identity--55a5a448-c6f1-5128-bc71-4d85b719131e",
+  "created": "2026-10-01T08:12:44.000Z",
+  "modified": "2026-10-01T08:12:44.000Z",
+  "valid_from": "2026-10-01T08:12:44.000Z",
+  "valid_until": "2026-10-31T08:12:44.000Z",
+  "name": "Platform Impersonation: exchange-signin.example",
+  "pattern": "[domain-name:value = 'exchange-signin.example']",
+  "pattern_type": "stix",
+  "indicator_types": ["malicious-activity", "impersonation"],
+  "confidence": 92,
+  "labels": ["platform.suspicious_gtld_for_brand", "infra.bulletproof_asn"],
+  "external_references": [{
+    "source_name": "datazag",
+    "external_id": "INC-1782384515-13ec9b"
+  }]
+}`;
+
+const STIX_FIELDS = [
+    { key: "created_by_ref", desc: "Always the Datazag identity. Match on this, not SourceSystem, which is the name you give the TAXII server." },
+    { key: "pattern", desc: "The domain, or an IP address where the alert says to block it." },
+    { key: "confidence", desc: "0 to 100. The solution's analytic rule fires at 85 and above." },
+    { key: "valid_until", desc: "30 days after the last observation. An indicator expires unless it is seen again." },
+    { key: "labels", desc: "The reason codes behind the alert." },
+    { key: "external_references", desc: "The Datazag alert ID, and a link to the evidence pack where one exists." },
+    { key: "revoked", desc: "Set to true when Datazag withdraws an indicator, for example after de-escalation." },
+];
+
 const TOC = [
     { id: "overview", label: "Overview" },
     { id: "reports", label: "Reports" },
     { id: "datasets", label: "Datasets" },
+    { id: "sentinel", label: "Microsoft Sentinel" },
     { id: "faq", label: "FAQ" },
 ];
 
@@ -49,7 +96,8 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                     </h1>
                     <p className="mt-8 max-w-3xl text-xl text-slate-600 leading-relaxed font-medium">
                         How Datazag data reaches you. Reports are documents about a domain or an estate. Datasets
-                        are tables in your own warehouse, built from {DOMAINS_DISPLAY} domains of observation.
+                        are tables in your own warehouse, built from {DOMAINS_DISPLAY} domains of observation. Alerts
+                        reach Microsoft Sentinel as a threat-intelligence feed.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">
                         <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-slate-900 hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
@@ -182,7 +230,7 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
 
                             {datasets.length > 0 ? (
                                 <div className="space-y-4">
-                                    <h3 className="text-2xl font-bold text-slate-900">Published datasets</h3>
+                                    <h3 className="text-2xl font-bold text-slate-900">Available now</h3>
                                     <div className="grid grid-cols-1 gap-3">
                                         {datasets.map((d) => (
                                             <Link
@@ -211,6 +259,66 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                     Browse the dataset catalog
                                 </Link>
                             </p>
+                        </div>
+                    </Section>
+
+                    {/* ── MICROSOFT SENTINEL ──────────────────────────────────
+                        Pull-only TAXII 2.1. See the header comment for sources. */}
+                    <Section id="sentinel" title="Microsoft Sentinel">
+                        <div className="space-y-8">
+                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                                Datazag alerts reach Microsoft Sentinel as threat-intelligence indicators. Sentinel pulls them
+                                from a TAXII 2.1 server, on a schedule you set. Datazag never connects to your workspace.
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {[
+                                    { t: "Format", d: "STIX 2.1 indicator objects. Not OCSF." },
+                                    { t: "Table", d: "ThreatIntelIndicators, Sentinel's own table. No custom table or data collection rule." },
+                                    { t: "Content", d: "The Datazag solution in the Content Hub adds an analytic rule and a hunting query." },
+                                ].map((c) => (
+                                    <div key={c.t} className="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                                        <h4 className="font-bold text-slate-900">{c.t}</h4>
+                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{c.d}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold text-slate-900">Connect the feed</h3>
+                                <ol className="list-decimal pl-5 space-y-3 text-slate-600 leading-relaxed">
+                                    <li>Install the <strong>Datazag</strong> solution from the Microsoft Sentinel Content Hub.</li>
+                                    <li>Ask <a href="mailto:support@datazag.com" className="font-bold text-blue-600 hover:underline">support@datazag.com</a> for TAXII credentials. Name the collections your subscription includes.</li>
+                                    <li>In the Defender portal, open Microsoft Sentinel, then Configuration, then Data connectors. Open <strong>Threat Intelligence - TAXII</strong> and select Add.</li>
+                                    <li>Enter a friendly name, the API root and one collection ID, with your credentials. Poll once an hour. Repeat for each collection.</li>
+                                    <li>Enable the analytic rule under Manage solution. It matches indicators against DNS activity through the ASIM DNS parsers, so those must be deployed.</li>
+                                </ol>
+                                <DataTable
+                                    columns={["Setting", "Value"]}
+                                    data={[
+                                        [<span key="l" className="font-bold text-slate-900">API root</span>, <code key="v" className="font-mono text-sm text-slate-700">{TAXII_API_ROOT}</code>],
+                                        ...TAXII_COLLECTIONS.map((c) => [
+                                            <span key="l" className="font-bold text-slate-900">{c.name}</span>,
+                                            <code key="v" className="font-mono text-sm text-slate-700">{c.id}</code>,
+                                        ]),
+                                    ]}
+                                />
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold text-slate-900">What an indicator looks like</h3>
+                                <p className="text-sm leading-relaxed text-slate-500">
+                                    One indicator per alerted domain or IP address. Sentinel stores the full object in the Data column.
+                                    The values below are reserved examples.
+                                </p>
+                                <pre className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50 p-6 font-mono text-sm leading-7 text-slate-800"><code>{STIX_EXAMPLE}</code></pre>
+                                <DataTable
+                                    columns={["Field", "Meaning"]}
+                                    data={STIX_FIELDS.map((r) => [
+                                        <code key="k" className="font-bold text-slate-900">{r.key}</code>,
+                                        <span key="d" className="text-slate-600 font-medium leading-relaxed">{r.desc}</span>,
+                                    ])}
+                                />
+                            </div>
                         </div>
                     </Section>
 

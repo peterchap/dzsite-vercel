@@ -294,7 +294,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
       name: "dmarc_policy",
       type: "VARCHAR",
       description:
-        "The action the domain asks receivers to take on mail that fails DMARC: none, quarantine or reject. Empty where no valid policy was published — an unrecognised p= is invalid under RFC 7489, and we do not guess an intent the domain never declared.",
+        "The action the domain asks receivers to take on mail that fails DMARC: none, quarantine or reject. Empty where no valid policy was published — an unrecognized p= is invalid under RFC 7489, and we do not guess an intent the domain never declared.",
     },
     {
       name: "dmarc_enforced",
@@ -371,7 +371,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
       name: "posture_first_seen_at",
       type: "TIMESTAMP",
       description:
-        "When we first observed this domain's email posture. Posture capture began on 2026-08-20, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
+        "When we first observed this domain's email posture. The daily posture history starts on 20 August 2026, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
     },
     {
       name: "last_observed_at",
@@ -447,7 +447,7 @@ WHERE  NOT is_parked;`,
   methodology: [
     {
       title: "A domain that is absent has not been observed yet",
-      body: "Posture is captured by a rolling backfill that began on 2026-08-20 and is still working through the corpus. A domain missing from a release has not been observed yet — it does NOT mean the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
+      body: "The daily posture history starts on 20 August 2026. A rolling backfill is still working through the corpus. A domain missing from a release has not been observed yet — it does NOT mean the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
       tone: "caveat",
     },
     {
@@ -457,7 +457,7 @@ WHERE  NOT is_parked;`,
     },
     {
       title: "Absent values mean absent records, not gaps in observation",
-      body: "Most domains do not publish DMARC, SPF or MTA-STS at all. Where a column is empty, the usual reason is that the domain published nothing — that is the finding. Where a domain published something we could not read as valid, we publish nothing rather than guessing: an unrecognised DMARC p= is invalid under RFC 7489, and inventing an intent the domain never declared would be worse than an empty cell. The paid data_completeness column records which of the two happened, per signal, per domain.",
+      body: "Most domains do not publish DMARC, SPF or MTA-STS at all. Where a column is empty, the usual reason is that the domain published nothing — that is the finding. Where a domain published something we could not read as valid, we publish nothing rather than guessing: an unrecognized DMARC p= is invalid under RFC 7489, and inventing an intent the domain never declared would be worse than an empty cell. The paid data_completeness column records which of the two happened, per signal, per domain.",
       tone: "neutral",
     },
     {

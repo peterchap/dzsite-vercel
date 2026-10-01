@@ -50,8 +50,8 @@ export default function TermsOfServicePage() {
                         </p>
                         <ul className="mt-4 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Real-time phishing and brand impersonation detection streams</li>
-                            <li>Domain intelligence datasets enriched with DNS, hosting, mailbox, firmographic, and technographic signals</li>
-                            <li>APIs and data access mechanisms for security, fraud, and analytics use cases</li>
+                            <li>Domain intelligence datasets enriched with DNS, hosting, mail and certificate signals</li>
+                            <li>Data access through cloud data shares, marketplaces and threat-intelligence feeds, for security, fraud and analytics use cases</li>
                         </ul>
                         <p className="mt-6">
                             The Services are intended to support security, risk, analytics, and trust-and-safety workflows. They do not replace professional judgement, incident response processes, or legal decision-making.
@@ -135,7 +135,9 @@ export default function TermsOfServicePage() {
                             Datazag processes personal data in accordance with its Privacy Policy and applicable data protection laws.
                         </p>
                         <p className="mt-4">
-                            Where Datazag acts as a data processor, processing will be governed by a Data Processing Agreement (“DPA”), available on request or incorporated into customer agreements.
+                            Where Datazag acts as a data processor, processing will be governed by our Data Processing Agreement (“DPA”), published at{" "}
+                            <a href="/legal/dpa" className="font-semibold text-blue-400 hover:underline">datazag.com/legal/dpa</a>{" "}
+                            and incorporated into customer agreements.
                         </p>
                     </LegalSection>
 

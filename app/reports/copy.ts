@@ -20,7 +20,7 @@ export const content: PageContent = {
     secondaryBody: "The free report covers one domain. Most organizations own more than they think — that's the first thing the Cross-Estate report shows you.",
     items: [
       { key: "threats", title: "Threats targeting your platform footprint", text: "Identify external threat activity around the platforms, providers and vendors visible from your domain's public records." },
-      { key: "dns-defence", title: "Detailed DNS defense analysis", text: "We check the baseline controls every domain should enforce (SPF, DKIM, DMARC), and show where the advanced and gold-standard layers (MTA-STS, TLS reporting, CAA, DNSSEC, BIMI) are available to you — as a maturity path, not a list of failures." },
+      { key: "dns-defence", title: "Detailed DNS defense analysis", text: "We check the baseline controls every domain should enforce (SPF and DMARC). We show where the advanced and gold-standard layers (MTA-STS, TLS reporting, CAA, DNSSEC, BIMI) are available to you, as a maturity path, not a list of failures. DKIM can't be tested from outside, so it is not scored." },
       { key: "remediation", title: "Remediation priorities", text: "Translate findings into clear actions, likely owners and practical remediation effort so teams know what to fix first." },
     ],
   },
@@ -51,7 +51,7 @@ export const content: PageContent = {
     body: "The value is in the contents: what is exposed, what is weak, what is being targeted and what should be fixed first.",
     items: [
       { key: "drr-threat", title: "Platform-led threat exposure", text: "Which visible platforms and providers are being used as lures, and which suspicious domains, certificates or DNS patterns are relevant to them?", tags: ["Platform lures", "Vendor footprint", "Brand terms", "Certificates", "DNS changes", "Evidence"] },
-      { key: "drr-dns", title: "DNS and email defense analysis", text: "Which DNS and email records create spoofing, trust, routing or configuration weaknesses that should be fixed?", tags: ["Baseline: SPF · DKIM · DMARC", "Advanced: MTA-STS · TLS reporting", "Gold standard: CAA · DNSSEC · BIMI", "MX providers"] },
+      { key: "drr-dns", title: "DNS and email defense analysis", text: "Which DNS and email records create spoofing, trust, routing or configuration weaknesses that should be fixed?", tags: ["Baseline: SPF · DMARC", "Advanced: MTA-STS · TLS reporting", "Gold standard: CAA · DNSSEC · BIMI", "MX providers"] },
       { key: "drr-footprint", title: "Platform and vendor footprint", text: "Which email platforms, cloud services, SaaS providers, CDNs, nameservers and hosting relationships are visible?", tags: ["Email platform", "Cloud", "CDN", "Hosting", "Nameservers", "SaaS signals"] },
       { key: "drr-subdomain", title: "Subdomain and infrastructure view", text: "Which public subdomains, CNAMEs, provider relationships and hosting patterns expose the operating footprint?", tags: ["Subdomains", "A/AAAA", "CNAMEs", "Hosting", "ASN", "Related infrastructure"] },
       { key: "drr-remediation", title: "Remediation effort and cost indicators", text: "Which issues are high priority, who is likely to own them, and what level of effort should be expected?", tags: ["Risk ranking", "Evidence", "Next steps", "Owners", "Effort bands", "Monitoring path"] },
@@ -80,7 +80,7 @@ export const content: PageContent = {
     body: "A useful report should not simply list records. It should explain the external threat context, the defense weakness, the likely owner and the next action.",
     items: [
       { key: "platform-exposure", title: "Platform threat exposure", text: "Which platforms and vendors are visible, and is suspicious infrastructure appearing around those lures?" },
-      { key: "dns-gaps", title: "DNS defense gaps", text: "Which baseline controls (SPF, DKIM, DMARC) need enforcing first, and which advanced and gold-standard layers (MTA-STS, TLS reporting, CAA, DNSSEC, BIMI) are available next on the maturity path?" },
+      { key: "dns-gaps", title: "DNS defense gaps", text: "Which baseline controls (SPF and DMARC) need enforcing first across the estate? Where are CAA and DNSSEC missing, and which subdomains are dangling?" },
       { key: "mail-alignment", title: "Mail platform alignment", text: "Does the public DNS footprint match the expected email platform and sender configuration?" },
       { key: "systemic", title: "Systemic portfolio risk", text: "For paid reports, are the same weaknesses repeated across many domains, brands, subsidiaries or suppliers?" },
       { key: "remediation-plan", title: "Remediation plan", text: "What should be fixed first, who is likely to own it, and what level of effort or cost should be expected?" },
