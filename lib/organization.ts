@@ -27,13 +27,19 @@ export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
  * Profiles that are ABOUT Datazag and that Datazag controls or that are
  * authoritative. Each was confirmed to resolve to this company when added.
  *
- * TO ADD: the company LinkedIn page, Crunchbase, GitHub organization, and any
- * other profile Datazag maintains. Add only URLs you control or that are an
- * official register; a stale aggregator listing must never go here.
+ * Add only URLs Datazag controls or that are an official register. A stale
+ * aggregator listing (Datarade, saasbrowser) must never go here: sameAs tells
+ * a search engine "this is also us".
  */
 export const SAME_AS: string[] = [
   // Companies House register entry — confirmed "DATAZAG LTD", 2026-09-30.
   `https://find-and-update.company-information.service.gov.uk/company/${LEGAL_ENTITY.companyNumber}`,
+  // Supplied by the founder 2026-10-01. LinkedIn resolved to "Datazag | LinkedIn"; the GitHub
+  // account is type Organization, name "Datazag", website https://www.datazag.com. Crunchbase
+  // refuses automated requests (Cloudflare), so it was not fetched; the slug matches the legal name.
+  "https://www.linkedin.com/company/datazag/",
+  "https://www.crunchbase.com/organization/datazag-ltd",
+  "https://github.com/Datazag",
 ];
 
 /**
