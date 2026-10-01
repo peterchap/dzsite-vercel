@@ -17,6 +17,7 @@ import { getDatasets } from "@/lib/datasets/load";
 import { DELIVERY_POSTURES } from "@/lib/trust-posture";
 import { formatLegalDate } from "@/lib/legal-entity";
 import { SLUG, content } from "./copy";
+import { FaqSection } from "@/components/seo/FaqSection";
 import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
 import { getSiteStats } from "@/lib/site-stats-live";
 
@@ -567,6 +568,8 @@ export default async function CyberRiskUnderwritingPage() {
           </div>
         </div>
       </Section>
+
+      <FaqSection section={section("faq")} fallback={content.faq} />
 
       {/* Closing CTA — split by reader. The free domain report is secondary
           here: an insurer tests against their book, not their own domain. */}

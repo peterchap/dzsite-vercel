@@ -217,6 +217,21 @@ export const content: PageContent = {
     secondaryBody: "A report works like the API: you send us the domains, so Datazag processes them under the data-processing agreement.",
   },
 
+  // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
+  // in short, self-contained sentences that restate what the page establishes. Item
+  // title = question, text = answer. See components/seo/FaqSection.tsx.
+  // Follows the 2026-09-30 founder rulings: domain-list input, exposure not loss, the measured refresh tiers, and the share-vs-API privacy split from lib/trust-posture.ts.
+  faq: {
+    eyebrow: "Questions",
+    title: "Frequently asked questions",
+    items: [
+      { key: "input", title: "What do you need from us?", text: "A list of domains for the insureds in a sample of your book, one or more per insured. Datazag finds the rest of each estate from there." },
+      { key: "weighting", title: "What does weighting by resilience and exit friction mean?", text: "Counting how many insureds use a provider shows market share. Datazag also weights that share by how resilient the provider is and how hard it is to leave. Exit friction stands in for restoration time, which drives business interruption severity." },
+      { key: "exposure", title: "Can you show which policies are exposed when a provider fails?", text: "Yes, from the domain list you send. Name a provider and see which insureds depend on it, and for which functions. Datazag reports exposure, not loss: it holds no claims or loss data." },
+      { key: "freshness", title: "How fresh is the data?", text: "Routing and network data refresh hourly. New, retiring and high-risk domains refresh daily. Stable records such as nameservers and mail providers refresh at least monthly. Every row carries the time it was observed." },
+      { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report or the API is different, because you send us the domains, and that is covered by the data-processing agreement." },
+    ],
+  },
   cta: {
     eyebrow: "Start here",
     title: "Test it against your book.",
