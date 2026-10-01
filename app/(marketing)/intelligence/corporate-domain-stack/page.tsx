@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 import { ORGANIZATION_ID } from "@/lib/organization";
+import { loadIntelligenceFigures } from "@/lib/observatory-figures";
 import { STUDY, studyUrl, fmt, longDate } from "./data";
 
 export const dynamic = "force-static";
@@ -87,8 +88,12 @@ function Bar({ label, pct, tone }: { label: string; pct: number; tone: "amber" |
   );
 }
 
-export default function CorporateDomainStackPage() {
+export default async function CorporateDomainStackPage() {
   const s = STUDY;
+  // The Observatory's own network-concentration pair, cited by anchor so the citation runs both
+  // ways (docs/research-cadence.md, condition 7). Live and separately dated: it is a different
+  // measurement from this study's, so it carries its own as-of. Null → the sentence is omitted.
+  const concentration = (await loadIntelligenceFigures())?.concentration ?? null;
   const observed = longDate(s.observedTo);
 
   const articleJsonLd = {
@@ -180,6 +185,20 @@ export default function CorporateDomainStackPage() {
           ({fmt(s.headline.oneCompanyThreeLayers.domains)}), the same registrar or host answers the nameservers, serves the website and takes
           the mail.</strong> Three named dependencies, one company, one control plane.
         </P>
+        {concentration ? (
+          <P>
+            The hosting layer is concentrated on its own, too. In the Datazag Observatory,{" "}
+            <a href={concentration.half.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+              {concentration.half.value} networks
+            </a>{" "}
+            carry half of all domains that sit on a network, and{" "}
+            <a href={concentration.ninety.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+              {concentration.ninety.value}
+            </a>{" "}
+            carry nine in ten
+            {concentration.half.asOf ? <> (measured {longDate(concentration.half.asOf.slice(0, 10))})</> : null}.
+          </P>
+        ) : null}
         <blockquote className="my-8 max-w-3xl border-l-2 border-amber-300 pl-6 text-xl leading-8 text-white">
           A portfolio that models Cloudflare as the correlated dependency, and the domain&rsquo;s host as an administrative detail, has the
           scale of the two exposures the wrong way round.

@@ -63,6 +63,7 @@ export async function GET() {
     "## Research",
     "",
     link("The Datazag Observatory", "/observatory", "open internet measurements: email authentication, routing hygiene, hosting concentration, parking and impersonation, with methods and how to cite them."),
+    link("One company runs the DNS, website and mail for 1 in 5 corporate domains", "/intelligence/corporate-domain-stack", "research, observed to 10 September 2026: the registrar-and-hosting bundle, the single-vendor CDN edge, single-operator DNS, and national concentration."),
     link("Case study: one signal, 150 domains", "/intelligence/one-signal-150-domains", "one certificate led to a 150-domain malicious hosting cluster that was in no public domain feed."),
     "",
     "## Company",
