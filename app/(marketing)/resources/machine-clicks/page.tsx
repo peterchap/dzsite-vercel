@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     type: "article",
+    url: MACHINE_CLICKS_GUIDE_PATH,
     title: "Classify machine clicks in your own traffic",
     description: "Four signals, the hidden link, what to log, and the pitfalls.",
     siteName: "Datazag",

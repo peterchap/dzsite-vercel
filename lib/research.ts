@@ -14,7 +14,7 @@
  * which lists the same pieces from its side. The rhythm both follow is
  * docs/research-cadence.md in that repo.
  */
-export type ResearchKind = "Research" | "Case study";
+export type ResearchKind = "Research" | "Case study" | "Guide";
 
 export interface ResearchPiece {
   slug: string;
@@ -25,9 +25,20 @@ export interface ResearchPiece {
   /** ISO date published. */
   publishedOn: string;
   kind: ResearchKind;
+  /** Where the piece lives, when it is not /intelligence/<slug> (guides live under /resources). */
+  href?: string;
 }
 
 export const RESEARCH: readonly ResearchPiece[] = [
+  {
+    slug: "machine-clicks",
+    title: "Classify machine clicks in your own traffic",
+    summary:
+      "Security products open links before people do. Four signals separate those requests from human clicks, and the hidden link confirms them.",
+    publishedOn: "2026-10-02",
+    kind: "Guide",
+    href: "/resources/machine-clicks",
+  },
   {
     slug: "corporate-domain-stack",
     title: "One company runs the nameservers, website and mail for 1 in 5 corporate domains",
@@ -46,7 +57,7 @@ export const RESEARCH: readonly ResearchPiece[] = [
   },
 ];
 
-export const researchHref = (p: ResearchPiece) => `/intelligence/${p.slug}`;
+export const researchHref = (p: ResearchPiece) => p.href ?? `/intelligence/${p.slug}`;
 
 /** Newest first. */
 export function latestResearch(limit?: number): ResearchPiece[] {
