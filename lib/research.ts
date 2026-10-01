@@ -29,6 +29,14 @@ export interface ResearchPiece {
 
 export const RESEARCH: readonly ResearchPiece[] = [
   {
+    slug: "corporate-mail-path",
+    title: "Email security gateways cover 2.2% of corporate domains. Microsoft and Google run the mailboxes for 24%.",
+    summary:
+      "The gateway market is concentrated but small; the mailbox layer behind it is eleven times larger. National markets turn global shares inside out: one vendor holds 94.7% of Sweden's.",
+    publishedOn: "2026-10-29",
+    kind: "Research",
+  },
+  {
     slug: "dmarc-adoption-vs-protection",
     title: "25.3% of domains publish DMARC. Only 13.1% enforce it.",
     summary:
