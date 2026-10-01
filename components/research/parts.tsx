@@ -40,7 +40,7 @@ export function Table({ caption, head, rows }: { caption: string; head: string[]
     <figure className="my-8 overflow-x-auto rounded-2xl border border-white/10">
       <table className="w-full min-w-[560px] text-left text-sm">
         <thead className="bg-white/[0.04] font-mono text-[11px] uppercase tracking-[0.12em] text-slate-400">
-          <tr>{head.map((h) => <th key={h} className="px-4 py-3">{h}</th>)}</tr>
+          <tr>{head.map((h, i) => <th key={`${i}-${h}`} className="px-4 py-3">{h}</th>)}</tr>
         </thead>
         <tbody className="divide-y divide-white/10 text-slate-200">
           {rows.map((r, i) => (
