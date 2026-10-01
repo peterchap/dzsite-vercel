@@ -51,7 +51,7 @@ export async function GET() {
     link("Reports", "/reports", "a free Domain Health Report on one domain, a Domain Risk Report, and a Cross-Estate Domain Risk Report that maps the estate an organization owns."),
     link("Alerts", "/alerts", "threat intelligence as alerts: infrastructure aimed at a customer's platforms, brands and suppliers, sent with the evidence."),
     link("Brand protection", "/brand-protection", "the infrastructure using a brand, as a case that updates as evidence appears."),
-    link("Developer documentation", "/docs", "the API, alert webhooks, reports and cloud datasets."),
+    link("Documentation", "/docs", "reports and cloud datasets."),
     link("Datasets", "/datasets", "the same data as tables in Snowflake or Databricks, with availability shown per dataset."),
     "",
     "## Who it is for",

@@ -115,6 +115,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "The research index duplicated /blog, which already lists every research piece. Merged 2026-10-01. Pieces keep their /intelligence/<slug> URLs, which the Observatory registry links to.",
   },
   {
+    source: "/docs/search-stream",
+    destination: "/docs",
+    reason: "Webhook reference for alert delivery. The API and webhook docs were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
+  },
+  {
     source: "/domain-search",
     destination: "/datasets",
     reason: "Old light-theme lookup-results page ('Domain Intelligence'), reached only from the legacy DomainLookup CMS block, which now appears only on a page that already redirects. Retired 2026-09-29; domain data is offered through /datasets.",

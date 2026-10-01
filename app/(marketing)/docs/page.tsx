@@ -5,9 +5,9 @@ import { getDatasets } from "@/lib/datasets/load";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Infrastructure Intelligence API — Datazag",
+    title: "Documentation — Datazag",
     description:
-        "Developer docs for every Datazag delivery route: the API, alert webhooks, reports and cloud datasets. DNS, mail, hosting and network data for any domain.",
+        "How Datazag data reaches you: reports on a domain or estate, and cloud datasets of DNS, mail, hosting and network data.",
 };
 
 export default async function DocsPage() {
