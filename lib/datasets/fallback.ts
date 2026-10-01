@@ -246,7 +246,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
   overview: [
     "One row per registrable domain, carrying the email-authentication and transport-security records that domain publishes in DNS, and what each record says. Not whether a domain looks secure — what it has actually published, read from the live record.",
     "The distinction that makes it useful is between publishing a control and enforcing one. A domain can publish DMARC and ask receivers to do nothing about failures. This dataset separates the two: dmarc_present says a record exists, dmarc_policy and dmarc_enforced say whether it does anything. The same split runs through SPF, MTA-STS and BIMI.",
-    "The free tier is the whole estate, not a sample. Every domain we have observed is in it, with 18 of the 23 columns. The paid tier adds five columns of depth on the same rows — it does not add domains.",
+    "The free tier is not a sample: it has every row the paid tier has, with 18 of the 23 columns. The paid tier adds five columns of depth on the same rows. It does not add domains. Coverage is still growing. Posture comes from a rolling backfill, so not every domain in the corpus has a row yet (see Methodology).",
     "Observed by Datazag from public DNS. No third-party feed is redistributed through it, and every release passes an automated licensing gate that scans each published value before it leaves our boundary.",
     "Datazag observes {{DOMAINS}} live domains daily; this dataset is the posture layer of that corpus.",
   ],
@@ -256,7 +256,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
     {
       label: "Free tier",
       value: "18 of 23 columns",
-      note: "Every domain, not a sample — paid adds columns, not rows",
+      note: "Same rows as paid, not a sample — paid adds columns, not rows",
     },
     { label: "License", value: "Clean for redistribution" },
   ],
@@ -353,7 +353,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
       name: "primary_mx_host",
       type: "VARCHAR",
       description:
-        "The hostname of the domain's primary mail exchanger, where it publishes one. A hostname only — this dataset carries no ASN, prefix or provider column.",
+        "The hostname of the domain's primary mail exchanger, where it publishes one. A hostname only, with no ASN or prefix. mail_provider names the company that operates it.",
     },
     {
       name: "mail_provider",
@@ -399,7 +399,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
     },
   ],
   schemaNote:
-    "18 of these 23 columns are in the free tier, on every domain. The five marked Paid tier — spf_include_count, dmarc_rua, dmarc_pct, bimi_has_vmc and data_completeness — are the correctness layer: how close an SPF record is to its lookup limit, whether the owner is collecting reports, how much of the policy is actually applied, whether the BIMI mark is verified, and what we could and could not read per signal. The paid tier adds no domains.",
+    "18 of these 23 columns are in the free tier, on every row. The five marked Paid tier — spf_include_count, dmarc_rua, dmarc_pct, bimi_has_vmc and data_completeness — are the correctness layer: how close an SPF record is to its lookup limit, whether the owner is collecting reports, how much of the policy is actually applied, whether the BIMI mark is verified, and what we could and could not read per signal. The paid tier adds no domains.",
   joinGuideTitle: "Join guide",
   joinGuideIntro:
     "The grain is the registrable domain and it is unique, so this is a plain equi-join against your own domain list. Normalize your side to the registrable domain first — a row for mail.example.com will not match, because the table keys on example.com.",
@@ -488,7 +488,7 @@ WHERE  NOT is_parked;`,
     {
       date: "2026-09-23",
       summary:
-        "mail_provider and mail_provider_source added, both in the free tier. B already said which host takes a domain's mail; it now says who operates that host, and on what evidence — a curated matching rule or the mail host's reverse DNS.",
+        "mail_provider and mail_provider_source added, both in the free tier. Domain Posture & Intelligence already said which host takes a domain's mail; it now says who operates that host, and on what evidence — a curated matching rule or the mail host's reverse DNS.",
     },
     {
       date: "2026-09-21",
@@ -508,7 +508,7 @@ WHERE  NOT is_parked;`,
     {
       date: "2026-09-21",
       summary:
-        "Free and paid tiers defined by column. Every domain is in the free tier with 16 of 21 columns; the paid tier adds five columns on the same rows.",
+        "Free and paid tiers defined by column. Every row is in the free tier with 16 of 21 columns; the paid tier adds five columns on the same rows.",
     },
   ],
   contactNote:

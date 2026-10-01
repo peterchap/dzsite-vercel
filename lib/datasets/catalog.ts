@@ -87,7 +87,8 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     // 2026-09-21: was "Security and mail posture for each domain, with the DNS and
     // hosting context behind it", and listed a "Mail records and remediation view".
     // Neither ships. The dataset carries email-authentication records and one mail
-    // hostname; it carries no ASN, prefix, IP or provider column, so there is no
+    // hostname; it carries no ASN, prefix or IP column (mail_provider, added
+    // 2026-09-23, names the mail operator only), so there is no
     // hosting context in it, and the remediation view (C1) is designed and not built.
     // A buyer reading the old line would have expected two products that do not exist.
     description:
