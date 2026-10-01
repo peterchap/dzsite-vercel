@@ -3,6 +3,8 @@ import { allBlogPostsQuery } from "@/sanity/queries";
 import { BlogList } from "@/components/blog/BlogList";
 import { BlogSubscribe } from "@/components/blog/BlogSubscribe";
 import { BlogConfirmationBanner } from "@/components/blog/BlogConfirmationBanner";
+import { ResearchList } from "@/components/research/ResearchList";
+import { latestResearch } from "@/lib/research";
 
 export const metadata = {
     title: "Blog — Datazag",
@@ -31,6 +33,10 @@ const editorialTracks = [
 
 export default async function BlogIndexPage() {
     const posts = await sanityFetch<any[]>(allBlogPostsQuery, {}, 60);
+    // Research lives in code under /intelligence, not in Sanity (lib/research.ts), so the
+    // blog lists it from there. Without this, /blog said nothing was published.
+    const research = latestResearch();
+    const hasPosts = Array.isArray(posts) && posts.length > 0;
 
     return (
         <main className="relative overflow-hidden bg-[#030619] text-white">
@@ -67,7 +73,17 @@ export default async function BlogIndexPage() {
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Articles</p>
                         <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Latest Datazag writing.</h2>
                     </div>
-                    <BlogList posts={posts} />
+                    {research.length > 0 ? (
+                        <div className="mb-12">
+                            <div className="mb-5 flex items-baseline justify-between gap-4">
+                                <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h3>
+                                <a href="/intelligence" className="text-sm font-semibold text-cyan-200 hover:text-cyan-100">All research →</a>
+                            </div>
+                            <ResearchList pieces={research} />
+                        </div>
+                    ) : null}
+                    {/* The empty state is for Sanity articles only; hide it once research exists. */}
+                    {hasPosts || research.length === 0 ? <BlogList posts={posts} /> : null}
                 </div>
             </section>
 

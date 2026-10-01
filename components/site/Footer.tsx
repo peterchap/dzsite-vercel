@@ -32,7 +32,7 @@ const defaultTrustLinks: NavLink[] = [
 const defaultCompanyLinks: NavLink[] = [
     { label: "About", href: "/about" },
     { label: "How It Works", href: "/how-it-works" },
-    { label: "Case study", href: "/intelligence/one-signal-150-domains" },
+    { label: "Research", href: "/intelligence" },
     { label: "Blog", href: "/blog" },
     { label: "Documentation", href: "/docs" },
     { label: "Contact", href: "/contact" },
