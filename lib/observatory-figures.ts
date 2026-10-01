@@ -75,7 +75,8 @@ function num(v: unknown): number | null {
 }
 
 /** 374600000 -> "374.6M"; 4452 -> "4,452". Mirrors the Observatory's formatter. */
-function formatCount(value: number): string {
+/** The Observatory's own count format. lib/site-stats-core.ts fmtStat matches it (guarded). */
+export function formatCount(value: number): string {
   const abs = Math.abs(value);
   if (abs >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
   if (abs >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -226,6 +227,28 @@ function countFigure(rows: Row[], id: string, path: string): CountFigure | null 
     population: str(row.denominator_label),
     href: `${OBSERVATORY_URL}${path}#${id}`,
   };
+}
+
+/**
+ * The corpus figure as the Observatory publishes it: corpus_domains, the count of
+ * resolving domains (2026-10-01). The main site's domain figure reads THIS, so
+ * the two sites print the same number (lib/site-stats-live.ts). Null when the
+ * statistics cannot be read or the row is absent or not measured.
+ */
+export interface CorpusFigure {
+  value: number;
+  asOf: string | null;
+  method: string | null;
+  href: string;
+}
+
+export async function loadCorpusDomains(): Promise<CorpusFigure | null> {
+  const rows = await loadStatisticsRows();
+  if (!rows) return null;
+  const row = measuredRow(rows, "corpus_domains");
+  const value = row ? num(row.numerator) ?? num(row.value) : null;
+  if (!row || value === null || value <= 0) return null;
+  return { value, asOf: str(row.as_of), method: str(row.method), href: `${OBSERVATORY_URL}/domains#corpus_domains` };
 }
 
 export async function loadIntelligenceFigures(): Promise<IntelligenceFigures | null> {
