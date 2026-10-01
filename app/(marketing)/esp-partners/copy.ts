@@ -26,7 +26,7 @@ export const content: PageContent = {
       { key: "vet-senders", title: "Vet senders with evidence", text: "Check signup and sending domains against their mail setup, parking status and infrastructure history. Every finding shows the record it came from." },
       { key: "protect-deliverability", title: "Protect deliverability", text: "Give abuse, compliance and deliverability teams external context for the domains, links and infrastructure moving through the platform." },
       { key: "launch-services", title: "Launch new services", text: "Add brand protection, customer hygiene reports, link checks and deliverability intelligence as paid customer-facing offers." },
-      { key: "embed-workflow", title: "Embed into your workflow", text: "Use API, webhooks, reports, exports or cloud data shares across onboarding, pre-send checks, abuse review and analytics pipelines." },
+      { key: "embed-workflow", title: "Embed into your workflow", text: "Use webhooks, reports, exports or cloud data shares across onboarding, pre-send checks, abuse review and analytics pipelines." },
     ],
   },
   // 2026-10-01 — machine clicks (evidence package, 2026-10-01). Datazag gives
@@ -78,7 +78,7 @@ export const content: PageContent = {
       { key: "policy-enforcement", title: "Policy and enforcement", points: ["ESP controls thresholds, review, throttling and blocking", "Datazag supplies evidence, reasons and context"] },
       { key: "external-intel", title: "External intelligence", points: ["ESP avoids building internet-scale collection", "Datazag observes domains, DNS, certificates and infrastructure"] },
       { key: "customer-products", title: "Customer products", points: ["ESP brands the dashboard, reports and add-ons", "Datazag powers findings, alerts and evidence"] },
-      { key: "analytics-workflows", title: "Analytics workflows", points: ["ESP owns data model, warehouse and operational decisions", "Datazag supplies API, webhook, report and data-share delivery"] },
+      { key: "analytics-workflows", title: "Analytics workflows", points: ["ESP owns data model, warehouse and operational decisions", "Datazag supplies webhook, report and data-share delivery"] },
     ],
   },
   commercialModel: {
@@ -113,7 +113,7 @@ export const content: PageContent = {
   usageRights: {
     items: [
       { key: "included", title: "Included", text: "Use Datazag intelligence to power partner-led platform controls, customer reports, alerts, enrichment workflows and portal features for your own customers." },
-      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, API access, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
+      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
       { key: "downstream", title: "Downstream partners", text: "Services sold through your own resellers, franchisees or channel partners require written approval, pass-through terms and a separate commercial model." },
     ],
   },
@@ -134,7 +134,6 @@ export const content: PageContent = {
     title: "Use the route that fits your platform.",
     body: "The same intelligence layer can support signup checks, pre-send checks, alerting, customer portals, managed reports, log enrichment and data-driven products.",
     items: [
-      { key: "api", title: "API", text: "Domain lookups for signup checks, link checks, customer portals, policy engines and review queues. Each answer comes with its evidence." },
       { key: "webhooks", title: "Webhooks", text: "Push alerts and infrastructure changes into abuse, compliance, deliverability or customer-success workflows." },
       { key: "reports-exports", title: "Reports and exports", text: "Generate white-label hygiene reports, brand-protection evidence packs and account-review material for customers." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for warehouse analytics, SMTP log enrichment, customer segmentation and large-scale joins." },
@@ -161,8 +160,8 @@ export const content: PageContent = {
     items: [
       { key: "what-checks", title: "How do email platforms use Datazag?", text: "To check the domains their customers sign up with, send from and link to: whether a domain can take mail, who runs its mail, whether it is parked, whether it enforces DMARC, and what infrastructure sits behind it. Every finding shows the record it came from." },
       { key: "who-decides", title: "Does Datazag block senders?", text: "No. The platform sets the thresholds and makes every review, throttling or blocking decision. Datazag supplies the evidence and the reasons." },
-      { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data, API access and bulk exports are not for resale by default." },
-      { key: "delivery", title: "How is it delivered?", text: "Through the API, webhooks, reports, exports or cloud data shares, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
+      { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data and bulk exports are not for resale by default." },
+      { key: "delivery", title: "How is it delivered?", text: "Through webhooks, reports, exports or cloud data shares, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
     ],
   },
   finalCta: {

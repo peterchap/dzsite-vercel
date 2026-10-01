@@ -50,7 +50,7 @@ export const content: PageContent = {
       { key: "match", title: "Match", text: "Candidates are matched against platforms, brands, keywords, watchlists and suspicious naming patterns." },
       { key: "filter", title: "Filter", text: "Known-good DNS, platform baselines, cloud allowlists and approved customer footprints are filtered out before an alert is raised." },
       { key: "explain", title: "Explain", text: "Reason codes, infrastructure evidence and a suggested action are attached to the alert." },
-      { key: "deliver", title: "Deliver", text: "Alerts are sent to the operational route that fits the team: webhook, API, SIEM, portal, report or data share." },
+      { key: "deliver", title: "Deliver", text: "Alerts are sent to the operational route that fits the team: webhook, Microsoft Sentinel, portal, report or data share." },
     ],
   },
   annotatedExample: {

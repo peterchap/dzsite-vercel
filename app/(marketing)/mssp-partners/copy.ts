@@ -39,7 +39,7 @@ export const content: PageContent = {
       { key: "evidence-first", title: "Give analysts the evidence", text: "Each finding arrives with its infrastructure context and the records behind it, so an analyst can check it rather than rebuild it." },
       { key: "launch-services", title: "Launch new services", text: "Add SOC enrichment, email security reviews, exposure reports and portfolio monitoring without building the intelligence layer yourself." },
       { key: "deliver-brand", title: "Deliver under your brand", text: "Keep the service experience inside your own portal, reports, account reviews and commercial model." },
-      { key: "integrate-stack", title: "Integrate into your stack", text: "Use API, webhooks, reports, exports or cloud data shares depending on how your operations and customers already work." },
+      { key: "integrate-stack", title: "Integrate into your stack", text: "Use webhooks, reports, exports, cloud data shares or the Microsoft Sentinel feed, depending on how your operations and customers already work." },
     ],
   },
   serviceCatalogue: {
@@ -53,7 +53,7 @@ export const content: PageContent = {
       { key: "portfolio-monitoring", title: "Portfolio monitoring", text: "Track posture and infrastructure changes across client domains, subsidiaries and suppliers.", tags: ["DNS posture", "Email posture", "Historical changes", "Provider changes"] },
       { key: "internet-findings", title: "Internet-scale findings", text: "Put a client's estate in context with findings measured across the whole internet, the kind we publish in the Observatory.", tags: ["Observatory", "Benchmarks", "Dated figures", "Method notes"] },
       { key: "client-reporting", title: "Client reporting", text: "Create recurring security reports for account reviews, executive updates and remediation planning.", tags: ["Executive summaries", "Technical evidence", "Trend analysis", "Remediation queues", "White-label exports"] },
-      { key: "portal-intelligence", title: "Customer portal intelligence", text: "Embed Datazag intelligence inside your own portal, dashboards and customer-facing service views.", tags: ["API outputs", "Webhook events", "Data shares", "Client-scoped views", "Custom exports"] },
+      { key: "portal-intelligence", title: "Customer portal intelligence", text: "Embed Datazag intelligence inside your own portal, dashboards and customer-facing service views.", tags: ["Webhook events", "Data shares", "Client-scoped views", "Custom exports"] },
     ],
   },
   howDatazagFits: {
@@ -100,7 +100,7 @@ export const content: PageContent = {
   usageRights: {
     items: [
       { key: "included", title: "Included", text: "Use Datazag intelligence to power partner-led managed services, reports, enrichment workflows and portal features for your own end clients." },
-      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, API access, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
+      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
       { key: "downstream", title: "Downstream partners", text: "Services sold through your own resellers, franchisees or channel partners require written approval, pass-through terms and a separate commercial model." },
     ],
   },
@@ -112,7 +112,7 @@ export const content: PageContent = {
       { key: "observe", title: "Observe", text: "Datazag measures domains, DNS, certificates, routing and infrastructure changes." },
       { key: "enrich", title: "Enrich", text: "Each observation is linked to its hosting, network, provider, related domains and history." },
       { key: "explain", title: "Explain", text: "Outputs include the evidence behind them, so each finding can be checked." },
-      { key: "deliver", title: "Deliver", text: "You receive API responses, webhook events, reports or data shares through the route that fits your service model." },
+      { key: "deliver", title: "Deliver", text: "You receive webhook events, Sentinel indicators, reports or data shares through the route that fits your service model." },
       { key: "monetise", title: "Monetize", text: "You package it as SOC enrichment, email security reviews, exposure reporting or portal intelligence." },
     ],
   },
@@ -121,7 +121,6 @@ export const content: PageContent = {
     title: "Use the route that fits your service model.",
     body: "The same intelligence layer can support analyst workflows, customer portals, managed reports, automated enrichment and data-driven partner products.",
     items: [
-      { key: "api", title: "API", text: "Lookups for portals, case management, customer products and AI-assisted workflows, with evidence in every answer." },
       { key: "webhooks", title: "Webhooks", text: "Push changes to your clients' domains and new findings into your existing ticketing or automation flows." },
       { key: "reports-exports", title: "Reports and exports", text: "Generate white-label evidence packs, account-review material and recurring client-facing reports." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for partner analytics, hunting, client-scoped views and large-scale enrichment." },
@@ -133,7 +132,7 @@ export const content: PageContent = {
     body: "A partner pilot should prove the value of the intelligence, operational fit and commercial packaging before scaling across the client base.",
     items: [
       { key: "select-cohort", title: "Select a cohort", text: "Choose a small group of clients, domains or use cases where external infrastructure intelligence should create visible value." },
-      { key: "connect-delivery", title: "Connect delivery", text: "Start with reports, API, webhook events or a sample data view depending on how your team wants to evaluate." },
+      { key: "connect-delivery", title: "Connect delivery", text: "Start with reports, webhook events, the Sentinel feed or a sample data view, depending on how your team wants to evaluate." },
       { key: "validate", title: "Validate the findings", text: "Review the evidence, the triage fit and the reporting value for your client base." },
       { key: "package", title: "Package the service", text: "Decide whether the first commercial motion is enrichment, cross-client exposure, email security reviews or portfolio monitoring." },
     ],
@@ -146,7 +145,7 @@ export const content: PageContent = {
     title: "Frequently asked questions",
     items: [
       { key: "what-build", title: "What can an MSSP build with Datazag?", text: "SOC enrichment, cross-client exposure views, email security reviews, portfolio monitoring, client reporting and features inside your own portal, all delivered under your brand." },
-      { key: "collection", title: "Do we need to build our own data collection?", text: "No. Datazag observes domains, DNS, certificates, routing and providers across the internet and links them together. You use the results through the API, webhooks, reports or data shares." },
+      { key: "collection", title: "Do we need to build our own data collection?", text: "No. Datazag observes domains, DNS, certificates, routing and providers across the internet and links them together. You use the results through webhooks, the Sentinel feed, reports or data shares." },
       { key: "cross-client", title: "What is cross-client exposure?", text: "A view of which mail, DNS, hosting and CDN providers your clients share, so a problem at one provider shows up as one view across your client base." },
       { key: "relationship", title: "Who owns the client relationship?", text: "You do. You set the offer, pricing and SLA, and the service runs under your brand. Datazag stays behind it." },
     ],

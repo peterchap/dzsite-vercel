@@ -495,7 +495,7 @@ export default async function CyberRiskUnderwritingPage() {
 
         {/* The share-path claim renders from lib/trust-posture.ts, the wording
             /trust uses, and each route carries its own consequence line so the
-            share claim cannot be read as covering the API or a report. */}
+            share claim cannot be read as covering a report. */}
         <div className="mt-16">
           <SectionHeader
             eyebrow={copyText(privacy?.eyebrow, content.privacy.eyebrow!)}
