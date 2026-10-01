@@ -9,7 +9,7 @@ import { latestResearch } from "@/lib/research";
 export const metadata = {
     title: "Blog — Datazag",
     description:
-        "Datazag articles on Infrastructure Intelligence, brand protection, alerting, cloud data products, DNS, certificates and external infrastructure risk.",
+        "Datazag research and articles: dated findings from the DNS corpus, plus notes on brand protection, alerting, DNS, certificates and cloud data products.",
 };
 
 const editorialTracks = [
@@ -33,7 +33,7 @@ const editorialTracks = [
 
 export default async function BlogIndexPage() {
     const posts = await sanityFetch<any[]>(allBlogPostsQuery, {}, 60);
-    // Research lives in code under /intelligence, not in Sanity (lib/research.ts), so the
+    // Research pages live in code under /intelligence/<slug>, not in Sanity (lib/research.ts), so the
     // blog lists it from there. Without this, /blog said nothing was published.
     const research = latestResearch();
     const hasPosts = Array.isArray(posts) && posts.length > 0;
@@ -41,49 +41,49 @@ export default async function BlogIndexPage() {
     return (
         <main className="relative overflow-hidden bg-[#030619] text-white">
             <BlogConfirmationBanner />
-            <section className="relative py-24 md:py-32">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.13),transparent_34%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+            {/* One listing for everything we publish: research pieces (code, lib/research.ts)
+                and Sanity articles. /intelligence used to duplicate this and now 301s here.
+                The header is kept short so the articles start above the fold. */}
+            <section id="articles" className="relative pb-20 pt-12 md:pb-28 md:pt-16">
+                <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.14),transparent_36%),radial-gradient(circle_at_82%_60%,rgba(139,92,246,0.11),transparent_38%)]" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-4xl">
-                        <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Datazag Blog</p>
-                        <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Infrastructure Intelligence, explained.</h1>
-                        <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-                            Articles, product notes and field guides on external infrastructure risk: domains, DNS, certificates, hosting, platform impersonation, brand protection, alerts and cloud data products.
-                        </p>
-                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                            <a href="#articles" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Read articles</a>
-                        </div>
-                    </div>
-
-                    <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                        {editorialTracks.map((track) => (
-                            <article key={track.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                                <h2 className="text-lg font-semibold text-white">{track.title}</h2>
-                                <p className="mt-3 text-sm leading-6 text-slate-400">{track.text}</p>
-                            </article>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <section id="articles" className="border-t border-white/10 py-20 md:py-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-10 max-w-3xl">
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Articles</p>
-                        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Latest Datazag writing.</h2>
+                        <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Datazag Blog</p>
+                        <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-5xl">Infrastructure Intelligence, explained.</h1>
+                        <p className="mt-4 text-base leading-7 text-slate-300">
+                            Research and articles on domains, DNS, certificates and hosting. Each research piece is dated and names what it measured. The
+                            daily figures behind them are in the{" "}
+                            <a href="https://observatory.datazag.com" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                                Datazag Observatory
+                            </a>
+                            .
+                        </p>
                     </div>
                     {research.length > 0 ? (
                         <div className="mb-12">
-                            <div className="mb-5 flex items-baseline justify-between gap-4">
-                                <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h3>
-                                <a href="/intelligence" className="text-sm font-semibold text-cyan-200 hover:text-cyan-100">All research →</a>
-                            </div>
+                            <h2 className="mb-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h2>
                             <ResearchList pieces={research} />
                         </div>
                     ) : null}
                     {/* The empty state is for Sanity articles only; hide it once research exists. */}
+                    {hasPosts ? (
+                        <h2 className="mb-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Articles</h2>
+                    ) : null}
                     {hasPosts || research.length === 0 ? <BlogList posts={posts} /> : null}
+                </div>
+            </section>
+
+            <section className="border-t border-white/10 py-16 md:py-20">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">What we write about</h2>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                        {editorialTracks.map((track) => (
+                            <article key={track.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                                <h3 className="text-lg font-semibold text-white">{track.title}</h3>
+                                <p className="mt-3 text-sm leading-6 text-slate-400">{track.text}</p>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </section>
 
