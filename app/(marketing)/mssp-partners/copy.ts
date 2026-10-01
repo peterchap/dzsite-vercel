@@ -138,6 +138,19 @@ export const content: PageContent = {
       { key: "package", title: "Package the service", text: "Decide whether the first commercial motion is enrichment, cross-client exposure, email security reviews or portfolio monitoring." },
     ],
   },
+  // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
+  // in short, self-contained sentences that restate what the page establishes. Item
+  // title = question, text = answer. See components/seo/FaqSection.tsx.
+  faq: {
+    eyebrow: "Questions",
+    title: "Frequently asked questions",
+    items: [
+      { key: "what-build", title: "What can an MSSP build with Datazag?", text: "SOC enrichment, cross-client exposure views, email security reviews, portfolio monitoring, client reporting and features inside your own portal, all delivered under your brand." },
+      { key: "collection", title: "Do we need to build our own data collection?", text: "No. Datazag observes domains, DNS, certificates, routing and providers across the internet and links them together. You use the results through the API, webhooks, reports or data shares." },
+      { key: "cross-client", title: "What is cross-client exposure?", text: "A view of which mail, DNS, hosting and CDN providers your clients share, so a problem at one provider shows up as one view across your client base." },
+      { key: "relationship", title: "Who owns the client relationship?", text: "You do. You set the offer, pricing and SLA, and the service runs under your brand. Datazag stays behind it." },
+    ],
+  },
   finalCta: {
     eyebrow: "Next step",
     title: "Build the partner offer around your clients.",

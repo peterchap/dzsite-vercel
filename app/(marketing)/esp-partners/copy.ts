@@ -126,6 +126,19 @@ export const content: PageContent = {
       { key: "package", title: "Package the rollout", text: "Decide whether the production motion is internal control, premium add-on, customer report, branded service or analytics layer." },
     ],
   },
+  // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
+  // in short, self-contained sentences that restate what the page establishes. Item
+  // title = question, text = answer. See components/seo/FaqSection.tsx.
+  faq: {
+    eyebrow: "Questions",
+    title: "Frequently asked questions",
+    items: [
+      { key: "what-checks", title: "How do email platforms use Datazag?", text: "To check the domains their customers sign up with, send from and link to: whether a domain can take mail, who runs its mail, whether it is parked, whether it enforces DMARC, and what infrastructure sits behind it. Every finding shows the record it came from." },
+      { key: "who-decides", title: "Does Datazag block senders?", text: "No. The platform sets the thresholds and makes every review, throttling or blocking decision. Datazag supplies the evidence and the reasons." },
+      { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data, API access and bulk exports are not for resale by default." },
+      { key: "delivery", title: "How is it delivered?", text: "Through the API, webhooks, reports, exports or cloud data shares, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
+    ],
+  },
   finalCta: {
     eyebrow: "Next step",
     title: "Build the ESP partner motion around your platform.",
