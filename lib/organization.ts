@@ -71,7 +71,15 @@ export function organizationJsonLd() {
         name: "Datazag",
         legalName: LEGAL_ENTITY.legalName,
         url: SITE_URL,
-        logo: `${SITE_URL}/icon.svg`,
+        // The DATAZAG wordmark, 691x134 PNG on transparent (supplied 2026-10-01). Google needs
+        // a raster logo of at least 112px a side that reads on white; the 64px icon.svg did not
+        // meet that. A square mark would suit knowledge panels better if one is supplied.
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/logo.png`,
+          width: 691,
+          height: 134,
+        },
         description:
           "Internet infrastructure intelligence: DNS, mail and authentication posture, hosting, " +
           "routing and certificates for the internet's domains, delivered as reports, an API, " +
