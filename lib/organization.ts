@@ -71,10 +71,18 @@ export function organizationJsonLd() {
         name: "Datazag",
         legalName: LEGAL_ENTITY.legalName,
         url: SITE_URL,
-        // The DATAZAG wordmark, 691x134 PNG on transparent (supplied 2026-10-01). Google needs
-        // a raster logo of at least 112px a side that reads on white; the 64px icon.svg did not
-        // meet that. A square mark would suit knowledge panels better if one is supplied.
+        // The square Dz mark — app/icon.svg (supplied again 2026-10-01) rendered to a 512x512
+        // PNG with Manrope embedded, via next/og. The SVG itself sets "Dz" as live Manrope text,
+        // so any renderer without the font draws a different logo, and at 64px it is below
+        // Google's 112px minimum. A square suits the knowledge panel, which crops to one.
         logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/logo-mark.png`,
+          width: 512,
+          height: 512,
+        },
+        // The DATAZAG wordmark (691x134 PNG, transparent), for surfaces that show a wide image.
+        image: {
           "@type": "ImageObject",
           url: `${SITE_URL}/logo.png`,
           width: 691,
