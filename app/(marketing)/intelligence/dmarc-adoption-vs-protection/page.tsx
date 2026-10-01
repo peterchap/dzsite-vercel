@@ -233,7 +233,15 @@ export default function DmarcAdoptionPage() {
           <li><strong className="text-white">Domains that run mail:</strong> the same, plus an address record (A), a working mail server (a null MX does not count) and an SPF record.</li>
           <li><strong className="text-white">Enforcing</strong> means p=quarantine or p=reject, read from the DMARC record&rsquo;s policy tag.</li>
           <li><strong className="text-white">Domains, not organizations.</strong> One organization may hold many domains, each with its own records.</li>
-          <li><strong className="text-white">Markets</strong> use the last label of the registrable domain. Country-code domains sold for generic use (.co, .io, .ai, .me, .tv, .cc, .sh) are left out of rankings, and so is .cn, where most resolving domains send no mail.</li>
+          <li><strong className="text-white">Markets</strong> use the last label of the registrable domain. Country-code domains sold for generic use (.co, .io, .ai, .me, .tv) are left out of rankings, because they say nothing about a territory.</li>
+          <li>
+            <strong className="text-white">Three more are left out, each for a stated reason.</strong>{" "}
+            <span className="font-mono text-[0.9em]">.cc</span> and <span className="font-mono text-[0.9em]">.sh</span> are country codes, but
+            they are used the way generic domains are: only {s.excluded.cc} and {s.excluded.sh} of their resolving, unparked domains publish
+            SPF, against {h.spfPrimary.toFixed(1)}% across all resolving, unparked domains. <span className="font-mono text-[0.9em]">.cn</span> is a real territory, but most of its
+            resolving domains send no mail ({s.excluded.cn} publish SPF), so its DMARC rates would mostly describe domains that do not send mail, rather than
+            how Chinese organizations protect their mail.
+          </li>
           <li><strong className="text-white">No trend.</strong> This is one census. Movement over time is not claimed here.</li>
         </ul>
         <P>

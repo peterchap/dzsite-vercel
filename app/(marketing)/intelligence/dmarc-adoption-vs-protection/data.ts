@@ -33,9 +33,10 @@
  *     frame them as a territory's estate, not as organizations' decisions.
  *   - Market = last label of the registrable domain (Public Suffix List, so
  *     co.uk → uk). Rankings use markets of 200,000 domains or more and exclude
- *     generic-use ccTLDs (.co .io .ai .me .tv, and .cc .sh, which behave the same:
- *     the last two are our call, flagged in the PR). .cn is a real territory but is
- *     dominated by domains that send no mail, so it is left out of rankings.
+ *     generic-use ccTLDs (.co .io .ai .me .tv). .cc, .sh and .cn are also left out,
+ *     with the reason stated on the page (Peter, 2026-10-01): .cc and .sh behave as
+ *     generic-use (SPF 7.6% and 5.2%); .cn is a real territory dominated by domains
+ *     that send no mail (SPF 5.5%).
  *   - The .ph registry-wildcard topic is embargoed: never named here. Its
  *     phantom domains are filtered by the predicate above.
  */
@@ -108,6 +109,9 @@ export const STUDY = {
     { market: "United States (.us)", published: "22.1%", enforcing: "13.3%" },
   ],
   gtlds: { com: "12.6%", net: "12.5%", org: "12.6%", other: "11.1%" },
+
+  /** SPF published, primary population, for the three markets left out of rankings (Peter, 2026-10-01). */
+  excluded: { cc: "7.6%", sh: "5.2%", cn: "5.5%" },
 
   /** Corporate population, DMARC enforcing, markets ≥ 200k domains. */
   corporateTop: [
