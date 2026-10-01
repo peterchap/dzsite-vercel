@@ -90,8 +90,8 @@ export function organizationJsonLd() {
         },
         description:
           "Internet infrastructure intelligence: DNS, mail and authentication posture, hosting, " +
-          "routing and certificates for the internet's domains, delivered as reports, an API, " +
-          "alerts and cloud datasets.",
+          "routing and certificates for the internet's domains, delivered as reports, alerts, " +
+          "a Microsoft Sentinel feed and cloud datasets.",
         ...(LEGAL_ENTITY.incorporatedOn ? { foundingDate: LEGAL_ENTITY.incorporatedOn } : {}),
         ...(LEGAL_ENTITY.companyNumber
           ? {
