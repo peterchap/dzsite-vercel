@@ -43,7 +43,8 @@ export default async function BlogIndexPage() {
             <BlogConfirmationBanner />
             {/* One listing for everything we publish: research pieces (code, lib/research.ts)
                 and Sanity articles. /intelligence used to duplicate this and now 301s here.
-                The header is kept short so the articles start above the fold. */}
+                The header is kept short so the articles start above the fold. The small
+                labels use ! because globals.css forces h2 sizes with !important. */}
             <section id="articles" className="relative pb-20 pt-12 md:pb-28 md:pt-16">
                 <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.14),transparent_36%),radial-gradient(circle_at_82%_60%,rgba(139,92,246,0.11),transparent_38%)]" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -61,13 +62,13 @@ export default async function BlogIndexPage() {
                     </div>
                     {research.length > 0 ? (
                         <div className="mb-12">
-                            <h2 className="mb-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h2>
+                            <h2 className="mb-5 font-mono !text-xs !leading-4 font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h2>
                             <ResearchList pieces={research} />
                         </div>
                     ) : null}
                     {/* The empty state is for Sanity articles only; hide it once research exists. */}
                     {hasPosts ? (
-                        <h2 className="mb-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Articles</h2>
+                        <h2 className="mb-5 font-mono !text-xs !leading-4 font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Articles</h2>
                     ) : null}
                     {hasPosts || research.length === 0 ? <BlogList posts={posts} /> : null}
                 </div>
@@ -75,7 +76,7 @@ export default async function BlogIndexPage() {
 
             <section className="border-t border-white/10 py-16 md:py-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">What we write about</h2>
+                    <h2 className="!text-xs !leading-4 font-semibold uppercase tracking-[0.3em] text-cyan-200/70">What we write about</h2>
                     <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                         {editorialTracks.map((track) => (
                             <article key={track.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
