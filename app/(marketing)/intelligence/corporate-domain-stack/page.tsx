@@ -176,7 +176,7 @@ export default async function CorporateDomainStackPage() {
         </figure>
         <P>
           The obvious candidate for one operator in all three layers is Cloudflare, which sells nameservers, the edge and mail routing.
-          <strong className="text-white"> That triple exists and is tightly correlated:</strong> of corporate domains that route mail through
+          <strong className="text-white"> That triple exists and is tightly correlated.</strong> Of corporate domains that route mail through
           Cloudflare, {s.headline.cloudflareMailAlsoNsEdge} also use it for nameservers and edge. But it covers{" "}
           {s.headline.cloudflareTriple.share} of corporate domains ({fmt(s.headline.cloudflareTriple.domains)}).
         </P>
@@ -244,8 +244,8 @@ export default async function CorporateDomainStackPage() {
         <P>
           Cloudflare holds more than 85% of the fronted segment in every market over 50,000 websites. Japan and Korea are the exceptions, and
           it still leads there.
-          What changes by territory is how much of a market is fronted at all: {s.edge.indonesiaFronted} of Indonesian websites against{" "}
-          {s.edge.germanyFronted} of German ones.
+          What changes by territory is how much of a market is fronted at all. That is {s.edge.indonesiaFronted} of Indonesian websites,
+          against {s.edge.germanyFronted} of German ones.
         </P>
         <Note title="A fifth of the edge was never chosen by the domain owner">
           <p className="mb-3">
@@ -256,7 +256,7 @@ export default async function CorporateDomainStackPage() {
           <p>A Shopify merchant depends on Cloudflare without having contracted with it, and no vendor questionnaire would surface that.</p>
         </Note>
         <P>
-          Where a domain owner does choose Cloudflare directly, the layers fuse: {s.edge.cloudflareNsAlsoEdge} of websites whose nameservers
+          Where a domain owner chooses Cloudflare directly, the layers fuse. {s.edge.cloudflareNsAlsoEdge} of websites whose nameservers
           Cloudflare runs are also served through its edge.
         </P>
       </Section>
@@ -268,8 +268,8 @@ export default async function CorporateDomainStackPage() {
         </P>
         <P>
           <strong className="text-white">{s.dns.singleOperator} of operating domains rely on a single nameserver operator.</strong> Of the{" "}
-          {s.dns.twoOperators} that list two, two-thirds come from one website platform that runs its own nameservers across two providers: the
-          owner inherits that redundancy rather than choosing it. Domains whose owners chose two providers make up{" "}
+          {s.dns.twoOperators} that list two, two-thirds come from one website platform. It runs its own nameservers across two providers, so
+          the owner inherits that redundancy rather than choosing it. Domains whose owners chose two providers make up{" "}
           {s.dns.deliberatePairsAtMost} of the population at most.
         </P>
         <P>
@@ -351,7 +351,7 @@ export default async function CorporateDomainStackPage() {
             Figures observed to {observed} across {fmt(s.corpus.tracked)} tracked domains. Of these, {fmt(s.corpus.resolved)} resolved at their
             latest observation and {fmt(s.corpus.operating)} are operating domains. The corporate cut is {fmt(s.corpus.corporate)}{" "}domains.
             They resolve, are not parked, and publish a working mail server and an SPF record. Operator identity is derived from observed DNS records and vendors&rsquo; own published address ranges, against a
-            crosswalk maintained by Datazag. Operator shares describe the number of domains that depend on each operator; they are not
+            crosswalk maintained by Datazag. Operator shares count the domains that depend on each operator. They are not
             statements about revenue, customer count or service quality.
           </p>
         </div>
