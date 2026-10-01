@@ -24,7 +24,7 @@ import { getSiteStats } from "@/lib/site-stats-live";
 export const metadata: Metadata = {
   title: "Cyber insurance risk intelligence — Datazag",
   description:
-    "See which providers your insureds share, weighted by resilience and exit friction, and which policies are exposed when one fails, with evidence for each.",
+    "See which providers your insureds share, with each rated by resilience and exit friction, and which policies are exposed when one fails.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
