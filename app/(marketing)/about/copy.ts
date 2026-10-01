@@ -1,3 +1,4 @@
+import { LEGAL_ENTITY } from "@/lib/legal-entity";
 import type { PageContent } from "@/sanity/seedMarketingCopy";
 
 export const SLUG = "about";
@@ -79,6 +80,22 @@ export const content: PageContent = {
       { key: "not-takedown", title: "Not a takedown service", text: "Datazag provides detection, evidence packs and abuse contacts. Customers or authorized partners manage takedown requests and legal response." },
       { key: "not-raw-resale", title: "Not uncontrolled raw-data resale", text: "Data products and partner rights are governed by product scope, permitted use and contractual boundaries." },
       { key: "not-black-box", title: "Not a black-box score", text: "Risk outputs are designed to include reasons and supporting context so teams can validate, challenge or de-escalate findings." },
+    ],
+  },
+  // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
+  // in short, self-contained sentences that restate what the page establishes. Item
+  // title = question, text = answer. See components/seo/FaqSection.tsx.
+  // The company answer reads the legal entity, so it cannot disagree with Terms.
+  faq: {
+    eyebrow: "Questions",
+    title: "Frequently asked questions",
+    items: [
+      { key: "what-is", title: "What is Datazag?", text: "Datazag is an internet infrastructure intelligence company. It measures domains, DNS, mail and email-authentication records, certificates, hosting and routing across the internet every day, links them together, and explains what they mean for a domain, an organization or a portfolio." },
+      { key: "who-uses", title: "Who uses Datazag?", text: "Security teams and MSSPs use it for investigations and client services. Email platforms use it to check the domains their customers send from. Insurers and acquirers use it to see what an organization runs and which providers it depends on. Data teams use the datasets in their own warehouse." },
+      { key: "data-source", title: "Where does the data come from?", text: "From public internet infrastructure: DNS records, Certificate Transparency logs, BGP routing and registration data. Datazag does not need an agent, a questionnaire or access to a customer's network." },
+      { key: "delivery", title: "How do customers get it?", text: "As reports, alerts, an API, and cloud datasets in Snowflake or Databricks. Partners can also deliver it inside their own services, under their own brand." },
+      { key: "takedown", title: "Is Datazag a takedown service?", text: "No. Datazag provides findings, evidence and abuse contacts. Customers or their authorized partners decide on and manage any takedown or legal response." },
+      { key: "company", title: "Who is behind Datazag?", text: `${LEGAL_ENTITY.legalName}, a company registered in ${LEGAL_ENTITY.jurisdiction} (company number ${LEGAL_ENTITY.companyNumber}).` },
     ],
   },
   finalCta: {

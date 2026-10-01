@@ -17,13 +17,14 @@ import { getDatasets } from "@/lib/datasets/load";
 import { DELIVERY_POSTURES } from "@/lib/trust-posture";
 import { formatLegalDate } from "@/lib/legal-entity";
 import { SLUG, content } from "./copy";
+import { FaqSection } from "@/components/seo/FaqSection";
 import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
 import { getSiteStats } from "@/lib/site-stats-live";
 
 export const metadata: Metadata = {
   title: "Cyber insurance risk intelligence — Datazag",
   description:
-    "See which providers your insureds share, weighted by resilience and exit friction, and which policies are exposed when one fails, with evidence for each.",
+    "See which providers your insureds share, with each rated by resilience and exit friction, and which policies are exposed when one fails.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -567,6 +568,8 @@ export default async function CyberRiskUnderwritingPage() {
           </div>
         </div>
       </Section>
+
+      <FaqSection section={section("faq")} fallback={content.faq} />
 
       {/* Closing CTA — split by reader. The free domain report is secondary
           here: an insurer tests against their book, not their own domain. */}

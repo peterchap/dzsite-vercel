@@ -1,4 +1,6 @@
 import { DocsClient } from "@/components/docs/DocsClient";
+import { DOCS_FAQ } from "@/components/docs/faq";
+import { FaqJsonLd } from "@/components/seo/FaqSection";
 import { getDatasets } from "@/lib/datasets/load";
 import type { Metadata } from "next";
 
@@ -14,5 +16,10 @@ export default async function DocsPage() {
     // the two can never disagree about what ships.
     const datasets = await getDatasets().catch(() => []);
 
-    return <DocsClient datasets={datasets} />;
+    return (
+        <>
+            <FaqJsonLd entries={DOCS_FAQ} />
+            <DocsClient datasets={datasets} />
+        </>
+    );
 }

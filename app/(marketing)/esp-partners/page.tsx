@@ -17,6 +17,7 @@ import { MailFunnelStrip } from "@/components/story/MailFunnelStrip";
 import { loadCorporateMailFigures, resolveCorporateMailTokens } from "@/lib/observatory-figures";
 import { MACHINE_CLICKS_EVIDENCE_URL } from "@/lib/machine-clicks";
 import { SLUG, content } from "./copy";
+import { FaqSection } from "@/components/seo/FaqSection";
 
 export const metadata: Metadata = {
   title: "Email intelligence for ESPs — Datazag",
@@ -361,6 +362,8 @@ export default async function EspPartnersPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection section={getCopySection(pageCopy, "faq")} fallback={content.faq} />
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">

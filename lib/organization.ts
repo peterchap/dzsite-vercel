@@ -27,13 +27,19 @@ export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
  * Profiles that are ABOUT Datazag and that Datazag controls or that are
  * authoritative. Each was confirmed to resolve to this company when added.
  *
- * TO ADD: the company LinkedIn page, Crunchbase, GitHub organization, and any
- * other profile Datazag maintains. Add only URLs you control or that are an
- * official register; a stale aggregator listing must never go here.
+ * Add only URLs Datazag controls or that are an official register. A stale
+ * aggregator listing (Datarade, saasbrowser) must never go here: sameAs tells
+ * a search engine "this is also us".
  */
 export const SAME_AS: string[] = [
   // Companies House register entry — confirmed "DATAZAG LTD", 2026-09-30.
   `https://find-and-update.company-information.service.gov.uk/company/${LEGAL_ENTITY.companyNumber}`,
+  // Supplied by the founder 2026-10-01. LinkedIn resolved to "Datazag | LinkedIn"; the GitHub
+  // account is type Organization, name "Datazag", website https://www.datazag.com. Crunchbase
+  // refuses automated requests (Cloudflare), so it was not fetched; the slug matches the legal name.
+  "https://www.linkedin.com/company/datazag/",
+  "https://www.crunchbase.com/organization/datazag-ltd",
+  "https://github.com/Datazag",
 ];
 
 /**
@@ -65,7 +71,23 @@ export function organizationJsonLd() {
         name: "Datazag",
         legalName: LEGAL_ENTITY.legalName,
         url: SITE_URL,
-        logo: `${SITE_URL}/icon.svg`,
+        // The square Dz mark — app/icon.svg (supplied again 2026-10-01) rendered to a 512x512
+        // PNG with Manrope embedded, via next/og. The SVG itself sets "Dz" as live Manrope text,
+        // so any renderer without the font draws a different logo, and at 64px it is below
+        // Google's 112px minimum. A square suits the knowledge panel, which crops to one.
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/logo-mark.png`,
+          width: 512,
+          height: 512,
+        },
+        // The DATAZAG wordmark (691x134 PNG, transparent), for surfaces that show a wide image.
+        image: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/logo.png`,
+          width: 691,
+          height: 134,
+        },
         description:
           "Internet infrastructure intelligence: DNS, mail and authentication posture, hosting, " +
           "routing and certificates for the internet's domains, delivered as reports, an API, " +

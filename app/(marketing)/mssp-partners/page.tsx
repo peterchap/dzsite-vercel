@@ -15,6 +15,7 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { SLUG, content } from "./copy";
+import { FaqSection } from "@/components/seo/FaqSection";
 
 export const metadata: Metadata = {
   title: "Threat intelligence for MSSPs — Datazag",
@@ -308,6 +309,8 @@ export default async function MsspPartnersPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection section={getCopySection(pageCopy, "faq")} fallback={content.faq} />
 
       <section className="border-t border-white/10 py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">

@@ -60,7 +60,7 @@ const coreNavLinks: NavLink[] = [
         href: "#",
         children: [
             { label: "How It Works", href: "/how-it-works" },
-            { label: "Case study: One Signal, 150 Domains", href: "/intelligence/one-signal-150-domains" },
+            { label: "Research", href: "/intelligence" },
             { label: "Guide: Classify machine clicks", href: "/resources/machine-clicks" },
             { label: "Sample Reports", href: "/reports/sample" },
             { label: "Blog", href: "/blog" },
