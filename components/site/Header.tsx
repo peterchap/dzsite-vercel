@@ -61,6 +61,7 @@ const coreNavLinks: NavLink[] = [
         children: [
             { label: "How It Works", href: "/how-it-works" },
             { label: "Research", href: "/intelligence" },
+            { label: "Guide: Classify machine clicks", href: "/resources/machine-clicks" },
             { label: "Sample Reports", href: "/reports/sample" },
             { label: "Blog", href: "/blog" },
             { label: "Documentation", href: "/docs" },

@@ -259,3 +259,81 @@ export async function loadIntelligenceFigures(): Promise<IntelligenceFigures | n
     .pop() ?? null;
   return { asOf, certificateOnly, mailFunnel, concentration };
 }
+
+/**
+ * THE CORPORATE MAIL POPULATION (machine clicks, 2026-10-01).
+ *
+ * The machine-clicks post and the ESP page argue that the mailbox layer, not
+ * the gateway layer, is where most URL-inspecting infrastructure sits. The
+ * figures behind that are the Observatory's corp_mail_* statistics, the
+ * daily re-measurement of the "Corporate Mail Path" note (2026-09-08):
+ * domains that accept mail, are not parked, resolve a website and publish
+ * SPF. Read here, never typed.
+ *
+ * ALL-OR-NOTHING. A scale comparison with one side missing is a different
+ * claim, so any missing figure returns null and the copy that needs them is
+ * left out (see resolveCorporateMailTokens).
+ */
+export interface CorporateMailFigures {
+  asOf: string | null;
+  /** Corporate domains, for prose: "112.9 million". */
+  domains: string;
+  /** Share on Microsoft or Google, whole percent: "24%". */
+  microsoftGoogle: string;
+  /** Share behind a dedicated gateway, one decimal: "2.2%". */
+  gateway: string;
+  href: string;
+}
+
+function proseCount(value: number): string {
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)} billion`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)} million`;
+  return value.toLocaleString("en-US");
+}
+
+export async function loadCorporateMailFigures(): Promise<CorporateMailFigures | null> {
+  const rows = await loadStatisticsRows();
+  if (!rows) return null;
+  const domainsRow = measuredRow(rows, "corp_mail_domains");
+  const msgRow = measuredRow(rows, "corp_mail_microsoft_google");
+  const gwRow = measuredRow(rows, "corp_mail_gateway");
+  const domains = domainsRow ? num(domainsRow.numerator) : null;
+  const msg = msgRow ? num(msgRow.value) : null;
+  const gw = gwRow ? num(gwRow.value) : null;
+  if (!domainsRow || !msgRow || !gwRow || domains === null || domains <= 0 || msg === null || gw === null) {
+    return null;
+  }
+  const asOf = [domainsRow, msgRow, gwRow]
+    .map((r) => str(r.as_of))
+    .filter((d): d is string => Boolean(d))
+    .sort()
+    .pop() ?? null;
+  return {
+    asOf,
+    domains: proseCount(domains),
+    microsoftGoogle: `${Math.round(msg)}%`,
+    gateway: `${gw.toFixed(1)}%`,
+    href: `${OBSERVATORY_URL}/email/providers#corp_mail_domains`,
+  };
+}
+
+const CORPORATE_MAIL_TOKENS: Record<string, keyof CorporateMailFigures> = {
+  "{{CORP_MAIL_DOMAINS}}": "domains",
+  "{{CORP_MAIL_MS_GOOGLE_PCT}}": "microsoftGoogle",
+  "{{CORP_MAIL_GATEWAY_PCT}}": "gateway",
+};
+
+/**
+ * Fill the corporate-mail tokens in a piece of copy. Returns null when the
+ * copy uses a token and the figures are unavailable: the caller drops that
+ * paragraph rather than print a sentence with a hole in it.
+ */
+export function resolveCorporateMailTokens(text: string, figures: CorporateMailFigures | null): string | null {
+  if (!/\{\{CORP_MAIL_[A-Z_]+\}\}/.test(text)) return text;
+  if (!figures) return null;
+  let out = text;
+  for (const [token, key] of Object.entries(CORPORATE_MAIL_TOKENS)) {
+    out = out.split(token).join(String(figures[key] ?? ""));
+  }
+  return /\{\{CORP_MAIL_[A-Z_]+\}\}/.test(out) ? null : out;
+}

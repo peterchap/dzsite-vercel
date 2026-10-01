@@ -29,6 +29,32 @@ export const content: PageContent = {
       { key: "embed-workflow", title: "Embed into your workflow", text: "Use API, webhooks, reports, exports or cloud data shares across onboarding, pre-send checks, abuse review and analytics pipelines." },
     ],
   },
+  // 2026-10-01 — machine clicks (evidence package, 2026-10-01). Datazag gives
+  // a prior, not a prediction: MX shows infrastructure, never licensing or
+  // policy. Never write that we identify domains that WILL produce machine
+  // clicks (claim guard). {{CORP_MAIL_DOMAINS}} resolves from the
+  // Observatory's corp_mail_domains; the paragraph drops if it cannot.
+  // No mention of the per-domain dataset or a free file until each has a URL.
+  machineClicks: {
+    eyebrow: "Machine clicks",
+    title: "Segment machine interactions from human ones",
+    body: [
+      "Security products inspect links in email. Some retrieve the destination. When that happens, your platform can record the request as a click.",
+      "The damage runs past reporting. Machine clicks make inactive addresses look engaged. Senders keep mailing them, and sending reputation suffers. Genuine engagement signals get diluted.",
+      "The automation is worse. Journeys branch on intent nobody expressed. Lead scores rise on clicks nobody made. Sales teams follow up on software.",
+    ].join("\n\n"),
+    secondaryBody: [
+      "Datazag identifies the inbound mail infrastructure for {{CORP_MAIL_DOMAINS}} corporate domains. For each one, we record the mailbox platform and the security gateway, where one is visible. We also record what each vendor documents about URL inspection.",
+      "That tells you where automated interaction is plausible. You already know when each interaction happened. Joining the two gives a stronger basis for classifying engagement than timing alone.",
+      "The data lands in your own environment. Join it to your recipient list in your warehouse. Your list never leaves your systems.",
+    ].join("\n\n"),
+    primaryCta: { label: "Read the implementation guide", href: "/resources/machine-clicks" },
+    items: [
+      { key: "clue-not-proof", title: "Infrastructure is a clue, not proof", text: "A documented capability does not establish what happened to a particular message." },
+      { key: "two-layers", title: "Two layers can inspect one message", text: "A gateway in front of a mailbox platform means two products on one delivery path." },
+      { key: "server-side-only", title: "Server-side inspection only", text: "Our signal is keyed to the domain's infrastructure. Image proxying by a recipient's mail app depends on their client, not their domain. No DNS observation reaches it." },
+    ],
+  },
   serviceCatalogue: {
     eyebrow: "Partner service catalog",
     title: "Create services around trust, abuse and deliverability.",

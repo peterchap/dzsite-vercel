@@ -14,6 +14,8 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { MailFunnelStrip } from "@/components/story/MailFunnelStrip";
+import { loadCorporateMailFigures, resolveCorporateMailTokens } from "@/lib/observatory-figures";
+import { MACHINE_CLICKS_EVIDENCE_URL } from "@/lib/machine-clicks";
 import { SLUG, content } from "./copy";
 import { FaqSection } from "@/components/seo/FaqSection";
 
@@ -59,7 +61,10 @@ function PartnerStackPanel() {
 }
 
 export default async function EspPartnersPage() {
-  const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+  const [pageCopy, corporateMail] = await Promise.all([
+    sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300),
+    loadCorporateMailFigures(),
+  ]);
 
   const hero = getCopySection(pageCopy, "hero");
   const partnerValue = getCopySection(pageCopy, "partnerValue");
@@ -74,6 +79,25 @@ export default async function EspPartnersPage() {
   const deliverySection = getCopySection(pageCopy, "delivery");
   const pilotPath = getCopySection(pageCopy, "pilotPath");
   const finalCta = getCopySection(pageCopy, "finalCta");
+  const machineClicks = getCopySection(pageCopy, "machineClicks");
+
+  // Paragraphs split on blank lines. A paragraph whose figure cannot be read
+  // from the Observatory is left out, never printed with a hole in it.
+  // The machine-clicks answer opens on the corporate-domain count, and the next
+  // paragraph leans on it ("That tells you…"), so that one sentence has a
+  // figure-free form rather than dropping out.
+  const paragraphs = (text: string) =>
+    text
+      .split(/\n\s*\n/)
+      .map((p) =>
+        corporateMail ? p : p.replace("for {{CORP_MAIL_DOMAINS}} corporate domains", "behind corporate domains worldwide"),
+      )
+      .map((p) => resolveCorporateMailTokens(p.trim(), corporateMail))
+      .filter((p): p is string => Boolean(p));
+  const machineClicksProblem = paragraphs(copyText(machineClicks?.body, content.machineClicks.body!));
+  const machineClicksAnswer = paragraphs(copyText(machineClicks?.secondaryBody, content.machineClicks.secondaryBody!));
+  const machineClicksCta = copyCta(machineClicks?.primaryCta, content.machineClicks.primaryCta!);
+  const resolvedMachineClicks = resolveCopyCards(content.machineClicks.items!, machineClicks);
 
   const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
   const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
@@ -143,6 +167,38 @@ export default async function EspPartnersPage() {
                 <p className="mt-3 text-sm leading-6 text-slate-400">{outcome.text}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="machine-clicks" className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow={copyText(machineClicks?.eyebrow, content.machineClicks.eyebrow!)}
+            title={copyText(machineClicks?.title, content.machineClicks.title!)}
+          />
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            <div className="space-y-4 text-base leading-7 text-slate-300">
+              {machineClicksProblem.map((p) => <p key={p}>{p}</p>)}
+            </div>
+            <div className="space-y-4 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.06] p-6 text-base leading-7 text-slate-200">
+              {machineClicksAnswer.map((p) => <p key={p}>{p}</p>)}
+            </div>
+          </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {resolvedMachineClicks.map((item) => (
+              <article key={item.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href={machineClicksCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{machineClicksCta.label}</a>
+            {/* Renders only once the Observatory evidence page is live (lib/machine-clicks.ts). */}
+            {MACHINE_CLICKS_EVIDENCE_URL ? (
+              <a href={MACHINE_CLICKS_EVIDENCE_URL} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">The vendor documentation behind the classification</a>
+            ) : null}
           </div>
         </div>
       </section>
