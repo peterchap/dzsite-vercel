@@ -246,7 +246,10 @@ export async function loadCorpusDomains(): Promise<CorpusFigure | null> {
   const rows = await loadStatisticsRows();
   if (!rows) return null;
   const row = measuredRow(rows, "corpus_domains");
-  const value = row ? num(row.numerator) ?? num(row.value) : null;
+  // The SAME field the Observatory panel renders (loadObservatoryFigures reads num(row.value)):
+  // corpus_domains is a count stat, so value is the count. Preferring numerator could make the
+  // hero and the panel print different numbers if the two fields ever diverged.
+  const value = row ? num(row.value) : null;
   if (!row || value === null || value <= 0) return null;
   return { value, asOf: str(row.as_of), method: str(row.method), href: `${OBSERVATORY_URL}/domains#corpus_domains` };
 }
