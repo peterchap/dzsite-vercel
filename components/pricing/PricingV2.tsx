@@ -7,7 +7,6 @@ const productChooser = [
   { need: "Assess one domain", product: "Free Domain Health Report", href: "/#free-report" },
   { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
   { need: "Monitor brand abuse", product: "Brand Protection Alerts", href: "#alerts" },
-  { need: "Enrich workflows", product: "Intelligence API", href: "#api" },
   { need: "Analyze at scale", product: "Cloud Data Products", href: "#data-shares" },
 ];
 
@@ -48,7 +47,7 @@ const alertProducts = [
     price: "{{PRICE:49900}}",
     cadence: "/mo",
     description: "Platform impersonation monitoring for the platforms, vendors and workflows that matter to your organization.",
-    features: ["Platform impersonation signals", "Reason codes", "Webhook/API delivery", "Operational alert stream"],
+    features: ["Platform impersonation signals", "Reason codes", "Webhook delivery", "Operational alert stream"],
     cta: "Discuss platform alerts",
     href: "/contact",
   },
@@ -57,7 +56,7 @@ const alertProducts = [
     price: "{{PRICE:49900}}",
     cadence: "/mo",
     description: "Keyword-led suspicious infrastructure monitoring for terms such as login, payroll, invoice, VPN, support or HR.",
-    features: ["Customer-defined keywords", "New domains and certificates", "Subdomain context", "Webhook/API delivery"],
+    features: ["Customer-defined keywords", "New domains and certificates", "Subdomain context", "Webhook delivery"],
     cta: "Discuss keyword alerts",
     href: "/contact",
   },
@@ -70,27 +69,6 @@ const alertProducts = [
     cta: "Protect a brand",
     href: "/contact",
     highlight: true,
-  },
-];
-
-const apiPlans = [
-  {
-    name: "Developer",
-    price: "{{PRICE:49900}}",
-    cadence: "/mo",
-    features: ["100k credits", "Evaluation and integration", "Portal credit purchase", "REST API access"],
-  },
-  {
-    name: "Business",
-    price: "{{PRICE:249900}}",
-    cadence: "/mo",
-    features: ["1M credits", "Commercial use", "Bulk enrichment", "Higher request rates"],
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "",
-    features: ["Custom volumes", "Custom fields", "SLA options", "Private terms"],
   },
 ];
 
@@ -118,7 +96,6 @@ const dataShares = [
 const evaluation = [
   ["Report first", "Start with the free Domain Health Report or a paid report when you need a concrete assessment before monitoring."],
   ["Alert stream", "Use alerts when the workflow is operational: platform abuse, keywords, brand impersonation and incident updates."],
-  ["API credits", "Use the API when intelligence needs to sit inside a product, portal, fraud workflow, SIEM process or enrichment pipeline."],
   ["Data share", "Use cloud datasets when the buyer wants SQL-ready intelligence inside a warehouse, lakehouse or marketplace procurement route."],
 ];
 
@@ -129,7 +106,7 @@ const faq = [
   },
   {
     question: "Can I start without a sales process?",
-    answer: "Yes. The free report is the lowest-friction starting point. API credits and small evaluations are designed to keep initial testing practical.",
+    answer: "Yes. The free Domain Health Report needs no sales call. Enter a work email and it is delivered by email.",
   },
   {
     question: "Can I buy through a cloud marketplace?",
@@ -206,7 +183,7 @@ export function PricingV2() {
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Pricing</p>
             <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Choose the buying path that matches the workflow.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Start with a free domain report, move into paid domain risk reports, subscribe to alerts, buy API credits, or consume Datazag as cloud-native datasets.
+              Start with a free domain report, move into paid domain risk reports, subscribe to alerts, or consume Datazag as cloud-native datasets.
             </p>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
               Prices below are starting points. Larger, partner-led, marketplace and data-share deployments are scoped by volume, delivery route and permitted use.
@@ -217,7 +194,7 @@ export function PricingV2() {
             </div>
           </div>
 
-          <div className="mt-12 grid gap-3 rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-4 md:grid-cols-5">
+          <div className="mt-12 grid gap-3 rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-4 md:grid-cols-4">
             {productChooser.map((item) => (
               <a key={item.need} href={item.href} className="rounded-2xl border border-white/10 bg-[#030619]/50 p-4 transition hover:border-cyan-300/25 hover:bg-cyan-300/[0.055]">
                 <p className="text-xs text-slate-500">Need to</p>
@@ -247,15 +224,6 @@ export function PricingV2() {
         </div>
       </section>
 
-      <section id="api" className="relative border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Intelligence API" title="Buy credits for lookup, scoring and enrichment." body="Use API credits for product integrations, portals, fraud workflows, SIEM enrichment and customer-facing intelligence features." />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {apiPlans.map((plan) => <CompactPlanCard key={plan.name} plan={plan} />)}
-          </div>
-        </div>
-      </section>
-
       <section id="data-shares" className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader eyebrow="Cloud data products" title="Buy directly or through your marketplace route." body="For analytics teams, platforms and data buyers who want Datazag intelligence inside their warehouse, lakehouse, data marketplace or security analytics environment." />
@@ -270,8 +238,8 @@ export function PricingV2() {
 
       <section className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="How to start" title="Use the entry point that fits the decision." body="The right first step depends on whether the buyer needs an assessment, operational alerting, product integration or analytical data access." />
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <SectionHeader eyebrow="How to start" title="Use the entry point that fits the decision." body="The right first step depends on whether the buyer needs an assessment, operational alerting or analytical data access." />
+          <div className="grid gap-5 md:grid-cols-3">
             {evaluation.map(([title, text]) => (
               <article key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-xl font-semibold text-white">{title}</h3>

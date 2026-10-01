@@ -5,7 +5,7 @@ import { PricingV2 } from "@/components/pricing/PricingV2";
 export const metadata: Metadata = {
   title: "Pricing — Datazag",
   description:
-    "Transparent pricing for Datazag reports, threat intelligence, API credits and cloud data shares.",
+    "Transparent pricing for Datazag reports, alerts and cloud data shares.",
 };
 
 export default function PricingPage() {
