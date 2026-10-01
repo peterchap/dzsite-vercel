@@ -63,7 +63,7 @@ export const content: PageContent = {
       { key: "match", title: "Match", text: "The alert identifies the platform lure and category, here an Exchange/Microsoft 365-themed platform signal." },
       { key: "infra-risk", title: "Infrastructure risk", text: "ASN score, hosting IP, CDN/fronting context and BGP/MOAS signals explain why the infrastructure is higher risk." },
       { key: "reason-codes", title: "Reason codes", text: "Analysts and automations can see the individual signals that caused escalation instead of treating the alert as a black box." },
-      { key: "latency", title: "Latency", text: "E2E latency shows how quickly the alert moved through the detection pipeline; DNS resolution phase is reported separately." },
+      { key: "latency", title: "Latency", text: "End-to-end latency shows how long the alert took from first observation to delivery." },
     ],
   },
   evidence: {
