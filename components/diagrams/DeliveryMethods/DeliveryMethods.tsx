@@ -28,12 +28,12 @@ const deliveryMethods = [
     href: "/alerts",
   },
   {
-    title: "API",
+    title: "Partner services",
     description:
-      "Sender diligence for email service providers: assess the domains a sender uses, and get the evidence behind the answer rather than an approve-or-reject verdict.",
-    items: ["REST", "Evidence", "Reason codes", "Recommendation"],
+      "MSSPs and email platforms deliver Datazag intelligence inside their own services, under their own brand, with the evidence behind each finding.",
+    items: ["MSSP", "ESP", "White-label", "Evidence"],
     tone: "violet",
-    href: "/esp-partners",
+    href: "/mssp-partners",
   },
   {
     title: "Datasets",
@@ -70,7 +70,7 @@ export function DeliveryMethods() {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">One platform · multiple delivery methods</p>
           <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-4xl">The same intelligence graph powers every output.</h3>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-300 md:text-base">
-            Reports, alerts, APIs and datasets are not separate products. They are different ways to consume Datazag&rsquo;s continuously updated infrastructure intelligence.
+            Reports, alerts, partner services and datasets are not separate products. They are different ways to consume Datazag&rsquo;s continuously updated infrastructure intelligence.
           </p>
         </div>
 

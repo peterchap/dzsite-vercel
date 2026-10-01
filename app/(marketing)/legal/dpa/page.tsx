@@ -75,7 +75,7 @@ export default function DataProcessingAgreementPage() {
                             <li>Domain-associated email addresses</li>
                             <li>Technical metadata related to domains and infrastructure</li>
                             <li>Contact details provided for account administration</li>
-                            <li>Log and usage data related to API or platform access</li>
+                            <li>Log and usage data related to portal, feed or platform access</li>
                         </ul>
                         <p className="mt-6 italic text-sm text-slate-400">
                             Datazag does not intentionally process special category (sensitive) personal data.

@@ -131,7 +131,7 @@ const deliveryRoutes = [
   },
   {
     key: "webhook-api-alerts",
-    title: "Webhook / API alerts",
+    title: "Webhook alerts",
     text: "Structured alert events and incident updates for customer portals, ticketing, SIEM, SOAR and partner platforms.",
   },
   {
@@ -431,7 +431,7 @@ export default async function BrandProtectionPage() {
           <SectionHeader
             eyebrow={copyText(deliveryRoutesSection?.eyebrow, "Delivery routes")}
             title={copyText(deliveryRoutesSection?.title, "Send alerts where the response happens.")}
-            body={copyText(deliveryRoutesSection?.body, "Brand protection can be consumed as portal alerts, webhook/API events, evidence-pack exports or partner-branded alert services.")}
+            body={copyText(deliveryRoutesSection?.body, "Brand protection can be consumed as portal alerts, webhook events, evidence-pack exports or partner-branded alert services.")}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {resolvedDeliveryRoutes.map((route) => (

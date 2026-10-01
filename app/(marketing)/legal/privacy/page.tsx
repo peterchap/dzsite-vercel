@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Visitors to our website</li>
                             <li>Users of our customer portal</li>
-                            <li>Customers and partners using our APIs, datasets, and services</li>
+                            <li>Customers and partners using our datasets, feeds and services</li>
                             <li>Individuals who contact us or interact with us in a business context</li>
                         </ul>
                         <p className="mt-6">

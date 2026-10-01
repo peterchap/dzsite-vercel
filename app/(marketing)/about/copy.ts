@@ -54,7 +54,6 @@ export const content: PageContent = {
     items: [
       { key: "reports", title: "Reports", text: "For teams that need an assessment of one domain, a portfolio, a client estate, a supplier group or an acquisition target." },
       { key: "alerts", title: "Alerts", text: "For operational workflows where suspicious platform, keyword or brand-impersonation infrastructure needs to be routed quickly." },
-      { key: "api-webhooks", title: "API and webhooks", text: "For products, portals, SIEM workflows, fraud systems and customer-facing tools that need enrichment or scoring on demand." },
       { key: "cloud-data", title: "Cloud data products", text: "For teams that want SQL-ready infrastructure intelligence inside a warehouse, lakehouse, marketplace or analytical environment." },
       { key: "partner-services", title: "Partner services", text: "For MSSPs, MDRs, ESPs and platforms that want to package Datazag intelligence inside their own customer experience." },
     ],
@@ -101,7 +100,7 @@ export const content: PageContent = {
   finalCta: {
     eyebrow: "Next step",
     title: "Start with one domain or one workflow.",
-    body: "Use a free report to see the intelligence in context, or contact Datazag to discuss alerts, API access, cloud data products or partner services.",
+    body: "Use a free report to see the intelligence in context, or contact Datazag to discuss alerts, the Sentinel feed, cloud data products or partner services.",
     primaryCta: { label: "Get a free report", href: "/#free-report" },
     secondaryCta: { label: "Contact Datazag", href: "/contact" },
   },

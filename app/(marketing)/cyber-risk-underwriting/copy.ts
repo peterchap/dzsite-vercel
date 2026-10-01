@@ -220,7 +220,7 @@ export const content: PageContent = {
     eyebrow: "Where your book goes",
     title: "Two delivery routes, two privacy positions.",
     body: "Your book can stay in your own Snowflake or Databricks account. The claim below is specific to that route, and it does not cover the others.",
-    secondaryBody: "A report works like the API: you send us the domains, so Datazag processes them under the data-processing agreement.",
+    secondaryBody: "A report is different: you send us the domains, so Datazag processes them under the data-processing agreement.",
   },
 
   // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
@@ -235,7 +235,7 @@ export const content: PageContent = {
       { key: "weighting", title: "What does rating by resilience and exit friction mean?", text: "Counting how many insureds use a provider shows its share. Datazag shows that share as it is, then rates how serious it is by how resilient the provider is and how hard it is to leave. Exit friction stands in for restoration time, which drives business interruption severity. A provider not yet assessed is shown as not assessed, never as safe." },
       { key: "exposure", title: "Can you show which policies are exposed when a provider fails?", text: "Yes, from the domain list you send. Name a provider and see which insureds depend on it, and for which functions. Datazag reports exposure, not loss: it holds no claims or loss data." },
       { key: "freshness", title: "How fresh is the data?", text: "Routing and network data refresh hourly. New, retiring and high-risk domains refresh daily. Stable records such as nameservers and mail providers refresh at least monthly. Every row carries the time it was observed." },
-      { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report or the API is different, because you send us the domains, and that is covered by the data-processing agreement." },
+      { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report is different, because you send us the domains, and that is covered by the data-processing agreement." },
     ],
   },
   cta: {

@@ -18,7 +18,7 @@ import { RelevanceSection } from "@/components/story/RelevanceSection";
 export const metadata: Metadata = {
   title: "How It Works — Datazag",
   description:
-    "How Datazag turns domains, DNS, certificates, hosting, provider context and history into reports, alerts, APIs and cloud-native infrastructure intelligence.",
+    "How Datazag turns domains, DNS, certificates, hosting, provider context and history into reports, alerts and cloud-native infrastructure intelligence.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {

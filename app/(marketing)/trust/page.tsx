@@ -25,7 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "Trust & Governance — Datazag",
   description:
-    "How Datazag handles infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts, APIs and data shares.",
+    "How Datazag handles infrastructure data, evidence, licensing, privacy, false-positive controls and permitted use across reports, alerts and data shares.",
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -272,7 +272,7 @@ export default async function TrustPage() {
                 customer sends nothing here, which settles more of a vendor
                 assessment than a certificate does — and each mode carries its
                 own consequence so the share claim cannot be read as covering
-                the API. */}
+                a report. */}
             <div>
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200/70">
                 Where your data goes, by delivery mode

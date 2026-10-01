@@ -7,7 +7,7 @@ import { LEGAL_ENTITY } from "@/lib/legal-entity";
 
 export const metadata: Metadata = {
     title: "Terms of Service — Datazag",
-    description: "These Terms govern access to and use of Datazag’s products, services, datasets, and APIs.",
+    description: "These Terms govern access to and use of Datazag’s products, services, datasets and data feeds.",
 };
 
 export default function TermsOfServicePage() {
@@ -22,7 +22,7 @@ export default function TermsOfServicePage() {
                             Terms of Service
                         </h1>
                         <p className="mt-6 text-lg text-slate-300 leading-relaxed font-medium">
-                            These Terms govern access to and use of Datazag’s products, services, datasets, and APIs.
+                            These Terms govern access to and use of Datazag’s products, services, datasets and data feeds.
                         </p>
                         <LegalDateline />
                     </div>
@@ -34,7 +34,7 @@ export default function TermsOfServicePage() {
                 <div className="mx-auto max-w-3xl space-y-12">
                     <LegalSection title="1. Introduction">
                         <p>
-                            These Terms of Service (“Terms”) govern your access to and use of the services provided by Datazag (“Datazag”, “we”, “our”, or “us”), including our websites, APIs, datasets, real-time data streams, and related services (collectively, the “Services”).
+                            These Terms of Service (“Terms”) govern your access to and use of the services provided by Datazag (“Datazag”, “we”, “our”, or “us”), including our websites, datasets, real-time data streams, and related services (collectively, the “Services”).
                         </p>
                         <p className="mt-4">
                             By accessing or using the Services, you agree to be bound by these Terms. If you do not agree, you may not access or use the Services.
