@@ -11,10 +11,11 @@
  */
 
 /** Vendor evidence page on the Observatory. Null until it is live. */
-export const MACHINE_CLICKS_EVIDENCE_URL: string | null = null;
+export const MACHINE_CLICKS_EVIDENCE_URL: string | null = "https://observatory.datazag.com/email/machine-clicks";
 
 /** Versioned evidence CSV, linked from the evidence page. Null until it is live. */
-export const MACHINE_CLICKS_EVIDENCE_CSV_URL: string | null = null;
+export const MACHINE_CLICKS_EVIDENCE_CSV_URL: string | null =
+  "https://observatory.datazag.com/downloads/machine-clicks/v1/machine-clicks-vendor-evidence-v1.csv";
 
 /** Implementation guide on the main site. */
 export const MACHINE_CLICKS_GUIDE_PATH = "/resources/machine-clicks";
