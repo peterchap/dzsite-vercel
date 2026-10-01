@@ -107,12 +107,17 @@ async function resolveStatisticsUrl(): Promise<string> {
   try {
     const res = await fetch(`${ARTIFACT_BASE}/latest.json`, { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    const pointer = (await res.json()) as { version?: unknown; artifacts?: unknown };
+    const pointer = (await res.json()) as { version?: unknown; artifacts?: unknown; published_at?: unknown };
     if (!isVersion(pointer.version)) throw new Error("latest.json names no version");
     if (Array.isArray(pointer.artifacts) && !pointer.artifacts.includes(STATISTICS_FILE)) {
       throw new Error(`latest.json version ${pointer.version} does not list ${STATISTICS_FILE}`);
     }
-    return `${ARTIFACT_BASE}/${pointer.version}/${STATISTICS_FILE}`;
+    // A same-day republish overwrites the dated prefix (2026-10-01: published at
+    // 17:29 and again at 22:28 under 2026-10-01/). The fetch below caches by URL
+    // for a day, so without this the second publish waited up to 24 hours. The
+    // publish time makes each publish its own cache entry.
+    const v = typeof pointer.published_at === "string" ? `?v=${encodeURIComponent(pointer.published_at)}` : "";
+    return `${ARTIFACT_BASE}/${pointer.version}/${STATISTICS_FILE}${v}`;
   } catch (err) {
     console.warn("observatory-figures: could not resolve the published version, using the root copy:", err);
     return FALLBACK_STATISTICS_URL;
@@ -121,8 +126,8 @@ async function resolveStatisticsUrl(): Promise<string> {
 
 /**
  * Every row of the published statistics file, or null when it could not be
- * read. The versioned file never changes, so the day-long cache only matters
- * for the root-copy fallback.
+ * read. The URL carries the publish time, so the day-long cache holds one
+ * publish and a republish gets a new entry.
  */
 async function loadStatisticsRows(): Promise<Row[] | null> {
   try {
