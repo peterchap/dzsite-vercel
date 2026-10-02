@@ -73,8 +73,8 @@ export type UnrenderedDoc = { id: string; reason: string; route?: string; unused
 export const UNRENDERED_DOCS: UnrenderedDoc[] = [
   {
     id: "page.home",
-    reason: "page doc with slug 'home'. app/home/page.tsx redirects /home to /, and / reads homepageAtmosphere.",
-    route: "app/home/page.tsx",
+    reason: "page doc with slug 'home'. lib/legacy-redirects.ts 301s /home to / (the app/home page was deleted 2026-10-02), and / reads homepageAtmosphere.",
+    route: "lib/legacy-redirects.ts",
   },
 ];
 

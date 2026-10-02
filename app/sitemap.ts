@@ -12,8 +12,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *
  * Deliberately excluded:
  *   /benchmark                  — robots: noindex until the metrics mature
- *   /legacy-home                — reference copy of the old homepage
- *   /home, /internet-never-stands-still — server redirects to /
  *   /domain-search              — retired, 301 to /datasets (legacy-redirects)
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
