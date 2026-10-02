@@ -32,7 +32,8 @@
     "studio:dev": "npx sanity dev --port 3333",
     "site:seed-trust": "node scripts/seedTrustEvidence.mjs",
     "site:seed-datasets": "node scripts/seedDatasets.mjs",
-    "guard:datasets": "tsx scripts/guards/checkDatasetFigures.ts"
+    "guard:datasets": "tsx scripts/guards/checkDatasetFigures.ts",
+    "check:post": "node scripts/check-post.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
