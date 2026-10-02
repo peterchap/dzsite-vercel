@@ -23,6 +23,21 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/legacy-home",
+    destination: "/",
+    reason: "A noindex reference copy of the old homepage, with the old positioning and API claims. Its page was deleted on 2026-10-02.",
+  },
+  {
+    source: "/home",
+    destination: "/",
+    reason: "An alias for the homepage. Was a page that redirected on render; a 301 says the same without a route.",
+  },
+  {
+    source: "/internet-never-stands-still",
+    destination: "/",
+    reason: "An old campaign path. Was a page that redirected on render; a 301 says the same without a route.",
+  },
+  {
     source: "/use-cases",
     destination: "/how-it-works",
     reason:

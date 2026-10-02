@@ -92,7 +92,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             phase: "BUILD",
             productName: "Datasets on cloud marketplaces",
             cadence: "Continuous data refresh",
-            deliveredAs: "Marketplace share, webhooks, API, white-label",
+            deliveredAs: "Marketplace share, webhooks, white-label",
             leadBuyer: "Email security teams, data teams",
             outputAnswers: "\"How do I build with this data?\"",
             roleInDefensiveAI: "Model training & automation",

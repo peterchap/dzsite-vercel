@@ -106,7 +106,7 @@ export function HeroSplitCta(props: SectionHeroSplitCta) {
               Designed to reduce noise
             </span>
             <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 backdrop-blur">
-              API, feeds & webhooks
+              Feeds & webhooks
             </span>
           </div>
         </div>

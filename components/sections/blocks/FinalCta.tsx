@@ -35,7 +35,7 @@ export function FinalCta({ headline, subheadline, primaryCta, secondaryCta, isDa
               ) : null}
             </div>
             <p className="mx-auto mt-6 max-w-3xl text-xs text-slate-400">
-              Transparent pricing, explainable signals, and flexible delivery via API, feeds, or webhooks.
+              Transparent pricing, explainable signals, and flexible delivery as reports, feeds or webhooks.
             </p>
           </div>
         </div>
