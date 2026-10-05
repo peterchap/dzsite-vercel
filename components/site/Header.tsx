@@ -201,7 +201,7 @@ export function Header({
                     <div className="flex items-center gap-2 xl:hidden">
                         <CurrencySelector className="h-9 w-[100px] text-xs" />
                         <DropdownMenu.Root>
-                            <DropdownMenu.Trigger className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/10">
+                            <DropdownMenu.Trigger aria-label="Open menu" className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/10">
                                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                                 </svg>

@@ -26,7 +26,7 @@ export function CurrencySelector({ className }: CurrencySelectorProps) {
 
     return (
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-            <SelectTrigger className={cn("w-[140px] bg-white border-slate-200 text-slate-700", className)}>
+            <SelectTrigger aria-label="Currency" className={cn("w-[140px] bg-white border-slate-200 text-slate-700", className)}>
                 <SelectValue placeholder="Select currency">
                     {selectedCurrency}
                 </SelectValue>
