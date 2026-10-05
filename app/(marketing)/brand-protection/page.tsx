@@ -130,9 +130,9 @@ const deliveryRoutes = [
     text: "A live incident list with status, evidence, timeline, de-escalation controls and customer-specific context.",
   },
   {
-    key: "webhook-api-alerts",
-    title: "Webhook alerts",
-    text: "Structured alert events and incident updates for customer portals, ticketing, SIEM, SOAR and partner platforms.",
+    key: "sentinel-alerts",
+    title: "Microsoft Sentinel feed",
+    text: "Structured alert events and incident updates delivered to Microsoft Sentinel over TAXII 2.1, for SIEM and SOAR workflows.",
   },
   {
     key: "evidence-pack-export",
@@ -431,7 +431,7 @@ export default async function BrandProtectionPage() {
           <SectionHeader
             eyebrow={copyText(deliveryRoutesSection?.eyebrow, "Delivery routes")}
             title={copyText(deliveryRoutesSection?.title, "Send alerts where the response happens.")}
-            body={copyText(deliveryRoutesSection?.body, "Brand protection can be consumed as portal alerts, webhook events, evidence-pack exports or partner-branded alert services.")}
+            body={copyText(deliveryRoutesSection?.body, "Brand protection can be consumed as portal alerts, a Microsoft Sentinel feed, evidence-pack exports or partner-branded alert services.")}
           />
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {resolvedDeliveryRoutes.map((route) => (

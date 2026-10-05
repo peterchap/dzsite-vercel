@@ -31,7 +31,7 @@ export const content: PageContent = {
       { key: "external-risk", title: "External risk forms before the incident", text: "New domains, certificates, DNS changes, hosting choices and platform lures often appear before users see a finished phishing page or abuse campaign." },
       { key: "usable-context", title: "Infrastructure context should be usable", text: "Signals are only useful when they are connected, explained and delivered into the workflow where a team can act on them." },
       { key: "evidence", title: "Evidence matters more than black boxes", text: "Scores and alerts should include reason codes, supporting context and de-escalation paths so teams can validate what they are seeing." },
-      { key: "meet-buyers", title: "Data should meet buyers where they work", text: "Some teams need reports. Others need alerts, a Sentinel feed, webhooks, data shares, marketplace datasets or partner-delivered services." },
+      { key: "meet-buyers", title: "Data should meet buyers where they work", text: "Some teams need reports. Others need alerts, a Microsoft Sentinel feed, data shares, marketplace datasets or partner-delivered services." },
     ],
   },
   intelligenceLayer: {

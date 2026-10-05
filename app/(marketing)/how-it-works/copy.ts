@@ -21,7 +21,7 @@ export const content: PageContent = {
       { key: "connect", title: "Connect the infrastructure", text: "Signals are joined into an infrastructure graph so domains, IPs, providers, certificates, platforms and related assets can be understood together.", tags: ["Relationships", "Shared infrastructure", "Provider context", "History"] },
       { key: "evaluate", title: "Evaluate risk and context", text: "Datazag scores naming, DNS, infrastructure, website and historical evidence to decide whether a finding should be monitored, escalated or de-escalated.", tags: ["Risk", "Reason codes", "Confidence", "Triage"] },
       { key: "package", title: "Package evidence", text: "Findings are delivered with explainable evidence: reason codes, DNS state, provider context, screenshots, abuse contacts, related assets and lifecycle changes where available.", tags: ["Evidence", "Screenshots", "Abuse contacts", "Lifecycle"] },
-      { key: "deliver", title: "Deliver into the workflow", text: "The same intelligence layer can become a report, an alert, a webhook event, a data share or a partner-branded service.", tags: ["Reports", "Alerts", "Webhooks", "Data shares"] },
+      { key: "deliver", title: "Deliver into the workflow", text: "The same intelligence layer can become a report, an alert, a Microsoft Sentinel feed, a data share or a partner-branded service.", tags: ["Reports", "Alerts", "Sentinel feed", "Data shares"] },
       { key: "feedback", title: "Update and learn from feedback", text: "Incidents and datasets update as infrastructure changes. Customer context and de-escalation decisions are fed back into future routing.", tags: ["Polling", "Updates", "De-escalation", "Baselines"] },
     ],
   },

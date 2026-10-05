@@ -23,7 +23,7 @@ const deliveryMethods = [
   {
     title: "Alerts",
     description: "Continuous intelligence for SOC workflows, partner monitoring and platform abuse teams.",
-    items: ["Webhooks", "Microsoft Sentinel", "TAXII 2.1 feed"],
+    items: ["Microsoft Sentinel", "TAXII 2.1 feed"],
     tone: "amber",
     href: "/alerts",
   },

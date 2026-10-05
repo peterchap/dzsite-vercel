@@ -61,7 +61,7 @@ export default {
           name: "integrationLine",
           title: "Integration Line (optional)",
           type: "string",
-          description: "E.g. 'Integrates with SIEM/SOAR and fraud platforms via webhook/feed'.",
+          description: "E.g. 'Integrates with SIEM/SOAR through the Microsoft Sentinel feed'.",
         },
       ],
     },
