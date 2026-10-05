@@ -1,44 +1,23 @@
 /**
- * Footer link sets: the single source for the footer AND the CMS `siteSettings`
- * link arrays (scripts/syncSiteSettingsLinks.ts writes these into Sanity).
+ * Footer link sets for scripts/syncSiteSettingsLinks.ts, which mirrors them
+ * into the CMS `siteSettings` arrays.
  *
- * Until 2026-10-05 these lived only in Footer.tsx. The CMS still held older lists
- * (pageRef links to never-published page docs, a /domain-intelligence link), which
- * the footer silently ignored and the CMS publishing gate flagged. Edit here, then
- * run the sync script, so the two cannot drift again.
- *
- * Mirrors the header (2026-09-28 nav brief): Solutions and Data & Intelligence are
- * the two axes; Company carries the rest. See components/site/Header.tsx.
+ * Since PU3 (2026-10) the footer itself renders from @datazag/site-chrome's
+ * nav.ts, shared with portal.datazag.com, and no longer reads these CMS
+ * arrays. This file only re-exports the package's columns under the names the
+ * sync script expects. Edit links in the package, not here.
  */
-export type FooterLink = { label: string; href: string };
+import { FOOTER_COLUMNS, LEGAL_LINKS, type NavLink } from "@datazag/site-chrome/nav";
 
-export const FOOTER_SOLUTION_LINKS: FooterLink[] = [
-    { label: "Email & Martech", href: "/esp-partners" },
-    { label: "Insurers", href: "/cyber-risk-underwriting" },
-    { label: "MSSPs", href: "/mssp-partners" },
-];
+export type FooterLink = NavLink;
 
-export const FOOTER_PRODUCT_LINKS: FooterLink[] = [
-    { label: "All datasets", href: "/datasets" },
-    { label: "Reports", href: "/reports" },
-    { label: "Threat Alerts", href: "/alerts" },
-    { label: "Brand Protection", href: "/brand-protection" },
-    { label: "Observatory", href: "/observatory" },
-    { label: "Pricing", href: "/pricing" },
-];
+function column(title: string): FooterLink[] {
+    const found = FOOTER_COLUMNS.find((c) => c.title === title);
+    if (!found) throw new Error(`site-nav: @datazag/site-chrome has no "${title}" footer column`);
+    return found.links;
+}
 
-export const FOOTER_TRUST_LINKS: FooterLink[] = [
-    { label: "Trust", href: "/trust" },
-    { label: "Responsible Disclosure", href: "/trust/responsible-disclosure" },
-    { label: "Privacy", href: "/legal/privacy" },
-    { label: "Terms", href: "/legal/terms" },
-    { label: "DPA", href: "/legal/dpa" },
-];
-
-export const FOOTER_COMPANY_LINKS: FooterLink[] = [
-    { label: "About", href: "/about" },
-    { label: "How It Works", href: "/how-it-works" },
-    { label: "Blog", href: "/blog" },
-    { label: "Documentation", href: "/docs" },
-    { label: "Contact", href: "/contact" },
-];
+export const FOOTER_SOLUTION_LINKS: FooterLink[] = column("Solutions");
+export const FOOTER_PRODUCT_LINKS: FooterLink[] = column("Data & Intelligence");
+export const FOOTER_TRUST_LINKS: FooterLink[] = LEGAL_LINKS;
+export const FOOTER_COMPANY_LINKS: FooterLink[] = column("Company");

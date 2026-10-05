@@ -26,7 +26,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # @datazag/site-chrome (shared header and footer) comes from GitHub
+      # Packages. NPM_TOKEN is a repo secret: a token with read:packages.
       - run: npm ci --legacy-peer-deps
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm run guard
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: w8wq190o

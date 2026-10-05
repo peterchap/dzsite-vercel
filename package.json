@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "stats:refresh": "node scripts/refreshSiteStats.mjs",
-    "guard": "node scripts/guards/checkConfigJson.mjs && node scripts/guards/checkCorpusDrift.mjs && node --experimental-strip-types scripts/guards/checkTickerGuard.mjs && tsx scripts/guards/checkSiteStats.ts && node scripts/guards/checkClaimGuard.mjs && node scripts/guards/checkPreProdGuard.mjs && node scripts/guards/checkLexiconGuard.mjs && tsx scripts/guards/checkCmsContentGuard.selftest.ts && tsx scripts/guards/checkCmsContentGuard.ts && tsx scripts/guards/checkDatasetFigures.ts",
+    "guard": "node scripts/guards/checkConfigJson.mjs && node scripts/guards/checkCorpusDrift.mjs && node --experimental-strip-types scripts/guards/checkTickerGuard.mjs && tsx scripts/guards/checkSiteStats.ts && node scripts/guards/checkClaimGuard.mjs && node scripts/guards/checkPreProdGuard.mjs && node scripts/guards/checkLexiconGuard.mjs && tsx scripts/guards/checkCmsContentGuard.selftest.ts && tsx scripts/guards/checkCmsContentGuard.ts && tsx scripts/guards/checkDatasetFigures.ts && tsx scripts/guards/checkSiteChromeNav.ts",
     "guard:claims": "node scripts/guards/checkClaimGuard.mjs",
     "guard:preprod": "node scripts/guards/checkPreProdGuard.mjs",
     "guard:lexicon": "node scripts/guards/checkLexiconGuard.mjs",
@@ -33,9 +33,11 @@
     "site:seed-trust": "node scripts/seedTrustEvidence.mjs",
     "site:seed-datasets": "node scripts/seedDatasets.mjs",
     "guard:datasets": "tsx scripts/guards/checkDatasetFigures.ts",
-    "check:post": "node scripts/check-post.mjs"
+    "check:post": "node scripts/check-post.mjs",
+    "guard:chrome": "tsx scripts/guards/checkSiteChromeNav.ts"
   },
   "dependencies": {
+    "@datazag/site-chrome": "0.1.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.8",
