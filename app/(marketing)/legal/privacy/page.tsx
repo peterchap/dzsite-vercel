@@ -206,12 +206,29 @@ export default function PrivacyPolicyPage() {
                     </LegalSection>
 
                     <LegalSection title="11. Cookies and analytics">
-                        <p>Our website may use cookies and similar technologies to:</p>
+                        <p>
+                            This applies to datazag.com, portal.datazag.com and observatory.datazag.com. We use cookies
+                            and similar technologies to run the sites and, only if you agree, to understand how people use
+                            them.
+                        </p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
-                            <li>operate core site functionality</li>
-                            <li>understand usage and improve performance</li>
+                            <li>
+                                <strong>Essential:</strong> sign-in and security cookies on the portal, and{" "}
+                                <code>dz_consent</code>, which records your analytics choice for 180 days.
+                            </li>
+                            <li>
+                                <strong>Analytics (optional):</strong> Google Analytics 4 sets <code>_ga</code> cookies to
+                                count visits and pages viewed. It loads only after you select &ldquo;Accept&rdquo;. We ask
+                                Google to anonymize IP addresses. On the Observatory it also records which figures and
+                                tools you use, such as copying a citation or downloading a chart. It never records a domain
+                                you look up.
+                            </li>
                         </ul>
-                        <p className="mt-6">You can control cookies through your browser settings.</p>
+                        <p className="mt-6">
+                            Your choice covers all three sites. To change it, select &ldquo;Cookie settings&rdquo; in the
+                            footer. If you decline, we remove the analytics cookies. You can also block cookies in your
+                            browser settings.
+                        </p>
                     </LegalSection>
 
                     <LegalSection title="12. Changes to this policy">

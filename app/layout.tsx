@@ -37,6 +37,7 @@ import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
 import { SiteStatsProvider } from "@/components/providers/SiteStatsProvider";
 import { getSiteStats } from "@/lib/site-stats-live";
 import { organizationJsonLd } from "@/lib/organization";
+import { SiteAnalytics } from "@datazag/site-chrome";
 
 export default async function RootLayout({
   children,
@@ -56,6 +57,8 @@ export default async function RootLayout({
             {children}
           </CurrencyProvider>
         </SiteStatsProvider>
+        {/* GA4, shared with portal.datazag.com; loads only after cookie consent. */}
+        <SiteAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
       </body>
     </html>
   );
