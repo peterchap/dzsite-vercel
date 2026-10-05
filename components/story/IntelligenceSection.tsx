@@ -39,10 +39,13 @@ const CAPABILITIES = [
   },
 ] as const;
 
-function Source({ figure }: { figure: CountFigure }) {
+// `topic` names the figure, so each link has a distinct accessible name (several
+// "Method and caveats" links on one page point at different Observatory cards).
+function Source({ figure, topic }: { figure: CountFigure; topic: string }) {
   return (
     <a
       href={figure.href}
+      aria-label={`Method and caveats: ${topic}`}
       className="mt-4 inline-flex text-xs font-semibold text-cyan-200 underline-offset-4 hover:underline"
     >
       Method and caveats →
@@ -88,7 +91,7 @@ export async function IntelligenceSection() {
                   Zone files are the usual way to list domains. They are not enough.
                 </p>
                 <div className="mt-auto">
-                  <Source figure={figures.certificateOnly} />
+                  <Source figure={figures.certificateOnly} topic="domains seen only in certificates" />
                 </div>
               </article>
             ) : null}
@@ -120,7 +123,7 @@ export async function IntelligenceSection() {
                   A domain with an MX record is not a mailbox. We classify each one.
                 </p>
                 <div className="mt-auto">
-                  <Source figure={figures.mailFunnel[2]} />
+                  <Source figure={figures.mailFunnel[2]} topic="domains that can receive mail" />
                 </div>
               </article>
             ) : null}
@@ -142,7 +145,7 @@ export async function IntelligenceSection() {
                   Out of {figures.concentration.half.population ?? "the networks observed"}.
                 </p>
                 <div className="mt-auto">
-                  <Source figure={figures.concentration.half} />
+                  <Source figure={figures.concentration.half} topic="network concentration" />
                 </div>
               </article>
             ) : null}

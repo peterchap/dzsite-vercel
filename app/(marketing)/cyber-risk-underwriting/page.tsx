@@ -377,7 +377,7 @@ export default async function CyberRiskUnderwritingPage() {
             <strong className="text-white">{concentrationFigures.half.value}</strong> networks carry half of all domains
             that sit on a network, and <strong className="text-white">{concentrationFigures.ninety.value}</strong> carry
             nine in ten.{" "}
-            <a href={concentrationFigures.half.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+            <a href={concentrationFigures.half.href} aria-label="Method and caveats: network concentration" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
               Method and caveats →
             </a>
           </p>
