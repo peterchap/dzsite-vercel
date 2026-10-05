@@ -123,7 +123,7 @@ export function Footer({
                             <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                                 {displayCopyright}
                             </div>
-                            <p className="mt-2 text-xs text-slate-500">{companyDetails}</p>
+                            <p className="mt-2 text-xs text-slate-400">{companyDetails}</p>
                         </div>
 
                         <div className="flex items-center gap-8">
