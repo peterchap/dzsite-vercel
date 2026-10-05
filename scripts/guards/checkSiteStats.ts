@@ -23,8 +23,22 @@ import { computeSiteStats, parseCoverage, OBSERVATORY_DOMAINS_DEFINITION } from 
 import { formatCount } from "../../lib/observatory-figures";
 
 let n = 0;
+// Several checks feed deliberately impossible values (4.31B IPv4, 5B domains) to
+// prove they are rejected, and the rejection logs the same console.error a real bad
+// feed would. Label anything logged inside a check so a fixture is never read as a
+// live feed fault (it was, on 2026-10-05). Production logging is unchanged.
 const check = (desc: string, fn: () => void) => {
-  fn();
+  const { error, warn } = console;
+  const tag = (log: (...a: unknown[]) => void) => (...a: unknown[]) =>
+    log(`[self-test fixture, expected] ${a.map(String).join(" ")}`);
+  console.error = tag(error);
+  console.warn = tag(warn);
+  try {
+    fn();
+  } finally {
+    console.error = error;
+    console.warn = warn;
+  }
   n++;
 };
 
