@@ -3,7 +3,7 @@ export default {
   title: 'Integrations',
   type: 'document',
   fields: [
-    { name: 'title', type: 'string' }, // e.g., "Real-time Webhooks"
+    { name: 'title', type: 'string' }, // e.g., "Cloud Marketplace Shares"
     { name: 'method', type: 'string' }, // e.g., "PUSH" or "REST"
     { name: 'description', type: 'text' },
     { 

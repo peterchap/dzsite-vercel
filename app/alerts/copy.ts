@@ -27,7 +27,7 @@ export const content: PageContent = {
       { key: "see-earlier", title: "Follow infrastructure as it changes", text: "Monitor domains, DNS, certificates and hosting, and follow a candidate as it develops." },
       { key: "separate-response", title: "Separate the response", text: "Platform abuse, brand impersonation and attacker infrastructure need different operational actions." },
       { key: "reduce-noise", title: "Check matches against known-good", text: "Candidate alerts are checked against known-good infrastructure, brand baselines, platform patterns and cloud footprints." },
-      { key: "deliver-workflows", title: "Deliver into workflows", text: "Send reasoned alerts to SOC queues, partner portals, Microsoft Sentinel, webhooks or data shares." },
+      { key: "deliver-workflows", title: "Deliver into workflows", text: "Send reasoned alerts to SOC queues, partner portals, Microsoft Sentinel or data shares." },
     ],
   },
   alertClasses: {
@@ -50,7 +50,7 @@ export const content: PageContent = {
       { key: "match", title: "Match", text: "Candidates are matched against platforms, brands, keywords, watchlists and suspicious naming patterns." },
       { key: "filter", title: "Filter", text: "Known-good DNS, platform baselines, cloud allowlists and approved customer footprints are filtered out before an alert is raised." },
       { key: "explain", title: "Explain", text: "Reason codes, infrastructure evidence and a suggested action are attached to the alert." },
-      { key: "deliver", title: "Deliver", text: "Alerts are sent to the operational route that fits the team: webhook, Microsoft Sentinel, portal, report or data share." },
+      { key: "deliver", title: "Deliver", text: "Alerts are sent to the operational route that fits the team: Microsoft Sentinel, portal, report or data share." },
     ],
   },
   annotatedExample: {
@@ -104,7 +104,7 @@ export const content: PageContent = {
     title: "Use the route that fits the workflow.",
     body: "Alerts can be consumed as live operational events, enrichment calls, evidence packs or analytical datasets depending on the team using them.",
     items: [
-      { key: "webhooks", title: "Webhooks", text: "Push alert events to your own endpoint, for ticketing, SOAR and portal workflows." },
+      { key: "sentinel", title: "Microsoft Sentinel feed", text: "Alert events arrive in Microsoft Sentinel over TAXII 2.1, ready for your analytics rules, playbooks and SOAR." },
       { key: "siem", title: "Microsoft Sentinel", text: "Sentinel pulls Datazag indicators over TAXII 2.1 into its threat-intelligence table. The Datazag solution in the Content Hub adds a matching rule and a hunting query." },
       { key: "reports-evidence", title: "Reports and evidence packs", text: "Package findings for executives, customers, takedown workflows and account reviews." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for analytics, hunting, enrichment and historical review." },

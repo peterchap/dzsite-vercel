@@ -85,4 +85,13 @@ export const CLAIM_RULES = [
   // correction, not the claim, so a "not/never/no" earlier in the sentence passes.
   { re: /(?<!\b(?:not|never|no)\b[^.]{0,40})\b(?:fetch(?:es|ing)?|open(?:s|ing)?|visit(?:s|ing)?|click(?:s|ing)?|follow(?:s|ing)?)\s+every\s+link/i,
     why: "an every-link fetching claim — no vendor documents it unambiguously (evidence 2026-10-01)" },
+
+  // ── Webhook delivery, 2026-10-05 ────────────────────────────────────────
+  // Webhooks do not ship. Alerts reach SOCs through the Microsoft Sentinel feed
+  // (TAXII 2.1), plus portal, reports and data shares. The list form is lower-case
+  // only, so the lucide `Webhook` icon import and IconMap key do not trip it.
+  { re: /\b(?:real[\s-]?time\s+webhooks?|webhooks?\s+(?:events?|delivery|alerts?|integrations?)|(?:via|through|using|use)\s+webhooks?)\b/i,
+    why: "a webhook delivery claim — webhooks do not ship; alerts go through the Sentinel feed (2026-10-05)" },
+  { re: /(?:,|&|\bor|\band)\s+webhooks?\b|\bwebhooks?\s*(?:,|&|\bor\b)/,
+    why: "webhooks listed as a delivery route — webhooks do not ship (2026-10-05)" },
 ];

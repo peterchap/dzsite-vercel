@@ -132,7 +132,7 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
     source: "/docs/search-stream",
     destination: "/docs",
-    reason: "Webhook reference for alert delivery. The API and webhook docs were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
+    reason: "Webhook reference for alert delivery. The API docs and the webhook reference were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
   },
   {
     source: "/domain-search",
