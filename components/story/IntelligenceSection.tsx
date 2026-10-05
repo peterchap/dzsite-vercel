@@ -87,7 +87,7 @@ export async function IntelligenceSection() {
                   domains that no zone file we receive lists. We found them through certificate
                   transparency.
                 </p>
-                <p className="mt-3 text-xs leading-5 text-slate-500">
+                <p className="mt-3 text-xs leading-5 text-slate-400">
                   Zone files are the usual way to list domains. They are not enough.
                 </p>
                 <div className="mt-auto">
@@ -107,19 +107,21 @@ export async function IntelligenceSection() {
                     "can actually receive mail",
                     "can receive mail and are not parked",
                   ].map((label, i) => (
+                    // dt before dd in the markup (a <dl> requirement); order-first keeps
+                    // the value on the left.
                     <div key={label} className="flex items-baseline gap-3">
+                      <dt className="text-sm leading-6 text-slate-300">{label}</dt>
                       <dd
-                        className={`w-28 shrink-0 font-semibold tabular-nums tracking-tight ${
+                        className={`order-first w-28 shrink-0 font-semibold tabular-nums tracking-tight ${
                           i === 2 ? "text-3xl text-white" : "text-2xl text-slate-200"
                         }`}
                       >
                         {figures.mailFunnel![i].value}
                       </dd>
-                      <dt className="text-sm leading-6 text-slate-300">{label}</dt>
                     </div>
                   ))}
                 </dl>
-                <p className="mt-4 text-xs leading-5 text-slate-500">
+                <p className="mt-4 text-xs leading-5 text-slate-400">
                   A domain with an MX record is not a mailbox. We classify each one.
                 </p>
                 <div className="mt-auto">
@@ -141,7 +143,7 @@ export async function IntelligenceSection() {
                   {figures.concentration.ninety.value} carry nine in ten. A problem at one of them
                   reaches a large share of the internet.
                 </p>
-                <p className="mt-3 text-xs leading-5 text-slate-500">
+                <p className="mt-3 text-xs leading-5 text-slate-400">
                   Out of {figures.concentration.half.population ?? "the networks observed"}.
                 </p>
                 <div className="mt-auto">
