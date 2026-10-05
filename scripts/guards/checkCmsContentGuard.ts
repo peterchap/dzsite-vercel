@@ -68,13 +68,18 @@ const CLAIMS: Rule[] = (CLAIM_RULES as Array<{ re: RegExp; why: string }>).map((
 export type UnrenderedDoc = { id: string; reason: string; route?: string; unused?: string[] };
 
 // The pricingPage, howItWorksHero and brand-protection page docs were listed here
-// until 2026-09-29, when they were deleted from Sanity. page.home stays: the Studio
-// "Home" pane and /api/check read it by ID.
+// until 2026-09-29, when they were deleted from Sanity. page.home was listed until
+// 2026-10-05, when it was no longer published.
+//
+// page.about (2026-10-05): the old CMS-built about page. Its ID has a dot, so it is
+// private (token reads only), and other docs still reference it from CTAs. It does
+// not render: the code route below owns /about and wins over the [...slug] catch-all.
+// Its stale copy (", webhooks") can only reach the site if that route is removed.
 export const UNRENDERED_DOCS: UnrenderedDoc[] = [
   {
-    id: "page.home",
-    reason: "page doc with slug 'home'. lib/legacy-redirects.ts 301s /home to / (the app/home page was deleted 2026-10-02), and / reads homepageAtmosphere.",
-    route: "lib/legacy-redirects.ts",
+    id: "page.about",
+    reason: "page doc with slug 'about'. app/(marketing)/about/page.tsx owns /about (copy from marketingPageCopy 'about'), so the [...slug] page never renders it.",
+    route: "app/(marketing)/about/page.tsx",
   },
 ];
 
