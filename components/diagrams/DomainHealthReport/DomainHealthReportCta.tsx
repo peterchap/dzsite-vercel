@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { currentPageReturnTo } from "@/lib/portal-return-to";
 
 // Lead handoff: the report form (consent + generation) lives on the customer
 // portal; this section captures the email and passes it across prefilled.
@@ -97,7 +98,7 @@ export function DomainHealthReportCta() {
       setError("Enter a valid work email address.");
       return;
     }
-    const params = new URLSearchParams({ email: email.trim(), domain });
+    const params = new URLSearchParams({ email: email.trim(), domain, return_to: currentPageReturnTo() });
     window.location.href = `${portalReportUrl}?${params.toString()}`;
   }
 
