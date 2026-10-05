@@ -4,39 +4,18 @@ import { Mail, Linkedin, Twitter, Github } from "lucide-react";
 import { BrandingLogo } from "@/components/site/BrandingLogo";
 import Link from "next/link";
 import { LEGAL_ENTITY } from "@/lib/legal-entity";
+import {
+    FOOTER_COMPANY_LINKS,
+    FOOTER_PRODUCT_LINKS,
+    FOOTER_SOLUTION_LINKS,
+    FOOTER_TRUST_LINKS,
+} from "@/lib/site-nav";
 
-// Mirrors the header (2026-09-28 nav brief): Solutions and Data & Intelligence
-// are the two axes; Company carries the rest. See components/site/Header.tsx.
-const defaultSolutionLinks: NavLink[] = [
-    { label: "Email & Martech", href: "/esp-partners" },
-    { label: "Insurers", href: "/cyber-risk-underwriting" },
-    { label: "MSSPs", href: "/mssp-partners" },
-];
-
-const defaultProductLinks: NavLink[] = [
-    { label: "All datasets", href: "/datasets" },
-    { label: "Reports", href: "/reports" },
-    { label: "Threat Alerts", href: "/alerts" },
-    { label: "Brand Protection", href: "/brand-protection" },
-    { label: "Observatory", href: "/observatory" },
-    { label: "Pricing", href: "/pricing" },
-];
-
-const defaultTrustLinks: NavLink[] = [
-    { label: "Trust", href: "/trust" },
-    { label: "Responsible Disclosure", href: "/trust/responsible-disclosure" },
-    { label: "Privacy", href: "/legal/privacy" },
-    { label: "Terms", href: "/legal/terms" },
-    { label: "DPA", href: "/legal/dpa" },
-];
-
-const defaultCompanyLinks: NavLink[] = [
-    { label: "About", href: "/about" },
-    { label: "How It Works", href: "/how-it-works" },
-    { label: "Blog", href: "/blog" },
-    { label: "Documentation", href: "/docs" },
-    { label: "Contact", href: "/contact" },
-];
+// Link sets live in lib/site-nav.ts (shared with scripts/syncSiteSettingsLinks.ts).
+const defaultSolutionLinks: NavLink[] = FOOTER_SOLUTION_LINKS;
+const defaultProductLinks: NavLink[] = FOOTER_PRODUCT_LINKS;
+const defaultTrustLinks: NavLink[] = FOOTER_TRUST_LINKS;
+const defaultCompanyLinks: NavLink[] = FOOTER_COMPANY_LINKS;
 
 function linkLabels(links: NavLink[] = []) {
     return links.map((link) => link.label).join("|").toLowerCase();
