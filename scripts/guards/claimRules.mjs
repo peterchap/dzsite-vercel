@@ -13,6 +13,13 @@
  * negatives") is fine and intentionally not caught.
  */
 export const CLAIM_RULES = [
+  // ── The paid single-domain report's price (WS4, 2026-10-06) ─────────────────────
+  // One SKU, one price, stored once in the portal's products row and read by
+  // lib/paid-report-price.ts. A figure written into source or the CMS would drift from
+  // checkout, which is how the site came to show $495 while the portal charged $195.
+  { re: /\{\{PRICE:(19500|19900|29500|49500)\}\}/, why: "the paid report's price written into the site (read it from the portal: lib/paid-report-price.ts)" },
+  { re: /[$£€]\s?(195|199|295|495)(?![\d.,])/, why: "the paid report's price written into the site (read it from the portal: lib/paid-report-price.ts)" },
+
   { re: /(?:<|&lt;|≤)\s*1\s*%/, why: "the retired <1% claim" },
   { re: /less than 1\s*%/i, why: "the retired <1% claim (spelled out)" },
   { re: /sub-?1\s*%/i, why: "the retired <1% claim (sub-1%)" },

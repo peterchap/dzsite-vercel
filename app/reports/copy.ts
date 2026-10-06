@@ -41,7 +41,7 @@ export const content: PageContent = {
     title: "View the anatomy in a few seconds.",
     body: "Rather than explain how reports are produced, the samples show what a recipient actually sees: the summary, findings, evidence and next actions.",
     items: [
-      { key: "sample-health", title: "Sample free Domain Health Report", text: "A sample one-domain report showing threat exposure around visible platforms, DNS defense gaps and first remediation priorities.", tags: ["Platform exposure", "Email control maturity", "DNS posture", "What to fix first"] },
+      { key: "sample-health", title: "Sample free Domain Exposure & DNS Hygiene Report", text: "A sample one-domain report showing threat exposure around visible platforms, DNS defense gaps and first remediation priorities.", tags: ["Platform exposure", "Email control maturity", "DNS posture", "What to fix first"] },
       { key: "sample-cross-estate", title: "Sample Cross-Estate Domain Risk Report", text: "A six-page assessment across a whole estate, opened by discovery — the domains you declared, plus the ones we found and can evidence — and closed by a worksheet your IT team can execute.", tags: ["Estate discovery", "Concentration & posture variance", "Exception register", "Remediation worksheet"] },
     ],
   },
@@ -68,8 +68,8 @@ export const content: PageContent = {
     title: "Start with one domain, then understand the estate.",
     body: "The free report gives a useful single-domain analysis. Paid reports expand the scope to the domains an organization owns and expose recurring weaknesses, inconsistent controls and systemic risk.",
     items: [
-      { key: "free-health", title: "Free Domain Health Report", text: "One domain. Platform-led threat exposure, detailed DNS defense analysis and first remediation priorities." },
-      { key: "domain-risk", title: "Domain Risk Report", status: "Single domain · paid", text: "The full assessment of one domain — yours, a client's, a vendor's, an acquisition target's. An executive core any board can read: threat exposure, defense posture, and the evidence behind every claim. Plus a technical remediation appendix your engineers execute: every finding with current state, target state, and paste-ready records, staged in the order a change should actually land." },
+      { key: "free-health", title: "Free Domain Exposure & DNS Hygiene Report", text: "One domain. Platform-led threat exposure, detailed DNS defense analysis and first remediation priorities." },
+      { key: "domain-risk", title: "Attack Surface & SaaS Discovery Report", status: "Single domain · paid", text: "The full assessment of one domain — yours, a client's, a vendor's, an acquisition target's. An executive core any board can read: threat exposure, defense posture, and the evidence behind every claim. Plus a technical remediation appendix your engineers execute: every finding with current state, target state, and paste-ready records, staged in the order a change should actually land." },
       { key: "cross-estate", title: "Cross-Estate Domain Risk Report", status: "Multi-domain · paid", text: "The same assessment at estate scope, opened by discovery: the domains you declared, the ones we found and can evidence, and the systemic layer no single-domain report can show — concentration, posture variance, correlated weakness, the operational calendar — closed by a worksheet grouped by the team that administers each zone. Variants for technical teams, and for insurance underwriting and M&A due diligence." },
       { key: "partner-branded", title: "Partner-branded reports", text: "White-label or partner-led reporting for MSSPs, ESPs and service providers delivering reports under their own brand. Any report in this catalog, delivered under your brand." },
     ],
