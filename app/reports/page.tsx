@@ -14,11 +14,12 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { SLUG, content } from "./copy";
+import { getPaidReportPrice, PAID_REPORT_BUY_URL } from "@/lib/paid-report-price";
 
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "Start free with a Domain Health Report on one domain. Go deeper with a Domain Risk Report, or map the estate you own with a Cross-Estate Domain Risk Report.",
+    "Start free with a Domain Exposure & DNS Hygiene Report on one domain. Go deeper with the Attack Surface & SaaS Discovery Report, or map the estate you own with a Cross-Estate Domain Risk Report.",
 };
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
@@ -34,13 +35,13 @@ const scopePortalUrl = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.data
 const scopeEstateCta = scopeLive
     ? { label: "Scope my estate", href: scopePortalUrl }
     : { label: "Talk to us about your estate", href: contactHref };
-// Domain Risk Report checkout (WU16) is env-gated the same way: when
-// NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA flips from "Contact us" to a
-// direct buy on the portal; default keeps the WU17 contact fallback.
+// Paid single-domain report checkout is env-gated the same way: when
+// NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA is "Buy report" (portal checkout);
+// default keeps the contact fallback. WS4 (2026-10-06): turn it on once the portal's
+// single SKU is live. The price shown comes from the portal (lib/paid-report-price.ts).
 const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
-const drrBuyUrl = process.env.NEXT_PUBLIC_DRR_BUY_URL || "https://portal.datazag.com/reports/buy?src=reports";
 const domainRiskCta = checkoutLive
-    ? { label: "Buy the Domain Risk Report", href: drrBuyUrl }
+    ? { label: "Buy report", href: PAID_REPORT_BUY_URL }
     : { label: "Contact us", href: contactHref };
 const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
 
@@ -59,7 +60,8 @@ const sampleHref: Record<string, string> = {
 
 const catalogueMeta: Record<string, { price?: string; cadence?: string; cta: { label: string; href: string }; secondaryCta?: { label: string; href: string } }> = {
   "free-health": { price: "Free", cta: { label: "Get your free report", href: "/#free-report" } },
-  "domain-risk": { price: "From {{PRICE:49500}}", cadence: "per report", cta: domainRiskCta, secondaryCta: { label: "See pricing", href: "/pricing#reports" } },
+  // price filled in by ReportsPage from the portal; no figure is written here
+  "domain-risk": { cadence: "one-off, by card", cta: domainRiskCta, secondaryCta: { label: "Get the free report first", href: "/#free-report" } },
   "cross-estate": { price: "Banded", cadence: "by domain count", cta: scopeEstateCta, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
   "partner-branded": { price: "By agreement", cta: { label: "Talk to us", href: contactHref } },
 };
@@ -123,6 +125,7 @@ function AnatomyColumn({ eyebrow, title, blocks }: { eyebrow: string; title: str
 
 export default async function ReportsPage() {
   const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
+  const paidPrice = await getPaidReportPrice();
 
   const hero = getCopySection(pageCopy, "hero");
   const reportValue = getCopySection(pageCopy, "reportValue");
@@ -173,7 +176,9 @@ export default async function ReportsPage() {
 
   const resolvedReportTypes = pickItems(content.catalogue.items!, catalogue).map((f) => {
     const item = getCopyItem(catalogue, f.key);
-    const meta = catalogueMeta[f.key];
+    const meta = f.key === "domain-risk"
+      ? { ...catalogueMeta[f.key], price: paidPrice?.display }
+      : catalogueMeta[f.key];
     return {
       key: f.key,
       title: copyText(item?.title, f.title!),
@@ -285,7 +290,7 @@ export default async function ReportsPage() {
             body={copyText(anatomy?.body, content.anatomy.body!)}
           />
           <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:items-start">
-            <AnatomyColumn eyebrow="Single domain" title="Domain Risk Report" blocks={domainReportAnatomy} />
+            <AnatomyColumn eyebrow="Single domain" title="Attack Surface & SaaS Discovery Report" blocks={domainReportAnatomy} />
             <AnatomyColumn eyebrow="Multi-domain" title="Cross-Estate Domain Risk Report" blocks={crossEstateAnatomy} />
           </div>
         </div>

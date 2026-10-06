@@ -1,10 +1,12 @@
 import { CurrencyText } from "@/components/ui/CurrencyText";
+import { FREE_REPORT_NAME, PAID_REPORT_BUY_URL, PAID_REPORT_NAME } from "@/lib/paid-report-price";
 
 // Prices use {{PRICE:cents}} markers (USD-base cents) so the nav currency widget
-// converts them. Amounts are placeholders carried over from the prior GBP figures
-// — adjust the cents values to the real USD list prices.
+// converts them. The paid single-domain report is the exception: one price in USD,
+// read from the portal by the page (lib/paid-report-price.ts) and passed in, so the
+// site, the free report, checkout and the receipt always agree (WS4).
 const productChooser = [
-  { need: "Assess one domain", product: "Free Domain Health Report", href: "/#free-report" },
+  { need: "Assess one domain", product: `Free ${FREE_REPORT_NAME}`, href: "/#free-report" },
   { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
   { need: "Monitor brand abuse", product: "Brand Protection Alerts", href: "#alerts" },
   { need: "Analyze at scale", product: "Cloud Data Products", href: "#data-shares" },
@@ -12,7 +14,7 @@ const productChooser = [
 
 const reports = [
   {
-    name: "Domain Health Report",
+    name: FREE_REPORT_NAME,
     price: "Free",
     cadence: "",
     description: "A free single-domain report covering platform-led threat exposure, DNS and email defense gaps, and remediation priorities.",
@@ -22,13 +24,13 @@ const reports = [
     highlight: true,
   },
   {
-    name: "Domain Risk Report",
-    price: "From {{PRICE:49500}}",
-    cadence: "per report",
+    name: PAID_REPORT_NAME,
+    price: "", // from the portal, set in PricingV2
+    cadence: "one-off, by card",
     description: "The full paid assessment of one domain: an executive core any board can read, plus a technical remediation appendix your engineers execute.",
     features: ["One domain", "Threat exposure and defense posture", "Evidence behind every claim", "Technical remediation appendix", "Paste-ready records, staged rollout"],
-    cta: "Request the Domain Risk Report",
-    href: "/contact",
+    cta: process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true" ? "Buy report" : "Contact us",
+    href: process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true" ? PAID_REPORT_BUY_URL : "/contact",
   },
   {
     name: "Cross-Estate Domain Risk Report",
@@ -94,7 +96,7 @@ const dataShares = [
 ];
 
 const evaluation = [
-  ["Report first", "Start with the free Domain Health Report or a paid report when you need a concrete assessment before monitoring."],
+  ["Report first", `Start with the free ${FREE_REPORT_NAME} or a paid report when you need a concrete assessment before monitoring.`],
   ["Alert stream", "Use alerts when the workflow is operational: platform abuse, attacker infrastructure, brand impersonation and incident updates."],
   ["Data share", "Use cloud datasets when the buyer wants SQL-ready intelligence inside a warehouse, lakehouse or marketplace procurement route."],
 ];
@@ -106,7 +108,7 @@ const faq = [
   },
   {
     question: "Can I start without a sales process?",
-    answer: "Yes. The free Domain Health Report needs no sales call. Enter a work email and it is delivered by email.",
+    answer: `Yes. The free ${FREE_REPORT_NAME} needs no sales call. Enter a work email and it is delivered by email.`,
   },
   {
     question: "Can I buy through a cloud marketplace?",
@@ -172,7 +174,7 @@ function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: strin
   );
 }
 
-export function PricingV2() {
+export function PricingV2({ paidReportPrice = null }: { paidReportPrice?: string | null }) {
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -210,7 +212,10 @@ export function PricingV2() {
         <div id="reports" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader eyebrow="Reports" title="Assess one domain or a whole estate." body="Reports are for buyers who need a concrete assessment before committing to continuous monitoring, brand protection or data access." />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {reports.map((item) => <PriceCard key={item.name} item={item} />)}
+            {reports.map((item) => (
+              <PriceCard key={item.name}
+                item={item.name === PAID_REPORT_NAME ? { ...item, price: paidReportPrice ?? "" } : item} />
+            ))}
           </div>
         </div>
       </section>
