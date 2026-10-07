@@ -45,8 +45,8 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
     "Maps any IPv4 address to its network prefix, the autonomous system (ASN) announcing it, and the operator of that network. Each range also carries the country the registry records for its address block, and a coarse reputation band.",
     "Ships with integer range-bound join keys, so the lookup is an ordinary range join in your warehouse — no UDFs, no external calls, no per-row API cost.",
     "Natively built by Datazag. License-clean for redistribution, and refreshed daily.",
-    "Coverage is IPv4, and it is complete: every ASN announcing routes on the public internet is profiled — all {{ASNS}} of them. There is no sampled subset and no long tail left out, so a lookup that returns nothing means the address is unannounced, not that we are missing the network.",
-    "Datazag observes {{DOMAINS}} live domains daily across those networks; this dataset is the IP-to-ASN layer of that corpus.",
+    "Coverage is IPv4. Every ASN announcing routes in the BGP data we collect is profiled — {{ASNS}} of them. It is not a sample, so a lookup that returns nothing usually means the address is not announced, not that we skipped the network.",
+    "Datazag tracks {{DOMAINS}} live domains across those networks; this dataset is the IP-to-ASN layer of that corpus.",
   ],
   facts: [
     { label: "Coverage", value: "IPv4" },
@@ -58,7 +58,7 @@ const IP_ASN_INTELLIGENCE: DatasetDoc = {
       // routes. It is deliberately not "every ASN ever allocated": roughly
       // 120k have been allocated, and the dormant ones announce no address
       // space, so they have nothing for this dataset to map.
-      note: "Every ASN announcing routes — none missing",
+      note: "Every ASN announcing routes in the BGP data we collect",
     },
     { label: "License", value: "Clean for redistribution" },
   ],
@@ -248,7 +248,7 @@ const DOMAIN_POSTURE: DatasetDoc = {
     "The distinction that makes it useful is between publishing a control and enforcing one. A domain can publish DMARC and ask receivers to do nothing about failures. This dataset separates the two: dmarc_present says a record exists, dmarc_policy and dmarc_enforced say whether it does anything. The same split runs through SPF, MTA-STS and BIMI.",
     "The free tier is not a sample: it has every row the paid tier has, with 18 of the 23 columns. The paid tier adds five columns of depth on the same rows. It does not add domains. Coverage is still growing. Posture comes from a rolling backfill, so not every domain in the corpus has a row yet (see Methodology).",
     "Observed by Datazag from public DNS. No third-party feed is redistributed through it, and every release passes an automated licensing gate that scans each published value before it leaves our boundary.",
-    "Datazag observes {{DOMAINS}} live domains daily; this dataset is the posture layer of that corpus.",
+    "Datazag tracks {{DOMAINS}} live domains; this dataset is the posture layer of that corpus.",
   ],
   facts: [
     { label: "Grain", value: "One row per registrable domain" },
