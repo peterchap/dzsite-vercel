@@ -17,12 +17,14 @@
 export const HERO = {
   eyebrow: "For MSSPs, email platforms, cyber insurers and data teams",
   title: "Internet infrastructure intelligence you can act on.",
-  // {domains} is filled from the live stats.
   intro: [
-    "We track {domains} resolving domains, with their DNS, certificates and routing.",
-    "We flag new attack infrastructure as it is set up.",
-    "Use it to find hidden assets, assess risk and power your own security products.",
+    "We track domains and their DNS, certificates and routing to flag signs of attack infrastructure as it is set up.",
+    "Use the intelligence to discover hidden assets, assess infrastructure risk and power your own security and email products.",
   ],
+  // The live line under the buttons; the figure and date are filled from the live stats.
+  coverageLabel: "Latest coverage",
+  coverageUnit: "resolving domains",
+  measuredLabel: "measured",
   primary: { label: "Get your free domain health report", href: "#free-report" },
   secondary: { label: "Explore datasets and sample outputs", href: "#samples" },
   observatoryLink: "Explore the Observatory",

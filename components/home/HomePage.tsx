@@ -123,7 +123,7 @@ export default async function HomePage() {
             </p>
             <h1 className="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">{HERO.title}</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              {HERO.intro.join(" ").replace("{domains}", stats.DOMAINS_DISPLAY)}
+              {HERO.intro.join(" ")}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <TrackedLink href={HERO.primary.href} event="hero_cta_click" params={{ cta: "free_report" }} className={primaryBtn}>
@@ -135,8 +135,8 @@ export default async function HomePage() {
             </div>
             <p className="mt-8 text-sm text-slate-400">
               <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 align-middle" aria-hidden="true" />
-              Live: {stats.DOMAINS_DISPLAY} resolving domains
-              {domainsAsOf ? <> · as of {domainsAsOf}</> : null}
+              {HERO.coverageLabel}: {stats.DOMAINS_DISPLAY} {HERO.coverageUnit}
+              {domainsAsOf ? <> · {HERO.measuredLabel} {domainsAsOf}</> : null}
               {observatory.show ? (
                 <>
                   {" · "}
