@@ -27,9 +27,9 @@ import Link from "next/link";
  * than implying an endpoint a developer will go looking for.
  */
 const REPORT_ROUTES = [
-    { name: "Free Domain Health Report", how: "Self-serve. Enter a work email on the site; the report is generated in the customer portal and delivered by email.", scope: "One domain" },
-    { name: "Domain Risk Report", how: "Requested through sales. Delivered as a document for technical and executive readers.", scope: "One domain, in depth" },
-    { name: "Cross-Estate Domain Risk Report", how: "Requested through sales. Opens with estate discovery, so the scope is agreed before it runs.", scope: "Portfolio, estate or supplier group" },
+    { name: "Free Domain Exposure & DNS Hygiene Report", how: "Self-serve. Enter a work email on the site; the report is generated in the customer portal and delivered by email.", scope: "One domain" },
+    { name: "Attack Surface & SaaS Discovery Report", how: "Self-serve. Bought by card in the customer portal; delivered as a document for technical and executive readers.", scope: "One domain, in depth" },
+    { name: "Estate Attack Surface Report", how: "Opens with estate discovery, so the scope is agreed before it runs.", scope: "Portfolio, estate or supplier group" },
 ];
 
 const TAXII_API_ROOT = "https://taxii.datazag.com/api/";

@@ -39,7 +39,7 @@ const consentComponents = {
 };
 
 const defaultConsentRequired =
-  'I agree that Datazag may process my email address and associated domain to generate and deliver my Domain Health Report. I have read the Privacy Policy.';
+  'I agree that Datazag may process my email address and associated domain to generate and deliver my Domain Exposure & DNS Hygiene Report. I have read the Privacy Policy.';
 const defaultConsentOptional =
   "I'd like to receive occasional product updates, research, webinars and cybersecurity insights from Datazag. I understand I can unsubscribe at any time.";
 

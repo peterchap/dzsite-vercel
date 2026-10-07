@@ -4,12 +4,12 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "Sample Reports — Datazag",
   description:
-    "Datazag sample reports showing the anatomy of a free Domain Health Report and a Cross-Estate Domain Risk Report.",
+    "Datazag sample reports showing the anatomy of a free Domain Exposure & DNS Hygiene Report and an Estate Attack Surface Report.",
 };
 
 const domainSummary = [
   ["Domain", "example-business.co.uk"],
-  ["Report type", "Free single-domain health report"],
+  ["Report type", "Free Domain Exposure & DNS Hygiene Report"],
   ["Primary exposure", "Microsoft 365 and payment-platform lures relevant to visible platform footprint"],
   ["DNS defense", "DMARC present but not enforcing; SPF needs review"],
   ["First action", "Harden email authentication and review stale DNS records"],
@@ -40,7 +40,7 @@ const domainSections = [
 
 const portfolioSummary = [
   ["Estate", "42 domains across brands, subsidiaries and legacy properties"],
-  ["Report type", "Cross-Estate Domain Risk Report"],
+  ["Report type", "Estate Attack Surface Report"],
   ["Systemic issue", "DMARC non-enforcement repeated across 61% of active domains"],
   ["Operational risk", "Inconsistent mail and DNS ownership across business units"],
   ["Program priority", "Standardize email authentication and review exposed platform dependencies"],
@@ -116,7 +116,7 @@ export default function SampleReportsPage() {
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">Two sample reports showing what a recipient actually sees: the summary, findings, evidence and next actions.</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="#domain-health" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Free report sample</a>
-            <a href="#cross-estate" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Cross-Estate sample</a>
+            <a href="#cross-estate" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Estate report sample</a>
           </div>
         </div>
       </section>
@@ -124,7 +124,7 @@ export default function SampleReportsPage() {
       <section id="domain-health" className="border-t border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample free report</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Free Domain Health Report</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Free Domain Exposure & DNS Hygiene Report</h2>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A one-domain report showing platform-led threat exposure, DNS defense gaps and first remediation priorities.</p>
           <div className="mt-10"><SummaryGrid items={domainSummary} /></div>
           <div className="mt-10"><ReportSections sections={domainSections} /></div>
@@ -134,10 +134,10 @@ export default function SampleReportsPage() {
       <section id="cross-estate" className="border-t border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample paid report</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Cross-Estate Domain Risk Report</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Estate Attack Surface Report</h2>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A paid report showing individual domain findings, repeated weaknesses and systemic risk across the estate an organization owns.</p>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
-            <a href="/samples/cross-estate-domain-risk-report.html" className="font-semibold text-cyan-100 hover:text-cyan-50">Open the full sample report (the Acme Group render) →</a>
+            <a href="/samples/estate-attack-surface-report.html" className="font-semibold text-cyan-100 hover:text-cyan-50">Open the full sample report (the Acme Group render) →</a>
           </p>
           <div className="mt-10"><SummaryGrid items={portfolioSummary} /></div>
           <div className="mt-10"><ReportSections sections={portfolioSections} /></div>

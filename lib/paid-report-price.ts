@@ -6,8 +6,9 @@
 // Server-side only (no CORS involved), revalidated hourly. When the portal cannot be
 // read the caller shows the product without a figure, never a stale one.
 
-export const PAID_REPORT_NAME = "Attack Surface & SaaS Discovery Report";
-export const FREE_REPORT_NAME = "Domain Exposure & DNS Hygiene Report";
+import { PAID_REPORT_NAME } from "./report-names";
+
+export { FREE_REPORT_NAME, PAID_REPORT_NAME } from "./report-names";
 
 const PRICE_URL =
   process.env.PAID_REPORT_PRICE_URL || "https://portal.datazag.com/api/public/products/health_report";

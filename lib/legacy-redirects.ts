@@ -23,6 +23,11 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/samples/cross-estate-domain-risk-report.html",
+    destination: "/samples/estate-attack-surface-report.html",
+    reason: "The Cross-Estate Domain Risk Report was renamed the Estate Attack Surface Report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",
+  },
+  {
     source: "/legacy-home",
     destination: "/",
     reason: "A noindex reference copy of the old homepage, with the old positioning and API claims. Its page was deleted on 2026-10-02.",
