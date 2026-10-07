@@ -22,8 +22,8 @@ export async function GET() {
   return new ImageResponse(
     (
       <OgCard
-        kicker="Infrastructure intelligence"
-        title="See more of the internet. Know what it means."
+        kicker="For MSSPs, email platforms, cyber insurers and data teams"
+        title="Internet infrastructure intelligence you can act on."
         figures={figures}
         footer={`Coverage measured ${statsAsOfLabel}`}
       />

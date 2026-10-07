@@ -1,0 +1,82 @@
+{
+  "type": "bundle",
+  "id": "bundle--938ccb56-aa13-5bec-a525-b554366ce41e",
+  "objects": [
+    {
+      "type": "identity",
+      "spec_version": "2.1",
+      "id": "identity--55a5a448-c6f1-5128-bc71-4d85b719131e",
+      "created": "2026-01-01T00:00:00.000Z",
+      "modified": "2026-01-01T00:00:00.000Z",
+      "name": "Datazag",
+      "identity_class": "organization",
+      "sectors": [
+        "technology"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--d2bdb757-571c-58ac-9813-6e23dbdda98f",
+      "name": "Brand Impersonation: acme-payroll-login.example",
+      "description": "Brand impersonation of Acme using acme-payroll-login.example. Observed: the brand name appears as an exact token; a live credential form was captured; the domain was registered in the last 30 days; no MX records are published; hosting is outside the brand's habitual footprint. DNS: resolves to 203.0.113.45. Hosting: AS64500 (EXAMPLE-HOSTING), NL. Recommended action: takedown.",
+      "pattern": "[domain-name:value = 'acme-payroll-login.example']",
+      "valid_until": "2026-11-05T16:40:00.000Z",
+      "spec_version": "2.1",
+      "created_by_ref": "identity--55a5a448-c6f1-5128-bc71-4d85b719131e",
+      "created": "2026-10-05T08:14:00.000Z",
+      "modified": "2026-10-06T16:40:00.000Z",
+      "valid_from": "2026-10-05T08:14:00.000Z",
+      "indicator_types": [
+        "malicious-activity",
+        "impersonation"
+      ],
+      "pattern_type": "stix",
+      "confidence": 88,
+      "labels": [
+        "brand.exact_token_match",
+        "content.credential_form_live",
+        "age.newly_registered",
+        "dns.no_mx",
+        "infra.origin_off_brand_footprint"
+      ],
+      "external_references": [
+        {
+          "source_name": "datazag",
+          "external_id": "2c1eb663258424681d95943d497ea2134c759e694e0b42e51e1bbf604dec2335"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--9aec26bc-5f94-5599-ab2c-6e21b838a51e",
+      "name": "ipv4-addr: 203.0.113.45",
+      "description": "Brand impersonation of Acme using acme-payroll-login.example. Observed: the brand name appears as an exact token; a live credential form was captured; the domain was registered in the last 30 days; no MX records are published; hosting is outside the brand's habitual footprint. DNS: resolves to 203.0.113.45. Hosting: AS64500 (EXAMPLE-HOSTING), NL. Recommended action: takedown.",
+      "pattern": "[ipv4-addr:value = '203.0.113.45']",
+      "valid_until": "2026-11-05T16:40:00.000Z",
+      "spec_version": "2.1",
+      "created_by_ref": "identity--55a5a448-c6f1-5128-bc71-4d85b719131e",
+      "created": "2026-10-05T08:14:00.000Z",
+      "modified": "2026-10-06T16:40:00.000Z",
+      "valid_from": "2026-10-05T08:14:00.000Z",
+      "indicator_types": [
+        "malicious-activity",
+        "impersonation"
+      ],
+      "pattern_type": "stix",
+      "confidence": 88,
+      "labels": [
+        "brand.exact_token_match",
+        "content.credential_form_live",
+        "age.newly_registered",
+        "dns.no_mx",
+        "infra.origin_off_brand_footprint"
+      ],
+      "external_references": [
+        {
+          "source_name": "datazag",
+          "external_id": "2c1eb663258424681d95943d497ea2134c759e694e0b42e51e1bbf604dec2335"
+        }
+      ]
+    }
+  ]
+}
