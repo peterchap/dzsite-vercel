@@ -1,3 +1,4 @@
+import { ESTATE_REPORT_NAME } from "@/lib/report-names";
 import type { Metadata } from "next";
 import type React from "react";
 
@@ -19,7 +20,7 @@ import { getPaidReportPrice, PAID_REPORT_BUY_URL } from "@/lib/paid-report-price
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "Start free with a Domain Exposure & DNS Hygiene Report on one domain. Go deeper with the Attack Surface & SaaS Discovery Report, or map the estate you own with a Cross-Estate Domain Risk Report.",
+    "Start free with a Domain Exposure & DNS Hygiene Report on one domain. Go deeper with the Attack Surface & SaaS Discovery Report, or map the estate you own with an Estate Attack Surface Report.",
 };
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
@@ -43,7 +44,7 @@ const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
 const domainRiskCta = checkoutLive
     ? { label: "Buy report", href: PAID_REPORT_BUY_URL }
     : { label: "Contact us", href: contactHref };
-const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
+const crossEstateSampleHref = "/samples/estate-attack-surface-report.html";
 
 // Structural / transactional metadata that stays in code (copy lives in copy.ts).
 const tierAccent: Record<string, string> = {
@@ -291,7 +292,7 @@ export default async function ReportsPage() {
           />
           <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:items-start">
             <AnatomyColumn eyebrow="Single domain" title="Attack Surface & SaaS Discovery Report" blocks={domainReportAnatomy} />
-            <AnatomyColumn eyebrow="Multi-domain" title="Cross-Estate Domain Risk Report" blocks={crossEstateAnatomy} />
+            <AnatomyColumn eyebrow="Multi-domain" title={ESTATE_REPORT_NAME} blocks={crossEstateAnatomy} />
           </div>
         </div>
       </section>
@@ -377,7 +378,7 @@ export default async function ReportsPage() {
             <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{scopeEstateCta.label}</a>
           </div>
           <p className="mt-6 text-sm">
-            <a href={crossEstateSampleHref} className="font-semibold text-cyan-100 hover:text-cyan-50">See a sample Cross-Estate report →</a>
+            <a href={crossEstateSampleHref} className="font-semibold text-cyan-100 hover:text-cyan-50">See a sample estate report →</a>
           </p>
         </div>
       </section>

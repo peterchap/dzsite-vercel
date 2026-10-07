@@ -1,5 +1,6 @@
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { FREE_REPORT_NAME, PAID_REPORT_BUY_URL, PAID_REPORT_NAME } from "@/lib/paid-report-price";
+import { ESTATE_REPORT_NAME } from "@/lib/report-names";
 
 // Prices use {{PRICE:cents}} markers (USD-base cents) so the nav currency widget
 // converts them. The paid single-domain report is the exception: one price in USD,
@@ -7,7 +8,7 @@ import { FREE_REPORT_NAME, PAID_REPORT_BUY_URL, PAID_REPORT_NAME } from "@/lib/p
 // site, the free report, checkout and the receipt always agree (WS4).
 const productChooser = [
   { need: "Assess one domain", product: `Free ${FREE_REPORT_NAME}`, href: "/#free-report" },
-  { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
+  { need: "Assess your estate", product: ESTATE_REPORT_NAME, href: "#reports" },
   { need: "Monitor brand abuse", product: "Brand Protection Alerts", href: "#alerts" },
   { need: "Analyze at scale", product: "Cloud Data Products", href: "#data-shares" },
 ];
@@ -33,7 +34,7 @@ const reports = [
     href: process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true" ? PAID_REPORT_BUY_URL : "/contact",
   },
   {
-    name: "Cross-Estate Domain Risk Report",
+    name: ESTATE_REPORT_NAME,
     price: "Banded",
     cadence: "by domain count",
     description: "Paid reporting across the domains an organization owns, showing individual findings and systemic risk patterns. Estate size is unknown until discovery runs, so pricing is banded by domain count — the final quote follows scope confirmation.",

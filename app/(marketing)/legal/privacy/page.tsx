@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
                             />
                             <DataPoint
                                 title="Free report requests"
-                                description="Your work email address and the domain you submit when you request a free Domain Health Report. We use them to generate the report, email you a private link to it, and keep it available behind that link. We contact you about related services only if you opt in."
+                                description="Your work email address and the domain you submit when you request a free Domain Exposure & DNS Hygiene Report. We use them to generate the report, email you a private link to it, and keep it available behind that link. We contact you about related services only if you opt in."
                             />
                             <DataPoint
                                 title="Usage and technical data"
