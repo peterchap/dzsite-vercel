@@ -284,7 +284,7 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
     <div class="kick"><span class="d"></span>Estate Attack Surface Report · 2 July 2026</div>
     <div class="org">Acme Group<span class="dom">9 declared domains · 3 segments · corp / retail / acquired</span></div>
 
-    <p class="synthesis">You declared 9 domains. Datazag's discovery walked certificate, mail and registration relationships across the 340M-domain corpus and found <b>15 more connected to Acme Group</b> — 5 you almost certainly own, 4 to review, and 6 attackers would favour. Across the true estate, risk is <b>systemic, not isolated</b>: the weaknesses cluster in the acquired and retail segments, and one expired acquisition domain is a live takeover window today.</p>
+    <p class="synthesis">You declared 9 domains. Datazag's discovery walked certificate, mail and registration relationships across the Datazag corpus and found <b>15 more connected to Acme Group</b> — 5 you almost certainly own, 4 to review, and 6 attackers would favor. Across the true estate, risk is <b>systemic, not isolated</b>: the weaknesses cluster in the acquired and retail segments, and one expired acquisition domain is a live takeover window today.</p>
 
     <div class="dash">
       <div class="dcard cy">
@@ -305,7 +305,7 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
       <div class="dcard bad">
         <div class="dk">Live lapses</div>
         <div class="dstate">2 overdue</div>
-        <div class="dnote">oldco.com registration and certificate both expired — an open takeover window.</div>
+        <div class="dnote">oldco.example registration and certificate both expired — an open takeover window.</div>
       </div>
     </div>
 
@@ -347,26 +347,26 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
       <div class="tier declared"><div class="tk">Declared · 9</div><div class="tn">The domains you told us about</div><div class="td">Your starting list — graded and assessed throughout this report.</div></div>
       <div class="tier strong"><div class="tk">Strongly associated · 5</div><div class="tn">High-confidence: you own these</div><div class="td">Shared certificate SANs, same MX + SPF, matching registrar patterns, redirects to your primary sites. Included in the estate grade.</div></div>
       <div class="tier possible"><div class="tk">Possible · 4</div><div class="tn">Medium-confidence: review these</div><div class="td">Lexical brand similarity, shared infrastructure, historic links. Listed for confirmation — not graded until you claim them.</div></div>
-      <div class="tier defensive"><div class="tk">Defensive / acquisition · 6</div><div class="tn">Consider recovering or monitoring</div><div class="td">Expired acquisition names, for-sale lookalikes, and the login/payroll/invoice patterns attackers favour.</div></div>
+      <div class="tier defensive"><div class="tk">Defensive / acquisition · 6</div><div class="tn">Consider recovering or monitoring</div><div class="td">Expired acquisition names, for-sale lookalikes, and the login/payroll/invoice patterns attackers favor.</div></div>
     </div>
 
     <table class="disc-table">
       <tr><th>Domain</th><th>Tier</th><th>Connection evidence</th></tr>
-      <tr><td class="dom">acmegroup.co.uk</td><td><span class="tpill strong">Strong</span></td><td class="ev">Same MX + SPF as acme.com · redirects to <code>acme.com</code> · same registrar account pattern</td></tr>
-      <tr><td class="dom">acme-payments.com</td><td><span class="tpill strong">Strong</span></td><td class="ev">Shares certificate SAN with <code>acmeshop.com</code> · same nameservers</td></tr>
-      <tr><td class="dom">acmecareers.com</td><td><span class="tpill strong">Strong</span></td><td class="ev">301 redirect to <code>acme.com/careers</code> · GoDaddy account pattern match</td></tr>
-      <tr><td class="dom">oldco.io</td><td><span class="tpill strong">Strong</span></td><td class="ev">Subsidiary-name match (OldCo Ltd, CRN 0842…) · same registrant organization as oldco.com</td></tr>
+      <tr><td class="dom">acmegroup-uk.example</td><td><span class="tpill strong">Strong</span></td><td class="ev">Same MX + SPF as acme.example · redirects to <code>acme.example</code> · same registrar account pattern</td></tr>
+      <tr><td class="dom">acme-payments.example</td><td><span class="tpill strong">Strong</span></td><td class="ev">Shares certificate SAN with <code>acmeshop.example</code> · same nameservers</td></tr>
+      <tr><td class="dom">acmecareers.example</td><td><span class="tpill strong">Strong</span></td><td class="ev">301 redirect to <code>acme.example/careers</code> · GoDaddy account pattern match</td></tr>
+      <tr><td class="dom">oldco-io.example</td><td><span class="tpill strong">Strong</span></td><td class="ev">Subsidiary-name match (OldCo Ltd, CRN 0842…) · same registrant organization as oldco.example</td></tr>
       <tr><td class="dom">acme.dev</td><td><span class="tpill strong">Strong</span></td><td class="ev">Shared Cloudflare NS pair with corp segment · TXT ownership token matches</td></tr>
-      <tr><td class="dom">acmegrp.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Lexical match · parked · historically resolved to AS13335 alongside corp estate</td></tr>
-      <tr><td class="dom">acme-events.net</td><td><span class="tpill possible">Review</span></td><td class="ev">Campaign-microsite pattern · registered same week as 2024 product launch · now parked</td></tr>
-      <tr><td class="dom">acme-logistics.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Shared hosting network with retail segment · no mail configured</td></tr>
-      <tr><td class="dom">theacmestore.com</td><td><span class="tpill possible">Review</span></td><td class="ev">Historic redirect to <code>acmeshop.com</code> (2023, certificate-transparency evidence) · now lapsed to third party</td></tr>
-      <tr><td class="dom">oldco.net</td><td><span class="tpill defensive">Defensive</span></td><td class="ev"><b>Expired acquisition name</b> — available for registration by anyone, including attackers</td></tr>
-      <tr><td class="dom">acmegroup.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Listed for sale on aftermarket · exact brand match</td></tr>
-      <tr><td class="dom">acmepayroll.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · payroll-lure pattern attackers favour against your staff</td></tr>
-      <tr><td class="dom">acme-invoices.net</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · invoice-fraud pattern targeting your suppliers</td></tr>
-      <tr><td class="dom">acme-portal.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · login-portal lure pattern</td></tr>
-      <tr><td class="dom">acrne.com</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Typo-adjacent (rn→m homoglyph) · unregistered</td></tr>
+      <tr><td class="dom">acmegrp.example</td><td><span class="tpill possible">Review</span></td><td class="ev">Lexical match · parked · historically resolved to AS13335 alongside corp estate</td></tr>
+      <tr><td class="dom">acme-events.example</td><td><span class="tpill possible">Review</span></td><td class="ev">Campaign-microsite pattern · registered same week as 2024 product launch · now parked</td></tr>
+      <tr><td class="dom">acme-logistics.example</td><td><span class="tpill possible">Review</span></td><td class="ev">Shared hosting network with retail segment · no mail configured</td></tr>
+      <tr><td class="dom">theacmestore.example</td><td><span class="tpill possible">Review</span></td><td class="ev">Historic redirect to <code>acmeshop.example</code> (2023, certificate-transparency evidence) · now lapsed to third party</td></tr>
+      <tr><td class="dom">oldco-net.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev"><b>Expired acquisition name</b> — available for registration by anyone, including attackers</td></tr>
+      <tr><td class="dom">acmegroup.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Listed for sale on aftermarket · exact brand match</td></tr>
+      <tr><td class="dom">acmepayroll.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · payroll-lure pattern attackers favor against your staff</td></tr>
+      <tr><td class="dom">acme-invoices.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · invoice-fraud pattern targeting your suppliers</td></tr>
+      <tr><td class="dom">acme-portal.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Unregistered · login-portal lure pattern</td></tr>
+      <tr><td class="dom">acrne.example</td><td><span class="tpill defensive">Defensive</span></td><td class="ev">Typo-adjacent (rn→m homoglyph) · unregistered</td></tr>
     </table>
 
     <div class="discovery-note"><b>Why the grade includes strongly-associated domains.</b> A domain you own but forgot is still yours when it expires, gets hijacked, or serves malware under your name. The estate grade on the next pages therefore covers <b>declared + strongly associated (14 domains)</b>. Possible-tier domains are listed for your confirmation; defensive-tier domains are recovery and monitoring candidates, not graded assets.</div>
@@ -421,7 +421,7 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
       <tr><td class="seg">acquired</td><td class="mono">4</td><td><span class="gradepill gf">F</span></td><td class="mono">−3 bands</td><td><span class="outlier-tag">Outlier</span></td></tr>
     </table>
 
-    <div class="monitor-note"><span class="mn-h">The classic integration gap</span>The acquired segment sits <b>three grade bands below</b> the group standard — expired registrations, no registrar locks, unenforced email controls. This is the standard post-acquisition pattern: the deal closed, the domains transferred, and nobody inherited operational ownership. It is also where discovery added the most: <b>oldco.io</b> (strongly associated) and <b>oldco.net</b> (expired, available to anyone) both belong to this segment and were not on the declared list.</div>
+    <div class="monitor-note"><span class="mn-h">The classic integration gap</span>The acquired segment sits <b>three grade bands below</b> the group standard — expired registrations, no registrar locks, unenforced email controls. This is the standard post-acquisition pattern: the deal closed, the domains transferred, and nobody inherited operational ownership. It is also where discovery added the most: <b>oldco-io.example</b> (strongly associated) and <b>oldco-net.example</b> (expired, available to anyone) both belong to this segment and were not on the declared list.</div>
   </div>
   <div class="foot"><div>Concentration &amp; posture variance</div><div>Datazag · Confidential · 3 / 6</div></div>
 </div>
@@ -457,9 +457,9 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
 
     <table class="imp-table">
       <tr><th>Impersonating domain</th><th>Target</th><th>First seen</th><th>Pattern</th></tr>
-      <tr><td class="dom">acme-m1cros0ft.com</td><td>Microsoft 365</td><td>30d window · 4 certs</td><td>Homoglyph + platform-name composite</td></tr>
-      <tr><td class="dom">acme365-login.com</td><td>Microsoft 365</td><td>30d window · 3 certs</td><td>Brand + platform login composite</td></tr>
-      <tr><td class="dom">0ldco-login.com</td><td>Microsoft 365 · OldCo brand</td><td>30d window · 2 certs</td><td>Acquired-brand lure against staff mid-migration</td></tr>
+      <tr><td class="dom">acme-m1cros0ft.example</td><td>Microsoft 365</td><td>30d window · 4 certs</td><td>Homoglyph + platform-name composite</td></tr>
+      <tr><td class="dom">acme365-login.example</td><td>Microsoft 365</td><td>30d window · 3 certs</td><td>Brand + platform login composite</td></tr>
+      <tr><td class="dom">0ldco-login.example</td><td>Microsoft 365 · OldCo brand</td><td>30d window · 2 certs</td><td>Acquired-brand lure against staff mid-migration</td></tr>
     </table>
 
     <div class="monitor-note"><span class="mn-h">This report is the map — the feed is the tripwire</span>A report shows the standing exposure at snapshot time. Certificates for pages like these are typically issued <b>minutes before the phishing wave sends</b> — detection that matters happens at issuance, not at the next report. Platform &amp; Brand Impersonation Watch (page 6) delivers each of these as an event within seconds of the certificate appearing.</div>
@@ -480,19 +480,19 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
 
     <table class="cal-table">
       <tr><th>Domain</th><th>Segment</th><th>Item</th><th>Due</th><th>Detail</th></tr>
-      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Domain registration</td><td><span class="due overdue">Overdue</span></td><td>Registration expired — renew or the name drops to open registration</td></tr>
-      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Certificate</td><td><span class="due overdue">Overdue</span></td><td>Certificate expired — any remaining service is throwing browser errors now</td></tr>
-      <tr><td class="dom">acmeshop.com</td><td>retail</td><td>Certificate</td><td><span class="due soon">12 days</span></td><td>Renewal not yet observed in certificate transparency</td></tr>
-      <tr><td class="dom">acmeretail.com</td><td>retail</td><td>Domain registration</td><td><span class="due soon">15 days</span></td><td>Registration expires — confirm auto-renew at GoDaddy</td></tr>
-      <tr><td class="dom">oldco.com</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
-      <tr><td class="dom">oldco-portal.com</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
+      <tr><td class="dom">oldco.example</td><td>acquired</td><td>Domain registration</td><td><span class="due overdue">Overdue</span></td><td>Registration expired — renew or the name drops to open registration</td></tr>
+      <tr><td class="dom">oldco.example</td><td>acquired</td><td>Certificate</td><td><span class="due overdue">Overdue</span></td><td>Certificate expired — any remaining service is throwing browser errors now</td></tr>
+      <tr><td class="dom">acmeshop.example</td><td>retail</td><td>Certificate</td><td><span class="due soon">12 days</span></td><td>Renewal not yet observed in certificate transparency</td></tr>
+      <tr><td class="dom">acmeretail.example</td><td>retail</td><td>Domain registration</td><td><span class="due soon">15 days</span></td><td>Registration expires — confirm auto-renew at GoDaddy</td></tr>
+      <tr><td class="dom">oldco.example</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
+      <tr><td class="dom">oldco-portal.example</td><td>acquired</td><td>Registrar lock</td><td><span class="due later">Standing</span></td><td>No transfer/delete prohibition — hijack-transfer possible</td></tr>
     </table>
 
     <p class="lead" style="margin-bottom:10px"><b>Exception register.</b> Everything above and everything found earlier, ranked. Six exceptions, most severe first — the correlated-weakness patterns collapse into one entry because they share one fix.</p>
 
     <div class="exc">
-      <div class="ex-head"><div class="ex-num">1</div><div class="ex-t">oldco.com is expired and unlocked — an open takeover window on an acquired brand</div><span class="ex-sev high">High</span></div>
-      <div class="ex-body">Registration and certificate both lapsed, no registrar lock, and attackers are already producing OldCo-branded Microsoft 365 lures (<b>0ldco-login.com</b>). Recover the registration this week; oldco.net (also expired, found in discovery) should be re-registered defensively at the same time.<div class="ex-ev">calendar.overdue × 2 · registrar_lock = none · external_threat.impersonations ∋ 0ldco-login.com</div></div>
+      <div class="ex-head"><div class="ex-num">1</div><div class="ex-t">oldco.example is expired and unlocked — an open takeover window on an acquired brand</div><span class="ex-sev high">High</span></div>
+      <div class="ex-body">Registration and certificate both lapsed, no registrar lock, and attackers are already producing OldCo-branded Microsoft 365 lures (<b>0ldco-login.example</b>). Recover the registration this week; oldco-net.example (also expired, found in discovery) should be re-registered defensively at the same time.<div class="ex-ev">calendar.overdue × 2 · registrar_lock = none · external_threat.impersonations ∋ 0ldco-login.example</div></div>
     </div>
     <div class="exc">
       <div class="ex-head"><div class="ex-num">2</div><div class="ex-t">9 active Microsoft 365 impersonations across the estate in 30 days</div><span class="ex-sev high">High</span></div>
@@ -508,11 +508,11 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
     </div>
     <div class="exc">
       <div class="ex-head"><div class="ex-num">5</div><div class="ex-t">4 possible-tier domains need an ownership decision</div><span class="ex-sev elevated">Elevated</span></div>
-      <div class="ex-body">acmegrp.com, acme-events.net, acme-logistics.com and theacmestore.com carry evidence linking them to the group. Confirm or disclaim each: confirmed domains join the graded estate; disclaimed ones move to the impersonation watchlist — <b>theacmestore.com has already lapsed to a third party</b> while still carrying redirect history to your retail site.<div class="ex-ev">discovery.tier = possible × 4 · theacmestore.com registrant ≠ Acme since 2025-11</div></div>
+      <div class="ex-body">acmegrp.example, acme-events.example, acme-logistics.example and theacmestore.example carry evidence linking them to the group. Confirm or disclaim each: confirmed domains join the graded estate; disclaimed ones move to the impersonation watchlist — <b>theacmestore.example has already lapsed to a third party</b> while still carrying redirect history to your retail site.<div class="ex-ev">discovery.tier = possible × 4 · theacmestore.example registrant ≠ Acme since 2025-11</div></div>
     </div>
     <div class="exc">
       <div class="ex-head"><div class="ex-num">6</div><div class="ex-t">5 defensive registrations recommended</div><span class="ex-sev watch">Watch</span></div>
-      <div class="ex-body">oldco.net, acmepayroll.com, acme-invoices.net, acme-portal.com and acrne.com are unregistered and match the lure patterns already in use against you. Registering them costs less per year than one incident-response hour; acmegroup.com (for sale) is a commercial decision worth pricing.<div class="ex-ev">discovery.tier = defensive × 6 · patterns: payroll / invoice / portal / typo</div></div>
+      <div class="ex-body">oldco-net.example, acmepayroll.example, acme-invoices.example, acme-portal.example and acrne.example are unregistered and match the lure patterns already in use against you. Registering them costs less per year than one incident-response hour; acmegroup.example (for sale) is a commercial decision worth pricing.<div class="ex-ev">discovery.tier = defensive × 6 · patterns: payroll / invoice / portal / typo</div></div>
     </div>
     <div class="monitor-note" style="margin-top:6px"><span class="mn-h">How to execute</span>Every exception above maps to a worksheet entry in <b>Appendix A — the remediation worksheet</b> at the back of this report: exact records, per domain, grouped by the team that administers each zone. Hand it directly to whoever runs your DNS.</div>
   </div>
@@ -595,17 +595,17 @@ html,body{background:#D9DEE5;font-family:'Inter',sans-serif;-webkit-font-smoothi
     <div class="fix">
       <div class="fx-head"><div class="fx-num">1</div><div class="fx-t">Recover and lock the acquired names</div><span class="fx-pri now">Now</span></div>
       <div class="fx-body">
-        <div class="why"><b>This is the open takeover window — do it before any DNS work.</b> oldco.com&#39;s registration has lapsed; oldco.net (found in discovery) already dropped to open availability. Attackers are producing OldCo-branded lures now (<b>0ldco-login.com</b>, page 4). Renew, re-register, then set every registrar lock on all acquired names.</div>
+        <div class="why"><b>This is the open takeover window — do it before any DNS work.</b> oldco.example&#39;s registration has lapsed; oldco-net.example (found in discovery) already dropped to open availability. Attackers are producing OldCo-branded lures now (<b>0ldco-login.example</b>, page 4). Renew, re-register, then set every registrar lock on all acquired names.</div>
         <div class="fx-cmd"><span class="cm"># at GoDaddy (acquired account) — registrar console, not DNS</span>
-oldco.com          renew registration immediately · enable auto-renew
-oldco.net          re-register (currently available to anyone)
+oldco.example          renew registration immediately · enable auto-renew
+oldco-net.example          re-register (currently available to anyone)
 all OldCo names    set clientTransferProhibited + clientDeleteProhibited + clientUpdateProhibited</div>
         <table class="ws-table">
           <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Action</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">expired · unlocked</td><td class="tgt">renew + all locks + auto-renew</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.net</td><td class="adm">GoDaddy · acquired</td><td class="now">dropped · available</td><td class="tgt">re-register defensively + locks</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.example</td><td class="adm">GoDaddy · acquired</td><td class="now">expired · unlocked</td><td class="tgt">renew + all locks + auto-renew</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-net.example</td><td class="adm">GoDaddy · acquired</td><td class="now">dropped · available</td><td class="tgt">re-register defensively + locks</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-io.example</td><td class="adm">GoDaddy · acquired</td><td class="now">no locks</td><td class="tgt">all three client locks</td></tr>
         </table>
       </div>
     </div>
@@ -616,7 +616,7 @@ all OldCo names    set clientTransferProhibited + clientDeleteProhibited + clien
         <div class="why">One retail subdomain CNAMEs to a deleted third-party resource — <b>claimable by anyone right now</b>, which turns your subdomain into their content. Remove the record or re-provision the target.</div>
         <table class="ws-table">
           <tr><th></th><th>Record</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">promo.acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">CNAME → deleted azure resource</td><td class="tgt">delete record (or re-provision target first)</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">promo.acmeshop.example</td><td class="adm">GoDaddy · retail</td><td class="now">CNAME → deleted azure resource</td><td class="tgt">delete record (or re-provision target first)</td></tr>
         </table>
       </div>
     </div>
@@ -634,9 +634,9 @@ all OldCo names    set clientTransferProhibited + clientDeleteProhibited + clien
         <div class="why">Hostnames resolving to private <b>10.x.x.x</b> addresses in public DNS confirm internal network structure to an attacker. Remove the public records or move them to split-horizon (internal-only) resolution.</div>
         <table class="ws-table">
           <tr><th></th><th>Record</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">vpn.acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.11</td><td class="tgt">remove — internal resolution only</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">intranet.acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.40</td><td class="tgt">remove — internal resolution only</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">gw.oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">A 10.30.1.1</td><td class="tgt">remove — internal resolution only</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">vpn.acmeretail.example</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.11</td><td class="tgt">remove — internal resolution only</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">intranet.acmeretail.example</td><td class="adm">GoDaddy · retail</td><td class="now">A 10.14.2.40</td><td class="tgt">remove — internal resolution only</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">gw.oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">A 10.30.1.1</td><td class="tgt">remove — internal resolution only</td></tr>
         </table>
       </div>
     </div>
@@ -646,17 +646,17 @@ all OldCo names    set clientTransferProhibited + clientDeleteProhibited + clien
       <div class="fx-body">
         <div class="why"><b>Staged, not straight to reject.</b> A domain with no record starts at <b>p=none with reporting</b> to learn its senders; a domain already monitored moves to <b>quarantine</b>. End state for every domain is <b>p=reject</b> once reports confirm all legitimate senders — the corp zones are already there, so this is applying the group standard, not inventing one. Send all reports to one group inbox so the estate is monitored centrally.</div>
         <div class="fx-cmd"><span class="cm"># record template — _dmarc.&lt;domain&gt;  TXT</span>
-step 1 (no record today):   "v=DMARC1; p=none; rua=mailto:dmarc@acme.com"
-step 2 (after ~4 weeks):    "v=DMARC1; p=quarantine; rua=mailto:dmarc@acme.com"
-end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.com"</div>
+step 1 (no record today):   "v=DMARC1; p=none; rua=mailto:dmarc@acme.example"
+step 2 (after ~4 weeks):    "v=DMARC1; p=quarantine; rua=mailto:dmarc@acme.example"
+end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.example"</div>
         <table class="ws-table">
           <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix (next step)</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.com</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acme-payments.com</td><td class="adm">Cloudflare · corp</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.com</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.example</td><td class="adm">GoDaddy · retail</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.example</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.example</td><td class="adm">GoDaddy · retail</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.example</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.example</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no record)</td><td class="tgt">p=none; rua=mailto:dmarc@acme.example</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-io.example</td><td class="adm">GoDaddy · acquired</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.example</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acme-payments.example</td><td class="adm">Cloudflare · corp</td><td class="now">p=none, no rua</td><td class="tgt">p=quarantine; rua=mailto:dmarc@acme.example</td></tr>
         </table>
       </div>
     </div>
@@ -678,11 +678,11 @@ end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.com"</div
 "v=spf1 -all"</div>
         <table class="ws-table">
           <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — domain sends no mail</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmecareers.com</td><td class="adm">Cloudflare · corp</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — redirect-only domain</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.example</td><td class="adm">GoDaddy · retail</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.example</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — domain sends no mail</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-io.example</td><td class="adm">GoDaddy · acquired</td><td class="now">~all</td><td class="tgt">-all after DMARC report review</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmecareers.example</td><td class="adm">Cloudflare · corp</td><td class="now">(no SPF)</td><td class="tgt">"v=spf1 -all" — redirect-only domain</td></tr>
         </table>
       </div>
     </div>
@@ -693,14 +693,14 @@ end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.com"</div
         <div class="why"><b>Advanced control — do after the Now items.</b> CAA restricts which certificate authorities may issue for each domain, removing one route to a fraudulently-obtained certificate. It also converts the estate&#39;s 79% Let&#39;s Encrypt concentration from an accident into a pinned, deliberate choice (page 3, exception 3).</div>
         <div class="fx-cmd"><span class="cm"># record template — &lt;domain&gt;  CAA</span>
 &lt;domain&gt;.  IN  CAA  0 issue "letsencrypt.org"
-&lt;domain&gt;.  IN  CAA  0 iodef "mailto:security@acme.com"</div>
+&lt;domain&gt;.  IN  CAA  0 iodef "mailto:security@acme.example"</div>
         <table class="ws-table">
           <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "digicert.com" + iodef — this zone uses DigiCert</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.example</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.example</td><td class="adm">GoDaddy · retail</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "letsencrypt.org" + iodef</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-io.example</td><td class="adm">GoDaddy · acquired</td><td class="now">(no CAA)</td><td class="tgt">issue "digicert.com" + iodef — this zone uses DigiCert</td></tr>
         </table>
       </div>
     </div>
@@ -718,11 +718,11 @@ end state (group standard): "v=DMARC1; p=reject; rua=mailto:dmarc@acme.com"</div
         <div class="why"><b>Gold-standard control — plan it, don&#39;t alarm over it.</b> DNSSEC cryptographically signs DNS responses; its absence is normal across most estates and creates no exploitable risk today. Enable at the registrar/zone host and publish DS records — the corp Cloudflare zones make this a toggle; GoDaddy zones need DS records published manually.</div>
         <table class="ws-table">
           <tr><th></th><th>Domain</th><th>Admin point</th><th>Now</th><th>Fix</th></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.com</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.com</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.com</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.com</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
-          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.io</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeshop.example</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">acmeretail.example</td><td class="adm">GoDaddy · retail</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco.example</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-portal.example</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
+          <tr><td><span class="ws-check"></span></td><td class="dom">oldco-io.example</td><td class="adm">GoDaddy · acquired</td><td class="now">unsigned</td><td class="tgt">enable at zone host · publish DS</td></tr>
         </table>
       </div>
     </div>
