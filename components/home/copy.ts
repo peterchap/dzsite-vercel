@@ -18,7 +18,7 @@ export const HERO = {
   eyebrow: "For MSSPs, email platforms, cyber insurers and data teams",
   title: "Internet infrastructure intelligence you can act on.",
   intro: [
-    "We track live DNS, certificates, and routing daily to expose attack infrastructure as it’s built.",
+    "We track new and high-risk domains daily, with their DNS, certificates, and routing, to expose attack infrastructure as it’s built.",
     "Discover hidden assets, assess vendor risk, and power your email & security products with explainable intelligence.",
   ],
   // The live line under the buttons; the figure and date are filled from the live stats.
