@@ -1,6 +1,11 @@
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { FREE_REPORT_NAME, PAID_REPORT_BUY_URL, PAID_REPORT_NAME } from "@/lib/paid-report-price";
-import { ESTATE_REPORT_NAME } from "@/lib/report-names";
+import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME } from "@/lib/report-names";
+import { SNAPSHOT_BUY_URL } from "@/lib/estate-prices";
+
+// The estate report and the snapshot are priced from the portal's price table
+// (lib/estate-prices.ts), passed in by the page; "" shows the card without a figure.
+const SCOPE_URL = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.datazag.com/scope?src=pricing";
 
 // Prices use {{PRICE:cents}} markers (USD-base cents) so the nav currency widget
 // converts them. The paid single-domain report is the exception: one price in USD,
@@ -35,12 +40,21 @@ const reports = [
   },
   {
     name: ESTATE_REPORT_NAME,
-    price: "Banded",
-    cadence: "by domain count",
-    description: "Paid reporting across the domains an organization owns, showing individual findings and systemic risk patterns. Estate size is unknown until discovery runs, so pricing is banded by domain count — the final quote follows scope confirmation.",
-    features: ["Multiple domains", "Estate discovery", "Systemic weakness analysis", "Domain ranking", "Remediation worksheet"],
-    cta: "Talk to us about your estate",
-    href: "/contact",
+    price: "", // from the portal's price table, set in PricingV2
+    cadence: "one-off, by estate size",
+    description: "Every domain your organization owns: a free scope finds them, then each is assessed domain by domain, with organization summaries and a remediation worksheet. The price follows the number of domains the scope finds.",
+    features: ["Multiple domains", "Estate discovery", "Domain-level detail", "Systemic weakness analysis", "Remediation worksheet"],
+    cta: "Scope my estate",
+    href: SCOPE_URL,
+  },
+  {
+    name: ESTATE_SNAPSHOT_NAME,
+    price: "", // from the portal's price table, set in PricingV2
+    cadence: "one-off, by portfolio size",
+    description: "Each organization's website domain in a portfolio, observed from outside: email security, registration, certificates and exposure, with a scorecard across the portfolio.",
+    features: ["Up to 100 organizations", "One domain each", "Portfolio scorecard", "Paste a list or upload a CSV"],
+    cta: "Buy a snapshot",
+    href: SNAPSHOT_BUY_URL,
   },
 ];
 
@@ -175,7 +189,16 @@ function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: strin
   );
 }
 
-export function PricingV2({ paidReportPrice = null }: { paidReportPrice?: string | null }) {
+export function PricingV2({ paidReportPrice = null, estatePrice = null, estateBands = [], snapshotPrice = null,
+                           snapshotBands = [] }: {
+  paidReportPrice?: string | null; estatePrice?: string | null; estateBands?: string[];
+  snapshotPrice?: string | null; snapshotBands?: string[];
+}) {
+  const priced = (item: (typeof reports)[number]) =>
+    item.name === PAID_REPORT_NAME ? { ...item, price: paidReportPrice ?? "" }
+    : item.name === ESTATE_REPORT_NAME ? { ...item, price: estatePrice ?? "", features: [...item.features, ...estateBands] }
+    : item.name === ESTATE_SNAPSHOT_NAME ? { ...item, price: snapshotPrice ?? "", features: [...item.features, ...snapshotBands] }
+    : item;
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -214,8 +237,7 @@ export function PricingV2({ paidReportPrice = null }: { paidReportPrice?: string
           <SectionHeader eyebrow="Reports" title="Assess one domain or a whole estate." body="Reports are for buyers who need a concrete assessment before committing to continuous monitoring, brand protection or data access." />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {reports.map((item) => (
-              <PriceCard key={item.name}
-                item={item.name === PAID_REPORT_NAME ? { ...item, price: paidReportPrice ?? "" } : item} />
+              <PriceCard key={item.name} item={priced(item)} />
             ))}
           </div>
         </div>
