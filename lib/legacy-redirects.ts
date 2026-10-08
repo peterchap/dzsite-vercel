@@ -25,7 +25,7 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
     source: "/samples/cross-estate-domain-risk-report.html",
     destination: "/samples/estate-attack-surface-report.html",
-    reason: "The Cross-Estate Domain Risk Report was renamed the Estate Attack Surface Report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",
+    reason: "The Cross-Estate Domain Risk Report was renamed the Organization estate report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",
   },
   {
     source: "/legacy-home",

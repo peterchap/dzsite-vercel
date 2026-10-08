@@ -2,11 +2,10 @@ import Link from "next/link";
 
 import { ObservatoryFiguresPanel } from "@/components/diagrams/ObservatoryPreview/ObservatoryPreview";
 import { LivingInternetBackdrop } from "@/components/story/diagrams/LivingInternetBackdrop";
-import { estateFromPrice, getPriceTable, snapshotFromPrice, SNAPSHOT_BUY_URL } from "@/lib/estate-prices";
+import { PAID_REPORT_BUY_URL, SNAPSHOT_BUY_URL, domainReportPrice, familyFrom } from "@/lib/pricing";
 import { asOfLabel } from "@/lib/live-activity-guard";
 import { loadObservatoryFigures, OBSERVATORY_URL } from "@/lib/observatory-figures";
 import { getObservatoryHealth } from "@/lib/observatory-health";
-import { getPaidReportPrice, PAID_REPORT_BUY_URL } from "@/lib/paid-report-price";
 import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME, FREE_REPORT_NAME, PAID_REPORT_NAME } from "@/lib/report-names";
 import { getSiteStats } from "@/lib/site-stats-live";
 import { AUDIENCES, COVERAGE, DELIVERY, EVIDENCE, FREE_REPORT, FREE_SCOPE, HERO, OBSERVATORY, PRICING } from "./copy";
@@ -99,20 +98,15 @@ function Section({ id, children, className = "" }: { id?: string; children: Reac
 }
 
 export default async function HomePage() {
-  const [stats, paid, table, observatory] = await Promise.all([
-    getSiteStats(),
-    getPaidReportPrice(),
-    getPriceTable(),
-    getObservatoryHealth(),
-  ]);
+  const [stats, observatory] = await Promise.all([getSiteStats(), getObservatoryHealth()]);
+  const paid = domainReportPrice();
   const figures = observatory.show ? await loadObservatoryFigures({ exclude: ["corpus_domains"] }) : null;
 
   const domainsAsOf = asOfLabel(stats.STATS_AS_OF.domainsMonitored);
-  // "from $X" -> "From $X" at the start of a card line.
-  const cap = (s: string | null) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : null);
-  const snapshotFrom = cap(snapshotFromPrice(table));
-  const estateFrom = cap(estateFromPrice(table));
-  const estateFromInline = estateFromPrice(table);
+  // Every price from the shared pricing config (lib/pricing.ts).
+  const snapshotFrom = familyFrom("portfolio_");
+  const estateFrom = familyFrom("org_estate_");
+  const estateFromInline = estateFrom ? estateFrom.charAt(0).toLowerCase() + estateFrom.slice(1) : null;
 
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
@@ -189,7 +183,7 @@ export default async function HomePage() {
             </div>
             <p className="mt-5 text-sm text-slate-300">
               Need the full picture?{" "}
-              {paid ? <>The {PAID_REPORT_NAME} is {paid.display}. </> : <>See the {PAID_REPORT_NAME}. </>}
+              {paid ? <>The {PAID_REPORT_NAME} is {paid}. </> : <>See the {PAID_REPORT_NAME}. </>}
               <TrackedLink href={PAID_REPORT_BUY_URL} event="pricing_link_click" params={{ product: "paid_report", location: "free_report" }} className={textLink}>
                 Buy the full report →
               </TrackedLink>
@@ -229,7 +223,7 @@ export default async function HomePage() {
               </div>
               <p className="mt-5 text-sm text-slate-300">
                 Need the full picture?{" "}
-                {estateFromInline ? <>The {ESTATE_REPORT_NAME} is {estateFromInline}, priced by the domains the scope finds. </> : <>The scope prices the {ESTATE_REPORT_NAME} for your estate. </>}
+                {estateFromInline ? <>The {ESTATE_REPORT_NAME} is {estateFromInline}, priced by the registered domains you include. </> : <>The scope prices the {ESTATE_REPORT_NAME} for your estate. </>}
               </p>
             </div>
             <div>
@@ -354,7 +348,7 @@ export default async function HomePage() {
             title="Domain health reports"
             lines={[
               `${FREE_REPORT_NAME}: ${PRICING.free}`,
-              paid ? `${PAID_REPORT_NAME}: ${paid.display}` : PAID_REPORT_NAME,
+              paid ? `${PAID_REPORT_NAME}: ${paid}` : PAID_REPORT_NAME,
             ]}
             href={PAID_REPORT_BUY_URL}
             link="Buy the full report"

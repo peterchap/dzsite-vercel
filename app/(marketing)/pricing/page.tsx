@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
 
 import { PricingV2 } from "@/components/pricing/PricingV2";
-import { getPaidReportPrice } from "@/lib/paid-report-price";
-import { estateBandLines, estateFromPrice, getPriceTable, snapshotBandLines, snapshotFromPrice } from "@/lib/estate-prices";
 
 export const metadata: Metadata = {
   title: "Pricing — Datazag",
   description:
-    "Transparent pricing for Datazag reports, alerts and cloud data shares.",
+    "Transparent pricing for Datazag reports, monitoring, alerts and cloud data shares, with plain scope units.",
 };
 
-export default async function PricingPage() {
-  const [paidPrice, table] = await Promise.all([getPaidReportPrice(), getPriceTable()]);
-  return (
-    <PricingV2 paidReportPrice={paidPrice?.display ?? null}
-      estatePrice={estateFromPrice(table)} estateBands={estateBandLines(table)}
-      snapshotPrice={snapshotFromPrice(table)} snapshotBands={snapshotBandLines(table)} />
-  );
+// Every price comes from the shared pricing config (lib/pricing.ts), read in PricingV2.
+export default function PricingPage() {
+  return <PricingV2 />;
 }

@@ -13,12 +13,13 @@
  * negatives") is fine and intentionally not caught.
  */
 export const CLAIM_RULES = [
-  // ── The paid single-domain report's price (WS4, 2026-10-06) ─────────────────────
-  // One SKU, one price, stored once in the portal's products row and read by
-  // lib/paid-report-price.ts. A figure written into source or the CMS would drift from
-  // checkout, which is how the site came to show $495 while the portal charged $195.
-  { re: /\{\{PRICE:(19500|19900|29500|49500)\}\}/, why: "the paid report's price written into the site (read it from the portal: lib/paid-report-price.ts)" },
-  { re: /[$£€]\s?(195|199|295|495)(?![\d.,])/, why: "the paid report's price written into the site (read it from the portal: lib/paid-report-price.ts)" },
+  // ── Report prices (pricing ladder, 2026-10-08) ─────────────────────────────────
+  // Every price lives in the shared pricing config (@datazag/site-chrome/pricing, read
+  // through lib/pricing.ts). A figure written into source or the CMS drifts from checkout,
+  // which is how the site once showed $495 while the portal charged $195. Old and current
+  // ladder figures are both caught; source is also covered by checkPriceGuard.mjs.
+  { re: /\{\{PRICE:(19500|19900|29500|49500|9900|29900|79900|99500|199500|450000)\}\}/, why: "a report price written into the site (read it from lib/pricing.ts)" },
+  { re: /[$£€]\s?(99|195|199|295|299|495|799|995|1,?995|4,?500)(?![\d.,])/, why: "a report price written into the site (read it from lib/pricing.ts)" },
 
   { re: /(?:<|&lt;|≤)\s*1\s*%/, why: "the retired <1% claim" },
   { re: /less than 1\s*%/i, why: "the retired <1% claim (spelled out)" },

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const enquiryRoutes = [
   {
     title: "Report request",
-    text: "Start with a free Domain Exposure & DNS Hygiene Report, or discuss the Attack Surface & SaaS Discovery Report and the Estate Attack Surface Report for multiple domains, subsidiaries, suppliers or clients.",
+    text: "Start with a free exposure snapshot, or discuss the Domain infrastructure report and the Organization estate report for multiple domains, subsidiaries, suppliers or clients.",
   },
   {
     title: "Alerts and brand protection",
@@ -37,9 +37,9 @@ const enquiryTypes = [
   // question should not have to read to the bottom of a product list to find
   // the shortest route to a person.
   TECHNICAL_BRIEFING_ENQUIRY_TYPE,
-  "Free Domain Exposure & DNS Hygiene Report",
-  "Attack Surface & SaaS Discovery Report",
-  "Estate Attack Surface Report",
+  "Free exposure snapshot",
+  "Domain infrastructure report",
+  "Organization estate report",
   "Platform Alerts",
   "Infrastructure Alerts",
   "Brand Protection Alerts",

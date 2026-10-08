@@ -1,12 +1,12 @@
 // Report product names, one place (must match datazag_intelligence
-// healthreport/audiences.py). Single-domain names decided 2026-10-06; estate names
-// decided 2026-10-07: Level A is the portfolio snapshot, Level B the estate report,
-// sold in persona editions.
+// healthreport/audiences.py and the product names in the shared pricing config).
+// Names from the pricing ladder (PC, 2026-10-08). Editions are sold on the Portfolio
+// report (investor, insurer portfolio, MSSP) or the Organization estate report.
 
-export const FREE_REPORT_NAME = "Domain Exposure & DNS Hygiene Report";
-export const PAID_REPORT_NAME = "Attack Surface & SaaS Discovery Report";
-export const ESTATE_SNAPSHOT_NAME = "Portfolio Exposure Snapshot";
-export const ESTATE_REPORT_NAME = "Estate Attack Surface Report";
+export const FREE_REPORT_NAME = "Free exposure snapshot";
+export const PAID_REPORT_NAME = "Domain infrastructure report";
+export const ESTATE_SNAPSHOT_NAME = "Portfolio report";
+export const ESTATE_REPORT_NAME = "Organization estate report";
 export const ESTATE_EDITIONS = [
   "Investor Edition",
   "Insurer Edition (single risk)",
