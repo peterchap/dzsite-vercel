@@ -16,8 +16,7 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { SLUG, content } from "./copy";
-import { getPaidReportPrice, PAID_REPORT_BUY_URL } from "@/lib/paid-report-price";
-import { estateFromPrice, getPriceTable } from "@/lib/estate-prices";
+import { PAID_REPORT_BUY_URL, domainReportPrice, familyFrom } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Reports — Datazag",
@@ -40,7 +39,7 @@ const scopeEstateCta = scopeLive
 // Paid single-domain report checkout is env-gated the same way: when
 // NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA is "Buy report" (portal checkout);
 // default keeps the contact fallback. WS4 (2026-10-06): turn it on once the portal's
-// single SKU is live. The price shown comes from the portal (lib/paid-report-price.ts).
+// single SKU is live. The price shown comes from the shared pricing config (lib/pricing.ts).
 const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
 const domainRiskCta = checkoutLive
     ? { label: "Buy report", href: PAID_REPORT_BUY_URL }
@@ -62,9 +61,9 @@ const sampleHref: Record<string, string> = {
 
 const catalogueMeta: Record<string, { price?: string; cadence?: string; cta: { label: string; href: string }; secondaryCta?: { label: string; href: string } }> = {
   "free-health": { price: "Free", cta: { label: "Get your free report", href: "/#free-report" } },
-  // price filled in by ReportsPage from the portal; no figure is written here
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
   "domain-risk": { cadence: "one-off, by card", cta: domainRiskCta, secondaryCta: { label: "Get the free report first", href: "/#free-report" } },
-  // price filled in by ReportsPage from the portal's price table; no figure is written here
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
   "cross-estate": { cadence: "one-off, by estate size", cta: scopeEstateCta, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
   "partner-branded": { price: "By agreement", cta: { label: "Talk to us", href: contactHref } },
 };
@@ -128,7 +127,6 @@ function AnatomyColumn({ eyebrow, title, blocks }: { eyebrow: string; title: str
 
 export default async function ReportsPage() {
   const pageCopy = await sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300);
-  const [paidPrice, priceTable] = await Promise.all([getPaidReportPrice(), getPriceTable()]);
 
   const hero = getCopySection(pageCopy, "hero");
   const reportValue = getCopySection(pageCopy, "reportValue");
@@ -180,9 +178,9 @@ export default async function ReportsPage() {
   const resolvedReportTypes = pickItems(content.catalogue.items!, catalogue).map((f) => {
     const item = getCopyItem(catalogue, f.key);
     const meta = f.key === "domain-risk"
-      ? { ...catalogueMeta[f.key], price: paidPrice?.display }
+      ? { ...catalogueMeta[f.key], price: domainReportPrice() ?? undefined }
       : f.key === "cross-estate"
-      ? { ...catalogueMeta[f.key], price: estateFromPrice(priceTable) ?? undefined }
+      ? { ...catalogueMeta[f.key], price: familyFrom("org_estate_") ?? undefined }
       : catalogueMeta[f.key];
     return {
       key: f.key,
