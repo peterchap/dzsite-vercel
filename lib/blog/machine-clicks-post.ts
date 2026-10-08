@@ -4,6 +4,11 @@
  * pre-production guards read it before it reaches Sanity.
  * scripts/seedMachineClicksPost.ts converts it to Portable Text.
  *
+ * Pre-publish checklist (scripts/check-post.mjs, 2026-10-01): figures carry their
+ * date ({{CORP_MAIL_AS_OF}}) and link the Observatory card that defines them; one
+ * contextual CTA (/esp-partners; /datasets/email-suppression does not exist yet);
+ * and because vendors are named, the "count domains, not revenue" line.
+ *
  * Figures: corpus and population figures are tokens, resolved at request time
  * (lib/blog-tokens.ts). The group counts (32 entries; 8/7/10/7) come from the
  * Observatory evidence file, whose tests pin them — change them together.
@@ -95,11 +100,15 @@ export const MACHINE_CLICKS_POST = {
     { style: "normal", text: "Dedicated email security gateways are a small part of the picture." },
     {
       style: "normal",
-      text: "Datazag observes the inbound mail path for {{CORP_MAIL_DOMAINS}} corporate domains. Microsoft and Google together handle mail for {{CORP_MAIL_MS_GOOGLE_PCT}} of them. Dedicated gateway products account for {{CORP_MAIL_GATEWAY_PCT}}.",
+      text: "As of {{CORP_MAIL_AS_OF}}, Datazag observes the inbound mail path for {{CORP_MAIL_DOMAINS}} [corporate domains](https://observatory.datazag.com/email/providers#corp_mail_domains). Microsoft and Google together handle mail for {{CORP_MAIL_MS_GOOGLE_PCT}} of them. Dedicated gateway products account for {{CORP_MAIL_GATEWAY_PCT}}.",
     },
     {
       style: "normal",
       text: "So treating machine clicks as a secure email gateway problem misses most of the infrastructure that can produce them.",
+    },
+    {
+      style: "normal",
+      text: "These shares count domains. They are not statements about revenue, customer numbers or product quality.",
     },
 
     { style: "h2", text: "Microsoft needs separate treatment" },
@@ -153,6 +162,10 @@ export const MACHINE_CLICKS_POST = {
       text: "The distinction between pre-delivery and later analysis matters here. Trellix/FireEye documents live website analysis while allowing delivery to proceed. Other products also support asynchronous or post-delivery processing. A timing rule focused only on the first few seconds can miss that activity.",
     },
     { style: "normal", text: "Datazag supplies the infrastructure signal. Senders already hold the engagement signal." },
+    {
+      style: "normal",
+      text: "For ESPs, [email intelligence under your brand](/esp-partners) explains how the infrastructure data joins your engagement data.",
+    },
     {
       style: "normal",
       text: "Joining them gives a stronger basis for judging engagement. A rapid run of requests means more when the recipient's mail infrastructure has documented URL retrieval or deeper analysis.",

@@ -352,6 +352,7 @@ const CORPORATE_MAIL_TOKENS: Record<string, keyof CorporateMailFigures> = {
   "{{CORP_MAIL_DOMAINS}}": "domains",
   "{{CORP_MAIL_MS_GOOGLE_PCT}}": "microsoftGoogle",
   "{{CORP_MAIL_GATEWAY_PCT}}": "gateway",
+  "{{CORP_MAIL_AS_OF}}": "asOf",
 };
 
 /**
@@ -364,7 +365,11 @@ export function resolveCorporateMailTokens(text: string, figures: CorporateMailF
   if (!figures) return null;
   let out = text;
   for (const [token, key] of Object.entries(CORPORATE_MAIL_TOKENS)) {
-    out = out.split(token).join(String(figures[key] ?? ""));
+    if (!out.includes(token)) continue;
+    const value = figures[key];
+    // A token with no value drops the paragraph, like a missing figure: never "As of , …".
+    if (value === null || value === undefined || value === "") return null;
+    out = out.split(token).join(String(value));
   }
   return /\{\{CORP_MAIL_[A-Z_]+\}\}/.test(out) ? null : out;
 }
