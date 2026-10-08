@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { PAID_REPORT_BUY_URL, PRICING, SNAPSHOT_BUY_URL, launchedSkus, priceMarker, type Sku } from "@/lib/pricing";
 
@@ -120,7 +122,7 @@ export function PricingV2() {
               Start free, then buy the report that fits your estate. Every report is bought online and delivered by email.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
+              <Link href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</Link>
               <a href="#reports" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the reports</a>
             </div>
           </div>
@@ -158,7 +160,7 @@ export function PricingV2() {
                   </td>
                   <td className="py-4 pr-4 text-sm text-slate-300">Ongoing</td>
                   <td className="py-4 pr-4 text-sm text-white"><a href="#alerts" className="underline underline-offset-4">See below</a></td>
-                  <td className="py-4 text-right"><a href="/datasets" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Browse the datasets</a></td>
+                  <td className="py-4 text-right"><Link href="/datasets" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Browse the datasets</Link></td>
                 </tr>
               </tbody>
             </table>
@@ -205,7 +207,7 @@ export function PricingV2() {
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
                   <CurrencyText value={priceMarker(a)} /><span className="text-sm font-normal text-slate-400">{a.quoted ? "" : per(a.interval)}</span>
                 </p>
-                <a href="/alerts" className="mt-4 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">How alerts work →</a>
+                <Link href="/alerts" className="mt-4 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">How alerts work →</Link>
               </article>
             ))}
           </div>
@@ -225,7 +227,7 @@ export function PricingV2() {
               </article>
             ))}
           </div>
-          <a href="/datasets" className="mt-6 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">Browse the datasets →</a>
+          <Link href="/datasets" className="mt-6 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">Browse the datasets →</Link>
         </div>
       </section>
 
