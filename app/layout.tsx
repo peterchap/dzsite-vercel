@@ -31,6 +31,12 @@ export const metadata: Metadata = {
   title: "Datazag — Infrastructure Intelligence",
   description:
     "Infrastructure Intelligence for external domain, DNS, certificate, hosting, provider and platform risk.",
+  // Default share card (2026-10-08). Only the home page, research posts and dataset
+  // pages set their own openGraph, so 21 of 26 sitemap pages shared with no image.
+  // Title and description are left out on purpose: platforms then fall back to
+  // each page's own <title> and meta description rather than the site default.
+  openGraph: { type: "website", siteName: "Datazag", images: [{ url: "/og/home", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", images: ["/og/home"] },
 };
 
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";

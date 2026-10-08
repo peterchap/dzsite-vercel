@@ -21,7 +21,7 @@ import { estateFromPrice, getPriceTable } from "@/lib/estate-prices";
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "Start free with a Domain Exposure & DNS Hygiene Report on one domain. Go deeper with the Attack Surface & SaaS Discovery Report, or map the estate you own with an Estate Attack Surface Report.",
+    "Start free with a DNS hygiene report on one domain. Go deeper with attack surface reports for a domain or the whole estate you own.",
 };
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
