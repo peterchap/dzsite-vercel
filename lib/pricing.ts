@@ -12,8 +12,15 @@ export type { Sku, Subscription };
 
 export const PAID_REPORT_BUY_URL =
   process.env.NEXT_PUBLIC_DRR_BUY_URL || "https://portal.datazag.com/reports/buy?src=reports";
-export const SNAPSHOT_BUY_URL =
-  process.env.NEXT_PUBLIC_SNAPSHOT_BUY_URL || "https://portal.datazag.com/reports/snapshot?src=pricing";
+// The estate and portfolio reports are bought directly on the portal, without a scope or
+// a login (portal drizzle/0024). ?src= says which page sent the buyer.
+const PORTAL = (process.env.NEXT_PUBLIC_PORTAL_URL || "https://portal.datazag.com").replace(/\/$/, "");
+export function estateBuyUrl(src: string): string {
+  return `${PORTAL}/reports/estate?src=${encodeURIComponent(src)}`;
+}
+export function portfolioBuyUrl(src: string, edition?: "investor" | "insurer_portfolio" | "mssp"): string {
+  return `${PORTAL}/reports/portfolio?src=${encodeURIComponent(src)}${edition ? `&edition=${edition}` : ""}`;
+}
 
 /** A price for the currency widget: "Free", "Quoted", "{{PRICE:cents}}" or
  *  "From {{PRICE:cents}}" (CurrencyText converts the marker to the visitor's currency). */

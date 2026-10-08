@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { CurrencyText } from "@/components/ui/CurrencyText";
-import { PAID_REPORT_BUY_URL, PRICING, SNAPSHOT_BUY_URL, launchedSkus, priceMarker, type Sku } from "@/lib/pricing";
+import { PAID_REPORT_BUY_URL, PRICING, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
 // delivery time and unit definition comes from the shared pricing config
@@ -10,20 +10,19 @@ import { PAID_REPORT_BUY_URL, PRICING, SNAPSHOT_BUY_URL, launchedSkus, priceMark
 // markers are built from the config, never typed (scripts/guards/checkPriceGuard.mjs).
 
 const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
-const scopeLive = process.env.NEXT_PUBLIC_SCOPE_LIVE === "true";
-
-// Where each SKU starts. Estates start with the free scope: discovery is shown free, and
-// the tier follows the domains you include.
+// Where each SKU is bought. Every report is bought online, directly: the estate and
+// portfolio reports on their own buy pages (the free scope stays the way to see discovery
+// first). The tier follows the domains the buyer lists.
 const START: Record<string, { label: string; href: string }> = {
   free_snapshot: { label: "Get a free report", href: "/#free-report" },
   domain_report: checkoutLive
     ? { label: "Buy the report", href: PAID_REPORT_BUY_URL }
     : { label: "Contact us", href: "/contact" },
-  org_estate_10: { label: "Start with a free scope", href: scopeLive ? "/#free-scope" : "/contact" },
-  org_estate_50: { label: "Start with a free scope", href: scopeLive ? "/#free-scope" : "/contact" },
-  org_estate_250: { label: "Start with a free scope", href: scopeLive ? "/#free-scope" : "/contact" },
-  portfolio_25: { label: "Upload your portfolio", href: SNAPSHOT_BUY_URL },
-  portfolio_50: { label: "Upload your portfolio", href: SNAPSHOT_BUY_URL },
+  org_estate_10: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  org_estate_50: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  org_estate_250: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  portfolio_25: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
+  portfolio_50: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
   diligence: { label: "Request a diligence edition", href: "/contact?enquiry=diligence" },
 };
 

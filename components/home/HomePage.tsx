@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ObservatoryFiguresPanel } from "@/components/diagrams/ObservatoryPreview/ObservatoryPreview";
 import { LivingInternetBackdrop } from "@/components/story/diagrams/LivingInternetBackdrop";
-import { PAID_REPORT_BUY_URL, SNAPSHOT_BUY_URL, domainReportPrice, familyFrom } from "@/lib/pricing";
+import { PAID_REPORT_BUY_URL, domainReportPrice, estateBuyUrl, familyFrom, portfolioBuyUrl } from "@/lib/pricing";
 import { asOfLabel } from "@/lib/live-activity-guard";
 import { loadObservatoryFigures, OBSERVATORY_URL } from "@/lib/observatory-figures";
 import { getObservatoryHealth } from "@/lib/observatory-health";
@@ -354,8 +354,8 @@ export default async function HomePage() {
             link="Buy the full report"
             product="paid_report"
           />
-          <PriceCard title={ESTATE_SNAPSHOT_NAME} lines={[snapshotFrom ?? "Priced by number of organizations"]} href={SNAPSHOT_BUY_URL} link="Order a snapshot" product="snapshot" />
-          <PriceCard title={ESTATE_REPORT_NAME} lines={[estateFrom ?? "Priced by number of domains"]} href={scopeLive ? "#free-scope" : ESTATE_HREF} link={scopeLive ? "Get a free estate scope" : "Scope your estate"} product="estate" />
+          <PriceCard title={ESTATE_SNAPSHOT_NAME} lines={[snapshotFrom ?? "Priced by number of organizations"]} href={portfolioBuyUrl("home")} link="Buy the report" product="snapshot" />
+          <PriceCard title={ESTATE_REPORT_NAME} lines={[estateFrom ?? "Priced by number of domains"]} href={estateBuyUrl("home")} link="Buy the report" product="estate" />
           <PriceCard title={PRICING.datasets.title} lines={[PRICING.datasets.text]} href={PRICING.datasets.href} link={PRICING.datasets.link} product="datasets" />
         </div>
 
