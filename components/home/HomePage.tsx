@@ -9,8 +9,9 @@ import { getObservatoryHealth } from "@/lib/observatory-health";
 import { getPaidReportPrice, PAID_REPORT_BUY_URL } from "@/lib/paid-report-price";
 import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME, FREE_REPORT_NAME, PAID_REPORT_NAME } from "@/lib/report-names";
 import { getSiteStats } from "@/lib/site-stats-live";
-import { AUDIENCES, COVERAGE, DELIVERY, EVIDENCE, FREE_REPORT, HERO, OBSERVATORY, PRICING } from "./copy";
+import { AUDIENCES, COVERAGE, DELIVERY, EVIDENCE, FREE_REPORT, FREE_SCOPE, HERO, OBSERVATORY, PRICING } from "./copy";
 import { FreeReportForm } from "./FreeReportForm";
+import { FreeScopeForm } from "./FreeScopeForm";
 import { SampleTabs, type Sample } from "./SampleTabs";
 import { TrackedLink } from "./TrackedLink";
 
@@ -23,6 +24,7 @@ import { TrackedLink } from "./TrackedLink";
  *   1 Hero                 who it serves, what it does, two buttons, live stat
  *   2 Audiences            five tiles, the first four matching the hero list
  *   3 Free report          inline form, handed to the portal's free-report flow
+ *   3b Free estate scope   inline form, handed to the portal's /scope (same journey)
  *   4 Evidence             real sample renders with downloads
  *   5 Coverage and method  published stats with definitions, method, cadence
  *   6 Delivery             only channels that are live today
@@ -110,6 +112,7 @@ export default async function HomePage() {
   const cap = (s: string | null) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : null);
   const snapshotFrom = cap(snapshotFromPrice(table));
   const estateFrom = cap(estateFromPrice(table));
+  const estateFromInline = estateFromPrice(table);
 
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
@@ -211,6 +214,44 @@ export default async function HomePage() {
           </div>
         </div>
       </Section>
+
+      {/* 3b · Free estate scope: the estate report's lead magnet, the same journey as the
+          free report. The #free-scope anchor is where the portal's return_to lands. */}
+      {scopeLive ? (
+        <Section id="free-scope">
+          <div className="grid gap-10 rounded-[2rem] border border-white/10 bg-[#07102b]/85 p-5 md:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div>
+              <p className={kickerClass}>{FREE_SCOPE.kicker}</p>
+              <h2 className={h2Class}>{FREE_SCOPE.title}</h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">{FREE_SCOPE.intro}</p>
+              <div className="mt-6">
+                <FreeScopeForm location="home" />
+              </div>
+              <p className="mt-5 text-sm text-slate-300">
+                Need the full picture?{" "}
+                {estateFromInline ? <>The {ESTATE_REPORT_NAME} is {estateFromInline}, priced by the domains the scope finds. </> : <>The scope prices the {ESTATE_REPORT_NAME} for your estate. </>}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">What the free scope shows</p>
+              <ul className="mt-4 grid gap-3">
+                {FREE_SCOPE.bullets.map((b) => (
+                  <li key={b.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                    <p className="font-semibold text-cyan-100">{b.title}</p>
+                    <p className="mt-1 text-sm leading-6 text-slate-300">{b.text}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-sm text-slate-400">
+                Not ready yet?{" "}
+                <Link href="/reports#sample-reports" className={textLink}>
+                  {FREE_SCOPE.sampleLink}
+                </Link>
+              </p>
+            </div>
+          </div>
+        </Section>
+      ) : null}
 
       {/* 4 · Evidence and sample outputs */}
       <Section id="samples">
@@ -320,7 +361,7 @@ export default async function HomePage() {
             product="paid_report"
           />
           <PriceCard title={ESTATE_SNAPSHOT_NAME} lines={[snapshotFrom ?? "Priced by number of organizations"]} href={SNAPSHOT_BUY_URL} link="Order a snapshot" product="snapshot" />
-          <PriceCard title={ESTATE_REPORT_NAME} lines={[estateFrom ?? "Priced by number of domains"]} href={ESTATE_HREF} link="Scope your estate" product="estate" />
+          <PriceCard title={ESTATE_REPORT_NAME} lines={[estateFrom ?? "Priced by number of domains"]} href={scopeLive ? "#free-scope" : ESTATE_HREF} link={scopeLive ? "Get a free estate scope" : "Scope your estate"} product="estate" />
           <PriceCard title={PRICING.datasets.title} lines={[PRICING.datasets.text]} href={PRICING.datasets.href} link={PRICING.datasets.link} product="datasets" />
         </div>
 

@@ -85,6 +85,19 @@ export const FREE_REPORT = {
   sampleLink: "View a sample report",
 };
 
+export const FREE_SCOPE = {
+  kicker: "Free Estate Scope",
+  title: "See the whole estate, not just one domain.",
+  intro:
+    "For one organization or a portfolio of up to 25: an insured, an acquisition target, your portfolio companies or your clients. We grade every domain you declare and email you the scope.",
+  bullets: [
+    { title: "Every declared domain graded", text: "Email security, registration, certificates and exposed hosts, with the top issue for each." },
+    { title: "The estate you didn't declare", text: "Domains linked by certificates, mail and registration: counted, with three named as proof." },
+    { title: "One finding in full", text: "The evidence, the fix and how to check it, the way every finding in the full report reads." },
+  ],
+  sampleLink: "View a sample estate report",
+};
+
 export const EVIDENCE = {
   kicker: "Evidence and sample outputs",
   title: "See exactly what you get.",

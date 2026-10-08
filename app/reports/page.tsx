@@ -1,4 +1,5 @@
 import { ESTATE_REPORT_NAME } from "@/lib/report-names";
+import { FreeScopeForm } from "@/components/home/FreeScopeForm";
 import type { Metadata } from "next";
 import type React from "react";
 
@@ -33,9 +34,8 @@ export const metadata: Metadata = {
 // NOTE: these CTAs carry go-live logic and are intentionally NOT CMS-editable.
 const contactHref = "/contact";
 const scopeLive = process.env.NEXT_PUBLIC_SCOPE_LIVE === "true";
-const scopePortalUrl = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.datazag.com/scope?src=reports";
 const scopeEstateCta = scopeLive
-    ? { label: "Scope my estate", href: scopePortalUrl }
+    ? { label: "Get a free estate scope", href: "#free-scope" }
     : { label: "Talk to us about your estate", href: contactHref };
 // Paid single-domain report checkout is env-gated the same way: when
 // NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA is "Buy report" (portal checkout);
@@ -257,10 +257,21 @@ export default async function ReportsPage() {
               </article>
             ))}
           </div>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{scopeEstateCta.label}</a>
-            <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the sample</a>
-          </div>
+          {scopeLive ? (
+            // The free Estate Scope, the same journey as the free report: this form hands
+            // off to the portal's /scope confirm page. return_to lands on #free-scope.
+            <div id="free-scope" className="mx-auto mt-8 max-w-2xl scroll-mt-24">
+              <FreeScopeForm location="reports" />
+              <p className="mt-3 text-center text-sm text-slate-400">
+                <a href={crossEstateSampleHref} className="underline underline-offset-4 hover:text-white">See the sample</a>
+              </p>
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{scopeEstateCta.label}</a>
+              <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the sample</a>
+            </div>
+          )}
         </div>
       </section>
 
