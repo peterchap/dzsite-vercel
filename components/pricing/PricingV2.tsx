@@ -44,7 +44,7 @@ const reports = [
     cadence: "one-off, by estate size",
     description: "Every domain your organization owns: a free scope finds them, then each is assessed domain by domain, with organization summaries and a remediation worksheet. The price follows the number of domains the scope finds.",
     features: ["Multiple domains", "Estate discovery", "Domain-level detail", "Systemic weakness analysis", "Remediation worksheet"],
-    cta: "Scope my estate",
+    cta: "Get a free estate scope",
     href: SCOPE_URL,
   },
   {
