@@ -7,7 +7,7 @@ import HomePageContent from "@/components/home/HomePage";
 // doc no longer drives this page; its SEO fields carried the previous positioning.
 const TITLE = "Datazag — Internet infrastructure intelligence you can act on";
 const DESCRIPTION =
-  "Pre-compromise intelligence for MSSPs, email platforms, cyber insurers and data teams. Track domains, DNS, certificates and routing. Start with a free domain health report.";
+  "Pre-compromise intelligence on domains, DNS, certificates and routing for MSSPs, email platforms, insurers and data teams. Start with a free report.";
 
 export async function generateMetadata(): Promise<Metadata> {
   // The layout's canonical "./" resolves to "/index" on the root route, so the
