@@ -304,7 +304,7 @@ export default async function ReportsPage() {
             body={copyText(anatomy?.body, content.anatomy.body!)}
           />
           <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:items-start">
-            <AnatomyColumn eyebrow="Single domain" title="Attack Surface & SaaS Discovery Report" blocks={domainReportAnatomy} />
+            <AnatomyColumn eyebrow="Single domain" title="Domain infrastructure report" blocks={domainReportAnatomy} />
             <AnatomyColumn eyebrow="Multi-domain" title={ESTATE_REPORT_NAME} blocks={crossEstateAnatomy} />
           </div>
         </div>

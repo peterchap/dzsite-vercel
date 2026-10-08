@@ -4,12 +4,12 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "Sample Reports — Datazag",
   description:
-    "Datazag sample reports showing the anatomy of a free Domain Exposure & DNS Hygiene Report and an Estate Attack Surface Report.",
+    "Datazag sample reports showing the anatomy of a free exposure snapshot and an Organization estate report.",
 };
 
 const domainSummary = [
   ["Domain", "example-business.co.uk"],
-  ["Report type", "Free Domain Exposure & DNS Hygiene Report"],
+  ["Report type", "Free exposure snapshot"],
   ["Primary exposure", "Microsoft 365 and payment-platform lures relevant to visible platform footprint"],
   ["DNS defense", "DMARC present but not enforcing; SPF needs review"],
   ["First action", "Harden email authentication and review stale DNS records"],
@@ -40,7 +40,7 @@ const domainSections = [
 
 const portfolioSummary = [
   ["Estate", "42 domains across brands, subsidiaries and legacy properties"],
-  ["Report type", "Estate Attack Surface Report"],
+  ["Report type", "Organization estate report"],
   ["Systemic issue", "DMARC non-enforcement repeated across 61% of active domains"],
   ["Operational risk", "Inconsistent mail and DNS ownership across business units"],
   ["Program priority", "Standardize email authentication and review exposed platform dependencies"],
@@ -124,7 +124,7 @@ export default function SampleReportsPage() {
       <section id="domain-health" className="border-t border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample free report</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Free Domain Exposure & DNS Hygiene Report</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Free exposure snapshot</h2>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A one-domain report showing platform-led threat exposure, DNS defense gaps and first remediation priorities.</p>
           <div className="mt-10"><SummaryGrid items={domainSummary} /></div>
           <div className="mt-10"><ReportSections sections={domainSections} /></div>
@@ -134,7 +134,7 @@ export default function SampleReportsPage() {
       <section id="cross-estate" className="border-t border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Sample paid report</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Estate Attack Surface Report</h2>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">Organization estate report</h2>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">A paid report showing individual domain findings, repeated weaknesses and systemic risk across the estate an organization owns.</p>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
             <a href="/samples/estate-attack-surface-report.html" className="font-semibold text-cyan-100 hover:text-cyan-50">Open the full sample report (the Acme Group render) →</a>

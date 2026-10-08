@@ -48,7 +48,7 @@ export async function GET() {
     "",
     "## What Datazag provides",
     "",
-    link("Reports", "/reports", "a free Domain Exposure & DNS Hygiene Report on one domain, an Attack Surface & SaaS Discovery Report, and an Estate Attack Surface Report that maps the estate an organization owns."),
+    link("Reports", "/reports", "a free exposure snapshot on one domain, a Domain infrastructure report, and an Organization estate report that maps the estate an organization owns."),
     link("Alerts", "/alerts", "threat intelligence as alerts: infrastructure aimed at a customer's platforms, brands and suppliers, sent with the evidence."),
     link("Brand protection", "/brand-protection", "the infrastructure using a brand, as a case that updates as evidence appears."),
     link("Documentation", "/docs", "reports and cloud datasets."),

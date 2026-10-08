@@ -1,5 +1,4 @@
 import { CurrencyText } from "@/components/ui/CurrencyText";
-import { FREE_REPORT_NAME } from "@/lib/report-names";
 import { PAID_REPORT_BUY_URL, PRICING, SNAPSHOT_BUY_URL, launchedSkus, priceMarker, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
@@ -88,7 +87,7 @@ function LadderRow({ s }: { s: Sku }) {
   return (
     <tr className="border-b border-white/10 align-top">
       <td className="py-4 pr-4">
-        <p className="font-semibold text-white">{free ? `${s.product} (${FREE_REPORT_NAME})` : s.product}</p>
+        <p className="font-semibold text-white">{s.product}</p>
         <p className="mt-1 text-sm leading-6 text-slate-400">{s.scope}</p>
       </td>
       <td className="py-4 pr-4 text-sm text-slate-300">{s.delivery}</td>
