@@ -1,4 +1,4 @@
-import { ESTATE_REPORT_NAME } from "@/lib/report-names";
+import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME, FREE_REPORT_NAME, PAID_REPORT_NAME } from "@/lib/report-names";
 import { FreeScopeForm } from "@/components/home/FreeScopeForm";
 import type { Metadata } from "next";
 import type React from "react";
@@ -16,7 +16,7 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { SLUG, content } from "./copy";
-import { PAID_REPORT_BUY_URL, domainReportPrice, familyFrom } from "@/lib/pricing";
+import { PAID_REPORT_BUY_URL, domainReportPrice, estateBuyUrl, familyFrom, portfolioBuyUrl } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Reports — Datazag",
@@ -64,8 +64,21 @@ const catalogueMeta: Record<string, { price?: string; cadence?: string; cta: { l
   // price filled in by ReportsPage from the shared pricing config; no figure is written here
   "domain-risk": { cadence: "one-off, by card", cta: domainRiskCta, secondaryCta: { label: "Get the free report first", href: "/#free-report" } },
   // price filled in by ReportsPage from the shared pricing config; no figure is written here
-  "cross-estate": { cadence: "one-off, by estate size", cta: scopeEstateCta, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
-  "partner-branded": { price: "By agreement", cta: { label: "Talk to us", href: contactHref } },
+  "cross-estate": { cadence: "one-off, by estate size", cta: { label: "Buy the report", href: estateBuyUrl("reports") }, secondaryCta: scopeEstateCta },
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
+  "portfolio": { cadence: "one-off, by portfolio size", cta: { label: "Buy the report", href: portfolioBuyUrl("reports") }, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
+  // The MSSP edition of the portfolio report: white-labelled, bought online like the rest.
+  "partner-branded": { cadence: "one-off, by client count", cta: { label: "Buy under your brand", href: portfolioBuyUrl("reports", "mssp") } },
+};
+
+// The product a catalog card sells, by the shared names (lib/report-names.ts, the pricing
+// ladder's names). A card's title is always this name, never the CMS's copy of it, so a
+// rename lands everywhere at once.
+const catalogueName: Record<string, string> = {
+  "free-health": FREE_REPORT_NAME,
+  "domain-risk": PAID_REPORT_NAME,
+  "cross-estate": ESTATE_REPORT_NAME,
+  "portfolio": ESTATE_SNAPSHOT_NAME,
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -175,16 +188,23 @@ export default async function ReportsPage() {
   const domainReportAnatomy = resolveAnatomyBlocks(pickItems(content.anatomy.items!.filter((i) => i.key.startsWith("drr-")), anatomy));
   const crossEstateAnatomy = resolveAnatomyBlocks(pickItems(content.anatomy.items!.filter((i) => i.key.startsWith("ce-")), anatomy));
 
-  const resolvedReportTypes = pickItems(content.catalogue.items!, catalogue).map((f) => {
+  // Every product the ladder sells has a card, whatever the CMS lists (pickItems keeps
+  // only the CMS's keys): a card the CMS does not have yet is added from copy.ts.
+  const picked = pickItems(content.catalogue.items!, catalogue);
+  const catalogueCards = [...picked, ...content.catalogue.items!.filter((i) => catalogueName[i.key] && !picked.includes(i))]
+    .sort((a, b) => content.catalogue.items!.indexOf(a) - content.catalogue.items!.indexOf(b));
+  const resolvedReportTypes = catalogueCards.map((f) => {
     const item = getCopyItem(catalogue, f.key);
     const meta = f.key === "domain-risk"
       ? { ...catalogueMeta[f.key], price: domainReportPrice() ?? undefined }
       : f.key === "cross-estate"
       ? { ...catalogueMeta[f.key], price: familyFrom("org_estate_") ?? undefined }
+      : f.key === "portfolio" || f.key === "partner-branded"
+      ? { ...catalogueMeta[f.key], price: familyFrom("portfolio_") ?? undefined }
       : catalogueMeta[f.key];
     return {
       key: f.key,
-      title: copyText(item?.title, f.title!),
+      title: catalogueName[f.key] ?? copyText(item?.title, f.title!),
       note: f.status ? copyText(item?.status, f.status) : undefined,
       text: copyText(item?.text, f.text!),
       ...meta,
@@ -319,7 +339,7 @@ export default async function ReportsPage() {
           />
           {/* Fixed rows (note / title / text / price / CTAs) so every column
               lines up horizontally regardless of how much copy each card has. */}
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {resolvedReportTypes.map((item) => (
               <article key={item.key} className="flex h-full flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <p className="min-h-[1.25rem] text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200/70">{item.note ?? " "}</p>
