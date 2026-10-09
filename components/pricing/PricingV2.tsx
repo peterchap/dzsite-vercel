@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { CurrencyText } from "@/components/ui/CurrencyText";
-import { PAID_REPORT_BUY_URL, PRICING, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
+import { PAID_REPORT_BUY_URL, PRICING, diligenceRequestUrl, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
 // delivery time and unit definition comes from the shared pricing config
@@ -23,7 +23,7 @@ const START: Record<string, { label: string; href: string }> = {
   org_estate_250: { label: "Buy the report", href: estateBuyUrl("pricing") },
   portfolio_25: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
   portfolio_50: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
-  diligence: { label: "Request a diligence edition", href: "/contact?enquiry=diligence" },
+  diligence: { label: "Request a diligence edition", href: diligenceRequestUrl("pricing") },
 };
 
 const includes = [
