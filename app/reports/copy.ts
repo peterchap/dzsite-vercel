@@ -33,7 +33,7 @@ export const content: PageContent = {
       { key: "tier-possible", title: "Possible", text: "Medium-confidence: review these" },
       { key: "tier-defensive", title: "Defensive", text: "Consider recovering or monitoring" },
       { key: "estate-discovery", title: "Estate discovery", text: "You declare the domains you know. Discovery walks certificate, mail and registration relationships to evidence the ones you don't — sorted into four confidence tiers (declared, strongly associated, possible, defensive) with the connection shown for every domain. No guesses; every finding carries its evidence." },
-      { key: "systemic-risk", title: "Systemic risk", text: "Some risk only exists across domains: how much of the estate depends on one provider (weighted by who that provider is — a majority on a hyperscale platform is a different risk from the same share on a commodity registrar), which weaknesses repeat across segments, which acquisitions sit below the group standard, and what expires next. The Cross-Estate report is built to show exactly this layer." },
+      { key: "systemic-risk", title: "Systemic risk", text: "Some risk only exists across domains: how much of the estate depends on one provider (weighted by who that provider is — a majority on a hyperscale platform is a different risk from the same share on a commodity registrar), which weaknesses repeat across segments, which acquisitions sit below the group standard, and what expires next. The Organization estate report is built to show exactly this layer." },
     ],
   },
   sampleReports: {
