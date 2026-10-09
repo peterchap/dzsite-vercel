@@ -44,6 +44,7 @@ import { SiteStatsProvider } from "@/components/providers/SiteStatsProvider";
 import { getSiteStats } from "@/lib/site-stats-live";
 import { organizationJsonLd } from "@/lib/organization";
 import { SiteAnalytics } from "@datazag/site-chrome";
+import { FirstTouchCapture } from "@/components/attribution/FirstTouchCapture";
 
 export default async function RootLayout({
   children,
@@ -65,6 +66,8 @@ export default async function RootLayout({
         </SiteStatsProvider>
         {/* GA4, shared with portal.datazag.com; loads only after cookie consent. */}
         <SiteAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        {/* First-touch attribution: written only after the same consent (shared with the portal). */}
+        <FirstTouchCapture />
       </body>
     </html>
   );
