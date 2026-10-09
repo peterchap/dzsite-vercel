@@ -18,6 +18,10 @@ const PORTAL = (process.env.NEXT_PUBLIC_PORTAL_URL || "https://portal.datazag.co
 export function estateBuyUrl(src: string): string {
   return `${PORTAL}/reports/estate?src=${encodeURIComponent(src)}`;
 }
+/** The diligence edition is quoted: its request opens a deal on the portal (Phase 7). */
+export function diligenceRequestUrl(src: string): string {
+  return `${PORTAL}/diligence?src=${encodeURIComponent(src)}`;
+}
 export function portfolioBuyUrl(src: string, edition?: "investor" | "insurer_portfolio" | "mssp"): string {
   return `${PORTAL}/reports/portfolio?src=${encodeURIComponent(src)}${edition ? `&edition=${edition}` : ""}`;
 }
