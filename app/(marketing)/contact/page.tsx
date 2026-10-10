@@ -10,21 +10,21 @@ import {
 export const metadata: Metadata = {
   title: "Contact — Datazag",
   description:
-    "Contact Datazag about reports, alerts, brand protection, API access, cloud datasets, partnerships and marketplace private offers.",
+    "Contact Datazag about reports, alerts, brand protection, Microsoft Sentinel, cloud datasets, partnerships and marketplace private offers.",
 };
 
 const enquiryRoutes = [
   {
     title: "Report request",
-    text: "Start with a free Domain Health Report, or discuss the paid Domain Risk Report and the Cross-Estate Domain Risk Report for multiple domains, subsidiaries, suppliers or clients.",
+    text: "Start with a free exposure snapshot, or discuss the Domain infrastructure report and the Organization estate report for multiple domains, subsidiaries, suppliers or clients.",
   },
   {
     title: "Alerts and brand protection",
-    text: "Scope platform alerts, keyword alerts or staged brand-protection alerts with evidence packs, abuse contacts and de-escalation controls.",
+    text: "Scope platform alerts, infrastructure alerts or staged brand-protection alerts with evidence packs, abuse contacts and de-escalation controls.",
   },
   {
-    title: "API and data products",
-    text: "Discuss API enrichment, sample schemas, cloud data shares, marketplace routes, refresh cadence and permitted use.",
+    title: "Data products and Sentinel",
+    text: "Discuss sample schemas, cloud data shares, marketplace routes, refresh cadence and permitted use, or the Microsoft Sentinel feed.",
   },
   {
     title: "Partner route",
@@ -37,14 +37,15 @@ const enquiryTypes = [
   // question should not have to read to the bottom of a product list to find
   // the shortest route to a person.
   TECHNICAL_BRIEFING_ENQUIRY_TYPE,
-  "Free Domain Health Report",
-  "Domain Risk Report",
-  "Cross-Estate Domain Risk Report",
+  "Free exposure snapshot",
+  "Domain infrastructure report",
+  "Organization estate report",
   "Platform Alerts",
-  "Keyword Alerts",
+  "Infrastructure Alerts",
   "Brand Protection Alerts",
-  "Intelligence API",
+  "Microsoft Sentinel integration",
   "Cloud Data Products",
+  "Insurer design partner",
   "MSSP / MDR partnership",
   "ESP / platform partnership",
   "Marketplace / private offer",
@@ -54,7 +55,7 @@ const enquiryTypes = [
 const nextSteps = [
   {
     title: "We route the inquiry",
-    text: "The inquiry type tells us whether this is a report, alerts, brand protection, API, data product, partner or marketplace conversation.",
+    text: "The inquiry type tells us whether this is a report, alerts, brand protection, Sentinel, data product, partner or marketplace conversation.",
   },
   {
     title: "We check the scope",
@@ -62,15 +63,15 @@ const nextSteps = [
   },
   {
     title: "We suggest the right path",
-    text: "That may be a free report, sample report, sample schema, alert scope, API evaluation, partner discussion or private marketplace offer.",
+    text: "That may be a free report, sample report, sample schema, alert scope, Sentinel trial, partner discussion or private marketplace offer.",
   },
 ];
 
 const helpfulContext = [
   ["For reports", "Share the domain, number of domains, portfolio type or whether the request is for your organization, a client, supplier or acquisition target."],
   ["For alerts", "Share the platforms, brands, keywords or customer workflows you want monitored and where alerts should be delivered."],
-  ["For API or data", "Share expected volume, desired fields, delivery format, warehouse/lakehouse environment and refresh requirements."],
-  ["For partners", "Share the service model, customer segment, rough client count and whether you need white-label, API, alerts or data-share delivery."],
+  ["For data", "Share expected volume, desired fields, delivery format, warehouse/lakehouse environment and refresh requirements."],
+  ["For partners", "Share the service model, customer segment, rough client count and whether you need white-label, alerts or data-share delivery."],
 ];
 
 const errorMessages: Record<string, string> = {
@@ -116,10 +117,11 @@ export default async function ContactPage({
               <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Contact Datazag</p>
               <h1 className="mt-8 max-w-4xl text-5xl font-semibold tracking-tight text-white md:text-7xl">Tell us which route fits your use case.</h1>
               <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-                Use this page for report requests, alerting, brand protection, API access, cloud data products, marketplace access or partner discussions.
+                Use this page for report requests, alerting, brand protection, Microsoft Sentinel, cloud data products, marketplace access or partner discussions. Prefer email? Write to{" "}
+                <a href="mailto:sales@datazag.com" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">sales@datazag.com</a>.
               </p>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
-                The more context you provide, the easier it is to suggest the right next step: a free report, sample report, alert scope, API evaluation, sample schema or partner conversation.
+                The more context you provide, the easier it is to suggest the right next step: a free report, sample report, alert scope, sample schema or partner conversation.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a href="/#free-report" className="inline-flex items-center justify-center rounded-full border border-cyan-300/50 bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">

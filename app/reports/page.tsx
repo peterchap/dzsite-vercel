@@ -1,3 +1,5 @@
+import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME, FREE_REPORT_NAME, PAID_REPORT_NAME } from "@/lib/report-names";
+import { FreeScopeForm } from "@/components/home/FreeScopeForm";
 import type { Metadata } from "next";
 import type React from "react";
 
@@ -14,11 +16,12 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { SLUG, content } from "./copy";
+import { PAID_REPORT_BUY_URL, domainReportPrice, estateBuyUrl, familyFrom, portfolioBuyUrl } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Reports — Datazag",
   description:
-    "Start free with a Domain Health Report on one domain. Go deeper with a Domain Risk Report, or map the estate you own with a Cross-Estate Domain Risk Report.",
+    "Start free with a DNS hygiene report on one domain. Go deeper with attack surface reports for a domain or the whole estate you own.",
 };
 
 // CTA routing per the amended WU19/WU20 buying model: the Domain Risk Report
@@ -30,19 +33,18 @@ export const metadata: Metadata = {
 // NOTE: these CTAs carry go-live logic and are intentionally NOT CMS-editable.
 const contactHref = "/contact";
 const scopeLive = process.env.NEXT_PUBLIC_SCOPE_LIVE === "true";
-const scopePortalUrl = process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.datazag.com/scope?src=reports";
 const scopeEstateCta = scopeLive
-    ? { label: "Scope my estate", href: scopePortalUrl }
+    ? { label: "Get a free estate scope", href: "#free-scope" }
     : { label: "Talk to us about your estate", href: contactHref };
-// Domain Risk Report checkout (WU16) is env-gated the same way: when
-// NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA flips from "Contact us" to a
-// direct buy on the portal; default keeps the WU17 contact fallback.
+// Paid single-domain report checkout is env-gated the same way: when
+// NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE=true the CTA is "Buy report" (portal checkout);
+// default keeps the contact fallback. WS4 (2026-10-06): turn it on once the portal's
+// single SKU is live. The price shown comes from the shared pricing config (lib/pricing.ts).
 const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
-const drrBuyUrl = process.env.NEXT_PUBLIC_DRR_BUY_URL || "https://portal.datazag.com/reports/buy?src=reports";
 const domainRiskCta = checkoutLive
-    ? { label: "Buy the Domain Risk Report", href: drrBuyUrl }
+    ? { label: "Buy report", href: PAID_REPORT_BUY_URL }
     : { label: "Contact us", href: contactHref };
-const crossEstateSampleHref = "/samples/cross-estate-domain-risk-report.html";
+const crossEstateSampleHref = "/samples/estate-attack-surface-report.html";
 
 // Structural / transactional metadata that stays in code (copy lives in copy.ts).
 const tierAccent: Record<string, string> = {
@@ -59,9 +61,24 @@ const sampleHref: Record<string, string> = {
 
 const catalogueMeta: Record<string, { price?: string; cadence?: string; cta: { label: string; href: string }; secondaryCta?: { label: string; href: string } }> = {
   "free-health": { price: "Free", cta: { label: "Get your free report", href: "/#free-report" } },
-  "domain-risk": { price: "From {{PRICE:49500}}", cadence: "per report", cta: domainRiskCta, secondaryCta: { label: "See pricing", href: "/pricing#reports" } },
-  "cross-estate": { price: "Banded", cadence: "by domain count", cta: scopeEstateCta, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
-  "partner-branded": { price: "By agreement", cta: { label: "Talk to us", href: contactHref } },
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
+  "domain-risk": { cadence: "one-off, by card", cta: domainRiskCta, secondaryCta: { label: "Get the free report first", href: "/#free-report" } },
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
+  "cross-estate": { cadence: "one-off, by estate size", cta: { label: "Buy the report", href: estateBuyUrl("reports") }, secondaryCta: scopeEstateCta },
+  // price filled in by ReportsPage from the shared pricing config; no figure is written here
+  "portfolio": { cadence: "one-off, by portfolio size", cta: { label: "Buy the report", href: portfolioBuyUrl("reports") }, secondaryCta: { label: "See the sample", href: crossEstateSampleHref } },
+  // The MSSP edition of the portfolio report: white-labelled, bought online like the rest.
+  "partner-branded": { cadence: "one-off, by client count", cta: { label: "Buy under your brand", href: portfolioBuyUrl("reports", "mssp") } },
+};
+
+// The product a catalog card sells, by the shared names (lib/report-names.ts, the pricing
+// ladder's names). A card's title is always this name, never the CMS's copy of it, so a
+// rename lands everywhere at once.
+const catalogueName: Record<string, string> = {
+  "free-health": FREE_REPORT_NAME,
+  "domain-risk": PAID_REPORT_NAME,
+  "cross-estate": ESTATE_REPORT_NAME,
+  "portfolio": ESTATE_SNAPSHOT_NAME,
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -171,12 +188,23 @@ export default async function ReportsPage() {
   const domainReportAnatomy = resolveAnatomyBlocks(pickItems(content.anatomy.items!.filter((i) => i.key.startsWith("drr-")), anatomy));
   const crossEstateAnatomy = resolveAnatomyBlocks(pickItems(content.anatomy.items!.filter((i) => i.key.startsWith("ce-")), anatomy));
 
-  const resolvedReportTypes = pickItems(content.catalogue.items!, catalogue).map((f) => {
+  // Every product the ladder sells has a card, whatever the CMS lists (pickItems keeps
+  // only the CMS's keys): a card the CMS does not have yet is added from copy.ts.
+  const picked = pickItems(content.catalogue.items!, catalogue);
+  const catalogueCards = [...picked, ...content.catalogue.items!.filter((i) => catalogueName[i.key] && !picked.includes(i))]
+    .sort((a, b) => content.catalogue.items!.indexOf(a) - content.catalogue.items!.indexOf(b));
+  const resolvedReportTypes = catalogueCards.map((f) => {
     const item = getCopyItem(catalogue, f.key);
-    const meta = catalogueMeta[f.key];
+    const meta = f.key === "domain-risk"
+      ? { ...catalogueMeta[f.key], price: domainReportPrice() ?? undefined }
+      : f.key === "cross-estate"
+      ? { ...catalogueMeta[f.key], price: familyFrom("org_estate_") ?? undefined }
+      : f.key === "portfolio" || f.key === "partner-branded"
+      ? { ...catalogueMeta[f.key], price: familyFrom("portfolio_") ?? undefined }
+      : catalogueMeta[f.key];
     return {
       key: f.key,
-      title: copyText(item?.title, f.title!),
+      title: catalogueName[f.key] ?? copyText(item?.title, f.title!),
       note: f.status ? copyText(item?.status, f.status) : undefined,
       text: copyText(item?.text, f.text!),
       ...meta,
@@ -247,10 +275,21 @@ export default async function ReportsPage() {
               </article>
             ))}
           </div>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{scopeEstateCta.label}</a>
-            <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the sample</a>
-          </div>
+          {scopeLive ? (
+            // The free Estate Scope, the same journey as the free report: this form hands
+            // off to the portal's /scope confirm page. return_to lands on #free-scope.
+            <div id="free-scope" className="mx-auto mt-8 max-w-2xl scroll-mt-24">
+              <FreeScopeForm location="reports" />
+              <p className="mt-3 text-center text-sm text-slate-400">
+                <a href={crossEstateSampleHref} className="underline underline-offset-4 hover:text-white">See the sample</a>
+              </p>
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{scopeEstateCta.label}</a>
+              <a href={crossEstateSampleHref} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the sample</a>
+            </div>
+          )}
         </div>
       </section>
 
@@ -285,8 +324,8 @@ export default async function ReportsPage() {
             body={copyText(anatomy?.body, content.anatomy.body!)}
           />
           <div className="mt-12 grid gap-5 lg:grid-cols-2 lg:items-start">
-            <AnatomyColumn eyebrow="Single domain" title="Domain Risk Report" blocks={domainReportAnatomy} />
-            <AnatomyColumn eyebrow="Multi-domain" title="Cross-Estate Domain Risk Report" blocks={crossEstateAnatomy} />
+            <AnatomyColumn eyebrow="Single domain" title="Domain infrastructure report" blocks={domainReportAnatomy} />
+            <AnatomyColumn eyebrow="Multi-domain" title={ESTATE_REPORT_NAME} blocks={crossEstateAnatomy} />
           </div>
         </div>
       </section>
@@ -300,7 +339,7 @@ export default async function ReportsPage() {
           />
           {/* Fixed rows (note / title / text / price / CTAs) so every column
               lines up horizontally regardless of how much copy each card has. */}
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {resolvedReportTypes.map((item) => (
               <article key={item.key} className="flex h-full flex-col rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
                 <p className="min-h-[1.25rem] text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200/70">{item.note ?? " "}</p>
@@ -372,7 +411,7 @@ export default async function ReportsPage() {
             <a href={scopeEstateCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{scopeEstateCta.label}</a>
           </div>
           <p className="mt-6 text-sm">
-            <a href={crossEstateSampleHref} className="font-semibold text-cyan-100 hover:text-cyan-50">See a sample Cross-Estate report →</a>
+            <a href={crossEstateSampleHref} className="font-semibold text-cyan-100 hover:text-cyan-50">See a sample estate report →</a>
           </p>
         </div>
       </section>

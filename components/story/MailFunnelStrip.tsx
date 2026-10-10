@@ -26,18 +26,20 @@ export async function MailFunnelStrip() {
         </h2>
         <dl className="mt-8 grid gap-4 sm:grid-cols-3">
           {funnel.map((figure, i) => (
-            <div key={figure.id} className="rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
-              <dd className={`font-semibold tabular-nums tracking-tight text-white ${i === 2 ? "text-4xl" : "text-3xl"}`}>
+            // dt before dd in the markup (a <dl> requirement); `order-first` keeps the
+            // value on top visually.
+            <div key={figure.id} className="flex flex-col rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5">
+              <dt className="mt-2 text-sm leading-6 text-slate-300">domains {STAGES[i]}</dt>
+              <dd className={`order-first font-semibold tabular-nums tracking-tight text-white ${i === 2 ? "text-4xl" : "text-3xl"}`}>
                 {figure.value}
               </dd>
-              <dt className="mt-2 text-sm leading-6 text-slate-300">domains {STAGES[i]}</dt>
             </div>
           ))}
         </dl>
         <p className="mt-5 text-sm leading-6 text-slate-400">
           We classify every domain this way, so you know which ones can really take mail.
           {figures?.asOf ? <> Figures as of {figures.asOf}. </> : " "}
-          <a href={funnel[2].href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+          <a href={funnel[2].href} aria-label="Method and caveats: domains that can receive mail" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
             Method and caveats →
           </a>
         </p>

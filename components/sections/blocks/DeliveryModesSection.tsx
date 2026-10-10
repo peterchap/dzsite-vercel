@@ -92,7 +92,7 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
             phase: "BUILD",
             productName: "Datasets on cloud marketplaces",
             cadence: "Continuous data refresh",
-            deliveredAs: "Marketplace share, webhooks, API, white-label",
+            deliveredAs: "Marketplace share, direct R2, white-label",
             leadBuyer: "Email security teams, data teams",
             outputAnswers: "\"How do I build with this data?\"",
             roleInDefensiveAI: "Model training & automation",
@@ -210,32 +210,27 @@ export default function DeliveryModesSection(props: DeliveryModesSectionProps) {
                         </div>
                     </div>
 
-                    {/* Webhooks Illustration */}
+                    {/* Sentinel feed illustration: webhooks do not ship, alerts reach SOCs through Sentinel (2026-10-05) */}
                     <div className="rounded-2xl border border-white/10 bg-[#0d0d0d] overflow-hidden shadow-2xl relative">
                         <div className="absolute inset-0 bg-purple-500/5 pointer-events-none" />
                         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/40 relative z-10">
                             <div className="flex items-center gap-2">
                                 <Terminal className="w-4 h-4 text-neutral-500" />
                                 <span className="text-xs font-mono text-neutral-400">
-                                    real_time_webhooks.sh
+                                    sentinel_taxii_connector.txt
                                 </span>
                             </div>
                         </div>
                         <div className="p-6 overflow-x-auto relative z-10">
                             <pre className="text-xs font-mono text-purple-300 leading-relaxed">
-{`# Connect your SOC directly to the pipeline
-curl -X POST https://api.datazag.com/v1/webhooks \\
-  -H "Authorization: Bearer dz_live_..." \\
-  -d '{
-    "endpoint": "https://siem.yourdomain.com/ingest",
-    "events": [
-      "certificate_issued",
-      "mx_record_changed"
-    ],
-    "filter": {
-      "target_brands": ["YourOrganization"]
-    }
-  }'`}
+{`# Microsoft Sentinel: Threat Intelligence - TAXII connector
+Friendly name:   Datazag alerts
+API root:        https://taxii.datazag.com/api/
+Collection ID:   (from support@datazag.com)
+Polling:         once an hour
+
+# Indicators land in ThreatIntelIndicators,
+# ready for analytics rules and playbooks.`}
                             </pre>
                         </div>
                     </div>

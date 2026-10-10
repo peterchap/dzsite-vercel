@@ -12,8 +12,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *
  * Deliberately excluded:
  *   /benchmark                  — robots: noindex until the metrics mature
- *   /legacy-home                — reference copy of the old homepage
- *   /home, /internet-never-stands-still — server redirects to /
  *   /domain-search              — retired, 301 to /datasets (legacy-redirects)
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
@@ -34,10 +32,10 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/pricing", changeFrequency: "monthly", priority: 0.9 },
   { path: "/brand-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/datasets", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/intelligence", changeFrequency: "weekly", priority: 0.8 },
   { path: "/intelligence/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
   { path: "/intelligence/corporate-domain-stack", changeFrequency: "monthly", priority: 0.8 },
   { path: "/intelligence/dmarc-adoption-vs-protection", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/resources/machine-clicks", changeFrequency: "monthly", priority: 0.7 },
   { path: "/alerts", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports/sample", changeFrequency: "monthly", priority: 0.6 },
@@ -45,8 +43,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/docs/search-stream", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/blog", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/about", changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
   { path: "/trust", changeFrequency: "monthly", priority: 0.6 },

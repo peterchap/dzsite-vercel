@@ -72,7 +72,7 @@ export const LEGAL_ENTITY: LegalEntity = {
   dataHostingRegions: null,
   transferBasis: null,
   effectiveDate: null,
-  lastUpdated: "2026-09-13",
+  lastUpdated: "2026-10-05",
 };
 
 /** "13 September 2026" — en-GB reads correctly for a UK-registered entity. */

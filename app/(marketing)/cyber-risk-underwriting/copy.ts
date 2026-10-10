@@ -58,7 +58,7 @@ export const content: PageContent = {
     title: "The risk in a book is also in what the policies share.",
     body: "Every insured depends on providers for mail, DNS, hosting and certificates. When many insureds depend on the same provider, one outage becomes many claims at once. Datazag shows those shared dependencies across your book, with the evidence for each insured underneath.",
     secondaryBody: "For underwriters, the same evidence answers a simpler question: what does this applicant actually run, before you bind and during the term?",
-    primaryCta: { label: "See a sample estate report", href: "/reports/sample#cross-estate" },
+    primaryCta: { label: "See a sample estate report", href: "/samples/estate-attack-surface-report.html" },
     secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 
@@ -98,9 +98,9 @@ export const content: PageContent = {
     body: "These signals can inform a price or a condition. They are not a generic risk score. Each is read from public infrastructure and carries the record it was read from.",
     items: [
       { key: "undeclared-estate", title: "Undeclared estate", text: "Domains the applicant owns but did not list, linked through certificate, mail and registration records and sorted into confidence tiers. Adverse selection can hide in the gap between the declared estate and the real one." },
-      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF, DKIM and DMARC are published and enforcing, not just present. One policy blocks impersonation; the other only reports it. Business email compromise remains a significant source of cyber loss." },
+      { key: "email-auth", title: "Email authentication posture", text: "Whether SPF and DMARC are published and enforcing, not just present. One policy blocks impersonation; the other only reports it. Business email compromise remains a significant source of cyber loss." },
       { key: "certificate-hygiene", title: "Certificate and expiry exposure", text: "What expires next, what has already lapsed, and which controls will fail if nobody acts. The expiry calendar shows how the insured runs their estate." },
-      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF, DKIM, DMARC) to advanced (MTA-STS, TLS reporting, CAA, DNSSEC). A maturity path you can write conditions against, not a pass or fail." },
+      { key: "control-ladder", title: "Control maturity", text: "Where the estate sits on the ladder from baseline (SPF and DMARC) to hardening (CAA and DNSSEC). A maturity path you can write conditions against, not a pass or fail." },
     ],
   },
 
@@ -143,7 +143,7 @@ export const content: PageContent = {
     eyebrow: "Change during the term",
     title: "The estate grows after you bind.",
     body: "Enterprise DNS changes rarely. The estate is what changes: new subdomains, new certificates and new hosting under a domain you already cover. Datazag reads Certificate Transparency logs continuously, so a new certificate under an insured's domain is seen as it is logged.",
-    secondaryBody: "Changes show up in the next report and in the tables. Our DNS history starts in August 2026, so change is measured from then, not before.",
+    secondaryBody: "Changes show up in the next report and in the tables. Our daily posture history starts on 20 August 2026, so change is measured from then, not before.",
     items: [
       { key: "subdomains", title: "New subdomains", text: "Names that appear in new certificates, then resolved to see where they point." },
       { key: "certificates", title: "New certificates", text: "Issued for an insured's domains, with the issuing authority." },
@@ -220,7 +220,7 @@ export const content: PageContent = {
     eyebrow: "Where your book goes",
     title: "Two delivery routes, two privacy positions.",
     body: "Your book can stay in your own Snowflake or Databricks account. The claim below is specific to that route, and it does not cover the others.",
-    secondaryBody: "A report works like the API: you send us the domains, so Datazag processes them under the data-processing agreement.",
+    secondaryBody: "A report is different: you send us the domains, so Datazag processes them under the data-processing agreement.",
   },
 
   // FAQ (2026-10-01): questions an answer engine is asked about this page, answered
@@ -235,14 +235,14 @@ export const content: PageContent = {
       { key: "weighting", title: "What does rating by resilience and exit friction mean?", text: "Counting how many insureds use a provider shows its share. Datazag shows that share as it is, then rates how serious it is by how resilient the provider is and how hard it is to leave. Exit friction stands in for restoration time, which drives business interruption severity. A provider not yet assessed is shown as not assessed, never as safe." },
       { key: "exposure", title: "Can you show which policies are exposed when a provider fails?", text: "Yes, from the domain list you send. Name a provider and see which insureds depend on it, and for which functions. Datazag reports exposure, not loss: it holds no claims or loss data." },
       { key: "freshness", title: "How fresh is the data?", text: "Routing and network data refresh hourly. New, retiring and high-risk domains refresh daily. Stable records such as nameservers and mail providers refresh at least monthly. Every row carries the time it was observed." },
-      { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report or the API is different, because you send us the domains, and that is covered by the data-processing agreement." },
+      { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report is different, because you send us the domains, and that is covered by the data-processing agreement." },
     ],
   },
   cta: {
     eyebrow: "Start here",
     title: "Test it against your book.",
     body: "Send a list of domains for a sample of your book, one or more per insured. We find the rest of each estate from there, and return the discovery, posture and concentration layers separately.",
-    primaryCta: { label: "See a sample estate report", href: "/reports/sample#cross-estate" },
+    primaryCta: { label: "See a sample estate report", href: "/samples/estate-attack-surface-report.html" },
     secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 };

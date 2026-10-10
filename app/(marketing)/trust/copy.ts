@@ -8,7 +8,7 @@ export const content: PageContent = {
     eyebrow: "Trust & Governance",
     title: "Use infrastructure intelligence you can inspect and govern.",
     body: "Datazag products are built around observable internet infrastructure, explainable evidence, controlled product scope and clear licensing boundaries.",
-    secondaryBody: "This page explains the trust model behind reports, alerts, APIs, data shares, marketplace datasets and partner-delivered services.",
+    secondaryBody: "This page explains the trust model behind reports, alerts, data shares, marketplace datasets and partner-delivered services.",
     primaryCta: { label: "Get a free report", href: "/#free-report" },
     secondaryCta: { label: "View alerts", href: "/alerts" },
   },
@@ -30,7 +30,7 @@ export const content: PageContent = {
       {
         key: "product-scope",
         title: "Product-specific scope",
-        text: "A free report, alert, API response and data share do not expose the same fields. Each product has its own scope, use case and delivery controls.",
+        text: "A free report, an alert and a data share do not expose the same fields. Each product has its own scope, use case and delivery controls.",
       },
       {
         key: "licensing",
@@ -79,11 +79,10 @@ export const content: PageContent = {
   productControls: {
     eyebrow: "Product controls",
     title: "Different products expose different slices of the intelligence layer.",
-    body: "A report, alert, API response and cloud data share can draw on the same intelligence foundation, but each has its own field scope and intended use.",
+    body: "A report, an alert and a cloud data share can draw on the same intelligence foundation, but each has its own field scope and intended use.",
     items: [
       { key: "reports", title: "Reports", text: "Designed for business-readable findings, DNS defense analysis, threat exposure, remediation priorities and portfolio summaries." },
       { key: "alerts", title: "Alerts", text: "Designed for operational delivery with alert class, reason codes, infrastructure context, recommended action and de-escalation paths." },
-      { key: "api", title: "API", text: "Designed for real-time scoring and enrichment inside customer products, analyst workflows and partner platforms." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Designed for analytical joins, historical review, data science, threat hunting and marketplace-style consumption." },
       { key: "partner-services", title: "Partner services", text: "Designed so MSSPs, ESPs and service providers can package intelligence into their own services without reselling raw data by default." },
     ],

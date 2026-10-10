@@ -59,24 +59,27 @@ export async function CoverageStrip() {
 
         <dl className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => (
+            // A <dl> may only hold dt/dd groups: the label (dt) comes first in the
+            // markup and `order-first` keeps the value on top visually. The
+            // definition and as-of date are further dd items, not bare <p>s.
             <div
               key={stat.key}
-              className="rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5"
+              className="flex flex-col rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.055] p-5"
             >
-              <dd className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                {stat.display}
-              </dd>
               <dt className="mt-3 border-t border-white/10 pt-3 text-xs font-semibold uppercase tracking-[0.15em] text-cyan-100/85">
                 {stat.label}
               </dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                {stat.display}
+              </dd>
               {/* The population, not a tagline. WU-C3: the definition travels
                   with the value, from one place, so no two surfaces can
                   describe the same number differently. */}
-              <p className="mt-3 text-xs leading-5 text-slate-400">{stat.definition}</p>
+              <dd className="mt-3 text-xs leading-5 text-slate-400">{stat.definition}</dd>
               {asOfLabel(stat.measuredAt) ? (
-                <p className="mt-3 text-[11px] text-slate-500">
+                <dd className="mt-3 text-[11px] text-slate-400">
                   Measured {asOfLabel(stat.measuredAt)}
-                </p>
+                </dd>
               ) : null}
             </div>
           ))}

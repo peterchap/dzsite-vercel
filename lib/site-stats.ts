@@ -35,11 +35,15 @@
  *              lib/site-stats.generated.ts, or edit COMMITTED in
  *              ./site-stats-core.ts when reconciling directly against DuckLake.
  *
- * FLOOR RULE
- *   Display values round DOWN (fmtStat) so the public claim is never ahead of
- *   reality between refreshes. Additionally, domainsMonitored never drops
- *   below the COMMITTED figure. Never round up; never raise COMMITTED above
- *   what DuckLake actually shows.
+ * DISPLAY FORMAT (2026-10-01, replacing the FLOOR RULE)
+ *   Figures display in the Observatory's format: one decimal for millions and
+ *   billions, rounded, no "+" (fmtStat in ./site-stats-core.ts, guarded to agree
+ *   with formatCount in ./observatory-figures.ts). The domain figure itself is
+ *   the Observatory's corpus_domains (./site-stats-live.ts), so both sites print
+ *   the same number. The old rule rounded down to the nearest ten million so a
+ *   claim could never run ahead of reality; consistency with the Observatory was
+ *   chosen over that, at an overstatement of at most 0.05 million. The
+ *   committed-floor ratchet was removed earlier (see R2 IS THE SOURCE).
  *
  *   (The generator HAS since been repointed at DuckLake gold — the note here
  *   about the feed reporting ~325M from an unrepointed generator is resolved.
@@ -183,7 +187,7 @@ export const STATS_AS_OF = snapshot.STATS_AS_OF;
 export const PUBLISHED_STATS = snapshot.PUBLISHED_STATS;
 /** Display string for the corpus domain figure. */
 export const DOMAINS_DISPLAY: string = snapshot.DOMAINS_DISPLAY;
-/** "360M+ domain corpus" — for the "…-domain corpus" phrasing. */
+/** e.g. "369.4M domain corpus" — for the "…-domain corpus" phrasing. */
 export const DOMAINS_CORPUS_PHRASE = snapshot.DOMAINS_CORPUS_PHRASE;
 
 /** Only the figures that have a value. Surfaces MAP OVER THIS. */
