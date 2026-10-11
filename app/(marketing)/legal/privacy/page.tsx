@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
                             <li>Visitors to our website</li>
                             <li>Users of our customer portal</li>
-                            <li>Customers and partners using our APIs, datasets, and services</li>
+                            <li>Customers and partners using our datasets, feeds and services</li>
                             <li>Individuals who contact us or interact with us in a business context</li>
                         </ul>
                         <p className="mt-6">
@@ -77,6 +77,10 @@ export default function PrivacyPolicyPage() {
                                 description="Information required to create and manage user accounts, including authentication details and access logs."
                             />
                             <DataPoint
+                                title="Free report requests"
+                                description="Your work email address and the domain you submit when you request a free exposure snapshot. We use them to generate the report, email you a private link to it, and keep it available behind that link. We contact you about related services only if you opt in."
+                            />
+                            <DataPoint
                                 title="Usage and technical data"
                                 description="IP address, device information, browser type, and usage metadata related to access of our website or services."
                             />
@@ -95,6 +99,7 @@ export default function PrivacyPolicyPage() {
                         <ul className="list-disc pl-5 space-y-2 text-slate-300">
                             <li>Provide and operate our website and services</li>
                             <li>Respond to inquiries and demo requests</li>
+                            <li>Generate and deliver the free reports you request</li>
                             <li>Manage customer relationships and accounts</li>
                             <li>Improve our products, services, and security</li>
                             <li>Monitor and protect our infrastructure from abuse</li>
@@ -192,15 +197,38 @@ export default function PrivacyPolicyPage() {
                         <p className="mt-6">
                             Requests can be made using the contact details below.
                         </p>
+                        <p className="mt-4">
+                            You also have the right to complain to a data protection authority. In the UK, that is the
+                            Information Commissioner&rsquo;s Office (ICO), at{" "}
+                            <a href="https://ico.org.uk/make-a-complaint/" className="font-semibold text-blue-400 hover:underline">ico.org.uk</a>.
+                            We would welcome the chance to address your concern first.
+                        </p>
                     </LegalSection>
 
                     <LegalSection title="11. Cookies and analytics">
-                        <p>Our website may use cookies and similar technologies to:</p>
+                        <p>
+                            This applies to datazag.com, portal.datazag.com and observatory.datazag.com. We use cookies
+                            and similar technologies to run the sites and, only if you agree, to understand how people use
+                            them.
+                        </p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">
-                            <li>operate core site functionality</li>
-                            <li>understand usage and improve performance</li>
+                            <li>
+                                <strong>Essential:</strong> sign-in and security cookies on the portal, and{" "}
+                                <code>dz_consent</code>, which records your analytics choice for 180 days.
+                            </li>
+                            <li>
+                                <strong>Analytics (optional):</strong> Google Analytics 4 sets <code>_ga</code> cookies to
+                                count visits and pages viewed. It loads only after you select &ldquo;Accept&rdquo;. We ask
+                                Google to anonymize IP addresses. On the Observatory it also records which figures and
+                                tools you use, such as copying a citation or downloading a chart. It never records a domain
+                                you look up.
+                            </li>
                         </ul>
-                        <p className="mt-6">You can control cookies through your browser settings.</p>
+                        <p className="mt-6">
+                            Your choice covers all three sites. To change it, select &ldquo;Cookie settings&rdquo; in the
+                            footer. If you decline, we remove the analytics cookies. You can also block cookies in your
+                            browser settings.
+                        </p>
                     </LegalSection>
 
                     <LegalSection title="12. Changes to this policy">

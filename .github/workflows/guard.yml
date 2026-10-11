@@ -3,9 +3,13 @@
 # They were only ever run by hand: `npm run guard` is not part of `build`, so
 # a retyped corpus figure or a British spelling reached production without
 # anything objecting. This runs the same command on every push so it objects
-# on the pull request instead. The dataset-figure guard skips its Sanity pass
-# when no credentials are present, which is the case here; everything else
-# is offline.
+# on the pull request instead.
+#
+# CMS credentials (2026-10-05): the CMS publishing gate and the dataset-figure
+# guard's Sanity pass used to SKIP here for lack of them, so CMS content was
+# never checked in CI. The project ID and dataset are public (sanity/env.ts).
+# SANITY_API_TOKEN is a read-only Viewer token in the repo secrets; it is
+# needed because docs with dotted IDs (page.about and the like) are private.
 name: Guards
 
 on:
@@ -22,5 +26,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # @datazag/site-chrome (shared header and footer) comes from GitHub
+      # Packages; .npmrc reads GITHUB_PACKAGES_TOKEN. The repo secret is still
+      # named NPM_TOKEN: a classic token with read:packages.
       - run: npm ci --legacy-peer-deps
+        env:
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm run guard
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: w8wq190o
+          NEXT_PUBLIC_SANITY_DATASET: production
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}

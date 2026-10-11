@@ -23,7 +23,8 @@
  */
 import { cache } from "react";
 
-import { computeSiteStats, parseCoverage, type SiteStats } from "./site-stats-core";
+import { computeSiteStats, inBounds, parseCoverage, type FeedStats, type SiteStats } from "./site-stats-core";
+import { loadCorpusDomains } from "./observatory-figures";
 import { SNAPSHOT_STATS } from "./site-stats";
 
 const FEED_BASE =
@@ -56,7 +57,7 @@ async function loadSiteStats(): Promise<SiteStats> {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const feed = parseCoverage(await res.json(), new Date().toISOString(), COVERAGE_URL);
-    const live = computeSiteStats(feed, "live");
+    const live = await withObservatoryCorpus(feed);
     if (live) return newer(live, SNAPSHOT_STATS);
     console.error("site-stats-live: the live corpus figure is unpublishable — serving the committed snapshot.");
   } catch (err) {
@@ -66,6 +67,34 @@ async function loadSiteStats(): Promise<SiteStats> {
     );
   }
   return SNAPSHOT_STATS;
+}
+
+/**
+ * THE DOMAIN FIGURE IS THE OBSERVATORY'S (2026-10-01, Peter: one number across
+ * both sites). The coverage feed and the Observatory count resolving domains with
+ * slightly different filters, hours apart, so the main site showed one number and
+ * the Observatory panel on the same page another. The domain figure now comes from
+ * the Observatory's corpus_domains, with its own as-of and definition. The other
+ * figures (IPs, IPv4, networks) have no Observatory equivalent and stay on the
+ * coverage feed. If the Observatory cannot be read, or its figure fails the same
+ * bounds, the coverage feed's figure stands.
+ */
+async function withObservatoryCorpus(feed: FeedStats): Promise<SiteStats | null> {
+  try {
+    const corpus = await loadCorpusDomains();
+    if (corpus && inBounds("domainsMonitored", corpus.value)) {
+      const merged: FeedStats = {
+        ...feed,
+        domainsMonitored: corpus.value,
+        asOf: { ...feed.asOf, domainsMonitored: corpus.asOf ?? feed.asOf.domainsMonitored },
+      };
+      const stats = computeSiteStats(merged, "live", "observatory");
+      if (stats) return stats;
+    }
+  } catch (err) {
+    console.error(`site-stats-live: Observatory corpus figure unavailable (${err instanceof Error ? err.message : String(err)}) — using the coverage feed.`);
+  }
+  return computeSiteStats(feed, "live", "coverage");
 }
 
 /** One fetch per request, however many components ask. */

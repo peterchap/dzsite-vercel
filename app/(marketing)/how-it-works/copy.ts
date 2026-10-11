@@ -7,7 +7,7 @@ export const content: PageContent = {
   hero: {
     eyebrow: "How it works",
     title: "From external signal to usable infrastructure intelligence.",
-    body: "Datazag observes public internet infrastructure, connects related signals, evaluates risk, packages evidence and delivers the result as reports, alerts, APIs or datasets.",
+    body: "Datazag observes public internet infrastructure, connects related signals, evaluates risk, packages evidence and delivers the result as reports, alerts or datasets.",
     secondaryBody: "The process is designed for teams that need earlier context without rebuilding a domain, DNS, certificate, hosting and provider intelligence layer themselves.",
     primaryCta: { label: "Get a free report", href: "/#free-report" },
     secondaryCta: { label: "View the process", href: "#process" },
@@ -15,13 +15,13 @@ export const content: PageContent = {
   process: {
     eyebrow: "Process",
     title: "Six steps from observation to action.",
-    body: "The exact output depends on the product, but the same core intelligence layer supports reports, alerts, APIs, datasets and partner services.",
+    body: "The exact output depends on the product, but the same core intelligence layer supports reports, alerts, datasets and partner services.",
     items: [
       { key: "observe", title: "Observe external signals", text: "Datazag monitors public internet infrastructure signals such as newly observed domains, DNS, certificates, hosting, ASNs, provider footprints and platform patterns.", tags: ["Domains", "DNS", "Certificates", "Hosting", "ASN"] },
       { key: "connect", title: "Connect the infrastructure", text: "Signals are joined into an infrastructure graph so domains, IPs, providers, certificates, platforms and related assets can be understood together.", tags: ["Relationships", "Shared infrastructure", "Provider context", "History"] },
       { key: "evaluate", title: "Evaluate risk and context", text: "Datazag scores naming, DNS, infrastructure, website and historical evidence to decide whether a finding should be monitored, escalated or de-escalated.", tags: ["Risk", "Reason codes", "Confidence", "Triage"] },
       { key: "package", title: "Package evidence", text: "Findings are delivered with explainable evidence: reason codes, DNS state, provider context, screenshots, abuse contacts, related assets and lifecycle changes where available.", tags: ["Evidence", "Screenshots", "Abuse contacts", "Lifecycle"] },
-      { key: "deliver", title: "Deliver into the workflow", text: "The same intelligence layer can become a report, an alert, an API response, a webhook event, a data share or a partner-branded service.", tags: ["Reports", "Alerts", "API", "Data shares"] },
+      { key: "deliver", title: "Deliver into the workflow", text: "The same intelligence layer can become a report, an alert, a Microsoft Sentinel feed, a data share or a partner-branded service.", tags: ["Reports", "Alerts", "Sentinel feed", "Data shares"] },
       { key: "feedback", title: "Update and learn from feedback", text: "Incidents and datasets update as infrastructure changes. Customer context and de-escalation decisions are fed back into future routing.", tags: ["Polling", "Updates", "De-escalation", "Baselines"] },
     ],
   },
@@ -65,7 +65,6 @@ export const content: PageContent = {
     items: [
       { key: "reports", title: "Reports", text: "Readable assessments for domains, portfolios, suppliers and executive reviews." },
       { key: "alerts", title: "Alerts", text: "Operational signals with reason codes, evidence and lifecycle updates." },
-      { key: "api", title: "API / webhooks", text: "Lookup, scoring and enrichment for products, portals and security workflows." },
       { key: "cloud", title: "Cloud data products", text: "SQL-ready infrastructure intelligence for warehouses, lakehouses and marketplace routes." },
       { key: "partner", title: "Partner services", text: "Datazag-powered services delivered through MSSPs, ESPs, platforms and other authorized partners." },
     ],
@@ -73,7 +72,7 @@ export const content: PageContent = {
   finalCta: {
     eyebrow: "Next step",
     title: "Start with the output you need.",
-    body: "Use a free report for a single-domain assessment, alerts for operational monitoring, the API for enrichment or cloud data products for analysis at scale.",
+    body: "Use a free report for a single-domain assessment, alerts for operational monitoring or cloud data products for analysis at scale.",
     primaryCta: { label: "Get a free report", href: "/#free-report" },
     secondaryCta: { label: "Contact Datazag", href: "/contact" },
   },

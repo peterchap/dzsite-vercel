@@ -26,7 +26,33 @@ export const content: PageContent = {
       { key: "vet-senders", title: "Vet senders with evidence", text: "Check signup and sending domains against their mail setup, parking status and infrastructure history. Every finding shows the record it came from." },
       { key: "protect-deliverability", title: "Protect deliverability", text: "Give abuse, compliance and deliverability teams external context for the domains, links and infrastructure moving through the platform." },
       { key: "launch-services", title: "Launch new services", text: "Add brand protection, customer hygiene reports, link checks and deliverability intelligence as paid customer-facing offers." },
-      { key: "embed-workflow", title: "Embed into your workflow", text: "Use API, webhooks, reports, exports or cloud data shares across onboarding, pre-send checks, abuse review and analytics pipelines." },
+      { key: "embed-workflow", title: "Embed into your workflow", text: "Use reports, exports, cloud data shares or the Microsoft Sentinel feed across onboarding, pre-send checks, abuse review and analytics pipelines." },
+    ],
+  },
+  // 2026-10-01 — machine clicks (evidence package, 2026-10-01). Datazag gives
+  // a prior, not a prediction: MX shows infrastructure, never licensing or
+  // policy. Never write that we identify domains that WILL produce machine
+  // clicks (claim guard). {{CORP_MAIL_DOMAINS}} resolves from the
+  // Observatory's corp_mail_domains; the paragraph drops if it cannot.
+  // No mention of the per-domain dataset or a free file until each has a URL.
+  machineClicks: {
+    eyebrow: "Machine clicks",
+    title: "Segment machine interactions from human ones",
+    body: [
+      "Security products inspect links in email. Some retrieve the destination. When that happens, your platform can record the request as a click.",
+      "The damage runs past reporting. Machine clicks make inactive addresses look engaged. Senders keep mailing them, and sending reputation suffers. Genuine engagement signals get diluted.",
+      "The automation is worse. Journeys branch on intent nobody expressed. Lead scores rise on clicks nobody made. Sales teams follow up on software.",
+    ].join("\n\n"),
+    secondaryBody: [
+      "Datazag identifies the inbound mail infrastructure for {{CORP_MAIL_DOMAINS}} corporate domains. For each one, we record the mailbox platform and the security gateway, where one is visible. We also record what each vendor documents about URL inspection.",
+      "That tells you where automated interaction is plausible. You already know when each interaction happened. Joining the two gives a stronger basis for classifying engagement than timing alone.",
+      "The data lands in your own environment. Join it to your recipient list in your warehouse. Your list never leaves your systems.",
+    ].join("\n\n"),
+    primaryCta: { label: "Read the implementation guide", href: "/resources/machine-clicks" },
+    items: [
+      { key: "clue-not-proof", title: "Infrastructure is a clue, not proof", text: "A documented capability does not establish what happened to a particular message." },
+      { key: "two-layers", title: "Two layers can inspect one message", text: "A gateway in front of a mailbox platform means two products on one delivery path." },
+      { key: "server-side-only", title: "Server-side inspection only", text: "Our signal is keyed to the domain's infrastructure. Image proxying by a recipient's mail app depends on their client, not their domain. No DNS observation reaches it." },
     ],
   },
   serviceCatalogue: {
@@ -52,7 +78,7 @@ export const content: PageContent = {
       { key: "policy-enforcement", title: "Policy and enforcement", points: ["ESP controls thresholds, review, throttling and blocking", "Datazag supplies evidence, reasons and context"] },
       { key: "external-intel", title: "External intelligence", points: ["ESP avoids building internet-scale collection", "Datazag observes domains, DNS, certificates and infrastructure"] },
       { key: "customer-products", title: "Customer products", points: ["ESP brands the dashboard, reports and add-ons", "Datazag powers findings, alerts and evidence"] },
-      { key: "analytics-workflows", title: "Analytics workflows", points: ["ESP owns data model, warehouse and operational decisions", "Datazag supplies API, webhook, report and data-share delivery"] },
+      { key: "analytics-workflows", title: "Analytics workflows", points: ["ESP owns data model, warehouse and operational decisions", "Datazag supplies report, data-share and Sentinel delivery"] },
     ],
   },
   commercialModel: {
@@ -87,7 +113,7 @@ export const content: PageContent = {
   usageRights: {
     items: [
       { key: "included", title: "Included", text: "Use Datazag intelligence to power partner-led platform controls, customer reports, alerts, enrichment workflows and portal features for your own customers." },
-      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, API access, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
+      { key: "not-standalone", title: "Not standalone resale", text: "Raw data, data shares or bulk exports are not for resale, sublicensing, marketplace publication or standalone redistribution by default." },
       { key: "downstream", title: "Downstream partners", text: "Services sold through your own resellers, franchisees or channel partners require written approval, pass-through terms and a separate commercial model." },
     ],
   },
@@ -100,7 +126,7 @@ export const content: PageContent = {
       { key: "check", title: "Check", text: "Look at campaign links, landing pages, redirect chains and sending domains before or during send." },
       { key: "decide", title: "Decide", text: "Feed the evidence and reason codes into allow, warn, throttle, block or review workflows." },
       { key: "analyse", title: "Analyze", text: "Enrich SMTP logs, campaign history and abuse queues with domain and infrastructure intelligence." },
-      { key: "monetise", title: "Monetise", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
+      { key: "monetise", title: "Monetize", text: "Package the same intelligence as hygiene, protection, reporting or deliverability services." },
     ],
   },
   delivery: {
@@ -108,8 +134,7 @@ export const content: PageContent = {
     title: "Use the route that fits your platform.",
     body: "The same intelligence layer can support signup checks, pre-send checks, alerting, customer portals, managed reports, log enrichment and data-driven products.",
     items: [
-      { key: "api", title: "API", text: "Domain lookups for signup checks, link checks, customer portals, policy engines and review queues. Each answer comes with its evidence." },
-      { key: "webhooks", title: "Webhooks", text: "Push alerts and infrastructure changes into abuse, compliance, deliverability or customer-success workflows." },
+      { key: "sentinel", title: "Microsoft Sentinel feed", text: "Send alerts and infrastructure changes to Microsoft Sentinel over TAXII 2.1, for abuse, compliance and deliverability teams." },
       { key: "reports-exports", title: "Reports and exports", text: "Generate white-label hygiene reports, brand-protection evidence packs and account-review material for customers." },
       { key: "cloud-shares", title: "Cloud data shares", text: "Use Iceberg or Delta datasets for warehouse analytics, SMTP log enrichment, customer segmentation and large-scale joins." },
       { key: "managed-alerts", title: "Managed alert feed", text: "Receive alerts for risky domains, new certificates, infrastructure shifts and lookalike domains, each with its evidence." },
@@ -135,8 +160,8 @@ export const content: PageContent = {
     items: [
       { key: "what-checks", title: "How do email platforms use Datazag?", text: "To check the domains their customers sign up with, send from and link to: whether a domain can take mail, who runs its mail, whether it is parked, whether it enforces DMARC, and what infrastructure sits behind it. Every finding shows the record it came from." },
       { key: "who-decides", title: "Does Datazag block senders?", text: "No. The platform sets the thresholds and makes every review, throttling or blocking decision. Datazag supplies the evidence and the reasons." },
-      { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data, API access and bulk exports are not for resale by default." },
-      { key: "delivery", title: "How is it delivered?", text: "Through the API, webhooks, reports, exports or cloud data shares, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
+      { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data and bulk exports are not for resale by default." },
+      { key: "delivery", title: "How is it delivered?", text: "Through reports, exports, cloud data shares or the Microsoft Sentinel feed, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
     ],
   },
   finalCta: {

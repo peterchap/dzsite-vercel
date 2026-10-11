@@ -24,9 +24,10 @@ function asOfLabel(iso: string): string {
 
 function RouteRow({ name, route }: { name: string; route: RouteStatus }) {
   const live = route.status === "available";
+  const label = live && route.label ? route.label : name;
   return (
     <li className="flex items-center justify-between gap-4 py-2">
-      <span className="text-sm text-slate-300">{name}</span>
+      <span className="text-sm text-slate-300">{label}</span>
       {live ? (
         <a
           href={route.url}

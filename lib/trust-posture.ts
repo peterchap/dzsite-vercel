@@ -100,7 +100,7 @@ export const CERTIFICATIONS = {
  *     environment — and never the broad "no GDPR concerns". A DPO catches the
  *     broad version, and having caught one overclaim they go looking for the
  *     rest of them.
- *  2. The claim covers the SHARE PATH ONLY. On the API path the customer sends
+ *  2. The claim covers the SHARE PATH ONLY. On the report path the customer sends
  *     domains to be scored, so Datazag is squarely in that data flow. Two
  *     delivery modes, two postures. Letting the first one's claim spill across
  *     both is the version that costs the most when a buyer finds it, which is
@@ -126,10 +126,10 @@ export const DELIVERY_POSTURES: DeliveryPosture[] = [
       "On this path Datazag is not a processor of your data: there is no processing agreement to negotiate for it, no international-transfer assessment, no sub-processor list to review, and no breach of ours that could expose it.",
   },
   {
-    key: "api",
-    mode: "API",
+    key: "reports",
+    mode: "Reports",
     dataFlow:
-      "You send us domains to be assessed, so Datazag receives and processes what you send.",
+      "You send us domains to be assessed in a report, so Datazag receives and processes what you send.",
     consequence:
       "This path is a processing relationship and is governed by the data-processing agreement. The architectural argument above applies to the share path and does not extend to this one.",
   },
@@ -149,7 +149,7 @@ export const VENDOR_ASSESSMENTS = {
   /** Confirmed to reach a person — see lib/contact-routes.ts. */
   contactEmail: "sales@datazag.com",
   turnaround: null as string | null,
-  note: "Send the questionnaire, security schedule or data-processing agreement and it reaches a person rather than a queue. Tell us the delivery mode you are assessing — share or API — because the answers differ, and the section above says how.",
+  note: "Send the questionnaire, security schedule or data-processing agreement and it reaches a person rather than a queue. Tell us the delivery mode you are assessing — share or report — because the answers differ, and the section above says how.",
 };
 
 /**

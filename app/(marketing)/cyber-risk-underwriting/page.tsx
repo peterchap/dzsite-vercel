@@ -377,7 +377,7 @@ export default async function CyberRiskUnderwritingPage() {
             <strong className="text-white">{concentrationFigures.half.value}</strong> networks carry half of all domains
             that sit on a network, and <strong className="text-white">{concentrationFigures.ninety.value}</strong> carry
             nine in ten.{" "}
-            <a href={concentrationFigures.half.href} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+            <a href={concentrationFigures.half.href} aria-label="Method and caveats: network concentration" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
               Method and caveats →
             </a>
           </p>
@@ -495,7 +495,7 @@ export default async function CyberRiskUnderwritingPage() {
 
         {/* The share-path claim renders from lib/trust-posture.ts, the wording
             /trust uses, and each route carries its own consequence line so the
-            share claim cannot be read as covering the API or a report. */}
+            share claim cannot be read as covering a report. */}
         <div className="mt-16">
           <SectionHeader
             eyebrow={copyText(privacy?.eyebrow, content.privacy.eyebrow!)}

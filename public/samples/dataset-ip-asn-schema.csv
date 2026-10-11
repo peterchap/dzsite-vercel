@@ -1,0 +1,12 @@
+column,type,description
+ip_start_int,BIGINT,First address of the range as an unsigned 32-bit integer. The range includes both endpoints.
+ip_end_int,BIGINT,"Last address of the range as an unsigned 32-bit integer, inclusive."
+asn,BIGINT,Autonomous System Number announcing this range.
+prefix,VARCHAR,"The range in CIDR notation, for example 98.125.248.0/22."
+isp,VARCHAR,"Name of the organization operating the autonomous system. NULL where the registry publishes only an opaque handle, not a usable name."
+country,VARCHAR,"ISO 3166-1 alpha-2 country the Regional Internet Registry records for the address block containing this range, where the block's holder is registered. Where that block carries no country, the announcing autonomous system's registry country is used. Not a geolocation of the addresses, and it can differ between ranges announced by the same autonomous system. RIPE NCC records a few EU-wide blocks as EU."
+reputation_flag,VARCHAR,"Coarse reputation band: clean, watch, or risky. A teaser indicator, not a calibrated score. Large shared networks such as cloud, CDN, and hosting providers are assessed on abuse observed on the specific range rather than flagged wholesale. NULL where not assessed — absence is never reported as clean."
+ipv4_only,BOOLEAN,Always true. This dataset covers IPv4 ranges only.
+snapshot_date,DATE,"The date this row was built. Every row in a release carries the same date, so you can pin to a snapshot."
+tier,VARCHAR,Distribution tier. Always free in this dataset.
+data_completeness,VARCHAR,"Per-row JSON recording, for each optional signal, whether it was observed or not observed for this range."

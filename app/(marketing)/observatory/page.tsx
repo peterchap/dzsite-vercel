@@ -31,13 +31,13 @@ const SECTIONS = [
     title: "Email security posture",
     question: "Who actually runs the world's email, and how much of it is protected?",
     body: "SPF, DMARC, MTA-STS and BIMI adoption across every resolving domain, split by whether a domain operates mail, by parking, and by mail provider. Enforcement is measured separately from publication.",
-    href: `${OBSERVATORY_URL}/mail`,
+    href: `${OBSERVATORY_URL}/email`,
   },
   {
     title: "Malicious actors",
     question: "Where is malicious infrastructure being built?",
     body: "Impersonation detections by platform and brand, and how few networks carry them. Routing anomalies are measured from Datazag's own BGP collection, and the share that turns out to be benign multi-homing is published alongside the share that does not.",
-    href: `${OBSERVATORY_URL}/actors`,
+    href: `${OBSERVATORY_URL}/security`,
   },
   {
     title: "Internet infrastructure",
@@ -173,7 +173,7 @@ export default async function ObservatoryPage() {
             <pre className="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-[#050b22] p-6 text-sm leading-7 text-cyan-100">
               <code>{`Source: Datazag Observatory, ${citationDate}.
 DMARC records at enforcement, resolving domains publishing DMARC.
-${OBSERVATORY_URL}/mail#dmarc_enforced`}</code>
+${OBSERVATORY_URL}/email#dmarc_enforced`}</code>
             </pre>
             <p className="mt-6 text-sm leading-6 text-slate-400">
               The statistics are also served as Parquet, so a figure can be checked rather than trusted:

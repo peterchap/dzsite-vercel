@@ -119,7 +119,7 @@ export default function IntegrationShowcase({
                                     href={docsCta.href}
                                     className="inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors group"
                                 >
-                                    {docsCta.label || "View our full API Documentation"}
+                                    {docsCta.label || "View the documentation"}
                                     <ArrowRight className="w-4 h-4 text-blue-500 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>

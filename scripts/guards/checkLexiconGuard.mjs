@@ -90,7 +90,6 @@ const EN_GB = [
 
 const EXEMPT = [
   { re: /\.backup\.tsx?$/, why: "not a shipped route" },
-  { re: /(?:^|[\\/])legacy-home[\\/]/, why: "reference copy of the old homepage" },
   { re: /(?:^|[\\/])__tests__[\\/]/, why: "test fixtures" },
   {
     re: /(?:^|[\\/])lib[\\/]legacy-redirects\.ts$/,

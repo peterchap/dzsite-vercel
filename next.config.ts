@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 import { LEGACY_REDIRECTS } from "./lib/legacy-redirects";
 
 const nextConfig: NextConfig = {
+  // @datazag/site-chrome ships TypeScript source (shared header, footer, nav).
+  transpilePackages: ["@datazag/site-chrome"],
   images: {
     remotePatterns: [
       {

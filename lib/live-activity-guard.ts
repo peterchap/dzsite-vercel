@@ -68,6 +68,11 @@ export function asOfLabel(iso?: string | null): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
+  // A date with no time (the Observatory's as-of, "2026-10-01") is a day, not
+  // midnight: printing "00:00 UTC" would claim a precision the source does not have.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  }
   const date = d.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",

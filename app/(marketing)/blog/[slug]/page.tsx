@@ -4,6 +4,14 @@ import { BlogPost } from "@/components/blog/BlogPost";
 import { BlogSubscribe } from "@/components/blog/BlogSubscribe";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { getSiteStats } from "@/lib/site-stats-live";
+import { loadCorporateMailFigures } from "@/lib/observatory-figures";
+import { resolveBlogBody, resolveBlogText, type BlogFigureSources } from "@/lib/blog-tokens";
+
+async function figureSources(): Promise<BlogFigureSources> {
+    const [siteStats, corporateMail] = await Promise.all([getSiteStats(), loadCorporateMailFigures()]);
+    return { siteStats, corporateMail };
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;

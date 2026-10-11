@@ -13,6 +13,14 @@
  * negatives") is fine and intentionally not caught.
  */
 export const CLAIM_RULES = [
+  // ── Report prices (pricing ladder, 2026-10-08) ─────────────────────────────────
+  // Every price lives in the shared pricing config (@datazag/site-chrome/pricing, read
+  // through lib/pricing.ts). A figure written into source or the CMS drifts from checkout,
+  // which is how the site once showed $495 while the portal charged $195. Old and current
+  // ladder figures are both caught; source is also covered by checkPriceGuard.mjs.
+  { re: /\{\{PRICE:(19500|19900|29500|49500|9900|29900|79900|99500|199500|450000)\}\}/, why: "a report price written into the site (read it from lib/pricing.ts)" },
+  { re: /[$£€]\s?(99|195|199|295|299|495|799|995|1,?995|4,?500)(?![\d.,])/, why: "a report price written into the site (read it from lib/pricing.ts)" },
+
   { re: /(?:<|&lt;|≤)\s*1\s*%/, why: "the retired <1% claim" },
   { re: /less than 1\s*%/i, why: "the retired <1% claim (spelled out)" },
   { re: /sub-?1\s*%/i, why: "the retired <1% claim (sub-1%)" },
@@ -72,4 +80,26 @@ export const CLAIM_RULES = [
   // certificate". Latency is not measured (see the lead-time notes above).
   { re: /(?:~|≈|within|in)\s*~?\s*\d+\s*(?:s|secs?|seconds?)\b[^.]{0,30}?\b(?:of|from|after)\b[^.]{0,15}?\b(?:SSL|TLS|cert(?:ificate)?s?)\b/i,
     why: "an unmeasured certificate-to-detection latency claim (e.g. '~60 seconds of SSL issuance')" },
+
+  // ── Machine clicks, 2026-10-01 ──────────────────────────────────────────
+  // The vendor evidence (32 entries, reviewed 2026-10-01) has
+  // feature_inferable_from_mx = "no" on every row. An MX record identifies
+  // infrastructure, not licensing or policy, so Datazag supplies a prior, not a
+  // prediction. And no vendor unambiguously documents fetching every link:
+  // Symantec was reclassified from every-link to fetch_scope_unknown.
+  { re: /domains?\s+(?:that\s+|which\s+)?will\s+(?:produce|generate|create)\s+machine[\s-](?:clicks?|opens?|interactions?)/i,
+    why: "a machine-click prediction — MX shows infrastructure, not policy (evidence 2026-10-01)" },
+  // A negated use ("does not necessarily mean visiting every link") is the
+  // correction, not the claim, so a "not/never/no" earlier in the sentence passes.
+  { re: /(?<!\b(?:not|never|no)\b[^.]{0,40})\b(?:fetch(?:es|ing)?|open(?:s|ing)?|visit(?:s|ing)?|click(?:s|ing)?|follow(?:s|ing)?)\s+every\s+link/i,
+    why: "an every-link fetching claim — no vendor documents it unambiguously (evidence 2026-10-01)" },
+
+  // ── Webhook delivery, 2026-10-05 ────────────────────────────────────────
+  // Webhooks do not ship. Alerts reach SOCs through the Microsoft Sentinel feed
+  // (TAXII 2.1), plus portal, reports and data shares. The list form is lower-case
+  // only, so the lucide `Webhook` icon import and IconMap key do not trip it.
+  { re: /\b(?:real[\s-]?time\s+webhooks?|webhooks?\s+(?:events?|delivery|alerts?|integrations?)|(?:via|through|using|use)\s+webhooks?)\b/i,
+    why: "a webhook delivery claim — webhooks do not ship; alerts go through the Sentinel feed (2026-10-05)" },
+  { re: /(?:,|&|\bor|\band)\s+webhooks?\b|\bwebhooks?\s*(?:,|&|\bor\b)/,
+    why: "webhooks listed as a delivery route — webhooks do not ship (2026-10-05)" },
 ];

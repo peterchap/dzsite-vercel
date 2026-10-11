@@ -29,7 +29,6 @@ const PATTERNS = [CORPUS_LITERAL, CORPUS_SPELLED];
 // Legacy/backup surfaces that are not shipped routes are exempt.
 const EXEMPT = [
   /\.backup\.tsx?$/,
-  /[\\/]legacy-home[\\/]/,
   /[\\/]__tests__[\\/]/,
 ];
 

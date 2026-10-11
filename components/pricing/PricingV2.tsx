@@ -1,188 +1,75 @@
+import Link from "next/link";
+
 import { CurrencyText } from "@/components/ui/CurrencyText";
+import { PAID_REPORT_BUY_URL, PRICING, diligenceRequestUrl, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
 
-// Prices use {{PRICE:cents}} markers (USD-base cents) so the nav currency widget
-// converts them. Amounts are placeholders carried over from the prior GBP figures
-// — adjust the cents values to the real USD list prices.
-const productChooser = [
-  { need: "Assess one domain", product: "Free Domain Health Report", href: "/#free-report" },
-  { need: "Assess your estate", product: "Cross-Estate Domain Risk Report", href: "#reports" },
-  { need: "Monitor brand abuse", product: "Brand Protection Alerts", href: "#alerts" },
-  { need: "Enrich workflows", product: "Intelligence API", href: "#api" },
-  { need: "Analyze at scale", product: "Cloud Data Products", href: "#data-shares" },
+// The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
+// delivery time and unit definition comes from the shared pricing config
+// (@datazag/site-chrome/pricing, read through lib/pricing.ts). Prices render through
+// CurrencyText, which converts {{PRICE:cents}} markers to the visitor's currency; the
+// markers are built from the config, never typed (scripts/guards/checkPriceGuard.mjs).
+
+const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
+// Where each SKU is bought. Every report is bought online, directly: the estate and
+// portfolio reports on their own buy pages (the free scope stays the way to see discovery
+// first). The tier follows the domains the buyer lists.
+const START: Record<string, { label: string; href: string }> = {
+  free_snapshot: { label: "Get a free report", href: "/#free-report" },
+  domain_report: checkoutLive
+    ? { label: "Buy the report", href: PAID_REPORT_BUY_URL }
+    : { label: "Contact us", href: "/contact" },
+  org_estate_10: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  org_estate_50: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  org_estate_250: { label: "Buy the report", href: estateBuyUrl("pricing") },
+  portfolio_25: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
+  portfolio_50: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
+  diligence: { label: "Request a diligence edition", href: diligenceRequestUrl("pricing") },
+};
+
+const includes = [
+  "Public DNS, email authentication and registration, checked live",
+  "Certificates, subdomains and the SaaS platforms a domain relies on",
+  "Platform impersonation and look-alike domains",
+  "Evidence for every finding, the fix and how to verify it",
+  "PDF and HTML, with CSV and JSON exports on paid reports",
 ];
 
-const reports = [
-  {
-    name: "Domain Health Report",
-    price: "Free",
-    cadence: "",
-    description: "A free single-domain report covering platform-led threat exposure, DNS and email defense gaps, and remediation priorities.",
-    features: ["One domain", "Platform threat exposure", "DNS and email defense analysis", "Remediation priorities", "Sample report available"],
-    cta: "Get my free report",
-    href: "/#free-report",
-    highlight: true,
-  },
-  {
-    name: "Domain Risk Report",
-    price: "From {{PRICE:49500}}",
-    cadence: "per report",
-    description: "The full paid assessment of one domain: an executive core any board can read, plus a technical remediation appendix your engineers execute.",
-    features: ["One domain", "Threat exposure and defense posture", "Evidence behind every claim", "Technical remediation appendix", "Paste-ready records, staged rollout"],
-    cta: "Request the Domain Risk Report",
-    href: "/contact",
-  },
-  {
-    name: "Cross-Estate Domain Risk Report",
-    price: "Banded",
-    cadence: "by domain count",
-    description: "Paid reporting across the domains an organization owns, showing individual findings and systemic risk patterns. Estate size is unknown until discovery runs, so pricing is banded by domain count — the final quote follows scope confirmation.",
-    features: ["Multiple domains", "Estate discovery", "Systemic weakness analysis", "Domain ranking", "Remediation worksheet"],
-    cta: "Talk to us about your estate",
-    href: "/contact",
-  },
-];
-
-const alertProducts = [
-  {
-    name: "Platform Alerts",
-    price: "{{PRICE:49900}}",
-    cadence: "/mo",
-    description: "Platform impersonation monitoring for the platforms, vendors and workflows that matter to your organization.",
-    features: ["Platform impersonation signals", "Reason codes", "Webhook/API delivery", "Operational alert stream"],
-    cta: "Discuss platform alerts",
-    href: "/contact",
-  },
-  {
-    name: "Keyword Alerts",
-    price: "{{PRICE:49900}}",
-    cadence: "/mo",
-    description: "Keyword-led suspicious infrastructure monitoring for terms such as login, payroll, invoice, VPN, support or HR.",
-    features: ["Customer-defined keywords", "New domains and certificates", "Subdomain context", "Webhook/API delivery"],
-    cta: "Discuss keyword alerts",
-    href: "/contact",
-  },
-  {
-    name: "Brand Protection Alerts",
-    price: "From {{PRICE:250000}}",
-    cadence: "/mo",
-    description: "Per-brand impersonation detection with staged alert updates, evidence packs, abuse contacts and de-escalation controls.",
-    features: ["One protected brand", "Pre-DNS and DNS-stage alerts", "Website evidence updates", "Evidence pack and abuse contacts", "De-escalation button"],
-    cta: "Protect a brand",
-    href: "/contact",
-    highlight: true,
-  },
-];
-
-const apiPlans = [
-  {
-    name: "Developer",
-    price: "{{PRICE:49900}}",
-    cadence: "/mo",
-    features: ["100k credits", "Evaluation and integration", "Portal credit purchase", "REST API access"],
-  },
-  {
-    name: "Business",
-    price: "{{PRICE:249900}}",
-    cadence: "/mo",
-    features: ["1M credits", "Commercial use", "Bulk enrichment", "Higher request rates"],
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "",
-    features: ["Custom volumes", "Custom fields", "SLA options", "Private terms"],
-  },
-];
-
-const dataShares = [
-  {
-    name: "Standard",
-    price: "From {{PRICE:500000}}",
-    cadence: "/mo",
-    features: ["Core domain intelligence", "Cloud-native delivery", "Standard refresh cadence", "Direct or marketplace route"],
-  },
-  {
-    name: "Advanced",
-    price: "From {{PRICE:1000000}}",
-    cadence: "/mo",
-    features: ["Expanded DNS and infrastructure fields", "Historical context", "Priority data support", "Marketplace private offers"],
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "",
-    features: ["Full data package", "Custom cadence", "Enterprise procurement", "Partner terms by agreement"],
-  },
-];
-
-const evaluation = [
-  ["Report first", "Start with the free Domain Health Report or a paid report when you need a concrete assessment before monitoring."],
-  ["Alert stream", "Use alerts when the workflow is operational: platform abuse, keywords, brand impersonation and incident updates."],
-  ["API credits", "Use the API when intelligence needs to sit inside a product, portal, fraud workflow, SIEM process or enrichment pipeline."],
-  ["Data share", "Use cloud datasets when the buyer wants SQL-ready intelligence inside a warehouse, lakehouse or marketplace procurement route."],
+const excludes = [
+  "Endpoint security",
+  "Internal networks",
+  "Identity and access management",
+  "Patch posture",
 ];
 
 const faq = [
   {
-    question: "Are these fixed list prices?",
-    answer: "They are starting points. Final pricing can depend on scope, volume, refresh cadence, delivery route, marketplace procurement and contractual use rights.",
+    question: "What if discovery finds more domains than my tier covers?",
+    answer: "Discovered domains are shown free. They count toward your cap only if you include them. We offer the next tier, and never bill more automatically.",
   },
   {
-    question: "Can I start without a sales process?",
-    answer: "Yes. The free report is the lowest-friction starting point. API credits and small evaluations are designed to keep initial testing practical.",
+    question: "Do you offer refunds?",
+    answer: "Yes, if we cannot generate your report. Once a report is delivered, the purchase is final.",
+  },
+  {
+    question: "Can I get an invoice?",
+    answer: "Every purchase comes with a receipt and an invoice. Add your company tax ID at checkout and it appears on both.",
+  },
+  {
+    question: "How are VAT and sales tax handled?",
+    answer: "Prices are in US dollars, before tax. Any VAT or sales tax for your location is calculated at checkout.",
   },
   {
     question: "Can I buy through a cloud marketplace?",
-    answer: "Yes. Cloud data products can be packaged for direct data shares or marketplace routes, including Snowflake, Databricks, Azure, AWS, Google Cloud or compatible lake formats where appropriate.",
+    answer: "Data shares are offered through Snowflake, Databricks and Azure, or delivered directly from Cloudflare R2.",
   },
   {
-    question: "Can partners resell Datazag data?",
-    answer: "Raw data resale, standalone redistribution and downstream partner rights are not included by default. Partner-branded services and channel use cases are handled by agreement.",
+    question: "Do partners get different pricing?",
+    answer: "Managed service partners buy the same reports at a partner discount set on their account.",
   },
 ];
 
 function CheckIcon() {
   return <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />;
-}
-
-function PriceCard({ item }: { item: { name: string; price: string; cadence?: string; description: string; features: string[]; cta: string; href: string; highlight?: boolean } }) {
-  return (
-    <article className={`flex h-full flex-col rounded-[1.5rem] border p-5 ${item.highlight ? "border-cyan-300/35 bg-cyan-300/[0.075]" : "border-white/10 bg-white/[0.035]"}`}>
-      <div>
-        <h3 className="text-xl font-semibold text-white">{item.name}</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-400">{item.description}</p>
-        <div className="mt-6 flex items-end gap-1">
-          <span className="text-4xl font-semibold tracking-tight text-white"><CurrencyText value={item.price} /></span>
-          {item.cadence ? <span className="pb-1 text-sm text-slate-400">{item.cadence}</span> : null}
-        </div>
-      </div>
-      <ul className="mt-6 grid gap-3 text-sm text-slate-300">
-        {item.features.map((feature) => (
-          <li key={feature} className="flex gap-3"><CheckIcon /><span>{feature}</span></li>
-        ))}
-      </ul>
-      <a href={item.href} className={`mt-6 inline-flex min-h-11 items-center justify-center rounded-xl px-4 text-sm font-semibold transition ${item.highlight ? "bg-cyan-300 text-slate-950 hover:bg-cyan-200" : "border border-white/10 bg-white/[0.045] text-white hover:bg-white/[0.08]"}`}>
-        {item.cta}
-      </a>
-    </article>
-  );
-}
-
-function CompactPlanCard({ plan }: { plan: { name: string; price: string; cadence?: string; features: string[] } }) {
-  return (
-    <article className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
-      <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
-      <div className="mt-4 flex items-end gap-1">
-        <span className="text-3xl font-semibold tracking-tight text-white"><CurrencyText value={plan.price} /></span>
-        {plan.cadence ? <span className="pb-1 text-sm text-slate-400">{plan.cadence}</span> : null}
-      </div>
-      <ul className="mt-5 grid gap-2 text-sm text-slate-300">
-        {plan.features.map((feature) => (
-          <li key={feature} className="flex gap-3"><CheckIcon /><span>{feature}</span></li>
-        ))}
-      </ul>
-    </article>
-  );
 }
 
 function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
@@ -195,99 +82,158 @@ function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: strin
   );
 }
 
+function LadderRow({ s }: { s: Sku }) {
+  const start = START[s.sku];
+  const free = s.price_usd === 0;
+  return (
+    <tr className="border-b border-white/10 align-top">
+      <td className="py-4 pr-4">
+        <p className="font-semibold text-white">{s.product}</p>
+        <p className="mt-1 text-sm leading-6 text-slate-400">{s.scope}</p>
+      </td>
+      <td className="py-4 pr-4 text-sm text-slate-300">{s.delivery}</td>
+      <td className="py-4 pr-4 text-xl font-semibold text-white"><CurrencyText value={priceMarker(s)} /></td>
+      <td className="py-4 text-right">
+        {start ? (
+          <a href={start.href} className={`inline-flex min-h-10 items-center justify-center rounded-xl px-4 text-sm font-semibold transition ${free ? "bg-cyan-300 text-slate-950 hover:bg-cyan-200" : "border border-white/10 bg-white/[0.045] text-white hover:bg-white/[0.08]"}`}>
+            {start.label}
+          </a>
+        ) : null}
+      </td>
+    </tr>
+  );
+}
+
 export function PricingV2() {
+  const ladder = launchedSkus();
+  const alerts = PRICING.subscriptions.filter((s) => s.launch && s.sku.startsWith("alerts_"));
+  const shares = PRICING.subscriptions.filter((s) => s.launch && s.sku.startsWith("data_share_"));
+  const per = (i: "month" | "year") => (i === "month" ? "/mo" : "/yr");
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.16),transparent_32%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.12),transparent_34%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Pricing</p>
-            <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Choose the buying path that matches the workflow.</h1>
+            <h1 className="mt-6 text-5xl font-semibold tracking-tight md:text-7xl">Clear prices, clear scope, fast delivery.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Start with a free domain report, move into paid domain risk reports, subscribe to alerts, buy API credits, or consume Datazag as cloud-native datasets.
-            </p>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              Prices below are starting points. Larger, partner-led, marketplace and data-share deployments are scoped by volume, delivery route and permitted use.
+              Start free, then buy the report that fits your estate. Every report is bought online and delivered by email.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <a href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</a>
-              <a href="#pricing" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">View pricing</a>
+              <Link href="/#free-report" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">Get a free report</Link>
+              <a href="#reports" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">See the reports</a>
             </div>
-          </div>
-
-          <div className="mt-12 grid gap-3 rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-4 md:grid-cols-5">
-            {productChooser.map((item) => (
-              <a key={item.need} href={item.href} className="rounded-2xl border border-white/10 bg-[#030619]/50 p-4 transition hover:border-cyan-300/25 hover:bg-cyan-300/[0.055]">
-                <p className="text-xs text-slate-500">Need to</p>
-                <p className="mt-1 text-sm font-semibold text-white">{item.need}</p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-200">{item.product} →</p>
-              </a>
-            ))}
           </div>
         </div>
       </section>
 
-      <section id="pricing" className="relative border-t border-white/10 py-20 md:py-28">
-        <div id="reports" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Reports" title="Assess one domain or a whole estate." body="Reports are for buyers who need a concrete assessment before committing to continuous monitoring, brand protection or data access." />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {reports.map((item) => <PriceCard key={item.name} item={item} />)}
+      <section id="reports" className="relative border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow="Reports" title="One domain, one organization or a whole portfolio." body="Each tier states what it covers and how fast it arrives. Prices are in US dollars, one-off." />
+          <div className="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-white/[0.035] px-5">
+            <table className="w-full min-w-[640px] text-left">
+              <thead>
+                <tr className="border-b border-white/10 text-xs uppercase tracking-[0.16em] text-slate-500">
+                  <th className="py-3 pr-4 font-semibold">Report and scope</th>
+                  <th className="py-3 pr-4 font-semibold">Delivery</th>
+                  <th className="py-3 pr-4 font-semibold">Price</th>
+                  <th className="py-3" />
+                </tr>
+              </thead>
+              <tbody>
+                {ladder.map((s) => <LadderRow key={s.sku} s={s} />)}
+                <tr className="border-b border-white/10 align-top">
+                  <td className="py-4 pr-4">
+                    <p className="font-semibold text-white">Annual monitoring</p>
+                    <p className="mt-1 text-sm leading-6 text-slate-400">{PRICING.monitoring.cadence}, for any report above.</p>
+                  </td>
+                  <td className="py-4 pr-4 text-sm text-slate-300">Every quarter</td>
+                  <td className="py-4 pr-4 text-sm text-white">{PRICING.monitoring.multiplier} × the report price, per year</td>
+                  <td className="py-4 text-right text-sm text-slate-400">Add at checkout</td>
+                </tr>
+                <tr className="align-top">
+                  <td className="py-4 pr-4">
+                    <p className="font-semibold text-white">Data and alerts</p>
+                    <p className="mt-1 text-sm leading-6 text-slate-400">The datasets and alert feeds behind every report.</p>
+                  </td>
+                  <td className="py-4 pr-4 text-sm text-slate-300">Ongoing</td>
+                  <td className="py-4 pr-4 text-sm text-white"><a href="#alerts" className="underline underline-offset-4">See below</a></td>
+                  <td className="py-4 text-right"><Link href="/datasets" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]">Browse the datasets</Link></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {([
+              ["Registered domain", PRICING.units.registered_domain],
+              ["Organization", PRICING.units.organization],
+              ["Discovery", PRICING.units.discovery],
+            ] as const).map(([term, def]) => (
+              <article key={term} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-base font-semibold text-white">{term}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{def}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            <article className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
+              <h3 className="text-base font-semibold text-white">Every report includes</h3>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-300">
+                {includes.map((x) => <li key={x} className="flex gap-3"><CheckIcon /><span>{x}</span></li>)}
+              </ul>
+            </article>
+            <article className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
+              <h3 className="text-base font-semibold text-white">Reports do not cover</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">Reports look at what anyone can see from outside. They do not assess:</p>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-300">
+                {excludes.map((x) => <li key={x} className="flex gap-3"><CheckIcon /><span>{x}</span></li>)}
+              </ul>
+            </article>
           </div>
         </div>
       </section>
 
       <section id="alerts" className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Alerts" title="Subscribe to operational signals and alert updates." body="Alerts are for teams that need live monitoring, reason codes, evidence and delivery into operational workflows." />
+          <SectionHeader eyebrow="Alerts" title="Live signals delivered into your workflow." body="For teams that monitor platform abuse, attacker infrastructure and brand impersonation day to day." />
           <div className="grid gap-5 lg:grid-cols-3">
-            {alertProducts.map((item) => <PriceCard key={item.name} item={item} />)}
-          </div>
-        </div>
-      </section>
-
-      <section id="api" className="relative border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Intelligence API" title="Buy credits for lookup, scoring and enrichment." body="Use API credits for product integrations, portals, fraud workflows, SIEM enrichment and customer-facing intelligence features." />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {apiPlans.map((plan) => <CompactPlanCard key={plan.name} plan={plan} />)}
-          </div>
-        </div>
-      </section>
-
-      <section id="data-shares" className="relative border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Cloud data products" title="Buy directly or through your marketplace route." body="For analytics teams, platforms and data buyers who want Datazag intelligence inside their warehouse, lakehouse, data marketplace or security analytics environment." />
-          <div className="grid gap-5 lg:grid-cols-3">
-            {dataShares.map((plan) => <CompactPlanCard key={plan.name} plan={plan} />)}
-          </div>
-          <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 text-sm leading-6 text-slate-300">
-            Marketplace routes can include Snowflake, Databricks, Azure, AWS, Google Cloud and compatible Iceberg, Delta or Parquet delivery depending on customer requirements.
-          </div>
-        </div>
-      </section>
-
-      <section className="relative border-t border-white/10 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="How to start" title="Use the entry point that fits the decision." body="The right first step depends on whether the buyer needs an assessment, operational alerting, product integration or analytical data access." />
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {evaluation.map(([title, text]) => (
-              <article key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-                <h3 className="text-xl font-semibold text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+            {alerts.map((a) => (
+              <article key={a.sku} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-lg font-semibold text-white">{a.product}</h3>
+                <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
+                  <CurrencyText value={priceMarker(a)} /><span className="text-sm font-normal text-slate-400">{a.quoted ? "" : per(a.interval)}</span>
+                </p>
+                <Link href="/alerts" className="mt-4 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">How alerts work →</Link>
               </article>
             ))}
           </div>
         </div>
       </section>
 
+      <section id="data-shares" className="relative border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow="Cloud data products" title="Datazag data inside your warehouse." body="Buy directly, or through Snowflake, Databricks or Azure. Direct delivery comes from Cloudflare R2." />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {shares.map((d) => (
+              <article key={d.sku} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
+                <h3 className="text-lg font-semibold text-white">{d.product}</h3>
+                <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
+                  <CurrencyText value={priceMarker(d)} /><span className="text-sm font-normal text-slate-400">{d.quoted ? "" : per(d.interval)}</span>
+                </p>
+              </article>
+            ))}
+          </div>
+          <Link href="/datasets" className="mt-6 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">Browse the datasets →</Link>
+        </div>
+      </section>
+
       <section className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div>
-              <SectionHeader eyebrow="FAQ" title="Pricing questions, answered directly." body="The goal is to help buyers understand cost and scope quickly without implying that every product is bought in exactly the same way." />
-            </div>
+            <SectionHeader eyebrow="FAQ" title="Pricing questions, answered." body="Scope, refunds, invoices and tax, in plain terms." />
             <div className="grid gap-4">
               {faq.map((item) => (
                 <article key={item.question} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">

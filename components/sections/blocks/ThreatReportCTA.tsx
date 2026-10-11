@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PortableText } from 'next-sanity';
+import { currentPageReturnTo } from '@/lib/portal-return-to';
 
 // Common free webmail domains to validate against
 const freeWebmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'];
@@ -38,7 +39,7 @@ const consentComponents = {
 };
 
 const defaultConsentRequired =
-  'I agree that Datazag may process my email address and associated domain to generate and deliver my Domain Health Report. I have read the Privacy Policy.';
+  'I agree that Datazag may process my email address and associated domain to generate and deliver my Free exposure snapshot. I have read the Privacy Policy.';
 const defaultConsentOptional =
   "I'd like to receive occasional product updates, research, webinars and cybersecurity insights from Datazag. I understand I can unsubscribe at any time.";
 
@@ -85,6 +86,10 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
 
   const handleValidateAndSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setError('');
+    // Filled at submit time (the server render has no window); the browser
+    // reads the form fields after this handler runs.
+    const returnToField = e.currentTarget.elements.namedItem('return_to');
+    if (returnToField instanceof HTMLInputElement) returnToField.value = currentPageReturnTo();
 
     if (!domain) {
       e.preventDefault();
@@ -142,6 +147,7 @@ export default function ThreatReportCTA(props: ThreatReportCTAProps) {
             <input type="hidden" name="domain" value={domain} />
             <input type="hidden" name="consentReport" value={agreedRequired ? '1' : '0'} />
             <input type="hidden" name="consentMarketing" value={agreedOptional ? '1' : '0'} />
+            <input type="hidden" name="return_to" defaultValue="" />
 
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">

@@ -16,7 +16,7 @@ import { FaqSection } from "@/components/seo/FaqSection";
 export const metadata: Metadata = {
   title: "About — Datazag",
   description:
-    "Datazag builds intelligence on domains, DNS, certificates, hosting and providers, delivered as reports, alerts, APIs, datasets and partner services.",
+    "Datazag builds intelligence on domains, DNS, certificates, hosting and providers, delivered as reports, alerts, datasets and partner services.",
 };
 
 function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {

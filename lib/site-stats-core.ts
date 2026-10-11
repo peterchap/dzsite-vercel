@@ -113,26 +113,24 @@ function noteDivergence(key: string, value: number | null, reference: number, or
 }
 
 /**
- * Display formatter: rounds DOWN to a safe public claim.
- * 368M -> "360M+"  |  10.5M -> "10M+"  |  4.32B -> "4.3B"  |  78,756 -> "78k"
+ * Display formatter — THE OBSERVATORY'S FORMAT (2026-10-01, Peter): millions and
+ * billions to one decimal, rounded, no "+". It matches formatCount in
+ * lib/observatory-figures.ts exactly, so a figure the two sites both print reads
+ * the same on both (the guard asserts the two agree).
+ *
+ * This REPLACES the old floor rule, which rounded down to the nearest ten million
+ * ("360M+" for 368.9M) so the claim could never run ahead of reality. That
+ * guarantee is traded for consistency: rounding to one decimal can overstate by
+ * at most 50,000 domains (about 0.01%), and every figure carries its exact
+ * count's source and measurement date beside it.
+ *
+ * Thousands still floor to whole thousands ("79k"): no Observatory figure is
+ * compared with them.
  */
 export function fmtStat(n: number): string {
-  if (n >= 1_000_000_000) {
-    const b = Math.floor(n / 100_000_000) / 10; // one decimal, floored
-    return `${b}B`;
-  }
-  if (n >= 100_000_000) {
-    const m = Math.floor(n / 10_000_000) * 10; // nearest 10M, floored
-    return `${m}M+`;
-  }
-  if (n >= 1_000_000) {
-    const m = Math.floor(n / 1_000_000);
-    return `${m}M+`;
-  }
-  if (n >= 1_000) {
-    const k = Math.floor(n / 1_000);
-    return `${k}k`;
-  }
+  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.floor(n / 1_000)}k`;
   return String(n);
 }
 
@@ -157,6 +155,8 @@ export type PublishedStatKey = "domainsMonitored" | "ipsHostingDomains" | "ipv4I
 const DEFINITIONS: Record<PublishedStatKey, { label: string; definition: string }> = {
   domainsMonitored: {
     label: "Domains monitored",
+    // Coverage-feed definition (RESOLVED or NODATA). Replaced by OBSERVATORY_DOMAINS_DEFINITION
+    // whenever the figure comes from the Observatory's corpus_domains.
     definition:
       "Distinct domains that resolve — every name answering with a record or " +
       "an empty response. Names that no longer exist (NXDOMAIN) and names whose " +
@@ -185,12 +185,27 @@ const DEFINITIONS: Record<PublishedStatKey, { label: string; definition: string 
 };
 
 /**
+ * The definition of the Observatory's corpus_domains (its method: resolution_status
+ * = RESOLVED). Used whenever the domain figure is read from the Observatory, so the
+ * number and the words describing it always come from the same source.
+ */
+export const OBSERVATORY_DOMAINS_DEFINITION =
+  "Domains in the Datazag corpus whose latest resolution returned records. Names that no longer " +
+  "exist (NXDOMAIN) and names whose servers failed are excluded. This is the figure the Datazag " +
+  "Observatory publishes as its corpus count.";
+
+/** Where the domain figure came from. */
+export type DomainsSource = "observatory" | "coverage";
+
+/**
  * Everything a page needs, as PLAIN DATA. It crosses the server→client
  * boundary (SiteStatsProvider), so it may hold no functions.
  */
 export type SiteStats = {
   /** "live" when read from coverage.json at request time, "snapshot" when from the build. */
   origin: "live" | "snapshot";
+  /** "observatory" when the domain figure is the Observatory's corpus_domains. */
+  domainsSource: DomainsSource;
   SITE_STATS: {
     domainsMonitored: number;
     ipsHostingDomains: number | null;
@@ -237,7 +252,11 @@ function asOfLabel(iso: string | null): string {
  * and cannot be omitted there, so the caller must fall back (live) or fail the
  * build (snapshot) rather than render the word "null" into a sentence.
  */
-export function computeSiteStats(feed: FeedStats, origin: SiteStats["origin"]): SiteStats | null {
+export function computeSiteStats(
+  feed: FeedStats,
+  origin: SiteStats["origin"],
+  domainsSource: DomainsSource = "coverage",
+): SiteStats | null {
   const domainsMonitored = publishable("domainsMonitored", feed.domainsMonitored, origin);
   if (domainsMonitored === null) return null;
 
@@ -271,7 +290,15 @@ export function computeSiteStats(feed: FeedStats, origin: SiteStats["origin"]): 
   const published = Object.fromEntries(
     (Object.keys(DEFINITIONS) as PublishedStatKey[]).map((key) => [
       key,
-      { ...DEFINITIONS[key], value: raw[key], display: display[key], measuredAt: asOf[key] },
+      {
+        ...DEFINITIONS[key],
+        ...(key === "domainsMonitored" && domainsSource === "observatory"
+          ? { definition: OBSERVATORY_DOMAINS_DEFINITION }
+          : {}),
+        value: raw[key],
+        display: display[key],
+        measuredAt: asOf[key],
+      },
     ]),
   ) as Record<PublishedStatKey, PublishedStat>;
 
@@ -281,6 +308,7 @@ export function computeSiteStats(feed: FeedStats, origin: SiteStats["origin"]): 
 
   return {
     origin,
+    domainsSource,
     SITE_STATS: raw,
     DISPLAY_STATS: display,
     STATS_AS_OF: asOf,

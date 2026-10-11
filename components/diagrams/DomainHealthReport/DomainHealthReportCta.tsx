@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { currentPageReturnTo } from "@/lib/portal-return-to";
 
 // Lead handoff: the report form (consent + generation) lives on the customer
 // portal; this section captures the email and passes it across prefilled.
@@ -41,7 +42,7 @@ function ReportPreview() {
           <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/70">Multi-page report</p>
-              <h3 className="mt-2 text-xl font-semibold text-white">Domain Health Report</h3>
+              <h3 className="mt-2 text-xl font-semibold text-white">Free exposure snapshot</h3>
               <p className="mt-1 text-sm text-slate-400">example.com</p>
             </div>
             <div className="grid gap-2 text-right">
@@ -97,7 +98,7 @@ export function DomainHealthReportCta() {
       setError("Enter a valid work email address.");
       return;
     }
-    const params = new URLSearchParams({ email: email.trim(), domain });
+    const params = new URLSearchParams({ email: email.trim(), domain, return_to: currentPageReturnTo() });
     window.location.href = `${portalReportUrl}?${params.toString()}`;
   }
 
@@ -108,7 +109,7 @@ export function DomainHealthReportCta() {
         <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#07102b]/85 p-5 shadow-2xl shadow-black/25 md:p-8 lg:p-10">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
-              <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Free Domain Health Report</p>
+              <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Free exposure snapshot</p>
               <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">See your organization through an attacker's eyes—for free.</h2>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
                 Datazag reviews public DNS, visible platforms, subdomains, certificates and infrastructure exposure, then sends a detailed multi-page report for technical and executive teams.

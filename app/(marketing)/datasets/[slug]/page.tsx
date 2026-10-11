@@ -60,11 +60,15 @@ export async function generateMetadata({
       siteName: "Datazag",
       title: dataset.seo?.ogTitle ?? title,
       description: dataset.seo?.ogDescription ?? description,
+      // Setting openGraph here replaces the root default wholesale, so the card
+      // must be named again or the page shares with no image (2026-10-08).
+      images: [{ url: "/og/home", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: dataset.seo?.ogTitle ?? title,
       description: dataset.seo?.ogDescription ?? description,
+      images: ["/og/home"],
     },
   };
 }

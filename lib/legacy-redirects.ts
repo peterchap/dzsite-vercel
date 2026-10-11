@@ -23,6 +23,26 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/samples/cross-estate-domain-risk-report.html",
+    destination: "/samples/estate-attack-surface-report.html",
+    reason: "The Cross-Estate Domain Risk Report was renamed the Organization estate report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",
+  },
+  {
+    source: "/legacy-home",
+    destination: "/",
+    reason: "A noindex reference copy of the old homepage, with the old positioning and API claims. Its page was deleted on 2026-10-02.",
+  },
+  {
+    source: "/home",
+    destination: "/",
+    reason: "An alias for the homepage. Was a page that redirected on render; a 301 says the same without a route.",
+  },
+  {
+    source: "/internet-never-stands-still",
+    destination: "/",
+    reason: "An old campaign path. Was a page that redirected on render; a 301 says the same without a route.",
+  },
+  {
     source: "/use-cases",
     destination: "/how-it-works",
     reason:
@@ -108,6 +128,16 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     source: "/q1-2026-platform-impersonation-analysis",
     destination: "/observatory",
     reason: "An empty CMS page that rendered 'No content found yet. Add a hero or sections in Studio.' to visitors. Published findings live in the Observatory.",
+  },
+  {
+    source: "/intelligence",
+    destination: "/blog",
+    reason: "The research index duplicated /blog, which already lists every research piece. Merged 2026-10-01. Pieces keep their /intelligence/<slug> URLs, which the Observatory registry links to.",
+  },
+  {
+    source: "/docs/search-stream",
+    destination: "/docs",
+    reason: "Webhook reference for alert delivery. The API docs and the webhook reference were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
   },
   {
     source: "/domain-search",

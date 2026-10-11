@@ -67,6 +67,8 @@ const NOW = new Date("2026-08-22T15:00:00Z");
 
 check("asOfLabel renders an absolute UTC stamp", () =>
   assert.equal(asOfLabel("2026-08-22T15:01:47+00:00"), "22 Aug 2026, 15:01 UTC"));
+check("asOfLabel renders a date-only stamp as a date, not as midnight", () =>
+  assert.equal(asOfLabel("2026-10-01"), "1 Oct 2026"));
 check("asOfLabel nulls a missing stamp", () => assert.equal(asOfLabel(null), null));
 check("asOfLabel nulls an unparseable stamp", () =>
   assert.equal(asOfLabel("not a date"), null));
