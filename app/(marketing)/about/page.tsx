@@ -143,7 +143,7 @@ export default async function AboutPage() {
             title={copyText(principles?.title, content.principles.title!)}
             body={copyText(principles?.body, content.principles.body!)}
           />
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
             {resolvedPrinciples.map((principle) => (
               <article key={principle.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-lg font-semibold text-white">{principle.title}</h3>

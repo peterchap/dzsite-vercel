@@ -99,7 +99,6 @@ export default {
                 { type: "section.why360Conversion" },
                 { type: "section.deliveryModesSection" },
                 { type: "section.partnershipSegmentsSection" },
-                { type: "section.predictiveLayerSection" },
             ],
         },
     ],
