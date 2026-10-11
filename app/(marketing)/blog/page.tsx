@@ -1,90 +1,55 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+
 import { sanityFetch } from "@/sanity/fetch";
 import { allBlogPostsQuery } from "@/sanity/queries";
 import { BlogList } from "@/components/blog/BlogList";
 import { BlogSubscribe } from "@/components/blog/BlogSubscribe";
 import { BlogConfirmationBanner } from "@/components/blog/BlogConfirmationBanner";
-import { ResearchList } from "@/components/research/ResearchList";
-import { latestResearch } from "@/lib/research";
 
-export const metadata = {
-    title: "Blog — Datazag",
-    description:
-        "Datazag research and articles: dated findings from the DNS corpus, plus notes on brand protection, alerting, DNS, certificates and cloud data products.",
+/**
+ * ENGINEERING BLOG (/blog) — how Datazag is built. One of the four parts of the
+ * brand (2026-10-11): Datazag, the Observatory, Insights and the Engineering blog.
+ *
+ * ONE HOME PER PIECE. Posts here are Sanity `blogPost` documents about how the
+ * system is built. Findings from the data go to Insights (/insights, lib/research.ts)
+ * and are never listed here.
+ *
+ * NO POSTS YET, SO IT REDIRECTS. An empty blog reads as an abandoned one, which is
+ * the fault the 1 October audit raised. While no post is published, /blog sends
+ * visitors to /insights with a TEMPORARY redirect, and it stays out of the menu
+ * and the sitemap. The first published post turns this page on with no code change.
+ * /blog/confirm (newsletter confirmation) and /blog/<slug> are separate routes and
+ * are not affected.
+ */
+export const metadata: Metadata = {
+    title: "Engineering blog — Datazag",
+    description: "How Datazag is built: notes from the team on measuring domains, DNS, certificates and routing at internet scale.",
 };
 
-const editorialTracks = [
-    {
-        title: "Infrastructure Intelligence",
-        text: "How domains, DNS, certificates, hosting, providers, platforms and history connect into usable external-risk context.",
-    },
-    {
-        title: "Brand protection and impersonation",
-        text: "How suspicious infrastructure forms, matures, gains DNS and website evidence, and becomes an updateable alert incident.",
-    },
-    {
-        title: "Cloud data products",
-        text: "How cyber datasets can be packaged for warehouses, lakehouses, marketplaces and partner analytics workflows.",
-    },
-    {
-        title: "Partner playbooks",
-        text: "Practical ideas for MSSPs, ESPs, platforms and agencies building services on top of Datazag intelligence.",
-    },
-];
-
-export default async function BlogIndexPage() {
+export default async function EngineeringBlogPage() {
+    // allBlogPostsQuery returns only posts with a publish date in the past.
     const posts = await sanityFetch<any[]>(allBlogPostsQuery, {}, 60);
-    // Research pages live in code under /intelligence/<slug>, not in Sanity (lib/research.ts), so the
-    // blog lists it from there. Without this, /blog said nothing was published.
-    const research = latestResearch();
-    const hasPosts = Array.isArray(posts) && posts.length > 0;
+    if (!Array.isArray(posts) || posts.length === 0) redirect("/insights");
 
     return (
         <main className="relative overflow-hidden bg-[#030619] text-white">
             <BlogConfirmationBanner />
-            {/* One listing for everything we publish: research pieces (code, lib/research.ts)
-                and Sanity articles. /intelligence used to duplicate this and now 301s here.
-                The header is kept short so the articles start above the fold. The small
-                labels use ! because globals.css forces h2 sizes with !important. */}
             <section id="articles" className="relative pb-20 pt-12 md:pb-28 md:pt-16">
                 <div className="absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_18%_18%,rgba(55,222,245,0.14),transparent_36%),radial-gradient(circle_at_82%_60%,rgba(139,92,246,0.11),transparent_38%)]" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-10 max-w-3xl">
-                        <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Datazag Blog</p>
-                        <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-5xl">Infrastructure Intelligence, explained.</h1>
+                        <p className="inline-flex rounded-full border border-cyan-300/25 bg-cyan-300/[0.1] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">Engineering blog</p>
+                        <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-5xl">How Datazag is built.</h1>
                         <p className="mt-4 text-base leading-7 text-slate-300">
-                            Research and articles on domains, DNS, certificates and hosting. Each research piece is dated and names what it measured. The
-                            daily figures behind them are in the{" "}
-                            <a href="https://observatory.datazag.com" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
-                                Datazag Observatory
+                            Notes from the team on measuring domains, DNS, certificates and routing. Findings from the data are in{" "}
+                            <a href="/insights" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+                                Datazag Insights
                             </a>
                             .
                         </p>
                     </div>
-                    {research.length > 0 ? (
-                        <div className="mb-12">
-                            <h2 className="mb-5 font-mono !text-xs !leading-4 font-semibold uppercase tracking-[0.2em] text-amber-300">Research</h2>
-                            <ResearchList pieces={research} />
-                        </div>
-                    ) : null}
-                    {/* The empty state is for Sanity articles only; hide it once research exists. */}
-                    {hasPosts ? (
-                        <h2 className="mb-5 font-mono !text-xs !leading-4 font-semibold uppercase tracking-[0.2em] text-cyan-200/80">Articles</h2>
-                    ) : null}
-                    {hasPosts || research.length === 0 ? <BlogList posts={posts} /> : null}
-                </div>
-            </section>
-
-            <section className="border-t border-white/10 py-16 md:py-20">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <h2 className="!text-xs !leading-4 font-semibold uppercase tracking-[0.3em] text-cyan-200/70">What we write about</h2>
-                    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                        {editorialTracks.map((track) => (
-                            <article key={track.title} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                                <h3 className="text-lg font-semibold text-white">{track.title}</h3>
-                                <p className="mt-3 text-sm leading-6 text-slate-400">{track.text}</p>
-                            </article>
-                        ))}
-                    </div>
+                    <BlogList posts={posts} />
                 </div>
             </section>
 
@@ -92,7 +57,7 @@ export default async function BlogIndexPage() {
                 <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Subscribe</p>
                     <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">Get Datazag updates.</h2>
-                    <p className="mt-5 text-base leading-7 text-slate-300">New research and product notes on external infrastructure risk, sent when we publish.</p>
+                    <p className="mt-5 text-base leading-7 text-slate-300">New findings and product notes, sent when we publish.</p>
                     <div className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 text-left">
                         <BlogSubscribe />
                     </div>

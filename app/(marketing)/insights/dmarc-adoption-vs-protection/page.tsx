@@ -24,7 +24,7 @@ const OBS = {
 
 export function generateMetadata(): Metadata {
   return {
-    title: "25% of domains publish DMARC; 13% enforce it — Datazag",
+    title: "25% of domains publish DMARC; 13% enforce it — Datazag Insights",
     description: DESCRIPTION,
     alternates: { canonical: studyUrl() },
     robots: { index: true, follow: true },

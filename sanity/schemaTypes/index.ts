@@ -77,7 +77,6 @@ import howItWorksSection from "./objects/sections/howItWorksSection";
 import why360Conversion from "./objects/sections/why360Conversion";
 import deliveryModesSection from "./objects/sections/deliveryModesSection";
 import partnershipSegmentsSection from "./objects/sections/partnershipSegmentsSection";
-import predictiveLayerSection from "./objects/sections/predictiveLayerSection";
 
 import howItWorksHero from "../schemas/howItWorksHero";
 import howItWorksPipeline from "./objects/sections/howItWorksPipeline";
@@ -166,7 +165,6 @@ export const schemaTypes = [
   why360Conversion,
   deliveryModesSection,
   partnershipSegmentsSection,
-  predictiveLayerSection,
   howItWorksHero,
   howItWorksPipeline,
 ];

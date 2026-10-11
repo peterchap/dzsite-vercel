@@ -76,7 +76,7 @@ export default function TermsOfServicePage() {
 
                     <LegalSection title="4. Data Nature and Limitations">
                         <p>
-                            The Services provide analytical and probabilistic intelligence derived from large-scale internet data sources.
+                            The Services provide analytical intelligence derived from large-scale internet data sources.
                         </p>
                         <p className="mt-4 font-semibold text-white">You acknowledge that:</p>
                         <ul className="mt-3 list-disc pl-5 space-y-2 text-slate-300">

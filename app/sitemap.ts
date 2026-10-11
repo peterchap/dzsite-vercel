@@ -32,9 +32,9 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/pricing", changeFrequency: "monthly", priority: 0.9 },
   { path: "/brand-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/datasets", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/intelligence/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/intelligence/corporate-domain-stack", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/intelligence/dmarc-adoption-vs-protection", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/insights/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/insights/corporate-domain-stack", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/insights/dmarc-adoption-vs-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/resources/machine-clicks", changeFrequency: "monthly", priority: 0.7 },
   { path: "/alerts", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports", changeFrequency: "monthly", priority: 0.7 },
@@ -43,7 +43,9 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  // Datazag Insights: the research hub (2026-10-11). /blog is the Engineering blog and is
+  // listed further down only once it has a post; until then it redirects to /insights.
+  { path: "/insights", changeFrequency: "weekly", priority: 0.8 },
   { path: "/about", changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
   { path: "/trust", changeFrequency: "monthly", priority: 0.6 },
@@ -110,6 +112,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: r.priority,
   }));
 
+  if ((blogPosts ?? []).some((p) => p?.slug)) {
+    entries.push({ url: abs("/blog"), changeFrequency: "weekly", priority: 0.6 });
+  }
   for (const post of blogPosts ?? []) {
     if (!post?.slug) continue;
     entries.push({

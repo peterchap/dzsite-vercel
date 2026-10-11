@@ -48,7 +48,7 @@ export async function ObservatoryPreview({ exclude = [] }: { exclude?: string[] 
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-400">
               The same graph mapped 150 domains from a single signal:{" "}
-              <Link href="/intelligence/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+              <Link href="/insights/one-signal-150-domains" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
                 read the investigation →
               </Link>
             </p>
