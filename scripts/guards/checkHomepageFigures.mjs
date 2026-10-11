@@ -32,7 +32,6 @@ const RULES = [
   { re: /\bbefore\b[^.]{0,30}\b(?:threat\s+)?(?:feeds?|blocklists?|blacklists?)\b/i, why: "a lead-time claim (not yet measured)" },
   { re: /\b(?:hours?|days?|weeks?)\s+(?:ahead|earlier|before)\b/i, why: "a lead-time claim (not yet measured)" },
   { re: /\b(?:spamhaus|urlhaus|threatfox|openphish|phishtank|virustotal|safe\s?browsing|web\s?risk|surbl|abuse\.ch)\b/i, why: "a third-party feed named on the homepage" },
-  { re: /\.ws\b/, why: "the embargoed registry-wildcard TLD (.ph lifted 2026-10-11)" },
 ];
 
 const isComment = (line) => /^\s*(?:\/\/|\/?\*|\{\s*\/\*)/.test(line);

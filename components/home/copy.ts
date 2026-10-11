@@ -10,8 +10,8 @@
  *   fails the build if a figure, a price or a forbidden claim appears here.
  * - Forbidden: a whole-corpus daily-scan claim (the corpus refreshes over about two
  *   months; new and high-risk domains are checked daily), any lead-time claim (not yet
- *   measured: hub work/cc-task-lead-time-metric.md), any third-party feed by name, and
- *   the embargoed registry-wildcard TLD (.ws; the .ph embargo lifted on 2026-10-11).
+ *   measured: hub work/cc-task-lead-time-metric.md) and any third-party feed by name.
+ *   The registry-wildcard embargo (.ph, .ws) lifted on 2026-10-11.
  */
 
 export const HERO = {
