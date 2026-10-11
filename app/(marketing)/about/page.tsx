@@ -55,6 +55,7 @@ export default async function AboutPage() {
 
   const hero = getCopySection(pageCopy, "hero");
   const whyExist = getCopySection(pageCopy, "whyExist");
+  const dataPrinciples = getCopySection(pageCopy, "dataPrinciples");
   const principles = getCopySection(pageCopy, "principles");
   const intelligenceLayerSection = getCopySection(pageCopy, "intelligenceLayer");
   const deliveryModelSection = getCopySection(pageCopy, "deliveryModel");
@@ -69,6 +70,7 @@ export default async function AboutPage() {
   const finalSecondaryCta = copyCta(finalCta?.secondaryCta, content.finalCta.secondaryCta!);
 
   const resolvedMissionCards = resolveCopyCards(content.whyExist.items!, whyExist);
+  const resolvedDataPrinciples = resolveCopyCards(content.dataPrinciples.items!, dataPrinciples);
   const resolvedPrinciples = resolveCopyCards(content.principles.items!, principles);
   const resolvedIntelligenceLayer = resolveCopyCards(content.intelligenceLayer.items!, intelligenceLayerSection);
   const resolvedDeliveryModel = resolveCopyCards(content.deliveryModel.items!, deliveryModelSection);
@@ -114,6 +116,23 @@ export default async function AboutPage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Data principles: directly after "Why we exist" (WU Data Principles). A list of
+          five: bold lead phrase, then the sentence. Two columns on desktop, one on mobile. */}
+      <section className="border-t border-white/10 py-20 md:py-28">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-semibold tracking-tight text-white md:text-5xl">
+            {copyText(dataPrinciples?.title, content.dataPrinciples.title!)}
+          </h2>
+          <ul className="mt-12 grid gap-4 md:grid-cols-2">
+            {resolvedDataPrinciples.map((item) => (
+              <li key={item.key} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-base leading-7 text-slate-300">
+                <strong className="font-semibold text-white">{item.title}</strong> {item.text}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

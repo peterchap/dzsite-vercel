@@ -23,6 +23,19 @@ export const content: PageContent = {
       { key: "approach", title: "Approach", text: "Connect domains, DNS, certificates, hosting, ASN, provider, platform and historical signals into evidence-led outputs." },
     ],
   },
+  // Data principles (WU Data Principles, 2026-10-11). Copy is verbatim from the WU.
+  // The claim is scoped to decisions and scoring on purpose; do not broaden it.
+  // Each item: title is the bold lead phrase, text is the sentence after it.
+  dataPrinciples: {
+    title: "What we believe about data",
+    items: [
+      { key: "evidence", title: "Evidence, not inference.", text: "Every finding traces back to something observable and verifiable." },
+      { key: "rules", title: "Rules, not black boxes.", text: "Our scoring is deterministic: the same evidence produces the same result, every time." },
+      { key: "explains", title: "Every alert explains itself.", text: "We show what triggered it and why it scored the way it did." },
+      { key: "challenge", title: "Open to challenge.", text: "If the evidence changes, or you know something we don't, the conclusion changes too." },
+      { key: "audit", title: "Decisions you can audit.", text: "Every score and alert that affects your business can be traced, checked and explained." },
+    ],
+  },
   principles: {
     eyebrow: "What we believe",
     title: "External intelligence should be connected, inspectable and useful.",
