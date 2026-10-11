@@ -110,18 +110,19 @@ if (existsSync(dir)) {
 }
 
 // 4b. Embargo and internal-use material (hub, 2026-10-10).
-//  - The .ph and .ws wildcard findings stay unpublished until dotPH and Let's Encrypt are
-//    at a clean state. A post that pairs a wildcard with those names fails. A bare .ph or
-//    .ws mention (a market in a ranking table) only warns, so a person checks it.
+//  - The .ws wildcard finding stays unpublished. A post that pairs a wildcard with .ws
+//    fails. A bare .ws mention (a market in a ranking table) only warns, so a person
+//    checks it. The .ph embargo lifted on 2026-10-11, once dotPH and Let's Encrypt had
+//    both responded, so .ph is no longer checked here.
 //  - The Global 2000 report uses a Forbes-list sample and is marked internal use.
 if (existsSync(dir)) {
   let embargo = 0;
   for (const f of readdirSync(dir).filter((f) => /\.tsx?$/.test(f))) {
     readFileSync(join(dir, f), "utf8").split("\n").forEach((line, i) => {
       const code = line.replace(/\/\/.*$/, "").replace(/^\s*\*.*$/, "");
-      const names = /(?:\.ph\b|\.ws\b|\bdotPH\b)/i.test(code);
-      if (names && /wildcard/i.test(code)) { embargo++; fail(`${f}:${i + 1} wildcard finding for .ph/.ws is embargoed`); }
-      else if (names) { embargo++; warn(`${f}:${i + 1} mentions .ph or .ws: confirm it is not the embargoed wildcard finding`); }
+      const names = /\.ws\b/i.test(code);
+      if (names && /wildcard/i.test(code)) { embargo++; fail(`${f}:${i + 1} wildcard finding for .ws is embargoed`); }
+      else if (names) { embargo++; warn(`${f}:${i + 1} mentions .ws: confirm it is not the embargoed wildcard finding`); }
       if (/\bGlobal 2000\b|\bForbes\b/.test(code)) { embargo++; fail(`${f}:${i + 1} Global 2000 / Forbes sample is internal use only`); }
     });
   }
