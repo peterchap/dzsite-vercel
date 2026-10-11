@@ -15,6 +15,7 @@ import {
 import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CurrencyText } from "@/components/ui/CurrencyText";
+import { PriceCurrencyControl } from "@/components/ui/PriceCurrencyControl";
 import { SLUG, content } from "./copy";
 import { PAID_REPORT_BUY_URL, domainReportPrice, estateBuyUrl, familyFrom, portfolioBuyUrl } from "@/lib/pricing";
 
@@ -196,11 +197,11 @@ export default async function ReportsPage() {
   const resolvedReportTypes = catalogueCards.map((f) => {
     const item = getCopyItem(catalogue, f.key);
     const meta = f.key === "domain-risk"
-      ? { ...catalogueMeta[f.key], price: domainReportPrice() ?? undefined }
+      ? { ...catalogueMeta[f.key], price: domainReportPrice({ marker: true }) ?? undefined }
       : f.key === "cross-estate"
-      ? { ...catalogueMeta[f.key], price: familyFrom("org_estate_") ?? undefined }
+      ? { ...catalogueMeta[f.key], price: familyFrom("org_estate_", { marker: true }) ?? undefined }
       : f.key === "portfolio" || f.key === "partner-branded"
-      ? { ...catalogueMeta[f.key], price: familyFrom("portfolio_") ?? undefined }
+      ? { ...catalogueMeta[f.key], price: familyFrom("portfolio_", { marker: true }) ?? undefined }
       : catalogueMeta[f.key];
     return {
       key: f.key,
@@ -337,6 +338,7 @@ export default async function ReportsPage() {
             title={copyText(catalogue?.title, content.catalogue.title!)}
             body={copyText(catalogue?.body, content.catalogue.body!)}
           />
+          <PriceCurrencyControl className="mt-8" />
           {/* Fixed rows (note / title / text / price / CTAs) so every column
               lines up horizontally regardless of how much copy each card has. */}
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
