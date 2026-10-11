@@ -24,7 +24,7 @@ const OBS = {
 
 export function generateMetadata(): Metadata {
   return {
-    title: "2 companies run mail for 24% of corporate domains — Datazag",
+    title: "2 companies run mail for 24% of corporate domains — Datazag Insights",
     description: DESCRIPTION,
     alternates: { canonical: studyUrl() },
     robots: { index: true, follow: true },

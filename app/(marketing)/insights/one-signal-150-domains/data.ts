@@ -14,8 +14,8 @@
 
 export const CASE_STUDY = {
   slug: "one-signal-150-domains",
-  section: "/intelligence",
-  path: "/intelligence/one-signal-150-domains",
+  section: "/insights",
+  path: "/insights/one-signal-150-domains",
   // www.datazag.com is the canonical apex — keep the www.
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com",
 

@@ -131,8 +131,16 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   },
   {
     source: "/intelligence",
-    destination: "/blog",
-    reason: "The research index duplicated /blog, which already lists every research piece. Merged 2026-10-01. Pieces keep their /intelligence/<slug> URLs, which the Observatory registry links to.",
+    destination: "/insights",
+    reason: "Research moved to Datazag Insights (2026-10-11 brand structure: Datazag, Observatory, Insights, Engineering blog). Between 2026-10-01 and that date this pointed at /blog.",
+  },
+  {
+    // One pattern, so every piece that ever lived under /intelligence keeps resolving:
+    // corporate-domain-stack, the one-signal-150-domains case study, and any link to a
+    // piece published later under its old planned URL.
+    source: "/intelligence/:slug",
+    destination: "/insights/:slug",
+    reason: "Every research piece moved from /intelligence/<slug> to /insights/<slug> with the hub (2026-10-11).",
   },
   {
     source: "/docs/search-stream",

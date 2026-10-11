@@ -23,14 +23,30 @@ export const content: PageContent = {
       { key: "approach", title: "Approach", text: "Connect domains, DNS, certificates, hosting, ASN, provider, platform and historical signals into evidence-led outputs." },
     ],
   },
+  // Data principles (WU Data Principles, 2026-10-11). Copy is from the WU, except the first
+  // lead phrase: "Evidence, not inference." was changed to "Evidence first." (Peter,
+  // 2026-10-11) because several pieces of evidence often do lead to an inference.
+  // The claim is scoped to decisions and scoring on purpose; do not broaden it.
+  // Each item: title is the bold lead phrase, text is the sentence after it.
+  dataPrinciples: {
+    title: "What we believe about data",
+    items: [
+      { key: "evidence", title: "Evidence first.", text: "Every finding traces back to something observable and verifiable." },
+      { key: "rules", title: "Rules, not black boxes.", text: "Our scoring is deterministic: the same evidence produces the same result, every time." },
+      { key: "explains", title: "Every alert explains itself.", text: "We show what triggered it and why it scored the way it did." },
+      { key: "challenge", title: "Open to challenge.", text: "If the evidence changes, or you know something we don't, the conclusion changes too." },
+      { key: "audit", title: "Decisions you can audit.", text: "Every score and alert that affects your business can be traced, checked and explained." },
+    ],
+  },
+  // Was headed "What we believe". Trimmed 2026-10-11: the data principles above now carry
+  // the evidence and black-box points, so this section covers how the product is built.
   principles: {
-    eyebrow: "What we believe",
+    eyebrow: "How we build",
     title: "External intelligence should be connected, inspectable and useful.",
     body: "Datazag is built around observable internet infrastructure and practical delivery formats, not generic threat-intelligence claims.",
     items: [
       { key: "external-risk", title: "External risk forms before the incident", text: "New domains, certificates, DNS changes, hosting choices and platform lures often appear before users see a finished phishing page or abuse campaign." },
       { key: "usable-context", title: "Infrastructure context should be usable", text: "Signals are only useful when they are connected, explained and delivered into the workflow where a team can act on them." },
-      { key: "evidence", title: "Evidence matters more than black boxes", text: "Scores and alerts should include reason codes, supporting context and de-escalation paths so teams can validate what they are seeing." },
       { key: "meet-buyers", title: "Data should meet buyers where they work", text: "Some teams need reports. Others need alerts, a Microsoft Sentinel feed, data shares, marketplace datasets or partner-delivered services." },
     ],
   },
@@ -78,7 +94,6 @@ export const content: PageContent = {
     items: [
       { key: "not-takedown", title: "Not a takedown service", text: "Datazag provides detection, evidence packs and abuse contacts. Customers or authorized partners manage takedown requests and legal response." },
       { key: "not-raw-resale", title: "Not uncontrolled raw-data resale", text: "Data products and partner rights are governed by product scope, permitted use and contractual boundaries." },
-      { key: "not-black-box", title: "Not a black-box score", text: "Risk outputs are designed to include reasons and supporting context so teams can validate, challenge or de-escalate findings." },
     ],
   },
   // FAQ (2026-10-01): questions an answer engine is asked about this page, answered

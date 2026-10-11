@@ -8,7 +8,7 @@ import { loadObservatoryFigures, OBSERVATORY_URL } from "@/lib/observatory-figur
 import { getObservatoryHealth } from "@/lib/observatory-health";
 import { ESTATE_REPORT_NAME, ESTATE_SNAPSHOT_NAME, FREE_REPORT_NAME, PAID_REPORT_NAME } from "@/lib/report-names";
 import { getSiteStats } from "@/lib/site-stats-live";
-import { AUDIENCES, COVERAGE, DELIVERY, EVIDENCE, FREE_REPORT, FREE_SCOPE, HERO, OBSERVATORY, PRICING } from "./copy";
+import { AUDIENCES, COVERAGE, DATA_PRINCIPLES, DELIVERY, EVIDENCE, FREE_REPORT, FREE_SCOPE, HERO, OBSERVATORY, PRICING } from "./copy";
 import { FreeReportForm } from "./FreeReportForm";
 import { FreeScopeForm } from "./FreeScopeForm";
 import { SampleTabs, type Sample } from "./SampleTabs";
@@ -296,6 +296,14 @@ export default async function HomePage() {
               ))}
             </ol>
           ) : null}
+        </div>
+        {/* Data principles: inside Coverage and methodology, after the figures (WU Data Principles). */}
+        <div className="mt-12 max-w-3xl border-t border-white/10 pt-10">
+          <h3 className="text-2xl font-semibold tracking-tight text-white">{DATA_PRINCIPLES.title}</h3>
+          <p className="mt-4 text-base leading-7 text-slate-300">{DATA_PRINCIPLES.text}</p>
+          <p className="mt-4">
+            <Link href={DATA_PRINCIPLES.sampleLink.href} className={textLink}>{DATA_PRINCIPLES.sampleLink.label} →</Link>
+          </p>
         </div>
       </Section>
 

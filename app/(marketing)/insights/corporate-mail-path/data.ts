@@ -104,7 +104,7 @@ export const STUDY = {
   baseline: { publishes: "44.4%", enforces: "14.5%", gatewaySegmentEnforces: "27.6%" },
 } as const;
 
-export const studyUrl = () => `${STUDY.siteUrl}/intelligence/${STUDY.slug}`;
+export const studyUrl = () => `${STUDY.siteUrl}/insights/${STUDY.slug}`;
 
 export const fmt = (n: number) => n.toLocaleString("en-US");
 
