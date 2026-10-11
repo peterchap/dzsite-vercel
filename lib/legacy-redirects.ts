@@ -23,6 +23,11 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/diligence",
+    destination: "https://portal.datazag.com/diligence?src=site",
+    reason: "Not a retired page: the diligence request form lives on the portal, and this address was a 404 for anyone who guessed it on the main site. Added 2026-10-11. The pricing page links to the portal directly.",
+  },
+  {
     source: "/enterprise",
     destination: "/datasets",
     reason: "A CMS skeleton that never shipped: noindexed, out of the sitemap, and linked from nowhere. Dropped on 2026-10-11. /datasets is where the homepage's Enterprise card already sends that audience.",
