@@ -12,11 +12,10 @@ import { draftMode } from "next/headers";
 
 /**
  * Slugs that must not be indexed while the page behind them is a skeleton.
- * /enterprise is deferred (WU-C7): the homepage segment card no longer points
- * at it, but the route still resolves, so keep it out of the index until it
- * carries real content. Remove the slug here when the page ships.
+ * Empty today. /enterprise was the one entry; it was dropped on 2026-10-11 and
+ * now 301s to /datasets (lib/legacy-redirects.ts). Keep app/sitemap.ts in step.
  */
-const NOINDEX_SLUGS = new Set(["enterprise"]);
+const NOINDEX_SLUGS = new Set<string>();
 
 export async function generateMetadata(
     props:

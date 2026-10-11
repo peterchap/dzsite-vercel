@@ -38,12 +38,10 @@ const SEGMENTS = [
     href: "/mssp-partners",
   },
   {
-    // WU-C7: /enterprise is deferred and still a skeleton, so the largest buyer
-    // segment is routed to the page that actually makes the argument. The
-    // skeleton is noindexed meanwhile (app/(marketing)/[...slug]/page.tsx).
-    // Point this back at /enterprise when that page ships. Until then it goes to
-    // /datasets, the one canonical datasets overview (the Infrastructure
-    // Intelligence page was folded into it on 2026-09-28).
+    // The Enterprise card goes to /datasets, the one canonical datasets overview
+    // (the Infrastructure Intelligence page was folded into it on 2026-09-28).
+    // There is no /enterprise page: the skeleton was dropped on 2026-10-11 and
+    // that path 301s to /datasets.
     title: "Enterprise",
     pillar: "All three, as data",
     line: "Threat, email and risk intelligence in your own warehouse.",
