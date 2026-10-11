@@ -117,6 +117,20 @@ export const COVERAGE = {
   methodLink: { label: "Read how it works", href: "/how-it-works" },
 };
 
+// Data principles (WU Data Principles, 2026-10-11). Copy is verbatim from the WU.
+// Scoped to decisions and scoring on purpose; do not broaden it.
+export const DATA_PRINCIPLES = {
+  title: "How we work with data",
+  text:
+    "We don't use black boxes. Datazag builds every score and alert from deterministic evidence you can check yourself. " +
+    "That evidence comes from observable records, documented rules and verifiable signals. " +
+    "No opaque model decides how we score your domains or your customers. When we flag something, we show you why. " +
+    "You see the evidence, the rule it triggered and how much each factor contributed. " +
+    "You can verify our reasoning, challenge it, or ask us to change it as new information appears. " +
+    "Intelligence you can't explain is intelligence you can't act on with confidence.",
+  sampleLink: { label: "See sample outputs", href: "#samples" },
+};
+
 export const DELIVERY = {
   kicker: "Delivery",
   title: "Use the data where you already work.",

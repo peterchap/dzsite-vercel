@@ -60,7 +60,6 @@ import HowItWorksSection from "@/components/sections/blocks/HowItWorksSection";
 import Why360Section from "@/components/sections/blocks/Why360Section";
 import DeliveryModesSection from "@/components/sections/blocks/DeliveryModesSection";
 import PartnershipSegmentsSection from "@/components/sections/blocks/PartnershipSegmentsSection";
-import PredictiveLayerSection from "@/components/sections/blocks/PredictiveLayerSection";
 
 type Section = {
   _type: string;
@@ -647,15 +646,6 @@ export default function SectionRenderer({ sections }: { sections?: Section[] }) 
               <div id={anchorId} key={key} className="scroll-mt-24">
                 <PartnershipSegmentsSection
                   {...(section as unknown as React.ComponentProps<typeof PartnershipSegmentsSection>)}
-                />
-              </div>
-            );
-
-          case "section.predictiveLayerSection":
-            return (
-              <div id={anchorId} key={key} className="scroll-mt-24">
-                <PredictiveLayerSection
-                  {...(section as unknown as React.ComponentProps<typeof PredictiveLayerSection>)}
                 />
               </div>
             );
