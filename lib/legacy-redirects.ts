@@ -23,6 +23,11 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/enterprise",
+    destination: "/datasets",
+    reason: "A CMS skeleton that never shipped: noindexed, out of the sitemap, and linked from nowhere. Dropped on 2026-10-11. /datasets is where the homepage's Enterprise card already sends that audience.",
+  },
+  {
     source: "/samples/cross-estate-domain-risk-report.html",
     destination: "/samples/estate-attack-surface-report.html",
     reason: "The Cross-Estate Domain Risk Report was renamed the Organization estate report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",

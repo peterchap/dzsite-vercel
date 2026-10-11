@@ -15,7 +15,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *   /domain-search              — retired, 301 to /datasets (legacy-redirects)
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
- *   /enterprise                 — noindex skeleton, deferred (WU-C7)
  *   legacy 301 sources          — see lib/legacy-redirects.ts (WU-C5)
  */
 
@@ -71,12 +70,12 @@ const cmsPageSitemapQuery = `
 `;
 
 /**
- * CMS slugs that resolve but must not be advertised. /enterprise is a deferred
- * skeleton carrying `robots: noindex` (see app/(marketing)/[...slug]/page.tsx);
- * listing it in the sitemap would ask Google to crawl a page we tell it to
- * ignore. Drop the slug here when the page ships.
+ * CMS slugs that resolve but must not be advertised: a page carrying
+ * `robots: noindex` (see app/(marketing)/[...slug]/page.tsx). Listing one in the
+ * sitemap would ask Google to crawl a page we tell it to ignore. Empty today:
+ * /enterprise was dropped on 2026-10-11 and is a legacy redirect now.
  */
-const NOINDEX_SLUGS = new Set(["enterprise"]);
+const NOINDEX_SLUGS = new Set<string>();
 
 type SlugRow = { slug: string; updated?: string };
 
