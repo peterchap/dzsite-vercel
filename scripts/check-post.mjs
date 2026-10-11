@@ -65,14 +65,24 @@ const entries = research.split(/\r?\n  \{\r?\n/).slice(1).flatMap((b) => {
   return s && d ? [{ slug: s[1], date: d[1], href: h ? h[1] : null }] : [];
 });
 const entry = entries.find((e) => e.slug === slug);
-// A guide lives where its href says (/resources/...); research lives at /intelligence/<slug>.
-const path = entry?.href ?? `/intelligence/${slug}`;
+// A guide lives where its href says (/resources/...); research lives at /insights/<slug>.
+const path = entry?.href ?? `/insights/${slug}`;
 const dir = join("app", "(marketing)", ...path.split("/").filter(Boolean));
 if (entry) ok(`listed in lib/research.ts (published ${entry.date})`);
-else fail("not in lib/research.ts, so /blog, the sitemap and llms.txt will not list it");
+else fail("not in lib/research.ts, so /insights, the sitemap and llms.txt will not list it");
 const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)).map((e) => e.slug).join();
 if (entries.map((e) => e.slug).join() === sorted) ok("lib/research.ts reads newest first");
 else warn("lib/research.ts is not in newest-first order (latestResearch() sorts it, but keep the file in order)");
+
+// 1b. One home per piece (2026-10-11 brand structure). Findings from the data live in
+// Insights (/insights/<slug>, or /resources/<slug> for a guide). How Datazag is built
+// goes to the Engineering blog, which is Sanity blog posts under /blog. A piece listed
+// here must not also sit under /blog, or under the retired /intelligence path.
+if (path.startsWith("/insights/") || path.startsWith("/resources/")) ok(`one home: ${path}`);
+else fail(`${path} is not under /insights or /resources. Findings go to Insights; engineering posts go to /blog and are not listed in lib/research.ts`);
+for (const other of ["blog", "intelligence"]) {
+  if (existsSync(join("app", "(marketing)", other, slug))) fail(`a second copy exists at app/(marketing)/${other}/${slug}: one home per piece`);
+}
 
 // 2. og:image
 if (existsSync(join(dir, "opengraph-image.tsx"))) ok("opengraph-image.tsx present");
@@ -97,6 +107,25 @@ if (existsSync(dir)) {
   if (!leaks) ok("no internal table names or dataset letters in source");
 } else {
   fail(`no page directory at ${dir}`);
+}
+
+// 4b. Embargo and internal-use material (hub, 2026-10-10).
+//  - The .ph and .ws wildcard findings stay unpublished until dotPH and Let's Encrypt are
+//    at a clean state. A post that pairs a wildcard with those names fails. A bare .ph or
+//    .ws mention (a market in a ranking table) only warns, so a person checks it.
+//  - The Global 2000 report uses a Forbes-list sample and is marked internal use.
+if (existsSync(dir)) {
+  let embargo = 0;
+  for (const f of readdirSync(dir).filter((f) => /\.tsx?$/.test(f))) {
+    readFileSync(join(dir, f), "utf8").split("\n").forEach((line, i) => {
+      const code = line.replace(/\/\/.*$/, "").replace(/^\s*\*.*$/, "");
+      const names = /(?:\.ph\b|\.ws\b|\bdotPH\b)/i.test(code);
+      if (names && /wildcard/i.test(code)) { embargo++; fail(`${f}:${i + 1} wildcard finding for .ph/.ws is embargoed`); }
+      else if (names) { embargo++; warn(`${f}:${i + 1} mentions .ph or .ws: confirm it is not the embargoed wildcard finding`); }
+      if (/\bGlobal 2000\b|\bForbes\b/.test(code)) { embargo++; fail(`${f}:${i + 1} Global 2000 / Forbes sample is internal use only`); }
+    });
+  }
+  if (!embargo) ok("no embargoed or internal-use material in source");
 }
 
 // 5-9. Rendered

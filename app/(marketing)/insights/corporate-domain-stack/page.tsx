@@ -18,7 +18,7 @@ const DESCRIPTION =
 
 export function generateMetadata(): Metadata {
   return {
-    title: "1 in 5 corporate domains rely on one company — Datazag",
+    title: "1 in 5 corporate domains rely on one company — Datazag Insights",
     description: DESCRIPTION,
     alternates: { canonical: studyUrl() },
     robots: { index: true, follow: true },

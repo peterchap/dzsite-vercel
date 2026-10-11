@@ -1,11 +1,17 @@
 /**
- * RESEARCH ON THE MAIN SITE — the one list of published research pieces.
+ * DATAZAG INSIGHTS — the one list of published research pieces.
  *
- * Research pages are code (app/(marketing)/intelligence/<slug>), not Sanity
- * blog posts, so /blog could not see them: on 2026-10-01 the first post went
- * live and /blog still said "No articles published yet". Every surface that
- * lists research reads this array: /blog (the one listing; /intelligence
- * 301s there), the sitemap and llms.txt. Add a piece here in the same PR that adds its page.
+ * Insights pages are code (app/(marketing)/insights/<slug>), not Sanity blog
+ * posts. Every surface that lists them reads this array: /insights (the one
+ * listing), the sitemap and llms.txt. Add a piece here in the same PR that
+ * adds its page.
+ *
+ * ONE HOME PER PIECE (2026-10-11 brand structure). Findings from the data go
+ * here, in Insights. How Datazag is built goes to the Engineering blog (/blog,
+ * Sanity blog posts). Never list the same piece in both.
+ *
+ * History: research lived at /intelligence/<slug> and was listed on /blog until
+ * 2026-10-11. Both old paths 301 here (lib/legacy-redirects.ts).
  *
  * ONLY LIVE PIECES. An entry is a link a visitor can follow, so it goes in
  * when its page ships, never ahead of it.
@@ -25,7 +31,7 @@ export interface ResearchPiece {
   /** ISO date published. */
   publishedOn: string;
   kind: ResearchKind;
-  /** Where the piece lives, when it is not /intelligence/<slug> (guides live under /resources). */
+  /** Where the piece lives, when it is not /insights/<slug> (guides live under /resources). */
   href?: string;
 }
 
@@ -57,7 +63,7 @@ export const RESEARCH: readonly ResearchPiece[] = [
   },
 ];
 
-export const researchHref = (p: ResearchPiece) => p.href ?? `/intelligence/${p.slug}`;
+export const researchHref = (p: ResearchPiece) => p.href ?? `/insights/${p.slug}`;
 
 /** Newest first. */
 export function latestResearch(limit?: number): ResearchPiece[] {
