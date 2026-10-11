@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { CASE_STUDY } from "@/app/(marketing)/intelligence/one-signal-150-domains/data";
+import { CASE_STUDY } from "@/app/(marketing)/insights/one-signal-150-domains/data";
 import { FP_STATUS } from "@/lib/fp-status";
 import { getSiteStats } from "@/lib/site-stats-live";
 

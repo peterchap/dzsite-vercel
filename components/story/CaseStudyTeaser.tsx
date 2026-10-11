@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { CASE_STUDY } from "@/app/(marketing)/intelligence/one-signal-150-domains/data";
+import { CASE_STUDY } from "@/app/(marketing)/insights/one-signal-150-domains/data";
 
 /**
  * Homepage proof block (WU23 §5). Sits directly under the hero and is the

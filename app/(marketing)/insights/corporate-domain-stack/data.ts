@@ -103,7 +103,7 @@ export const STUDY = {
   ],
 } as const;
 
-export const studyUrl = () => `${STUDY.siteUrl}/intelligence/${STUDY.slug}`;
+export const studyUrl = () => `${STUDY.siteUrl}/insights/${STUDY.slug}`;
 
 export const fmt = (n: number) => n.toLocaleString("en-US");
 
