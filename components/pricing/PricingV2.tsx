@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CurrencyText } from "@/components/ui/CurrencyText";
+import { PriceCurrencyControl } from "@/components/ui/PriceCurrencyControl";
 import { PAID_REPORT_BUY_URL, PRICING, diligenceRequestUrl, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
@@ -56,7 +57,7 @@ const faq = [
   },
   {
     question: "How are VAT and sales tax handled?",
-    answer: "Prices are in US dollars, before tax. Any VAT or sales tax for your location is calculated at checkout.",
+    answer: "Prices are set in US dollars, before tax. You can view them in your own currency, and we can invoice in it. Any VAT or sales tax for your location is calculated at checkout.",
   },
   {
     question: "Can I buy through a cloud marketplace?",
@@ -130,7 +131,8 @@ export function PricingV2() {
 
       <section id="reports" className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="Reports" title="One domain, one organization or a whole portfolio." body="Each tier states what it covers and how fast it arrives. Prices are in US dollars, one-off." />
+          <SectionHeader eyebrow="Reports" title="One domain, one organization or a whole portfolio." body="Each tier states what it covers and how fast it arrives. Prices are one-off." />
+          <PriceCurrencyControl className="mb-6" />
           <div className="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-white/[0.035] px-5">
             <table className="w-full min-w-[640px] text-left">
               <thead>

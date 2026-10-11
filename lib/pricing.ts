@@ -35,16 +35,20 @@ export function priceMarker(s: { price_usd: number | null; price_is_from?: boole
   return s.price_is_from ? `From ${marker}` : marker;
 }
 
-/** "From $299" for a family of tiers ("org_estate_" or "portfolio_"); null if none launched. */
-export function familyFrom(prefix: "org_estate_" | "portfolio_"): string | null {
+/** "From $299" for a family of tiers ("org_estate_" or "portfolio_"); null if none launched.
+ *  With `marker`, the figure is a {{PRICE:cents}} marker for CurrencyText, so it follows
+ *  the visitor's currency. Without it the text is US dollars and never converts. */
+export function familyFrom(prefix: "org_estate_" | "portfolio_", opts?: { marker?: boolean }): string | null {
   const tiers = launchedSkus().filter((s) => s.sku.startsWith(prefix));
   if (!tiers.length) return null;
   const low = tiers.reduce((a, b) => (a.price_usd <= b.price_usd ? a : b));
-  return `From ${formatPrice({ price_usd: low.price_usd })}`;
+  return `From ${opts?.marker ? priceMarker({ price_usd: low.price_usd }) : formatPrice({ price_usd: low.price_usd })}`;
 }
 
-/** The domain report's price as text ("$99"), or null if it is not launched. */
-export function domainReportPrice(): string | null {
+/** The domain report's price as text ("$99"), or null if it is not launched. With `marker`,
+ *  a {{PRICE:cents}} marker for CurrencyText. */
+export function domainReportPrice(opts?: { marker?: boolean }): string | null {
   const s = skuFor("domain_report");
-  return s ? formatPrice(s) : null;
+  if (!s) return null;
+  return opts?.marker ? priceMarker(s) : formatPrice(s);
 }

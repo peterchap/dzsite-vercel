@@ -1,11 +1,12 @@
 import { Header, Footer } from "@datazag/site-chrome";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { CurrencySelector } from "@/components/ui/CurrencySelector";
 
 // The website's use of the shared header and footer (@datazag/site-chrome).
 // Links, footer columns and the company line come from the package's nav.ts,
 // shared with portal.datazag.com. Only the header's right-hand actions are
-// the site's own: the currency selector and the CMS-managed CTAs.
+// the site's own: the CMS-managed CTAs. The currency selector is not here: it sits
+// beside the prices on /pricing and /reports (components/ui/PriceCurrencyControl),
+// and the header has no room for it at 1280px.
 
 type Cta = { label: string; href: string; variant?: "primary" | "secondary" | "ghost" };
 
@@ -21,8 +22,6 @@ export function SiteHeader({ primaryCta, secondaryCta, portalCta }: SiteSettings
             homeHref="/"
             actions={
                 <>
-                    <CurrencySelector className="h-9 w-[110px] text-xs" />
-                    <div className="mx-1 h-4 w-px bg-white/20" />
                     {secondaryCta ? (
                         <ButtonLink href={secondaryCta.href} variant={secondaryCta.variant ?? "secondary"}>
                             {secondaryCta.label}
@@ -42,7 +41,6 @@ export function SiteHeader({ primaryCta, secondaryCta, portalCta }: SiteSettings
                     ) : null}
                 </>
             }
-            compactActions={<CurrencySelector className="h-9 w-[100px] text-xs" />}
         />
     );
 }
