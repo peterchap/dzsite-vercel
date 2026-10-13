@@ -3,7 +3,7 @@ import { ReviewReport, reviewMetadata } from "../_report";
 /**
  * General pre-publication link: embargoed press, analysts and partners.
  * Hidden; see ../_report.tsx for how. Its own token, so it can be withdrawn
- * without touching the Forbes review link.
+ * without touching any other review link.
  */
 export const metadata = reviewMetadata(
   "Embargoed preview: Who Really Runs Business Email? — Datazag Insights",
@@ -26,8 +26,8 @@ export default function PreviewPage() {
         <ul className="list-disc space-y-2 pl-5 text-base leading-7 text-slate-300">
           <li>Every share in the report names its population. Please quote a figure with its population.</li>
           <li>
-            Company-list data is based on the Forbes Global 2000 list (2026). Please credit it as &ldquo;Forbes Global 2000
-            (2026), analysis by Datazag&rdquo;.
+            Company figures cover the 2,000 largest listed companies by number of employees (ranking: CompaniesMarketCap.com,
+            used with permission). Please credit them as &ldquo;Datazag analysis&rdquo;.
           </li>
           <li>
             Charts may be reused with Datazag attribution. The live figures are in the{" "}
