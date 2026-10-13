@@ -9,6 +9,10 @@ export type PartnerSrc = "mssp" | "esp" | "insurers";
 
 export const BOOK_CALL_LABEL = "Book a 20-minute call";
 
+// The analytics event sent when a booking button is clicked (lib/analytics.ts). The booking
+// tool drops the ?src= tag, so this event is how a click is tied to its page.
+export const BOOKING_CLICK_EVENT = "booking_click";
+
 /** Tag a link with ?src=<page>. An on-page anchor is left alone. A link to the contact
  *  form also carries ?topic=<page>, which chooses the inquiry type. */
 export function withSrc(href: string, src: PartnerSrc): string {

@@ -61,7 +61,7 @@ export const MSSP_OFFER: PartnerOffer = {
   ],
   questions: [
     { question: "Do we need to integrate anything?", answer: { text: "No. Reports arrive as PDF, HTML and CSV under your brand. Alerts and data feeds can come later." } },
-    { question: "Who owns the client relationship?", answer: { text: "You do. Datazag does not contact your clients." } },
+    { question: "What if it does not work for us?", answer: { text: "You judge the output on your own clients first. Reports are one-off purchases, so you can stop after any report." } },
   ],
   founding: "mssp",
 };

@@ -28,7 +28,6 @@ export const content: PageContent = {
     title: "Your service in front. Our intelligence behind it.",
     body: "Datazag holds what very few organizations have: the live domain corpus with its DNS history, certificate transparency, BGP routing and provider attribution, and the infrastructure links between them. You turn it into services for your clients.",
     secondaryBody: "SOC enrichment, cross-client exposure, email security reviews and reporting. Every finding comes with its evidence, and every service carries your brand.",
-    primaryCta: { label: "Start a partner pilot", href: "/contact" },
     secondaryCta: { label: "Explore partner services", href: "#services" },
   },
   partnerValue: {

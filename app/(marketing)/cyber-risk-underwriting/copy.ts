@@ -59,7 +59,6 @@ export const content: PageContent = {
     body: "Every insured depends on providers for mail, DNS, hosting and certificates. When many insureds depend on the same provider, one outage becomes many claims at once. Datazag shows those shared dependencies across your book, with the evidence for each insured underneath.",
     secondaryBody: "For underwriters, the same evidence answers a simpler question: what does this applicant actually run, before you bind and during the term?",
     primaryCta: { label: "See a sample estate report", href: "/samples/estate-attack-surface-report.html" },
-    secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 
   readers: {
