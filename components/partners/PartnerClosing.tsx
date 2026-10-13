@@ -1,7 +1,8 @@
 import Link from "next/link";
 
+import { TrackedLink } from "@/components/home/TrackedLink";
 import { CurrencyText } from "@/components/ui/CurrencyText";
-import { BOOK_CALL_LABEL, bookingHref, withSrc } from "@/lib/booking";
+import { BOOKING_CLICK_EVENT, BOOK_CALL_LABEL, bookingHref, withSrc, type PartnerSrc } from "@/lib/booking";
 import { offerIds, type LinkedCopy, type PartnerOffer } from "@/lib/partner-offers";
 import { foundingAvailability, foundingOffer, offerFromPrices, offerPrice, priceMarker, type FoundingOffer, type OfferPrice } from "@/lib/pricing";
 
@@ -36,10 +37,20 @@ function Price({ price, showLabel }: { price: OfferPrice; showLabel: boolean }) 
   );
 }
 
-function Actions({ offer, className }: { offer: PartnerOffer; className: string }) {
+/** "Book a 20-minute call". The click is logged with its page, because the booking tool
+ *  does not keep the ?src= tag. */
+export function BookCallLink({ src, location, className = primaryButton }: { src: PartnerSrc; location: string; className?: string }) {
+  return (
+    <TrackedLink href={bookingHref(src)} event={BOOKING_CLICK_EVENT} params={{ page: src, location }} className={className}>
+      {BOOK_CALL_LABEL}
+    </TrackedLink>
+  );
+}
+
+function Actions({ offer, location, className }: { offer: PartnerOffer; location: string; className: string }) {
   return (
     <div className={className}>
-      <a href={bookingHref(offer.src)} className={primaryButton}>{BOOK_CALL_LABEL}</a>
+      <BookCallLink src={offer.src} location={location} />
       <a href={withSrc(offer.secondary.href, offer.src)} className={secondaryButton}>{offer.secondary.label}</a>
     </div>
   );
@@ -88,7 +99,7 @@ export function PartnerClosing({ offer }: { offer: PartnerOffer }) {
             ))}
           </ul>
           {offer.priceLine ? <p className="mt-4 text-sm leading-6 text-slate-300">{offer.priceLine}</p> : null}
-          <Actions offer={offer} className="mt-8 flex flex-col gap-3 sm:flex-row" />
+          <Actions offer={offer} location="closing" className="mt-8 flex flex-col gap-3 sm:flex-row" />
         </div>
 
         <div className="grid gap-5">
@@ -134,7 +145,7 @@ export function PartnerOfferCompact({ offer }: { offer: PartnerOffer }) {
               {prices.map((price) => <Price key={price.id} price={price} showLabel />)}
             </p>
           </div>
-          <Actions offer={offer} className="flex shrink-0 flex-col gap-3 sm:flex-row" />
+          <Actions offer={offer} location="compact" className="flex shrink-0 flex-col gap-3 sm:flex-row" />
         </div>
       </div>
     </section>

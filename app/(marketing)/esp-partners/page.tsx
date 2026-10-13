@@ -17,7 +17,7 @@ import { MailFunnelStrip } from "@/components/story/MailFunnelStrip";
 import { loadCorporateMailFigures, resolveCorporateMailTokens } from "@/lib/observatory-figures";
 import { MACHINE_CLICKS_EVIDENCE_URL } from "@/lib/machine-clicks";
 import { SLUG, content } from "./copy";
-import { LinkedText, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
+import { BookCallLink, LinkedText, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
 import { withSrc } from "@/lib/booking";
 import { ESP_OFFER, PARTNER_PRICING_NOTE } from "@/lib/partner-offers";
 import { FaqSection } from "@/components/seo/FaqSection";
@@ -101,7 +101,6 @@ export default async function EspPartnersPage() {
   const machineClicksCta = copyCta(machineClicks?.primaryCta, content.machineClicks.primaryCta!);
   const resolvedMachineClicks = resolveCopyCards(content.machineClicks.items!, machineClicks);
 
-  const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
   const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
 
   const resolvedOutcomes = resolveCopyCards(content.partnerValue.items!, partnerValue);
@@ -143,7 +142,8 @@ export default async function EspPartnersPage() {
               {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={withSrc(heroPrimaryCta.href, "esp")} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              {/* The hero's main action is the booking call, the same as the closing section. */}
+              <BookCallLink src="esp" location="hero" />
               <a href={withSrc(heroSecondaryCta.href, "esp")} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>

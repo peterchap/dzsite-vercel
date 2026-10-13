@@ -20,8 +20,8 @@ import { SLUG, content } from "./copy";
 import { FaqSection } from "@/components/seo/FaqSection";
 import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
 import { getSiteStats } from "@/lib/site-stats-live";
-import { PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
-import { BOOK_CALL_LABEL, bookingHref, withSrc } from "@/lib/booking";
+import { BookCallLink, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
+import { withSrc } from "@/lib/booking";
 import { INSURER_OFFER } from "@/lib/partner-offers";
 
 export const metadata: Metadata = {
@@ -218,9 +218,7 @@ export default async function CyberRiskUnderwritingPage() {
 
   // Every action carries ?src=insurers.
   const heroPrimaryCopy = copyCta(hero?.primaryCta, content.hero.primaryCta!);
-  const heroSecondaryCopy = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
   const heroPrimary = { ...heroPrimaryCopy, href: withSrc(heroPrimaryCopy.href, "insurers") };
-  const heroSecondary = { ...heroSecondaryCopy, href: withSrc(heroSecondaryCopy.href, "insurers") };
 
   const readerCards = resolveCopyCards(content.readers.items!, readers);
   const decisionCards = resolveCopyCards(content.decisions.items!, decisions);
@@ -264,9 +262,8 @@ export default async function CyberRiskUnderwritingPage() {
                 <a href={heroPrimary.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
                   {heroPrimary.label}
                 </a>
-                <a href={heroSecondary.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
-                  {heroSecondary.label}
-                </a>
+                {/* The hero's second action is the booking call, the same as the closing section. */}
+                <BookCallLink src="insurers" location="hero" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]" />
               </div>
             </div>
 
@@ -558,9 +555,7 @@ export default async function CyberRiskUnderwritingPage() {
             <p className="mt-4 text-base leading-7 text-slate-400">
               {copyText(evidence?.secondaryBody, content.evidence.secondaryBody!)}
             </p>
-            <a href={bookingHref("insurers")} className="mt-8 inline-flex min-h-12 w-full items-center sm:w-auto justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
-              {BOOK_CALL_LABEL}
-            </a>
+            <BookCallLink src="insurers" location="evidence" className="mt-8 inline-flex min-h-12 w-full items-center sm:w-auto justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {evidenceCards.map((card) => (

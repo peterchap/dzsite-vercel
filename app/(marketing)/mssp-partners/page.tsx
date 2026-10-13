@@ -15,7 +15,7 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { SLUG, content } from "./copy";
-import { LinkedText, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
+import { BookCallLink, LinkedText, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
 import { withSrc } from "@/lib/booking";
 import { MSSP_OFFER, PARTNER_PRICING_NOTE } from "@/lib/partner-offers";
 import { FaqSection } from "@/components/seo/FaqSection";
@@ -80,7 +80,6 @@ export default async function MsspPartnersPage() {
   const deliverySection = getCopySection(pageCopy, "delivery");
   const pilotPath = getCopySection(pageCopy, "pilotPath");
 
-  const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
   const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
 
   const resolvedOutcomes = resolveCopyCards(content.partnerValue.items!, partnerValue);
@@ -122,7 +121,8 @@ export default async function MsspPartnersPage() {
               {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={withSrc(heroPrimaryCta.href, "mssp")} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              {/* The hero's main action is the booking call, the same as the closing section. */}
+              <BookCallLink src="mssp" location="hero" />
               <a href={withSrc(heroSecondaryCta.href, "mssp")} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>

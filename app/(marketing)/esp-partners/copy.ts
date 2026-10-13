@@ -15,7 +15,6 @@ export const content: PageContent = {
     title: "Know what every domain on your platform really is.",
     body: "Can it take mail? Who runs its mail? Is it parked? Does it enforce DMARC? What infrastructure sits behind it? Datazag answers these for the domains your customers sign up with, send from and link to.",
     secondaryBody: "You get the evidence, not an approve-or-reject verdict. Keep the customer experience under your brand while Datazag supplies the email, risk and threat intelligence underneath.",
-    primaryCta: { label: "Start an ESP partner pilot", href: "/contact" },
     secondaryCta: { label: "Explore ESP services", href: "#services" },
   },
   partnerValue: {
