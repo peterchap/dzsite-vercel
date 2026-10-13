@@ -26,8 +26,12 @@ export default function PreviewPage() {
         <ul className="list-disc space-y-2 pl-5 text-base leading-7 text-slate-300">
           <li>Every share in the report names its population. Please quote a figure with its population.</li>
           <li>
-            Company figures cover the 2,000 largest listed companies by number of employees (ranking: CompaniesMarketCap.com,
-            used with permission). Please credit them as &ldquo;Datazag analysis&rdquo;.
+            Company figures cover the 2,000 largest listed companies by number of employees, ranked using data from{" "}
+            <a href="https://companiesmarketcap.com/" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+              CompaniesMarketCap.com
+            </a>{" "}
+            (downloaded 12 October 2026). All company figures are Datazag aggregates; please credit them as &ldquo;Datazag
+            analysis&rdquo;.
           </li>
           <li>
             Charts may be reused with Datazag attribution. The live figures are in the{" "}

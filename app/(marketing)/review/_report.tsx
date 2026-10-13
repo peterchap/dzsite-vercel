@@ -18,7 +18,7 @@ import Image from "next/image";
  * At formal publication, delete app/(marketing)/review/ and public/review/.
  */
 
-const ASSETS = "/review/report-email-2026-b18c7bbbd9";
+const ASSETS = "/review/report-email-2026-77988294b6";
 export const REPORT_PDF = `${ASSETS}/who-really-runs-business-email-datazag-2026.pdf`;
 
 const PAGES = [
@@ -31,8 +31,6 @@ const PAGES = [
   "Chapter 01: two views of email infrastructure, and the evidence behind the gateway",
   "Chapter 01: why the Top 1000 leans to Microsoft, and the next 1,000",
   "Chapter 02: there is no single global email market",
-  "Chapter 02: the full country comparison",
-  "Chapter 02: the same split across corporate mail domains",
   "Chapter 03: the overlooked giants of business email",
   "Chapter 03: the mechanism is the bundle",
   "Chapter 04: why enterprise email security looks different",
