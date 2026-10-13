@@ -18,7 +18,7 @@ import Image from "next/image";
  * At formal publication, delete app/(marketing)/review/ and public/review/.
  */
 
-const ASSETS = "/review/report-email-2026-77988294b6";
+const ASSETS = "/review/report-email-2026-9f42fb843c";
 export const REPORT_PDF = `${ASSETS}/who-really-runs-business-email-datazag-2026.pdf`;
 
 const PAGES = [
