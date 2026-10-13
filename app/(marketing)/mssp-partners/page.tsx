@@ -15,6 +15,9 @@ import { sanityFetch } from "@/sanity/fetch";
 import { marketingPageCopyBySlugQuery } from "@/sanity/marketingCopy";
 import { CorpusAdvantage } from "@/components/partners/CorpusAdvantage";
 import { SLUG, content } from "./copy";
+import { LinkedText, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
+import { withSrc } from "@/lib/booking";
+import { MSSP_OFFER, PARTNER_PRICING_NOTE } from "@/lib/partner-offers";
 import { FaqSection } from "@/components/seo/FaqSection";
 
 export const metadata: Metadata = {
@@ -76,11 +79,9 @@ export default async function MsspPartnersPage() {
   const operatingModel = getCopySection(pageCopy, "operatingModel");
   const deliverySection = getCopySection(pageCopy, "delivery");
   const pilotPath = getCopySection(pageCopy, "pilotPath");
-  const finalCta = getCopySection(pageCopy, "finalCta");
 
   const heroPrimaryCta = copyCta(hero?.primaryCta, content.hero.primaryCta!);
   const heroSecondaryCta = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
-  const finalPrimaryCta = copyCta(finalCta?.primaryCta, content.finalCta.primaryCta!);
 
   const resolvedOutcomes = resolveCopyCards(content.partnerValue.items!, partnerValue);
   const resolvedCommercialModel = resolveCopyCards(content.commercialModel.items!, commercialModelSection);
@@ -121,8 +122,8 @@ export default async function MsspPartnersPage() {
               {copyText(hero?.secondaryBody, content.hero.secondaryBody!)}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={heroPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
-              <a href={heroSecondaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
+              <a href={withSrc(heroPrimaryCta.href, "mssp")} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{heroPrimaryCta.label}</a>
+              <a href={withSrc(heroSecondaryCta.href, "mssp")} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">{heroSecondaryCta.label}</a>
             </div>
           </div>
           <PartnerStackPanel />
@@ -149,6 +150,8 @@ export default async function MsspPartnersPage() {
           </div>
         </div>
       </section>
+
+      <PartnerOfferCompact offer={MSSP_OFFER} />
 
       <section id="services" className="border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -218,6 +221,9 @@ export default async function MsspPartnersPage() {
               <h3 className="mt-3 text-2xl font-semibold text-white">{copyText(marginPrinciple?.title, content.marginPrinciple.title!)}</h3>
               <p className="mt-4 text-sm leading-6 text-slate-300">
                 {copyText(marginPrinciple?.body, content.marginPrinciple.body!)}
+              </p>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                <LinkedText copy={PARTNER_PRICING_NOTE} />
               </p>
             </div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b22]">
@@ -312,18 +318,7 @@ export default async function MsspPartnersPage() {
 
       <FaqSection section={getCopySection(pageCopy, "faq")} fallback={content.faq} />
 
-      <section className="border-t border-white/10 py-24 md:py-32">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">{copyText(finalCta?.eyebrow, content.finalCta.eyebrow!)}</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">{copyText(finalCta?.title, content.finalCta.title!)}</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            {copyText(finalCta?.body, content.finalCta.body!)}
-          </p>
-          <div className="mt-10 flex justify-center">
-            <a href={finalPrimaryCta.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">{finalPrimaryCta.label}</a>
-          </div>
-        </div>
-      </section>
+      <PartnerClosing offer={MSSP_OFFER} />
     </main>
   );
 }

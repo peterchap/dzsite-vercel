@@ -75,14 +75,14 @@ export const content: PageContent = {
     items: [
       { key: "owns-pricing", title: "Partner owns pricing", text: "You decide how the service is packaged, bundled, marked up and sold to clients. Datazag does not set your end-customer price." },
       { key: "wholesale-layer", title: "Datazag is the wholesale layer", text: "The intelligence layer is priced by scope: client estate, domains, data volume, delivery route, white-label needs and SLA." },
-      { key: "service-margin", title: "Designed for service margin", text: "Partner terms are designed to leave room for meaningful managed-service margin without publishing a fixed discount or margin percentage." },
+      { key: "service-margin", title: "Designed for service margin", text: "Partner terms are designed to leave room for meaningful managed-service margin." },
       { key: "no-conflict", title: "No channel conflict by design", text: "For partner-led accounts, the client relationship stays with the MSSP. Datazag remains infrastructure behind the managed service." },
     ],
   },
   marginPrinciple: {
     eyebrow: "Margin principle",
     title: "Partner price minus Datazag platform cost equals the service margin you control.",
-    body: "Partner economics depend on how the service is packaged: enrichment, reporting, remediation, portal intelligence or a premium add-on. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it. Specific discounts and margin targets are handled privately in the partner agreement.",
+    body: "Partner economics depend on how the service is packaged: enrichment, reporting, remediation, portal intelligence or a premium add-on. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it.",
   },
   marginLevers: {
     items: [
@@ -149,11 +149,5 @@ export const content: PageContent = {
       { key: "cross-client", title: "What is cross-client exposure?", text: "A view of which mail, DNS, hosting and CDN providers your clients share, so a problem at one provider shows up as one view across your client base." },
       { key: "relationship", title: "Who owns the client relationship?", text: "You do. You set the offer, pricing and SLA, and the service runs under your brand. Datazag stays behind it." },
     ],
-  },
-  finalCta: {
-    eyebrow: "Next step",
-    title: "Build the partner offer around your clients.",
-    body: "Start with a client cohort, validate the intelligence, then decide whether the first commercial motion is SOC enrichment, cross-client exposure, email security reviews, reporting or portfolio monitoring.",
-    primaryCta: { label: "Start a partner pilot", href: "/contact" },
   },
 };

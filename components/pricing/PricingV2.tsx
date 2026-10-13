@@ -2,30 +2,13 @@ import Link from "next/link";
 
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { PriceCurrencyControl } from "@/components/ui/PriceCurrencyControl";
-import { PAID_REPORT_BUY_URL, PRICING, diligenceRequestUrl, estateBuyUrl, launchedSkus, portfolioBuyUrl, priceMarker, type Sku } from "@/lib/pricing";
+import { PRICING, activeFoundingOffers, foundingAvailability, launchedSkus, monitoringPriceText, perInterval, priceMarker, startLink, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
 // delivery time and unit definition comes from the shared pricing config
 // (@datazag/site-chrome/pricing, read through lib/pricing.ts). Prices render through
 // CurrencyText, which converts {{PRICE:cents}} markers to the visitor's currency; the
 // markers are built from the config, never typed (scripts/guards/checkPriceGuard.mjs).
-
-const checkoutLive = process.env.NEXT_PUBLIC_REPORTS_CHECKOUT_LIVE === "true";
-// Where each SKU is bought. Every report is bought online, directly: the estate and
-// portfolio reports on their own buy pages (the free scope stays the way to see discovery
-// first). The tier follows the domains the buyer lists.
-const START: Record<string, { label: string; href: string }> = {
-  free_snapshot: { label: "Get a free report", href: "/#free-report" },
-  domain_report: checkoutLive
-    ? { label: "Buy the report", href: PAID_REPORT_BUY_URL }
-    : { label: "Contact us", href: "/contact" },
-  org_estate_10: { label: "Buy the report", href: estateBuyUrl("pricing") },
-  org_estate_50: { label: "Buy the report", href: estateBuyUrl("pricing") },
-  org_estate_250: { label: "Buy the report", href: estateBuyUrl("pricing") },
-  portfolio_25: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
-  portfolio_50: { label: "Buy the report", href: portfolioBuyUrl("pricing") },
-  diligence: { label: "Request a diligence edition", href: diligenceRequestUrl("pricing") },
-};
 
 const includes = [
   "Public DNS, email authentication and registration, checked live",
@@ -84,7 +67,7 @@ function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: strin
 }
 
 function LadderRow({ s }: { s: Sku }) {
-  const start = START[s.sku];
+  const start = startLink(s.sku, "pricing");
   const free = s.price_usd === 0;
   return (
     <tr className="border-b border-white/10 align-top">
@@ -109,7 +92,9 @@ export function PricingV2() {
   const ladder = launchedSkus();
   const alerts = PRICING.subscriptions.filter((s) => s.launch && s.sku.startsWith("alerts_"));
   const shares = PRICING.subscriptions.filter((s) => s.launch && s.sku.startsWith("data_share_"));
-  const per = (i: "month" | "year") => (i === "month" ? "/mo" : "/yr");
+  // Founding offers are gated in lib/pricing.ts: none shows until one is enabled, and each
+  // hides after its deadline.
+  const founding = activeFoundingOffers();
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
       <section className="relative py-24 md:py-32">
@@ -128,6 +113,29 @@ export function PricingV2() {
           </div>
         </div>
       </section>
+
+      {founding.length ? (
+        <section id="founding-partners" className="relative border-t border-white/10 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader eyebrow="Founding partners" title="A limited offer for our first partners." body="Each offer has a fixed price and a fixed term." />
+            <div className="grid gap-5 lg:grid-cols-2">
+              {founding.map((f) => {
+                const availability = foundingAvailability(f);
+                return (
+                  <article key={f.id} className="rounded-[1.25rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
+                    <h3 className="text-lg font-semibold text-white">{f.title}</h3>
+                    {f.summary ? <p className="mt-2 text-sm leading-6 text-slate-300">{f.summary}</p> : null}
+                    <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
+                      <CurrencyText value={priceMarker(f)} />{f.term ? <span className="text-sm font-normal text-slate-400"> for {f.term}</span> : null}
+                    </p>
+                    {availability ? <p className="mt-2 text-sm leading-6 text-cyan-100">{availability}</p> : null}
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section id="reports" className="relative border-t border-white/10 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -151,7 +159,7 @@ export function PricingV2() {
                     <p className="mt-1 text-sm leading-6 text-slate-400">{PRICING.monitoring.cadence}, for any report above.</p>
                   </td>
                   <td className="py-4 pr-4 text-sm text-slate-300">Every quarter</td>
-                  <td className="py-4 pr-4 text-sm text-white">{PRICING.monitoring.multiplier} × the report price, per year</td>
+                  <td className="py-4 pr-4 text-sm text-white">{monitoringPriceText()}</td>
                   <td className="py-4 text-right text-sm text-slate-400">Add at checkout</td>
                 </tr>
                 <tr className="align-top">
@@ -206,7 +214,7 @@ export function PricingV2() {
               <article key={a.sku} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-lg font-semibold text-white">{a.product}</h3>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
-                  <CurrencyText value={priceMarker(a)} /><span className="text-sm font-normal text-slate-400">{a.quoted ? "" : per(a.interval)}</span>
+                  <CurrencyText value={priceMarker(a)} /><span className="text-sm font-normal text-slate-400">{a.quoted ? "" : perInterval(a.interval)}</span>
                 </p>
                 <Link href="/alerts" className="mt-4 inline-block text-sm font-semibold text-cyan-200 underline-offset-4 hover:underline">How alerts work →</Link>
               </article>
@@ -223,7 +231,7 @@ export function PricingV2() {
               <article key={d.sku} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5">
                 <h3 className="text-lg font-semibold text-white">{d.product}</h3>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
-                  <CurrencyText value={priceMarker(d)} /><span className="text-sm font-normal text-slate-400">{d.quoted ? "" : per(d.interval)}</span>
+                  <CurrencyText value={priceMarker(d)} /><span className="text-sm font-normal text-slate-400">{d.quoted ? "" : perInterval(d.interval)}</span>
                 </p>
               </article>
             ))}
