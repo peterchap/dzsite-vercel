@@ -88,14 +88,14 @@ export const content: PageContent = {
     items: [
       { key: "owns-packaging", title: "Partner owns packaging", text: "You decide whether the intelligence is used for internal controls, premium customer features, managed services or paid add-ons." },
       { key: "platform-layer", title: "Datazag is the platform layer", text: "The underlying intelligence is priced by scope: customer estate, domains, checks, data volume, delivery route, white-label needs and SLA." },
-      { key: "service-margin", title: "Designed for service margin", text: "Partner terms are designed to leave room for meaningful margin without publishing a fixed discount or margin percentage." },
+      { key: "service-margin", title: "Designed for service margin", text: "Partner terms are designed to leave room for meaningful margin." },
       { key: "no-conflict", title: "No channel conflict by design", text: "For partner-led accounts, the customer relationship stays with the ESP. Datazag remains infrastructure behind the product experience." },
     ],
   },
   marginPrinciple: {
     eyebrow: "Margin principle",
     title: "Partner price minus Datazag platform cost equals the service margin you control.",
-    body: "Partner economics depend on how the capability is packaged: internal abuse controls, premium link checks, hygiene reports, brand protection, deliverability analytics or customer-facing trust services. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it. Specific discounts and margin targets are handled privately in the partner agreement.",
+    body: "Partner economics depend on how the capability is packaged: internal abuse controls, premium link checks, hygiene reports, brand protection, deliverability analytics or customer-facing trust services. Datazag is designed as a predictable input cost so partners can build repeatable recurring revenue around it.",
   },
   marginLevers: {
     items: [
@@ -163,11 +163,5 @@ export const content: PageContent = {
       { key: "resell", title: "Can we offer it to our own customers?", text: "Yes. Platforms can package it into their own customer reports, hygiene checks, brand protection and alerts, under their own brand. Raw data and bulk exports are not for resale by default." },
       { key: "delivery", title: "How is it delivered?", text: "Through reports, exports, cloud data shares or the Microsoft Sentinel feed, depending on where the check runs: at signup, before send, in abuse review or in analytics." },
     ],
-  },
-  finalCta: {
-    eyebrow: "Next step",
-    title: "Build the ESP partner motion around your platform.",
-    body: "Start with one workflow, validate the intelligence, then decide whether the production motion is signup checks, pre-send link checks, change alerts, deliverability analytics or a customer-facing protection service.",
-    primaryCta: { label: "Start an ESP partner pilot", href: "/contact" },
   },
 };
