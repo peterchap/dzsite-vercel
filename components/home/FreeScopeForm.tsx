@@ -118,7 +118,7 @@ export function FreeScopeForm({ location = "home", src, defaultPersona = "own" }
       {error ? <p className="text-sm text-red-300" role="alert">{error}</p> : null}
       <p className="text-xs leading-5 text-slate-400">
         We send the scope to your work email. You confirm the details on the next page{shape === "portfolio" ? ", where you can also upload a CSV" : ""}.{" "}
-        We&apos;ll email your scope and a few short follow-ups. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
+        We&apos;ll email your scope and a short follow-up about it. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
       </p>
     </form>
   );

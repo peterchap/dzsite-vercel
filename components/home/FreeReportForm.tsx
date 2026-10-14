@@ -92,7 +92,7 @@ export function FreeReportForm() {
       {error ? <p className="mt-3 text-sm text-red-300" role="alert">{error}</p> : null}
       <p className="mt-3 text-xs leading-5 text-slate-400">
         We send the report to your work email. You confirm the details on the next page.{" "}
-        We&apos;ll email your report and a few short follow-ups. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
+        We&apos;ll email your report and a short follow-up about it. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
       </p>
     </form>
   );

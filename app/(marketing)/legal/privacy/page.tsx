@@ -244,9 +244,10 @@ export default function PrivacyPolicyPage() {
                             block cookies in your browser settings.
                         </p>
                         <p className="mt-4">
-                            When you request a free report or Estate Scope, we email the result and a few short follow-ups
-                            about it. Each follow-up has a one-click unsubscribe link. Unsubscribing stops the follow-ups
-                            only; you still receive any report you request.
+                            When you request a free report or Estate Scope, we email the result and one short service
+                            email about it. We send marketing emails about related services only if you tick the
+                            optional box on the form. Every follow-up has a one-click unsubscribe link. Unsubscribing
+                            stops the follow-ups only; you still receive any report you request.
                         </p>
                     </LegalSection>
 
