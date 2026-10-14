@@ -26,6 +26,12 @@ type InquiryPayload = {
   marketingOptIn: boolean;
   page: string;
   submittedAt: string;
+  // Campaign tags (lib/attribution.ts, docs/utm.md).
+  src: string;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmContent: string;
 };
 
 /**
@@ -110,6 +116,11 @@ export async function POST(request: NextRequest) {
     marketingOptIn: checked(formData.get("marketing_opt_in")),
     page: clean(formData.get("page")) || request.headers.get("referer") || "unknown",
     submittedAt: new Date().toISOString(),
+    src: clean(formData.get("src")).slice(0, 80),
+    utmSource: clean(formData.get("utm_source")).slice(0, 80),
+    utmMedium: clean(formData.get("utm_medium")).slice(0, 80),
+    utmCampaign: clean(formData.get("utm_campaign")).slice(0, 80),
+    utmContent: clean(formData.get("utm_content")).slice(0, 80),
   };
 
   // Benchmark qualifications route back to /benchmark on validation errors and

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import { AttributionFields } from "@/components/attribution/AttributionFields";
 import { Container } from "@/components/ui/Container";
 import {
   publishedContactRoutes,
@@ -58,6 +59,7 @@ const topicEnquiryType: Record<string, string> = {
   mssp: "MSSP / MDR partnership",
   esp: "ESP / platform partnership",
   insurers: "Insurer design partner",
+  investors: "Organization estate report",
 };
 
 const nextSteps = [
@@ -198,6 +200,7 @@ export default async function ContactPage({
 
               <form className="mt-6 grid gap-4" action="/api/enquiry" method="post">
                 <input type="hidden" name="source" value="contact_form" />
+                <AttributionFields />
                 <input type="hidden" name="page" value={topic ? `/contact?topic=${topic}` : "/contact"} />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Name">

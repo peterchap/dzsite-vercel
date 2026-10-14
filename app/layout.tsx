@@ -65,7 +65,11 @@ export default async function RootLayout({
           </CurrencyProvider>
         </SiteStatsProvider>
         {/* GA4, shared with portal.datazag.com; loads only after cookie consent. */}
-        <SiteAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        <SiteAnalytics
+          measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+          linkedinPartnerId={process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID}
+          linkedinConversions={process.env.NEXT_PUBLIC_LINKEDIN_CONVERSIONS}
+        />
         {/* First-touch attribution: written only after the same consent (shared with the portal). */}
         <FirstTouchCapture />
       </body>

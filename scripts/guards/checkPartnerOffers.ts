@@ -6,7 +6,7 @@
  *   - an offer names a product id the pricing config does not have (the line would vanish);
  *   - an offer does not have exactly three "what happens next" steps;
  *   - the booking link or its fallback loses its ?src= tag;
- *   - a founding offer shows while disabled, without a price, or after its deadline.
+ *   - a founding offer shows while disabled or after its deadline (UK time), or its seats are wrong.
  *
  * Typed prices in those pages are caught by checkPriceGuard.mjs.
  *
@@ -14,7 +14,7 @@
  */
 import { bookingHref, withSrc } from "../../lib/booking";
 import { ESP_OFFER, INSURER_OFFER, MSSP_OFFER, offerIds } from "../../lib/partner-offers";
-import { FOUNDING_OFFERS, activeFoundingOffers, isFoundingOfferActive, offerFromPrices, offerPrice, type FoundingOffer } from "../../lib/pricing";
+import { FOUNDING_OFFERS, activeFoundingOffers, foundingClosesAt, foundingSeatsLine, isFoundingOfferActive, offerFromPrices, offerPrice, type FoundingOffer } from "../../lib/pricing";
 
 const failures: string[] = [];
 const check = (ok: boolean, message: string) => { if (!ok) failures.push(message); };
@@ -39,15 +39,23 @@ if (saved === undefined) delete process.env.BOOKING_URL; else process.env.BOOKIN
 check(withSrc("#services", "mssp") === "#services", "an on-page anchor must stay untagged");
 check(withSrc("/#free-report", "mssp") === "/?src=mssp#free-report", `tagging a link with an anchor: ${withSrc("/#free-report", "mssp")}`);
 
-// Founding offers: off unless enabled with a price, and hidden the day after the deadline.
-const sample: FoundingOffer = { id: "mssp", enabled: true, title: "Sample", summary: null, price_usd: 1, currency: "USD", term: null, seats_total: 10, seats_left: 3, deadline: "2026-11-30" };
+// Founding offers: off unless enabled, hidden after the deadline minute in UK time, and the
+// price and button drop when no places are left.
+const sample: FoundingOffer = { ...FOUNDING_OFFERS[0], enabled: true, seatsTotal: 5, seatsSold: 0, deadline: "2026-12-31T23:59" };
 const on = (o: Partial<FoundingOffer>, at: string) => isFoundingOfferActive({ ...sample, ...o }, new Date(at));
-check(on({}, "2026-11-30T23:00:00Z"), "a founding offer must show on its last day");
-check(!on({}, "2026-12-01T00:00:01Z"), "a founding offer must hide after its deadline");
+check(on({}, "2026-12-31T23:59:30Z"), "a founding offer must show in its last minute (UK time)");
+check(!on({}, "2027-01-01T00:00:00Z"), "a founding offer must hide after its deadline");
 check(!on({ enabled: false }, "2026-11-01T00:00:00Z"), "a disabled founding offer must not show");
-check(!on({ price_usd: null }, "2026-11-01T00:00:00Z"), "a founding offer without a price must not show");
-check(on({ deadline: null }, "2030-01-01T00:00:00Z"), "a founding offer without a deadline stays until disabled");
-for (const o of FOUNDING_OFFERS) check(!o.enabled || o.price_usd !== null, `founding offer "${o.id}" is enabled without a price`);
+// British Summer Time: 23:59 UK on 30 June is 22:59 UTC.
+check(on({ deadline: "2026-06-30T23:59" }, "2026-06-30T22:59:30Z") && !on({ deadline: "2026-06-30T23:59" }, "2026-06-30T23:00:00Z"), "a deadline in summer must use UK summer time");
+check(foundingSeatsLine({ ...sample, seatsSold: 2 }) === "3 of 5 places left", `seats line: ${foundingSeatsLine({ ...sample, seatsSold: 2 })}`);
+check(foundingSeatsLine({ ...sample, seatsSold: 5 }) === "All founding places taken", "a sold-out offer must say all places are taken");
+for (const o of FOUNDING_OFFERS) {
+  check(o.price_usd > 0, `founding offer "${o.id}" has no price`);
+  check(o.seatsSold >= 0 && o.seatsSold <= o.seatsTotal, `founding offer "${o.id}": seatsSold must be between 0 and seatsTotal`);
+  check(Number.isFinite(foundingClosesAt(o)), `founding offer "${o.id}": deadline must be YYYY-MM-DDTHH:mm`);
+}
+for (const offer of [MSSP_OFFER, ESP_OFFER, INSURER_OFFER]) check(!offer.founding || FOUNDING_OFFERS.some((o) => o.id === offer.founding), `${offer.src}: unknown founding offer ${offer.founding}`);
 
 if (failures.length) {
   console.error(`✗ Partner offer guard: ${failures.length} problem(s).\n`);

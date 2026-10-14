@@ -24,7 +24,7 @@ export type PartnerOffer = {
   /** Exactly three steps. */
   steps: [string, string, string];
   questions: Array<{ question: string; answer: LinkedCopy }>;
-  /** The gated founding offer for this page, if it has one (lib/pricing.ts). */
+  /** The founding offer for this page, if it has one (lib/pricing.ts). */
   founding?: FoundingOffer["id"];
 };
 
@@ -63,7 +63,7 @@ export const MSSP_OFFER: PartnerOffer = {
     { question: "Do we need to integrate anything?", answer: { text: "No. Reports arrive as PDF, HTML and CSV under your brand. Alerts and data feeds can come later." } },
     { question: "What if it does not work for us?", answer: { text: "You judge the output on your own clients first. Reports are one-off purchases, so you can stop after any report." } },
   ],
-  founding: "mssp",
+  founding: "founding_mssp",
 };
 
 export const ESP_OFFER: PartnerOffer = {
@@ -85,7 +85,7 @@ export const ESP_OFFER: PartnerOffer = {
     { question: "Is this a verdict on whether to accept a sender?", answer: { text: "No. It is evidence for your own decision. You set the rules." } },
     { question: "Do you see our customer data?", answer: { text: "Only the domain sample you choose to send, and we do not keep it." } },
   ],
-  founding: "esp",
+  founding: "founding_esp",
 };
 
 export const INSURER_OFFER: PartnerOffer = {
@@ -111,4 +111,5 @@ export const INSURER_OFFER: PartnerOffer = {
     },
     { question: "Is this a risk score?", answer: { text: "No. Each finding shows the record it came from. You set the thresholds." } },
   ],
+  founding: "founding_insurer",
 };

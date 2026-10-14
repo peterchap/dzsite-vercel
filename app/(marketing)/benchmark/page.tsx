@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AttributionFields } from "@/components/attribution/AttributionFields";
 
 /**
  * WU28-B — the productised benchmark (enterprise/MSSP CTA). Splits the funnel
@@ -140,6 +141,7 @@ export default function BenchmarkPage() {
 
           <form className="mt-8 grid max-w-2xl gap-4" action="/api/enquiry" method="post">
             <input type="hidden" name="source" value="benchmark_qualification" />
+            <AttributionFields />
             <input type="hidden" name="enquiry_type" value="benchmark" />
             <input type="hidden" name="page" value="/benchmark" />
             {/* Honeypot */}
