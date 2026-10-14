@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 import { CurrencyText } from "@/components/ui/CurrencyText";
+import { FoundingCard } from "@/components/pricing/FoundingCard";
 import { PriceCurrencyControl } from "@/components/ui/PriceCurrencyControl";
-import { PRICING, activeFoundingOffers, foundingAvailability, launchedSkus, monitoringPriceText, perInterval, priceMarker, startLink, type Sku } from "@/lib/pricing";
+import { PRICING, activeFoundingOffers, foundingDeadlineDay, launchedSkus, monitoringPriceText, perInterval, priceMarker, startLink, type Sku } from "@/lib/pricing";
 
 // The pricing page (brief: report pricing ladder, 8 Oct 2026). Every price, scope line,
 // delivery time and unit definition comes from the shared pricing config
@@ -56,12 +57,12 @@ function CheckIcon() {
   return <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />;
 }
 
-function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
+function SectionHeader({ eyebrow, title, body }: { eyebrow: string; title: string; body?: string }) {
   return (
     <div className="mb-8 max-w-3xl">
       <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/70">{eyebrow}</p>
       <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
-      <p className="mt-4 text-base leading-7 text-slate-300">{body}</p>
+      {body ? <p className="mt-4 text-base leading-7 text-slate-300">{body}</p> : null}
     </div>
   );
 }
@@ -115,24 +116,16 @@ export function PricingV2() {
       </section>
 
       {founding.length ? (
-        <section id="founding-partners" className="relative border-t border-white/10 py-20 md:py-28">
+        <section id="founding" className="relative border-t border-white/10 py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Founding partners" title="A limited offer for our first partners." body="Each offer has a fixed price and a fixed term." />
-            <div className="grid gap-5 lg:grid-cols-2">
-              {founding.map((f) => {
-                const availability = foundingAvailability(f);
-                return (
-                  <article key={f.id} className="rounded-[1.25rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-5">
-                    <h3 className="text-lg font-semibold text-white">{f.title}</h3>
-                    {f.summary ? <p className="mt-2 text-sm leading-6 text-slate-300">{f.summary}</p> : null}
-                    <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
-                      <CurrencyText value={priceMarker(f)} />{f.term ? <span className="text-sm font-normal text-slate-400"> for {f.term}</span> : null}
-                    </p>
-                    {availability ? <p className="mt-2 text-sm leading-6 text-cyan-100">{availability}</p> : null}
-                  </article>
-                );
-              })}
+            <SectionHeader eyebrow="Founding customers" title={`Founding customer offers, until ${foundingDeadlineDay(founding[0])}`} />
+            <PriceCurrencyControl className="mb-6" />
+            <div className="grid gap-5 md:grid-cols-2">
+              {founding.map((f) => <FoundingCard key={f.id} offer={f} src={`pricing_founding_${f.segment}`} page="pricing" />)}
             </div>
+            <p className="mt-6 max-w-3xl text-sm leading-6 text-slate-300">
+              Founding prices are for our first customers in each market. They end on {foundingDeadlineDay(founding[0])} or when the places are taken.
+            </p>
           </div>
         </section>
       ) : null}

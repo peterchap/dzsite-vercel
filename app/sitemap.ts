@@ -40,6 +40,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/esp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/investors-and-ma", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
   // Datazag Insights: the research hub (2026-10-11). /blog is the Engineering blog and is
   // listed further down only once it has a post; until then it redirects to /insights.

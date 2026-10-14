@@ -32,8 +32,7 @@ export const HERO = {
 
 /**
  * Section 2. The first four tiles match the hero's audience list one for one.
- * `estate` is resolved at render: the portal's /scope when NEXT_PUBLIC_SCOPE_LIVE,
- * otherwise the estate section of /reports.
+ * The investors tile goes to /investors-and-ma (brief of 14 Oct 2026).
  */
 export const AUDIENCES = [
   {
@@ -69,7 +68,7 @@ export const AUDIENCES = [
     audience: "Investors and M&A",
     problem: "Check a portfolio or a target's domain estate.",
     outcome: "Get a portfolio snapshot or a full estate report for a group of companies.",
-    href: "estate",
+    href: "/investors-and-ma",
   },
 ] as const;
 

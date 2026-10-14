@@ -322,3 +322,6 @@ export default async function MsspPartnersPage() {
     </main>
   );
 }
+
+// Re-rendered at least hourly, so a founding offer hides after its deadline without a deploy.
+export const revalidate = 3600;

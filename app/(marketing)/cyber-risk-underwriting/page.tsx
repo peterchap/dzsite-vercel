@@ -575,3 +575,6 @@ export default async function CyberRiskUnderwritingPage() {
     </PageShell>
   );
 }
+
+// Re-rendered at least hourly, so a founding offer hides after its deadline without a deploy.
+export const revalidate = 3600;

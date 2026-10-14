@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { track } from "@/lib/analytics";
+import { appendAttribution } from "@/lib/attribution";
 import { currentPageReturnTo } from "@/lib/portal-return-to";
 
 // The same hand-off as DomainHealthReportCta: the portal's /threat-report page holds
@@ -49,7 +51,8 @@ export function FreeReportForm() {
     }
     track("free_report_form_submit", { location: "home" });
     const params = new URLSearchParams({ email: email.trim(), domain: target, return_to: currentPageReturnTo() });
-    window.location.href = `${portalReportUrl}?${params.toString()}`;
+    // The campaign tags travel with the hand-off, so the portal records them with or without consent.
+    window.location.href = `${portalReportUrl}?${appendAttribution(params).toString()}`;
   }
 
   return (
@@ -88,7 +91,8 @@ export function FreeReportForm() {
       </div>
       {error ? <p className="mt-3 text-sm text-red-300" role="alert">{error}</p> : null}
       <p className="mt-3 text-xs leading-5 text-slate-400">
-        We send the report to your work email. You confirm the details on the next page.
+        We send the report to your work email. You confirm the details on the next page.{" "}
+        We&apos;ll email your report and a short follow-up about it. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
       </p>
     </form>
   );

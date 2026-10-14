@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 import { TrackedLink } from "@/components/home/TrackedLink";
+import { FoundingCard } from "@/components/pricing/FoundingCard";
 import { CurrencyText } from "@/components/ui/CurrencyText";
 import { BOOKING_CLICK_EVENT, BOOK_CALL_LABEL, bookingHref, withSrc, type PartnerSrc } from "@/lib/booking";
 import { offerIds, type LinkedCopy, type PartnerOffer } from "@/lib/partner-offers";
-import { foundingAvailability, foundingOffer, offerFromPrices, offerPrice, priceMarker, type FoundingOffer, type OfferPrice } from "@/lib/pricing";
+import { foundingOffer, foundingPrice, foundingSeatsLeft, foundingSeatsLine, offerFromPrices, offerPrice, type FoundingOffer, type OfferPrice } from "@/lib/pricing";
 
 // The priced ending of a partner page (brief: partner page closing sections, 13 Oct 2026):
 // an offer card, a booking action, what happens next, and short answers. A compact form
@@ -56,20 +57,26 @@ function Actions({ offer, location, className }: { offer: PartnerOffer; location
   );
 }
 
-/** The seats-left and deadline line shows only when the offer has one. */
-function FoundingBlock({ founding }: { founding: FoundingOffer }) {
-  const availability = foundingAvailability(founding);
+/** The founding offer, in a row of its own above the closing card. */
+function FoundingRow({ founding, src }: { founding: FoundingOffer; src: PartnerSrc }) {
   return (
-    <div className="mt-6 rounded-2xl border border-cyan-300/30 bg-cyan-300/10 p-5">
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100/80">Founding partners</p>
-      <p className="mt-2 text-lg font-semibold text-white">{founding.title}</p>
-      {founding.summary ? <p className="mt-2 text-sm leading-6 text-slate-300">{founding.summary}</p> : null}
-      <p className="mt-3 text-2xl font-semibold tracking-tight text-white">
-        <CurrencyText value={priceMarker(founding)} />
-        {founding.term ? <span className="text-sm font-normal text-slate-400"> for {founding.term}</span> : null}
-      </p>
-      {availability ? <p className="mt-2 text-sm leading-6 text-cyan-100">{availability}</p> : null}
+    <div className="mx-auto mb-5 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <FoundingCard offer={founding} src={src} page={src} className="lg:max-w-3xl" />
     </div>
+  );
+}
+
+/** "Founding partners: $650/mo, 5 of 5 places left", for the compact offer. */
+function FoundingLine({ founding }: { founding: FoundingOffer }) {
+  const label = founding.segment === "mssp" ? "Founding partners" : "Founding offer";
+  if (foundingSeatsLeft(founding) === 0) return <span>{label}: all places taken</span>;
+  const price = foundingPrice(founding);
+  return (
+    <span>
+      <span className="font-normal text-slate-400">{label}: </span>
+      <CurrencyText value={price.value} />
+      {price.suffix}, {foundingSeatsLine(founding)}
+    </span>
   );
 }
 
@@ -81,12 +88,12 @@ export function PartnerClosing({ offer }: { offer: PartnerOffer }) {
 
   return (
     <section id="next-step" className="border-t border-white/10 py-20 md:py-28">
+      {founding ? <FoundingRow founding={founding} src={offer.src} /> : null}
       <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:px-8">
         <div className="rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">Next step</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">{offer.title}</h2>
           <p className="mt-5 text-base leading-7 text-slate-300 md:text-lg md:leading-8">{offer.summary}</p>
-          {founding ? <FoundingBlock founding={founding} /> : null}
           <ul className="mt-8 border-b border-white/10">
             {lines.map((line) => (
               <li key={line.text} className="flex flex-col gap-1 border-t border-white/10 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
@@ -134,6 +141,7 @@ export function PartnerClosing({ offer }: { offer: PartnerOffer }) {
 /** The compact form, for mid-page: the offer title, a price line and the two actions. */
 export function PartnerOfferCompact({ offer }: { offer: PartnerOffer }) {
   const prices = offerFromPrices(offerIds(offer));
+  const founding = offer.founding ? foundingOffer(offer.founding) : null;
   return (
     <section className="border-t border-white/10 py-10 md:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -143,6 +151,7 @@ export function PartnerOfferCompact({ offer }: { offer: PartnerOffer }) {
             <h3 className="text-xl font-semibold text-white">{offer.title}</h3>
             <p className="mt-2 flex flex-col gap-x-5 gap-y-1 text-sm font-semibold text-white sm:flex-row sm:flex-wrap">
               {prices.map((price) => <Price key={price.id} price={price} showLabel />)}
+              {founding ? <FoundingLine founding={founding} /> : null}
             </p>
           </div>
           <Actions offer={offer} location="compact" className="flex shrink-0 flex-col gap-3 sm:flex-row" />

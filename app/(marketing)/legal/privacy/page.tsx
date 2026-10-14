@@ -223,11 +223,31 @@ export default function PrivacyPolicyPage() {
                                 tools you use, such as copying a citation or downloading a chart. It never records a domain
                                 you look up.
                             </li>
+                            <li>
+                                <strong>Campaign attribution (optional):</strong> <code>dz_ft</code> records the campaign
+                                that first brought you to us, for 90 days. <code>dz_lt</code> records the latest one, until
+                                you close the browser. They hold campaign tags only, such as{" "}
+                                <code>utm_source</code>, never your name or email address. They are set only after you
+                                select &ldquo;Accept&rdquo;.
+                            </li>
+                            <li>
+                                <strong>Advertising measurement (optional):</strong> the LinkedIn Insight Tag shows us
+                                which LinkedIn campaigns lead to a report request, a booked call or a purchase. LinkedIn
+                                sets its own cookies, such as <code>li_fat_id</code>. It loads only after you select
+                                &ldquo;Accept&rdquo;. LinkedIn&rsquo;s use of this data is covered by the{" "}
+                                <a href="https://www.linkedin.com/legal/privacy-policy" className="font-semibold text-blue-400 hover:underline">LinkedIn privacy policy</a>.
+                            </li>
                         </ul>
                         <p className="mt-6">
                             Your choice covers all three sites. To change it, select &ldquo;Cookie settings&rdquo; in the
-                            footer. If you decline, we remove the analytics cookies. You can also block cookies in your
-                            browser settings.
+                            footer. If you decline, we remove the analytics and LinkedIn cookies we can reach. You can also
+                            block cookies in your browser settings.
+                        </p>
+                        <p className="mt-4">
+                            When you request a free report or Estate Scope, we email the result and one short service
+                            email about it. We send marketing emails about related services only if you tick the
+                            optional box on the form. Every follow-up has a one-click unsubscribe link. Unsubscribing
+                            stops the follow-ups only; you still receive any report you request.
                         </p>
                     </LegalSection>
 

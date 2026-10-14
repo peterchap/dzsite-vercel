@@ -130,38 +130,147 @@ export function offerFromPrices(ids: string[]): OfferPrice[] {
   return lines;
 }
 
-// ── Founding offers (gated) ─────────────────────────────────────────────────────
-// A limited offer for the first partners. Built now, shipped off: `enabled` is false and
-// the values are empty until the offer is decided. Fill the values here and nowhere else.
-// An offer shows only when it is enabled, has a price, and its deadline has not passed.
-// It shows first on the pricing page, then on its partner page's offer card.
+
+// ── Founding offers ─────────────────────────────────────────────────────────────
+// Limited offers for our first customers in each market (brief: founding offers, investor
+// page and funnel, 14 Oct 2026). Values as Peter confirmed them. Fill or change them here
+// and nowhere else: the pricing page, the partner pages and the investor page all render
+// from this list. An offer shows while it is enabled and its deadline has not passed.
+// When no places are left, the card says so and drops its price and button.
+
+export type FoundingSegment = "mssp" | "esp" | "insurers" | "investors";
 
 export type FoundingOffer = {
-  id: "mssp" | "esp";
+  id: "founding_mssp" | "founding_esp" | "founding_insurer" | "founding_investor";
+  segment: FoundingSegment;
   enabled: boolean;
-  title: string;
-  /** One line on what the offer covers. */
-  summary: string | null;
-  price_usd: number | null;
-  currency: "USD";
-  /** The length of the offer's term, for example "12 months". */
+  name: string;
+  /** Who the offer is for, as it reads after "For" on the card. */
+  audience: string;
+  price_usd: number;
+  /** "month" or "year" for a recurring price; null for a one-off fee. */
+  interval: "month" | "year" | null;
+  /** The length of the term, or null for a one-off fee. */
   term: string | null;
-  seats_total: number | null;
-  seats_left: number | null;
-  /** The last day the offer is open, as YYYY-MM-DD (UTC). The offer hides the day after. */
-  deadline: string | null;
+  inclusions: string[];
+  seatsTotal: number;
+  /** UPDATE BY HAND when a founding place sells. The site shows seatsTotal − seatsSold. */
+  seatsSold: number;
+  /** The last minute the offer is open, as YYYY-MM-DDTHH:mm in UK time (Europe/London). */
+  deadline: string;
 };
 
+const FOUNDING_DEADLINE = "2026-12-31T23:59";
+
 export const FOUNDING_OFFERS: FoundingOffer[] = [
-  { id: "mssp", enabled: false, title: "Founding Partner program", summary: null, price_usd: null, currency: "USD", term: null, seats_total: null, seats_left: null, deadline: null },
-  { id: "esp", enabled: false, title: "ESP first-purchase package", summary: null, price_usd: null, currency: "USD", term: null, seats_total: null, seats_left: null, deadline: null },
+  {
+    id: "founding_mssp",
+    segment: "mssp",
+    enabled: true,
+    name: "Founding Partner Program",
+    audience: "MSSPs",
+    price_usd: 650,
+    interval: "month",
+    term: "12 months, then the price stays locked while you remain a partner",
+    inclusions: [
+      "25 white-label domain infrastructure reports a month under your brand.",
+      "Estate monitoring for up to 10 client organizations.",
+      "Partner discount on all other reports and alerts.",
+      "Direct access to the founders.",
+      "Price locked for as long as you remain a partner.",
+    ],
+    seatsTotal: 5,
+    seatsSold: 0, // ← places sold so far
+    deadline: FOUNDING_DEADLINE,
+  },
+  {
+    id: "founding_esp",
+    segment: "esp",
+    enabled: true,
+    name: "Signup Hygiene Audit",
+    audience: "email platforms",
+    price_usd: 2500,
+    interval: null,
+    term: null,
+    inclusions: [
+      "Up to 100,000 signup or sending domains classified: can it take mail, is it parked, who runs its mail, does it enforce DMARC.",
+      "Evidence for every result.",
+      "Delivered as a file within 5 working days.",
+      "We keep nothing after delivery.",
+      "Fee credited in full against an annual data share signed by March 31, 2027.",
+    ],
+    seatsTotal: 3,
+    seatsSold: 0, // ← places sold so far
+    deadline: FOUNDING_DEADLINE,
+  },
+  {
+    id: "founding_insurer",
+    segment: "insurers",
+    enabled: true,
+    name: "Book Accumulation Snapshot",
+    audience: "insurers",
+    price_usd: 7500,
+    interval: null,
+    term: null,
+    inclusions: [
+      "Up to 250 insureds.",
+      "Provider concentration across mail, DNS, hosting and CDN.",
+      "Reverse index: which insureds depend on a named provider.",
+      "Undeclared estate and email posture per insured, each finding with its evidence.",
+      "Review call included.",
+      "Delivered within 5 working days.",
+      "Fee credited in full against an annual data share signed by March 31, 2027.",
+    ],
+    seatsTotal: 3,
+    seatsSold: 0, // ← places sold so far
+    deadline: FOUNDING_DEADLINE,
+  },
+  {
+    id: "founding_investor",
+    segment: "investors",
+    enabled: true,
+    name: "Deal Pass",
+    audience: "investors and M&A",
+    price_usd: 4950,
+    interval: "year",
+    term: "12 months",
+    inclusions: [
+      "12 organization estate reports (up to 50 domains each) and one portfolio report (up to 25 companies) over 12 months.",
+      "No retention of your company lists.",
+      "Private querying on dedicated infrastructure for sensitive deals.",
+    ],
+    seatsTotal: 5,
+    seatsSold: 0, // ← places sold so far
+    deadline: FOUNDING_DEADLINE,
+  },
 ];
 
+/** The UTC instant of a UK wall-clock time ("2026-12-31T23:59", Europe/London). */
+export function ukTimeToUtc(local: string): number {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(local);
+  if (!m) return NaN;
+  const asUtc = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+  const offsetAt = (t: number) => {
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })
+        .formatToParts(new Date(t)).map((p) => [p.type, p.value]),
+    );
+    return Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute) - t;
+  };
+  // Two passes settle the offset either side of a clock change.
+  const first = asUtc - offsetAt(asUtc);
+  return asUtc - offsetAt(first);
+}
+
+/** Open until the end of the deadline minute, UK time. */
+export function foundingClosesAt(o: FoundingOffer): number {
+  return ukTimeToUtc(o.deadline) + 60_000;
+}
+
 export function isFoundingOfferActive(o: FoundingOffer, now: Date = new Date()): boolean {
-  if (!o.enabled || o.price_usd === null) return false;
-  if (!o.deadline) return true;
-  const closes = Date.parse(`${o.deadline}T23:59:59.999Z`);
-  return Number.isFinite(closes) && now.getTime() <= closes;
+  if (!o.enabled) return false;
+  const closes = foundingClosesAt(o);
+  return Number.isFinite(closes) && now.getTime() < closes;
 }
 
 export function activeFoundingOffers(now: Date = new Date(), offers: FoundingOffer[] = FOUNDING_OFFERS): FoundingOffer[] {
@@ -172,14 +281,22 @@ export function foundingOffer(id: FoundingOffer["id"], now: Date = new Date()): 
   return activeFoundingOffers(now).find((o) => o.id === id) ?? null;
 }
 
-/** "3 of 10 places left. Offer closes November 30, 2026." Each part shows only when set. */
-export function foundingAvailability(o: FoundingOffer): string | null {
-  const parts: string[] = [];
-  if (o.seats_left !== null && o.seats_total !== null) parts.push(`${o.seats_left} of ${o.seats_total} places left.`);
-  else if (o.seats_total !== null) parts.push(`${o.seats_total} places.`);
-  if (o.deadline) {
-    const day = new Date(`${o.deadline}T00:00:00Z`).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-    parts.push(`Offer closes ${day}.`);
-  }
-  return parts.length ? parts.join(" ") : null;
+export function foundingSeatsLeft(o: FoundingOffer): number {
+  return Math.max(0, o.seatsTotal - o.seatsSold);
+}
+
+/** The price as a {{PRICE:cents}} marker for CurrencyText, and its "/mo" or "/yr" suffix. */
+export function foundingPrice(o: FoundingOffer): { value: string; suffix: string } {
+  return { value: priceMarker(o), suffix: o.interval ? perInterval(o.interval) : "" };
+}
+
+/** "3 of 5 places left", or "All founding places taken". */
+export function foundingSeatsLine(o: FoundingOffer): string {
+  const left = foundingSeatsLeft(o);
+  return left > 0 ? `${left} of ${o.seatsTotal} places left` : "All founding places taken";
+}
+
+/** "December 31, 2026", the deadline's day in UK time. */
+export function foundingDeadlineDay(o: FoundingOffer): string {
+  return new Date(ukTimeToUtc(o.deadline)).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/London" });
 }
