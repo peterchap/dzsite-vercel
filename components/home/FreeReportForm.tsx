@@ -8,28 +8,26 @@ import { appendAttribution } from "@/lib/attribution";
 import { currentPageReturnTo } from "@/lib/portal-return-to";
 
 // The same hand-off as DomainHealthReportCta: the portal's /threat-report page holds
-// consent, Turnstile and generation. This form only collects the two fields and passes
-// them across prefilled, with return_to. No new backend.
+// consent, Turnstile and generation. This form only collects the work email and passes
+// it across prefilled, with return_to. No new backend.
+//
+// The free report covers the domain of the work email and no other (PC, 2026-10-14);
+// the portal enforces it. There is deliberately no domain field.
 const portalReportUrl =
   process.env.NEXT_PUBLIC_PORTAL_REPORT_URL || "https://portal.datazag.com/threat-report";
 
 const inputClass =
   "min-h-12 w-full rounded-xl border border-white/10 bg-white/[0.055] px-4 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50 focus:ring-2 focus:ring-cyan-300/20";
 
-function cleanDomain(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/^https?:\/\//, "")
-    .replace(/[/?#].*$/, "")
-    .replace(/^www\./, "");
+function domainOf(email: string): string {
+  return email.includes("@") ? email.split("@").pop()!.trim().toLowerCase() : "";
 }
 
 export function FreeReportForm() {
-  const [domain, setDomain] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const started = useRef(false);
+  const reportDomain = domainOf(email);
 
   function start() {
     if (started.current) return;
@@ -39,37 +37,19 @@ export function FreeReportForm() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const emailDomain = email.split("@")[1]?.toLowerCase() || "";
-    const target = cleanDomain(domain) || emailDomain;
-    if (!emailDomain || !emailDomain.includes(".")) {
+    if (!reportDomain.includes(".")) {
       setError("Enter a valid work email address.");
       return;
     }
-    if (!target.includes(".")) {
-      setError("Enter a domain, for example example.com.");
-      return;
-    }
     track("free_report_form_submit", { location: "home" });
-    const params = new URLSearchParams({ email: email.trim(), domain: target, return_to: currentPageReturnTo() });
+    const params = new URLSearchParams({ email: email.trim(), return_to: currentPageReturnTo() });
     // The campaign tags travel with the hand-off, so the portal records them with or without consent.
-    window.location.href = `${portalReportUrl}?${appendAttribution(params).toString()}`;
+    window.location.assign(`${portalReportUrl}?${appendAttribution(params).toString()}`);
   }
 
   return (
     <form onSubmit={submit} onFocus={start} className="rounded-2xl border border-white/10 bg-[#030619]/65 p-3 md:p-4">
-      <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-        <label className="grid gap-1.5">
-          <span className="sr-only">Domain</span>
-          <input
-            type="text"
-            inputMode="url"
-            autoComplete="url"
-            value={domain}
-            onChange={(e) => { setDomain(e.target.value); setError(""); }}
-            placeholder="Your domain, e.g. example.com"
-            className={inputClass}
-          />
-        </label>
+      <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
         <label className="grid gap-1.5">
           <span className="sr-only">Work email</span>
           <input
@@ -91,8 +71,13 @@ export function FreeReportForm() {
       </div>
       {error ? <p className="mt-3 text-sm text-red-300" role="alert">{error}</p> : null}
       <p className="mt-3 text-xs leading-5 text-slate-400">
-        We send the report to your work email. You confirm the details on the next page.{" "}
-        We&apos;ll email your report and a short follow-up about it. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
+        {reportDomain.includes(".") ? (
+          <>The report covers <strong className="font-semibold text-slate-200">{reportDomain}</strong>, the domain of your email. </>
+        ) : (
+          <>The report covers the domain of your work email. </>
+        )}
+        You confirm the details on the next page. We&apos;ll email your report and a short follow-up about it.
+        Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
       </p>
     </form>
   );

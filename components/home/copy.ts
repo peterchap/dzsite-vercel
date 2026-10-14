@@ -75,7 +75,7 @@ export const AUDIENCES = [
 export const FREE_REPORT = {
   kicker: "Free Domain Health Report",
   title: "See your domain the way an attacker sees it.",
-  intro: "Enter your domain and work email. We check your public infrastructure and email you the report.",
+  intro: "Enter your work email. We check the public infrastructure of its domain and email you the report.",
   bullets: [
     { title: "Email controls", text: "SPF, DMARC and MTA-STS, and what each one leaves open." },
     { title: "Platform impersonation", text: "Lookalike domains that copy the platforms you rely on." },
