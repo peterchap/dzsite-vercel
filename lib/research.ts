@@ -37,6 +37,14 @@ export interface ResearchPiece {
 
 export const RESEARCH: readonly ResearchPiece[] = [
   {
+    slug: "who-really-runs-business-email",
+    title: "Who Really Runs Business Email? Hosts and other named providers run 53.8% of corporate mail domains",
+    summary:
+      "The State of Email Infrastructure 2026. Among the largest companies, Microsoft leads Google 9 : 1 in MX records. Across corporate mail domains the two are level, and DMARC enforcement falls from 73.3% to 14.2%.",
+    publishedOn: "2026-10-15",
+    kind: "Research",
+  },
+  {
     slug: "machine-clicks",
     title: "Classify machine clicks in your own traffic",
     summary:

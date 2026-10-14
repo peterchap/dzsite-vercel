@@ -63,6 +63,7 @@ export async function GET() {
     "## Insights",
     "",
     link("The Datazag Observatory", "/observatory", "open internet measurements: email authentication, routing hygiene, hosting concentration, parking and impersonation, with methods and how to cite them."),
+    link("Who Really Runs Business Email? The State of Email Infrastructure 2026", "/insights/who-really-runs-business-email", "research report, snapshot of 8 October 2026: mailbox providers, hosting companies, security gateways and DMARC enforcement, the largest companies compared with all corporate mail domains. PDF included."),
     link("One company runs the DNS, website and mail for 1 in 5 corporate domains", "/insights/corporate-domain-stack", "research, observed to 10 September 2026: the registrar-and-hosting bundle, the single-vendor CDN edge, single-operator DNS, and national concentration."),
     link("Case study: one signal, 150 domains", "/insights/one-signal-150-domains", "one certificate led to a 150-domain malicious hosting cluster that was in no public domain feed."),
     "",

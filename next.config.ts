@@ -22,7 +22,9 @@ const nextConfig: NextConfig = {
   // understands without qualification.
   // Hidden pre-publication review pages (app/(marketing)/review/) and their files in
   // public/review/: never indexed or cached by search engines. Deliberately not in
-  // robots.ts, where a Disallow line would publish the paths.
+  // robots.ts, where a Disallow line would publish the paths. Since 2026-10-15 the
+  // only /review/ paths are redirects to the published report; the header stays for
+  // the next pre-publication review.
   async headers() {
     return [
       {
