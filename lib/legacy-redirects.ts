@@ -158,6 +158,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "Webhook reference for alert delivery. The API docs and the webhook reference were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
   },
   {
+    source: "/legal/terms-3",
+    destination: "/legal/terms",
+    reason: "A duplicate CMS slug that Google crawled and now reports as a 404 in Search Console (2026-10-14). The terms live at /legal/terms.",
+  },
+  {
     source: "/domain-search",
     destination: "/datasets",
     reason: "Old light-theme lookup-results page ('Domain Intelligence'), reached only from the legacy DomainLookup CMS block, which now appears only on a page that already redirects. Retired 2026-09-29; domain data is offered through /datasets.",

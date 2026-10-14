@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 
+import { ORGANIZATION_ID } from "@/lib/organization";
+
 import { CASE_STUDY, caseStudyUrl } from "./data";
 
 export const dynamic = "force-static";
@@ -52,8 +54,25 @@ function SectionLabel({ num, children }: { num: string; children: ReactNode }) {
 export default function OneSignal150DomainsPage() {
   const c = CASE_STUDY;
 
+  // Same shape as the corporate-domain-stack study, so both Insights pieces read as articles.
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "One Signal, 150 Domains: a case study",
+    description:
+      "One certificate led to a 150-domain malicious hosting cluster that was in no public domain feed. How Datazag followed a single signal to the whole operation.",
+    url: caseStudyUrl(),
+    // c.timestamps.publishedShort ("14 July 2026") as an ISO date.
+    datePublished: "2026-07-14",
+    author: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    mainEntityOfPage: caseStudyUrl(),
+    about: ["Malicious hosting infrastructure", "TLS certificates", "Threat intelligence"],
+  };
+
   return (
     <main className="relative overflow-hidden bg-[#030619] text-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {/* ---------- Hero ---------- */}
       <section className="relative border-b border-white/10 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(244,63,94,0.10),transparent_34%),radial-gradient(circle_at_82%_78%,rgba(45,212,191,0.10),transparent_34%)]" />
