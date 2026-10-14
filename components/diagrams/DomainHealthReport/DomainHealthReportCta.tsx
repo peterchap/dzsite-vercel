@@ -98,7 +98,7 @@ export function DomainHealthReportCta() {
       setError("Enter a valid work email address.");
       return;
     }
-    const params = new URLSearchParams({ email: email.trim(), domain, return_to: currentPageReturnTo() });
+    const params = new URLSearchParams({ email: email.trim(), return_to: currentPageReturnTo() });
     window.location.href = `${portalReportUrl}?${params.toString()}`;
   }
 
