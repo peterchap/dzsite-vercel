@@ -89,7 +89,6 @@ async function deliverByEmail(
 
     return true;
   } catch (err) {
-    // resolveSender() throws on a missing or test EMAIL_FROM, and lands here.
     console.error("INQUIRY NOT EMAILED — the send failed.", { err, payload });
     return false;
   }
