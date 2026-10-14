@@ -6,6 +6,8 @@ import { Container } from "@/components/ui/Container";
 export const metadata: Metadata = {
   title: "Inquiry Received — Datazag",
   description: "Confirmation that a Datazag inquiry has been received.",
+  // A post-submit page: kept out of the index by this tag, not by robots.txt (see app/robots.ts).
+  robots: { index: false, follow: true },
 };
 
 /**
