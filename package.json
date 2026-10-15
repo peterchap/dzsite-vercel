@@ -35,6 +35,7 @@
     "site:seed-datasets": "node scripts/seedDatasets.mjs",
     "guard:datasets": "tsx scripts/guards/checkDatasetFigures.ts",
     "check:post": "node scripts/check-post.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "guard:chrome": "tsx scripts/guards/checkSiteChromeNav.ts",
     "guard:partners": "tsx scripts/guards/checkPartnerOffers.ts"
   },

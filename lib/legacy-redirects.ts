@@ -43,6 +43,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "A noindex reference copy of the old homepage, with the old positioning and API claims. Its page was deleted on 2026-10-02.",
   },
   {
+    source: "/index",
+    destination: "/",
+    reason: "Served a second copy of the homepage (canonical to /), and Bing indexed it as its own result (2026-10-15). A 301 settles it.",
+  },
+  {
     source: "/home",
     destination: "/",
     reason: "An alias for the homepage. Was a page that redirected on render; a 301 says the same without a route.",
