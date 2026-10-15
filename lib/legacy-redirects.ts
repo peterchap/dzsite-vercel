@@ -158,6 +158,19 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "Every research piece moved from /intelligence/<slug> to /insights/<slug> with the hub (2026-10-11).",
   },
   {
+    // The embargoed preview of "Who Really Runs Business Email?" went to press,
+    // partners and reviewers before launch; their links land on the published report.
+    source: "/review/email-infrastructure-2026-preview-086bf0afe9",
+    destination: "/insights/who-really-runs-business-email",
+    reason: "Embargoed preview of the report, replaced by the published page on 2026-10-15.",
+  },
+  {
+    // The preview's PDF and page images have the same file names at the published path.
+    source: "/review/report-email-2026-4aecad8499/:file",
+    destination: "/insights/who-really-runs-business-email/:file",
+    reason: "Preview files of the report, published under /insights on 2026-10-15.",
+  },
+  {
     source: "/docs/search-stream",
     destination: "/docs",
     reason: "Webhook reference for alert delivery. The API docs and the webhook reference were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
