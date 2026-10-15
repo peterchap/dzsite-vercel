@@ -2,7 +2,7 @@
  * IndexNow: tell Bing (and Yandex, Seznam, Naver, which share submissions) that pages changed.
  *
  *   npm run indexnow                       — every URL in the live sitemap
- *   npm run indexnow -- /insights/foo /x   — just these paths
+ *   npm run indexnow -- insights/foo x     — just these paths (no leading slash in Git Bash)
  *
  * Run it after a deploy that adds or changes pages. Google does not take IndexNow; use
  * Search Console's URL Inspection for Google.
@@ -15,9 +15,16 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com")
 const KEY = "85b107306c644bb6d2a3e9aa0123f70a";
 
 const paths = process.argv.slice(2);
+// Git Bash on Windows rewrites "/trust" into "C:/Program Files/Git/trust" before node sees it,
+// and IndexNow then rejects the URL with a 422. Paths work without the leading slash too.
+const mangled = paths.find((p) => /^[A-Za-z]:[\\/]/.test(p));
+if (mangled) {
+  console.error(`"${mangled}" is a Windows path: Git Bash rewrote a /path argument. Drop the leading slash (insights/foo) or pass a full URL.`);
+  process.exit(1);
+}
 let urls;
 if (paths.length) {
-  urls = paths.map((p) => new URL(p, SITE_URL).toString());
+  urls = paths.map((p) => new URL(p.startsWith("http") ? p : `/${p.replace(/^\/+/, "")}`, SITE_URL).toString());
 } else {
   const xml = await (await fetch(`${SITE_URL}/sitemap.xml`)).text();
   urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
