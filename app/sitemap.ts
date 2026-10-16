@@ -34,6 +34,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/insights/who-really-runs-business-email", changeFrequency: "monthly", priority: 0.8 },
   { path: "/insights/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
   { path: "/insights/corporate-domain-stack", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/insights/dmarc-adoption-vs-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/resources/machine-clicks", changeFrequency: "monthly", priority: 0.7 },
   { path: "/alerts", changeFrequency: "monthly", priority: 0.7 },
   { path: "/reports", changeFrequency: "monthly", priority: 0.7 },

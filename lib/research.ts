@@ -37,6 +37,14 @@ export interface ResearchPiece {
 
 export const RESEARCH: readonly ResearchPiece[] = [
   {
+    slug: "dmarc-adoption-vs-protection",
+    title: "25.3% of domains publish DMARC. Only 13.1% enforce it.",
+    summary:
+      "A census of resolving, unparked domains: about half of DMARC publishers only report spoofing. Among domains that run mail, report-only outnumbers enforcement two to one.",
+    publishedOn: "2026-10-16",
+    kind: "Research",
+  },
+  {
     slug: "who-really-runs-business-email",
     title: "Who Really Runs Business Email? Hosts and other named providers run 53.8% of corporate mail domains",
     summary:
