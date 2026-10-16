@@ -43,8 +43,11 @@
 export const STUDY = {
   slug: "dmarc-adoption-vs-protection",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com",
-  /** Publication date (Peter, 2026-10-01: October slot 2, mid-month). The census date stays 1 October. */
-  publishedOn: "2026-10-15",
+  /**
+   * Publication date. Planned for 15 October (Peter, 2026-10-01: October slot 2); went out on 16 October,
+   * the day after the email report, so the date is the real one. The census date stays 1 October.
+   */
+  publishedOn: "2026-10-16",
   /** The day the census was taken. Values are each domain's latest observation. */
   censusOn: "2026-10-01",
 

@@ -24,9 +24,12 @@ import { loadCorporateMailFigures } from "../lib/observatory-figures";
 dotenv.config({ path: ".env.local" });
 
 const publish = process.argv.includes("--publish");
-const token = process.env.SANITY_API_TOKEN || process.env.SANITY_AUTH_TOKEN;
+// SANITY_WRITE_TOKEN first: SANITY_API_TOKEN in this repo is the site's read-only
+// token and cannot create documents (see scripts/seedDatasets.mjs).
+const token =
+  process.env.SANITY_WRITE_TOKEN || process.env.SANITY_AUTH_TOKEN || process.env.SANITY_API_TOKEN;
 if (!token) {
-  console.error("No SANITY_API_TOKEN in .env.local");
+  console.error("No write token found. Set SANITY_WRITE_TOKEN in .env.local.");
   process.exit(1);
 }
 const client = createClient({

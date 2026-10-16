@@ -57,7 +57,7 @@ async function sendConfirmationEmail(email: string, confirmUrl: string): Promise
         const { error } = await resend.emails.send({
             from: resolveSender(),
             to: email,
-            // EMAIL_FROM is a noreply@ on the notifications subdomain, which
+            // The sender (lib/email.ts) is a noreply@ on the notifications subdomain, which
             // nobody reads. A subscriber who answers this mail — "I did not
             // sign up", "take me off" — is owed a person, so replies go to a
             // published route (lib/contact-routes.ts), not into a black hole.
@@ -91,7 +91,6 @@ async function sendConfirmationEmail(email: string, confirmUrl: string): Promise
 
         return true;
     } catch (err) {
-        // resolveSender() throws on a missing or test EMAIL_FROM, and lands here.
         console.error("CONFIRMATION NOT EMAILED — the send failed.", { err, email, confirmUrl });
         return false;
     }

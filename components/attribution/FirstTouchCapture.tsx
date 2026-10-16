@@ -3,6 +3,16 @@
 import { useEffect } from "react";
 import { readConsent } from "@datazag/site-chrome";
 
+import { appendAttribution, writeLastTouch } from "@/lib/attribution";
+
+const PORTAL_HOST = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_PORTAL_URL || "https://portal.datazag.com").hostname;
+  } catch {
+    return "portal.datazag.com";
+  }
+})();
+
 // First-touch attribution (pricing ladder brief, section 7; Phase 6). On a visit that
 // carries a source (UTM, an external referrer, an outbound token, a partner code, src),
 // and only once the visitor grants analytics consent, write dz_ft on .datazag.com. The
@@ -43,6 +53,8 @@ export function firstTouch(href: string, referrer: string, now = new Date()): Re
 
 function capture() {
   if (readConsent() !== "granted") return;
+  // The session's last touch (lib/attribution.ts) is refreshed on every tagged landing.
+  writeLastTouch(window.location.href);
   if (new RegExp(`(?:^|;\\s*)${COOKIE}=`).test(document.cookie)) return;
   const ft = firstTouch(window.location.href, document.referrer);
   if (!ft) return;
@@ -50,11 +62,31 @@ function capture() {
   document.cookie = `${COOKIE}=${encodeURIComponent(JSON.stringify(ft))}; Max-Age=${DAYS * 86400}; Path=/; SameSite=Lax; Secure${domain}`;
 }
 
+// A click on a link to the portal (a buy page, the free report) carries this page's campaign
+// tags across, so checkout can record them even without consent (lib/attribution.ts).
+function tagPortalLink(event: MouseEvent) {
+  const anchor = (event.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+  if (!anchor) return;
+  let url: URL;
+  try {
+    url = new URL(anchor.href);
+  } catch {
+    return;
+  }
+  if (url.hostname !== PORTAL_HOST) return;
+  const params = appendAttribution(url.searchParams);
+  anchor.href = `${url.origin}${url.pathname}?${params.toString()}${url.hash}`;
+}
+
 export function FirstTouchCapture() {
   useEffect(() => {
     capture();
     window.addEventListener("dz-consent-change", capture);
-    return () => window.removeEventListener("dz-consent-change", capture);
+    document.addEventListener("click", tagPortalLink, true);
+    return () => {
+      window.removeEventListener("dz-consent-change", capture);
+      document.removeEventListener("click", tagPortalLink, true);
+    };
   }, []);
   return null;
 }

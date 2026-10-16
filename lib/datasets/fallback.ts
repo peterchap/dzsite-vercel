@@ -446,8 +446,8 @@ WHERE  NOT is_parked;`,
   ],
   methodology: [
     {
-      title: "A domain that is absent has not been observed yet",
-      body: "The daily posture history starts on 20 August 2026. A rolling backfill is still working through the corpus. A domain missing from a release has not been observed yet — it does NOT mean the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
+      title: "A domain that is absent has not been observed, or does not resolve",
+      body: "The daily posture history starts on 20 August 2026, and a rolling backfill is still working through the corpus. Since 8 October 2026 a release also contains only domains that resolved at their latest DNS check: a name whose latest check returned NXDOMAIN, a registry wildcard answer, a timeout or a server failure is left out, rather than shipped as a row that appears to publish nothing. So a domain missing from a release has either not been observed yet or did not resolve when last checked — neither means the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
       tone: "caveat",
     },
     {
@@ -485,6 +485,11 @@ WHERE  NOT is_parked;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-10-08",
+      summary:
+        "Only domains that resolve. A domain is now included only if its latest DNS check resolved; names returning NXDOMAIN, a registry wildcard answer, a timeout or a server failure — about 8% of the previous release's rows — are left out, because they carried posture for names that do not exist and read as publishing nothing. Expect roughly 366 million rows instead of 397 million, and posture rates that rise accordingly. 13,352 malformed rows, whose domain field held a list of name servers rather than a domain, were also removed.",
+    },
     {
       date: "2026-09-23",
       summary:

@@ -34,11 +34,9 @@ import { TrackedLink } from "./TrackedLink";
  * Copy lives in ./copy.ts. Nothing here types a figure or a price.
  */
 
-// Estate CTA routing, the same gate as /reports: the portal's /scope once it is live.
+// The estate scope section shows once the portal's /scope is live (the same gate as /reports).
 const scopeLive = process.env.NEXT_PUBLIC_SCOPE_LIVE === "true";
-const ESTATE_HREF = scopeLive
-  ? process.env.NEXT_PUBLIC_SCOPE_URL || "https://portal.datazag.com/scope?src=home"
-  : "/reports#cross-estate";
+
 
 const SAMPLES: Sample[] = [
   {
@@ -155,7 +153,7 @@ export default async function HomePage() {
           {AUDIENCES.map((a) => (
             <TrackedLink
               key={a.key}
-              href={a.href === "estate" ? ESTATE_HREF : a.href}
+              href={a.href}
               event="audience_tile_click"
               params={{ audience: a.key }}
               className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.035] p-5 transition hover:border-cyan-300/30 hover:bg-white/[0.06]"

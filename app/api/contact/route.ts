@@ -83,7 +83,6 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ success: true, data });
     } catch (error: any) {
-        // resolveSender() throws on a missing or test EMAIL_FROM, and lands here.
         console.error("Contact API error:", error);
         return NextResponse.json(
             { error: "Failed to send message. Please try again later." },

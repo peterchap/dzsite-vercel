@@ -5,6 +5,8 @@ import { Bar, Label, Note, P, Section, Table } from "@/components/research/parts
 import { OBSERVATORY_URL } from "@/lib/observatory-figures";
 import { ORGANIZATION_ID } from "@/lib/organization";
 import { STUDY, studyUrl, fmt, longDate } from "./data";
+// The email report states its own DMARC figure for a different population; the page names both.
+import { HEADLINES, REPORT } from "../who-really-runs-business-email/data";
 
 export const dynamic = "force-static";
 
@@ -140,6 +142,15 @@ export default function DmarcAdoptionPage() {
           a working mail server and an SPF record. Among them, <strong className="text-white">{h.corporatePublish.toFixed(1)}% publish DMARC,
           but only {h.corporateEnforce.toFixed(1)}% enforce it</strong>. That is {h.corporateEnforceOfPublishers} of publishers. Report-only
           policies outnumber enforcing ones by about two to one ({h.corporateNone.toFixed(1)}% against {h.corporateEnforce.toFixed(1)}%).
+        </P>
+        <P>
+          Our report{" "}
+          <Link href={`/insights/${REPORT.slug}`} className="font-semibold text-cyan-200 underline-offset-4 hover:underline">
+            {REPORT.title}
+          </Link>{" "}
+          puts enforcement at {HEADLINES.dmarcNamedProvider}. It counts a different group: mail domains run by a named provider, in the
+          Observatory snapshot of {REPORT.snapshot}. The {h.corporateEnforce.toFixed(1)}% here covers every domain that runs mail, measured
+          on {census}. The two figures are close, but they are different measurements.
         </P>
         <Note title="Why the two populations disagree">
           <p>

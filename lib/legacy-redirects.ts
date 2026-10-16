@@ -23,6 +23,16 @@ export type LegacyRedirect = {
 
 export const LEGACY_REDIRECTS: LegacyRedirect[] = [
   {
+    source: "/diligence",
+    destination: "https://portal.datazag.com/diligence?src=site",
+    reason: "Not a retired page: the diligence request form lives on the portal, and this address was a 404 for anyone who guessed it on the main site. Added 2026-10-11. The pricing page links to the portal directly.",
+  },
+  {
+    source: "/enterprise",
+    destination: "/datasets",
+    reason: "A CMS skeleton that never shipped: noindexed, out of the sitemap, and linked from nowhere. Dropped on 2026-10-11. /datasets is where the homepage's Enterprise card already sends that audience.",
+  },
+  {
     source: "/samples/cross-estate-domain-risk-report.html",
     destination: "/samples/estate-attack-surface-report.html",
     reason: "The Cross-Estate Domain Risk Report was renamed the Organization estate report on 2026-10-07; the sample moved with it. Links to the old URL keep working.",
@@ -31,6 +41,11 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     source: "/legacy-home",
     destination: "/",
     reason: "A noindex reference copy of the old homepage, with the old positioning and API claims. Its page was deleted on 2026-10-02.",
+  },
+  {
+    source: "/index",
+    destination: "/",
+    reason: "Served a second copy of the homepage (canonical to /), and Bing indexed it as its own result (2026-10-15). A 301 settles it.",
   },
   {
     source: "/home",
@@ -143,9 +158,37 @@ export const LEGACY_REDIRECTS: LegacyRedirect[] = [
     reason: "Every research piece moved from /intelligence/<slug> to /insights/<slug> with the hub (2026-10-11).",
   },
   {
+    // The embargoed preview of "Who Really Runs Business Email?" went to press,
+    // partners and reviewers before launch; their links land on the published report.
+    source: "/review/email-infrastructure-2026-preview-086bf0afe9",
+    destination: "/insights/who-really-runs-business-email",
+    reason: "Embargoed preview of the report, replaced by the published page on 2026-10-15.",
+  },
+  {
+    // The preview's PDF and page images have the same file names at the published path.
+    source: "/review/report-email-2026-4aecad8499/:file",
+    destination: "/insights/who-really-runs-business-email/:file",
+    reason: "Preview files of the report, published under /insights on 2026-10-15.",
+  },
+  {
     source: "/docs/search-stream",
     destination: "/docs",
     reason: "Webhook reference for alert delivery. The API docs and the webhook reference were removed from /docs on 2026-10-01; the remaining docs cover reports and datasets.",
+  },
+  {
+    source: "/privacy",
+    destination: "/legal/privacy",
+    reason: "The address people (and the portal, before 2026-10-15) guess for the privacy policy. It was a 404, reached via portal.datazag.com/privacy, which Search Console reported.",
+  },
+  {
+    source: "/terms",
+    destination: "/legal/terms",
+    reason: "The address people guess for the terms. It was a 404.",
+  },
+  {
+    source: "/legal/terms-3",
+    destination: "/legal/terms",
+    reason: "A duplicate CMS slug that Google crawled and now reports as a 404 in Search Console (2026-10-14). The terms live at /legal/terms.",
   },
   {
     source: "/domain-search",

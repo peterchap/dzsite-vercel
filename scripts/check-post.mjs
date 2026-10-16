@@ -109,23 +109,19 @@ if (existsSync(dir)) {
   fail(`no page directory at ${dir}`);
 }
 
-// 4b. Embargo and internal-use material (hub, 2026-10-10).
-//  - The .ph and .ws wildcard findings stay unpublished until dotPH and Let's Encrypt are
-//    at a clean state. A post that pairs a wildcard with those names fails. A bare .ph or
-//    .ws mention (a market in a ranking table) only warns, so a person checks it.
+// 4b. Internal-use material (hub, 2026-10-10).
 //  - The Global 2000 report uses a Forbes-list sample and is marked internal use.
+//  - The registry-wildcard embargo (.ph, .ws) lifted on 2026-10-11, once dotPH and
+//    Let's Encrypt had both responded. Neither TLD is checked here any more.
 if (existsSync(dir)) {
   let embargo = 0;
   for (const f of readdirSync(dir).filter((f) => /\.tsx?$/.test(f))) {
     readFileSync(join(dir, f), "utf8").split("\n").forEach((line, i) => {
       const code = line.replace(/\/\/.*$/, "").replace(/^\s*\*.*$/, "");
-      const names = /(?:\.ph\b|\.ws\b|\bdotPH\b)/i.test(code);
-      if (names && /wildcard/i.test(code)) { embargo++; fail(`${f}:${i + 1} wildcard finding for .ph/.ws is embargoed`); }
-      else if (names) { embargo++; warn(`${f}:${i + 1} mentions .ph or .ws: confirm it is not the embargoed wildcard finding`); }
       if (/\bGlobal 2000\b|\bForbes\b/.test(code)) { embargo++; fail(`${f}:${i + 1} Global 2000 / Forbes sample is internal use only`); }
     });
   }
-  if (!embargo) ok("no embargoed or internal-use material in source");
+  if (!embargo) ok("no internal-use material in source");
 }
 
 // 5-9. Rendered

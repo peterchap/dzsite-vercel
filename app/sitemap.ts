@@ -15,7 +15,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
  *   /domain-search              — retired, 301 to /datasets (legacy-redirects)
  *   /contact/thanks             — post-submit confirmation
  *   /studio, /api               — CMS and JSON endpoints
- *   /enterprise                 — noindex skeleton, deferred (WU-C7)
  *   legacy 301 sources          — see lib/legacy-redirects.ts (WU-C5)
  */
 
@@ -32,6 +31,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/pricing", changeFrequency: "monthly", priority: 0.9 },
   { path: "/brand-protection", changeFrequency: "monthly", priority: 0.8 },
   { path: "/datasets", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/insights/who-really-runs-business-email", changeFrequency: "monthly", priority: 0.8 },
   { path: "/insights/one-signal-150-domains", changeFrequency: "monthly", priority: 0.8 },
   { path: "/insights/corporate-domain-stack", changeFrequency: "monthly", priority: 0.8 },
   { path: "/insights/dmarc-adoption-vs-protection", changeFrequency: "monthly", priority: 0.8 },
@@ -42,6 +42,7 @@ const STATIC_ROUTES: StaticEntry[] = [
   { path: "/esp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/mssp-partners", changeFrequency: "monthly", priority: 0.7 },
   { path: "/cyber-risk-underwriting", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/investors-and-ma", changeFrequency: "monthly", priority: 0.7 },
   { path: "/docs", changeFrequency: "monthly", priority: 0.7 },
   // Datazag Insights: the research hub (2026-10-11). /blog is the Engineering blog and is
   // listed further down only once it has a post; until then it redirects to /insights.
@@ -72,12 +73,12 @@ const cmsPageSitemapQuery = `
 `;
 
 /**
- * CMS slugs that resolve but must not be advertised. /enterprise is a deferred
- * skeleton carrying `robots: noindex` (see app/(marketing)/[...slug]/page.tsx);
- * listing it in the sitemap would ask Google to crawl a page we tell it to
- * ignore. Drop the slug here when the page ships.
+ * CMS slugs that resolve but must not be advertised: a page carrying
+ * `robots: noindex` (see app/(marketing)/[...slug]/page.tsx). Listing one in the
+ * sitemap would ask Google to crawl a page we tell it to ignore. Empty today:
+ * /enterprise was dropped on 2026-10-11 and is a legacy redirect now.
  */
-const NOINDEX_SLUGS = new Set(["enterprise"]);
+const NOINDEX_SLUGS = new Set<string>();
 
 type SlugRow = { slug: string; updated?: string };
 
