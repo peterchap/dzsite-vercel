@@ -38,7 +38,7 @@ export interface ResearchPiece {
 export const RESEARCH: readonly ResearchPiece[] = [
   {
     slug: "dmarc-adoption-vs-protection",
-    title: "25.3% of domains publish DMARC. Only 13.1% enforce it.",
+    title: "25.3% of domains publish DMARC. 13.1% enforce it.",
     summary:
       "A census of resolving, unparked domains: about half of DMARC publishers only report spoofing. Among domains that run mail, report-only outnumbers enforcement two to one.",
     publishedOn: "2026-10-16",
