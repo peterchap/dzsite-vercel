@@ -11,7 +11,7 @@ import { HEADLINES, REPORT } from "../who-really-runs-business-email/data";
 export const dynamic = "force-static";
 
 const h = STUDY.headline;
-const TITLE = `${h.primaryPublish.toFixed(1)}% of domains publish DMARC. Only ${h.primaryEnforce.toFixed(1)}% enforce it.`;
+const TITLE = `${h.primaryPublish.toFixed(1)}% of domains publish DMARC. ${h.primaryEnforce.toFixed(1)}% enforce it.`;
 const DESCRIPTION =
   `A census of resolving, unparked domains: a quarter publish DMARC, but about half of those only report spoofing and do not ` +
   `block it. Measured 1 October 2026.`;
@@ -57,7 +57,7 @@ export default function DmarcAdoptionPage() {
     description: DESCRIPTION,
     url: studyUrl(),
     datePublished: s.publishedOn,
-    dateModified: s.publishedOn,
+    dateModified: s.updatedOn,
     author: { "@id": ORGANIZATION_ID },
     publisher: { "@id": ORGANIZATION_ID },
     mainEntityOfPage: studyUrl(),
@@ -73,13 +73,14 @@ export default function DmarcAdoptionPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(251,191,36,0.10),transparent_34%),radial-gradient(circle_at_82%_78%,rgba(45,212,191,0.10),transparent_34%)]" />
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-amber-300">
-            Datazag research · Published {longDate(s.publishedOn)}
+            Datazag research · Published {longDate(s.publishedOn)} · Updated {longDate(s.updatedOn)}
           </p>
           <h1 className="mt-6 max-w-[22ch] text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-6xl">{TITLE}</h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
             DMARC is how a domain tells the world&rsquo;s mail servers what to do with mail that pretends to come from it. Publishing a
-            DMARC record is easy. Telling receivers to block the fakes is the step that protects anyone. We checked every resolving,
-            unparked domain: about half of the domains that publish DMARC stop at the first step.
+            DMARC record is easy. Telling receivers to block the fakes is what stops spoofing, and it is harder: every service that sends
+            as the domain must pass the checks first. We checked every resolving, unparked domain: about half of the domains that publish
+            DMARC do not enforce it.
           </p>
           <dl className="mt-8 grid gap-x-8 gap-y-3 border-t border-white/10 pt-5 font-mono text-xs text-slate-400 sm:grid-cols-2 lg:grid-cols-4">
             <div><dt className="text-slate-500">Population</dt><dd className="text-slate-200">{fmt(s.primary.n)} resolving, unparked domains</dd></div>
@@ -124,10 +125,25 @@ export default function DmarcAdoptionPage() {
           <Bar label="Report only (p=none)" pct={h.primaryNone} tone="amber" />
         </figure>
         <P>
-          Across this population, {h.primaryEnforceOfPublishers} of the domains that publish DMARC enforce it. The rest are watching, not
-          blocking. p=none is a sensible first step while an organization finds all the services that send its mail. It is not meant to be
-          where a domain stays.
+          Across this population, {h.primaryEnforceOfPublishers} of the domains that publish DMARC enforce it. The rest ask for reports and
+          block nothing. That is not always neglect. Many organizations stay at p=none on purpose.
         </P>
+        <Note title="Why many domains stay at p=none">
+          <p className="mb-3">
+            A DMARC policy also covers the domain&rsquo;s subdomains, unless a subdomain publishes its own record or the policy sets a
+            separate rule for subdomains (the sp= tag). Many organizations send mail through other companies: marketing email, CRM, help
+            desk and billing platforms, often from a subdomain. Each one must pass SPF or DKIM in the domain&rsquo;s name. If one does not,
+            an enforcing policy sends that service&rsquo;s genuine mail to spam, or blocks it.
+          </p>
+          <p className="mb-3">
+            Mailing lists and forwarding can also break the checks on genuine mail. So many organizations hold at p=none while the reports
+            show them every service that sends as them, and fix each one. Some enforce on the main domain and set a softer rule for
+            subdomains while they catch up.
+          </p>
+          <p>
+            This census counts policies, not reasons. It cannot tell a planned holding position from a record that nobody reads.
+          </p>
+        </Note>
       </Section>
 
       <Section>
@@ -140,8 +156,9 @@ export default function DmarcAdoptionPage() {
         <P>
           So we also measured the {fmt(s.corporate.n)} domains that actually run mail: they resolve, are not parked, have an address record (A),
           a working mail server and an SPF record. Among them, <strong className="text-white">{h.corporatePublish.toFixed(1)}% publish DMARC,
-          but only {h.corporateEnforce.toFixed(1)}% enforce it</strong>. That is {h.corporateEnforceOfPublishers} of publishers. Report-only
+          and {h.corporateEnforce.toFixed(1)}% enforce it</strong>. That is {h.corporateEnforceOfPublishers} of publishers. Report-only
           policies outnumber enforcing ones by about two to one ({h.corporateNone.toFixed(1)}% against {h.corporateEnforce.toFixed(1)}%).
+          These domains send mail, so the reasons above apply to them most.
         </P>
         <P>
           Our report{" "}
@@ -253,6 +270,7 @@ export default function DmarcAdoptionPage() {
             resolving domains send no mail ({s.excluded.cn} publish SPF), so its DMARC rates would mostly describe domains that do not send mail, rather than
             how Chinese organizations protect their mail.
           </li>
+          <li><strong className="text-white">No reasons.</strong> The census reads each domain&rsquo;s policy. It does not show why the domain chose it, or whether anyone reads its reports.</li>
           <li><strong className="text-white">No trend.</strong> This is one census. Movement over time is not claimed here.</li>
         </ul>
         <P>
