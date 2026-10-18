@@ -48,6 +48,12 @@ export const STUDY = {
    * the day after the email report, so the date is the real one. The census date stays 1 October.
    */
   publishedOn: "2026-10-16",
+  /**
+   * Last editorial change (Peter, 2026-10-17/18): three reasons a domain stays at p=none: a deliberate hold
+   * while third-party senders are fixed, inertia once mail works, and not knowing p=none blocks nothing.
+   * The figures did not change.
+   */
+  updatedOn: "2026-10-18",
   /** The day the census was taken. Values are each domain's latest observation. */
   censusOn: "2026-10-01",
 

@@ -14,7 +14,7 @@ export default function OpengraphImage() {
     (
       <OgCard
         kicker="Datazag research"
-        title={`${h.primaryPublish.toFixed(1)}% of domains publish DMARC. Only ${h.primaryEnforce.toFixed(1)}% enforce it.`}
+        title={`${h.primaryPublish.toFixed(1)}% of domains publish DMARC. ${h.primaryEnforce.toFixed(1)}% enforce it.`}
         figures={[
           { n: `${h.primaryPublish.toFixed(1)}%`, k: "PUBLISH DMARC" },
           { n: `${h.primaryEnforce.toFixed(1)}%`, k: "ENFORCE IT" },
