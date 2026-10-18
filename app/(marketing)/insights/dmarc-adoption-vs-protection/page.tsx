@@ -126,19 +126,29 @@ export default function DmarcAdoptionPage() {
         </figure>
         <P>
           Across this population, {h.primaryEnforceOfPublishers} of the domains that publish DMARC enforce it. The rest ask for reports and
-          block nothing. That is not always neglect. Many organizations stay at p=none on purpose.
+          block nothing. That is not always neglect. There are three common reasons a domain stays at p=none, and only one of them is a
+          plan.
         </P>
-        <Note title="Why many domains stay at p=none">
+        <Note title="Three reasons a domain stays at p=none">
           <p className="mb-3">
-            A DMARC policy also covers the domain&rsquo;s subdomains, unless a subdomain publishes its own record or the policy sets a
-            separate rule for subdomains (the sp= tag). Many organizations send mail through other companies: marketing email, CRM, help
-            desk and billing platforms, often from a subdomain. Each one must pass SPF or DKIM in the domain&rsquo;s name. If one does not,
-            an enforcing policy sends that service&rsquo;s genuine mail to spam, or blocks it.
+            <strong className="text-white">Other services send as the domain.</strong>{" "}Many organizations send mail through
+            other companies: marketing email, CRM, help desk and billing platforms, often from a subdomain. A DMARC policy also covers the
+            domain&rsquo;s subdomains, unless a subdomain publishes its own record or the policy sets a separate rule for subdomains (the
+            sp= tag). Each service must pass SPF or DKIM in the domain&rsquo;s name. If one does not, p=quarantine sends its genuine mail
+            to spam and p=reject blocks it. Mailing lists and forwarding can break the checks too. So many organizations hold at p=none
+            on purpose. They read the reports, find every service that sends as them, and fix each one before they enforce. Some enforce
+            on the main domain and set a softer rule for subdomains while they catch up.
           </p>
           <p className="mb-3">
-            Mailing lists and forwarding can also break the checks on genuine mail. So many organizations hold at p=none while the reports
-            show them every service that sends as them, and fix each one. Some enforce on the main domain and set a softer rule for
-            subdomains while they catch up.
+            <strong className="text-white">Everything works, so no one goes back.</strong> p=none never blocks anything, so it never
+            breaks anything. Since February 2024, Google and Yahoo have asked bulk senders to publish a DMARC record, and p=none meets
+            that rule. Many records were added to pass a check like this. Once mail flows, nothing prompts anyone to return and change
+            the setting, and the reports often go to a mailbox no one reads.
+          </p>
+          <p className="mb-3">
+            <strong className="text-white">No one knows it is not protecting them.</strong>{" "}A domain with a DMARC record looks
+            &ldquo;done&rdquo; on most checklists. Many owners do not know that p=none only watches. The record may have been added by a
+            provider&rsquo;s setup wizard or an IT contractor who has since moved on.
           </p>
           <p>
             This census counts policies, not reasons. It cannot tell a planned holding position from a record that nobody reads.
