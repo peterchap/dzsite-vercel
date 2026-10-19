@@ -371,11 +371,11 @@ const DOMAIN_POSTURE: DatasetDoc = {
       name: "posture_first_seen_at",
       type: "TIMESTAMP",
       description:
-        "When we first observed this domain's email posture. The daily posture history starts on 20 August 2026, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
+        "When we first observed this domain's email posture, in UTC. The daily posture history starts on 20 August 2026, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
     },
     {
       name: "last_observed_at",
-      type: "TIMESTAMP WITH TIME ZONE",
+      type: "TIMESTAMP",
       description:
         "When this posture was last observed, in UTC. Domains are re-observed on a rolling basis, so this varies across rows within a single release.",
     },
@@ -485,6 +485,11 @@ WHERE  NOT is_parked;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-10-20",
+      summary:
+        "Timestamps are now in UTC. posture_first_seen_at and last_observed_at were recorded in Central European Summer Time (UTC+2) in every release before this one, although this page said UTC; both columns, and the full posture history behind them, have been converted. Values in earlier releases read two hours later than the true UTC time. last_observed_at is also listed with its actual type, TIMESTAMP without a time zone.",
+    },
     {
       date: "2026-10-08",
       summary:
