@@ -106,6 +106,18 @@ export const DATASET_CATALOG: CatalogEntry[] = [
     order: 20,
   },
   {
+    slug: "email-provider-intelligence",
+    name: "Email Provider Intelligence",
+    description:
+      "A catalog of the companies that run email for domains — mailbox providers, hosting mail and security gateways — each named and classified.",
+    tier: "Paid",
+    // No coverage figure: the stats feed publishes no provider count yet.
+    // 2026-10-19: published to R2 (publish.email_provider). Snowflake listing not submitted;
+    // portal access not confirmed.
+    routes: { marketplace: COMING_SOON, portal: COMING_SOON },
+    order: 25,
+  },
+  {
     slug: "email-suppression",
     name: "Email Suppression & List Cleaning",
     description:

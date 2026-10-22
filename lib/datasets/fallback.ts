@@ -483,6 +483,12 @@ WHERE  NOT is_parked;`,
       summary:
         "Map an IPv4 address to its prefix, autonomous system, operator and registry country. The network layer this dataset deliberately does not carry.",
     },
+    {
+      title: "Email Provider Intelligence",
+      slug: "email-provider-intelligence",
+      summary:
+        "The companies named in mail_provider, classified: mailbox provider or security gateway, account type, webmail, and country.",
+    },
   ],
   changelog: [
     {
@@ -526,9 +532,223 @@ WHERE  NOT is_parked;`,
   order: 20,
 };
 
+// 2026-10-19: centralake PRODUCTS["C2"] (publish.email_provider, 13 columns), read off
+// config.py and sql_C2 in 02_build_publish.py rather than the brief. The brief drafted
+// provider_parent, provider_type, provider_tier and domains_served. None of them ship: the
+// table has no parent company, no tier and no domain count, and "mailbox vs gateway" is
+// carried by mailbox_provider_class and categories. Same pre-listing exception as B: the
+// Snowflake listing for C2 is blocked on this page resolving.
+//
+// No domain-to-provider join is shown. Domain Posture carries mail_provider (a NAME), not
+// provider_id, and provider_id is a hash of a case-folded slug, so there is no key a buyer
+// can join on from a domain. Add one to B before writing that join here.
+//
+// No coverage figure: the stats feed publishes no provider count. Add a token when it does.
+const EMAIL_PROVIDER_INTELLIGENCE: DatasetDoc = {
+  title: "Email Provider Intelligence",
+  slug: "email-provider-intelligence",
+  eyebrow: "Dataset documentation · Paid",
+  summary:
+    "A catalog of the companies that run email for the internet's domains — mailbox providers, hosting mail, and the security gateways in front of them — each named and classified. One row per provider.",
+  overview: [
+    "A catalog of email providers. One row per company that runs mail: mailbox providers, hosting companies that offer mail, and the email-security gateways that sit in front of a mailbox. Each provider has a stable identifier, a display name, and the categories that apply to it.",
+    "It answers a simple question: when you see a provider's name in mail data, what kind of company is it? Is it a mailbox provider or a gateway? Does it issue free accounts? Does it offer webmail?",
+    "Datazag curates the catalog from the mail hosts it observes across its domain corpus. Most entries are confirmed by a person. A smaller number are classified from the banner a mail server shows when we connect to it. Nothing in it is licensed from a third party.",
+    "We publish the providers, not the rules that match a mail host to a provider. The rules are how we attribute mail, and they stay internal.",
+  ],
+  facts: [
+    { label: "Grain", value: "One row per email provider" },
+    { label: "Tier", value: "Paid" },
+    {
+      label: "Classification",
+      value: "Curated by Datazag",
+      note: "Most entries confirmed by a person; some from observed mail-server banners",
+    },
+    { label: "License", value: "Clean for redistribution" },
+  ],
+  tableName: "email_provider",
+  columns: [
+    {
+      name: "provider_id",
+      type: "VARCHAR",
+      description:
+        "Stable identifier for the provider, for example prv_1a2b3c4d5e6f. Use this to join. It is derived from the provider's name: if a provider is renamed, its identifier changes.",
+      isJoinKey: true,
+    },
+    {
+      name: "provider_name",
+      type: "VARCHAR",
+      description:
+        "Display name of the provider, for example Fastmail or Proofpoint. Spelling variants of the same name are folded into one row.",
+    },
+    {
+      name: "categories",
+      type: "VARCHAR[]",
+      description:
+        "Every category that applies to this provider, sorted. A list, because many providers are more than one thing: a company can be a mailbox provider and a hosting provider at once. Empty where we hold no classification.",
+    },
+    {
+      name: "account_type",
+      type: "VARCHAR",
+      description:
+        "The kind of account this provider issues: freemail, disposable, isp_provided, education or government. unknown where we have not established it.",
+    },
+    {
+      name: "is_webmail",
+      type: "BOOLEAN",
+      description:
+        "Whether the provider offers a webmail interface. True if we have observed one anywhere on the provider.",
+    },
+    {
+      name: "country",
+      type: "VARCHAR",
+      description:
+        "The provider's own country, where recorded. It is not the location of any mailbox or mail server. NULL where not recorded.",
+    },
+    {
+      name: "mailbox_provider_class",
+      type: "VARCHAR",
+      description:
+        "Our classification of the provider's role in mail delivery, where we hold one: Mailbox Provider, Hosting Mailbox, Security Gateway, Transactional or Parking. Held for a minority of providers. NULL means not classified, not that the provider has no role.",
+    },
+    {
+      name: "classification_method",
+      type: "VARCHAR",
+      description:
+        "How the provider was classified: human_review where a person confirmed it, banner_probe where it was derived from an observed mail-server banner.",
+    },
+    {
+      name: "mapping_confidence",
+      type: "DOUBLE",
+      description:
+        "Our confidence in the evidence that maps mail hosts to this provider, taken from its least certain piece of evidence. NULL for most providers: only a minority of our evidence carries a confidence value. data_completeness says which.",
+    },
+    {
+      name: "match_rule_count",
+      type: "INTEGER",
+      description:
+        "How many distinct pieces of evidence support this provider's entry. Higher means we have seen it in more ways. It is not a quality score.",
+    },
+    {
+      name: "snapshot_date",
+      type: "DATE",
+      description:
+        "The date this row was built, in UTC. Every row in a release carries the same date, so you can pin an analysis to a snapshot.",
+    },
+    {
+      name: "tier",
+      type: "VARCHAR",
+      description: "Distribution tier this row belongs to. Always paid in this dataset.",
+    },
+    {
+      name: "data_completeness",
+      type: "VARCHAR",
+      description:
+        "JSON recording, for country, mailbox_provider_class, categories and mapping_confidence, whether we hold a value for this provider: observed or not_observed. not_observed means we hold nothing. It is not a claim that the provider lacks the property.",
+    },
+  ],
+  schemaNote:
+    "categories is a list of strings; on Snowflake it arrives as an ARRAY. data_completeness is a JSON object stored as text. The matching rules behind each provider are not published: match_rule_count tells you how many there are, not what they are.",
+  joinGuideTitle: "Query guide",
+  joinGuideIntro:
+    "The grain is the provider and provider_id is unique, so every query here is a filter or a lookup on one table. A per-domain key into this table is not published yet. Domain Posture & Intelligence names each domain's mail provider, but by name, not by provider_id.",
+  codeExamples: [
+    {
+      title: "List the email-security gateways in the catalog",
+      description:
+        "Gateways filter mail before it reaches the mailbox. They are classified separately from mailbox providers.",
+      language: "sql",
+      code: `SELECT provider_id, provider_name, country
+FROM   email_provider
+WHERE  mailbox_provider_class = 'Security Gateway'
+ORDER  BY provider_name;`,
+      note: "mailbox_provider_class is held for a minority of providers. A provider with NULL here is unclassified, not ruled out.",
+    },
+    {
+      title: "Find the providers that issue free or disposable accounts",
+      description:
+        "Useful when you hold provider names from your own mail data and want to know which ones are consumer or throwaway services.",
+      language: "sql",
+      code: `SELECT provider_name, account_type, is_webmail
+FROM   email_provider
+WHERE  account_type IN ('freemail', 'disposable')
+ORDER  BY account_type, provider_name;`,
+    },
+    {
+      title: "Classify a list of provider names you already hold",
+      description:
+        "Match on the name, case-insensitively, then keep provider_id as your key from then on.",
+      language: "sql",
+      code: `SELECT y.vendor_name, p.provider_id, p.mailbox_provider_class, p.account_type
+FROM   your_vendors y
+LEFT   JOIN email_provider p
+       ON lower(trim(y.vendor_name)) = lower(p.provider_name);`,
+      note: "A NULL provider_id means the name is not in the catalog, or is spelled differently. Check the misses by hand.",
+    },
+  ],
+  methodology: [
+    {
+      title: "Mailbox provider is not the same as gateway",
+      body: "Many domains send their mail through an email-security gateway, such as Proofpoint or Mimecast, before it reaches the mailbox. The gateway and the mailbox provider are different companies doing different jobs, and they are classified differently here. A gateway in front of a domain does not tell you who hosts its mailboxes.",
+      tone: "caveat",
+    },
+    {
+      title: "How providers are identified",
+      body: "We match the mail hosts we observe to the companies that operate them, using rules Datazag maintains. Most providers were confirmed by a person. Some were identified from the banner a mail server returns when we connect, which can reveal the platform behind a white-label or reseller host. classification_method says which applies to each provider.",
+      tone: "neutral",
+    },
+    {
+      title: "provider_id follows the name",
+      body: "provider_id is derived from the provider's name, with spelling and case variants folded together. If we correct or change a provider's name, its provider_id changes too. Pin to snapshot_date, or keep the name beside the identifier, if you store provider_id over time.",
+      tone: "caveat",
+    },
+    {
+      title: "Absent values are stated, not implied",
+      body: "Several columns are sparse. We do not fill gaps with a guess. data_completeness records, per provider, which optional fields we hold. A NULL in mailbox_provider_class or mapping_confidence means we have not classified that provider, not that the property does not apply.",
+      tone: "neutral",
+    },
+    {
+      title: "Received mail, not sent mail",
+      body: "Providers are identified from where domains receive mail. That shows who handles a domain's inbound mail. It does not prove which platform the domain sends from.",
+      tone: "caveat",
+    },
+  ],
+  relatedDatasets: [
+    {
+      title: "Domain Posture & Intelligence",
+      slug: "domain-posture",
+      summary:
+        "Per-domain mail posture — SPF, DMARC, MTA-STS — and the name of the company that runs each domain's inbound mail.",
+    },
+    {
+      title: "Provider Concentration",
+      slug: "provider-concentration",
+      summary:
+        "Provider share and concentration across hosting, mail and DNS infrastructure.",
+      unpublished: true,
+    },
+    {
+      title: "Email Suppression & List Cleaning",
+      slug: "email-suppression",
+      summary: "Clean mailing lists before you send, using Datazag's live domain data.",
+      unpublished: true,
+    },
+  ],
+  changelog: [
+    {
+      date: "2026-10-19",
+      summary: "Documentation published.",
+    },
+  ],
+  contactNote:
+    "Not yet on a cloud marketplace. Talk to us about access while the listing is in preparation.",
+  order: 25,
+};
+
 export const DATASET_FALLBACKS: Record<string, DatasetDoc> = {
   [IP_ASN_INTELLIGENCE.slug]: IP_ASN_INTELLIGENCE,
   [DOMAIN_POSTURE.slug]: DOMAIN_POSTURE,
+  [EMAIL_PROVIDER_INTELLIGENCE.slug]: EMAIL_PROVIDER_INTELLIGENCE,
 };
 
 export function getDatasetFallback(slug: string): DatasetDoc | null {

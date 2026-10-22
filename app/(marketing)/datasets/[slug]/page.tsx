@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DatasetDocPage } from "@/components/datasets/DatasetDocPage";
+import { DATASET_CATALOG } from "@/lib/datasets/catalog";
 import { getDataset, getDatasetSlugs } from "@/lib/datasets/load";
 import { resolveStatTokens } from "@/lib/datasets/stat-tokens";
 import { getSiteStats } from "@/lib/site-stats-live";
@@ -89,7 +90,9 @@ export default async function DatasetPage({ params }: { params: Promise<{ slug: 
     description: resolveStatTokens(dataset.summary, stats),
     url: new URL(`/datasets/${dataset.slug}`, SITE_URL).toString(),
     creator: { "@type": "Organization", "@id": ORGANIZATION_ID, name: "Datazag", url: SITE_URL },
-    isAccessibleForFree: true,
+    // From the catalog tier, not assumed: a paid dataset must not claim to be free.
+    isAccessibleForFree:
+      DATASET_CATALOG.find((e) => e.slug === dataset.slug)?.tier !== "Paid",
     variableMeasured: dataset.columns.map((c) => ({
       "@type": "PropertyValue",
       name: c.name,
