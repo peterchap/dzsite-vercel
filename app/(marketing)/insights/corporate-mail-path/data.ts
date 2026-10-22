@@ -33,7 +33,7 @@ export const STUDY = {
   slug: "corporate-mail-path",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com",
   /** Peter, 2026-10-01: fortnightly slot 3. */
-  publishedOn: "2026-10-29",
+  publishedOn: "2026-10-22",
   observedOn: "2026-09-08",
 
   corporate: { n: 112_873_998 },

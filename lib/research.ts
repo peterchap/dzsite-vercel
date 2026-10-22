@@ -41,7 +41,7 @@ export const RESEARCH: readonly ResearchPiece[] = [
     title: "Email security gateways cover 2.2% of corporate domains. Microsoft and Google run the mailboxes for 24%.",
     summary:
       "The gateway market is concentrated but small; the mailbox layer behind it is eleven times larger. National markets turn global shares inside out: one vendor holds 94.7% of Sweden's.",
-    publishedOn: "2026-10-29",
+    publishedOn: "2026-10-22",
     kind: "Research",
   },
   {
