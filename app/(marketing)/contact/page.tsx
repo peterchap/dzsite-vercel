@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type React from "react";
 
+import { AttributionFields } from "@/components/attribution/AttributionFields";
 import { Container } from "@/components/ui/Container";
 import {
   publishedContactRoutes,
@@ -52,6 +53,15 @@ const enquiryTypes = [
   "Other",
 ];
 
+// A partner page's "Book a 20-minute call" lands here with ?topic=<page> when there is no
+// booking link (lib/booking.ts). The topic chooses the inquiry type, so the form opens ready.
+const topicEnquiryType: Record<string, string> = {
+  mssp: "MSSP / MDR partnership",
+  esp: "ESP / platform partnership",
+  insurers: "Insurer design partner",
+  investors: "Organization estate report",
+};
+
 const nextSteps = [
   {
     title: "We route the inquiry",
@@ -97,10 +107,11 @@ const inputClass =
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ submitted?: string; error?: string }>;
+  searchParams?: Promise<{ submitted?: string; error?: string; topic?: string }>;
 }) {
   const params = searchParams ? await searchParams : {};
   const submitted = params.submitted === "1";
+  const topic = params.topic && topicEnquiryType[params.topic] ? params.topic : null;
   const errorMessage = params.error ? errorMessages[params.error] ?? "Please check the form and try again." : null;
 
   return (
@@ -189,7 +200,8 @@ export default async function ContactPage({
 
               <form className="mt-6 grid gap-4" action="/api/enquiry" method="post">
                 <input type="hidden" name="source" value="contact_form" />
-                <input type="hidden" name="page" value="/contact" />
+                <AttributionFields />
+                <input type="hidden" name="page" value={topic ? `/contact?topic=${topic}` : "/contact"} />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Name">
                     <input className={inputClass} name="name" type="text" placeholder="Your name" required />
@@ -209,7 +221,7 @@ export default async function ContactPage({
                 </div>
 
                 <Field label="What do you want to do?">
-                  <select className={inputClass} name="enquiry_type" defaultValue="" required>
+                  <select className={inputClass} name="enquiry_type" defaultValue={topic ? topicEnquiryType[topic] : ""} required>
                     <option value="" disabled>
                       Choose an inquiry type
                     </option>

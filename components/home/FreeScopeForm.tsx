@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { useRef, useState, useSyncExternalStore } from "react";
 
 import { track } from "@/lib/analytics";
+import { appendAttribution } from "@/lib/attribution";
 import { currentPageReturnTo } from "@/lib/portal-return-to";
 
 // The free Estate Scope's hand-off, the same as FreeReportForm's: the portal's /scope
@@ -30,8 +32,20 @@ function cleanDomain(value: string): string {
   return value.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/[/?#].*$/, "").replace(/^www\./, "");
 }
 
-export function FreeScopeForm({ location = "home", src }: { location?: string; src?: string }) {
-  const [persona, setPersona] = useState<string>("own");
+// ?assess=<value> in the page address preselects "What are you assessing?", so an outbound
+// link can open the form ready (for example ?assess=portfolio#free-scope).
+const ASSESS_PERSONA: Record<string, string> = { portfolio: "pe_vc", book: "insurer_portfolio", clients: "mssp", deal: "ma", own: "own" };
+const noSubscribe = () => () => {};
+function readAssessPreset(): string {
+  const assess = new URLSearchParams(window.location.search).get("assess");
+  return (assess && ASSESS_PERSONA[assess]) || "";
+}
+
+export function FreeScopeForm({ location = "home", src, defaultPersona = "own" }: { location?: string; src?: string; defaultPersona?: string }) {
+  // A choice made in the form wins; before that, ?assess= in the address, then the default.
+  const urlPreset = useSyncExternalStore(noSubscribe, readAssessPreset, () => "");
+  const [chosen, setPersona] = useState<string | null>(null);
+  const persona = chosen ?? (urlPreset || defaultPersona);
   const [domain, setDomain] = useState("");
   const [list, setList] = useState("");
   const [email, setEmail] = useState("");
@@ -64,7 +78,8 @@ export function FreeScopeForm({ location = "home", src }: { location?: string; s
       params.set("list", list.trim());
     }
     track("free_scope_form_submit", { location, persona });
-    window.location.href = `${portalScopeUrl}?${params.toString()}`;
+    // The campaign tags travel with the hand-off, so the portal records them with or without consent.
+    window.location.href = `${portalScopeUrl}?${appendAttribution(params).toString()}`;
   }
 
   return (
@@ -102,7 +117,8 @@ export function FreeScopeForm({ location = "home", src }: { location?: string; s
       </div>
       {error ? <p className="text-sm text-red-300" role="alert">{error}</p> : null}
       <p className="text-xs leading-5 text-slate-400">
-        We send the scope to your work email. You confirm the details on the next page{shape === "portfolio" ? ", where you can also upload a CSV" : ""}.
+        We send the scope to your work email. You confirm the details on the next page{shape === "portfolio" ? ", where you can also upload a CSV" : ""}.{" "}
+        We&apos;ll email your scope and a short follow-up about it. Unsubscribe any time. <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
       </p>
     </form>
   );

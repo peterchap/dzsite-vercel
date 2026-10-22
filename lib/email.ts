@@ -11,37 +11,23 @@
  */
 
 /**
- * Resend's shared test sender. It only delivers to the address that owns the
- * Resend account, so a live form sending from it drops every submission on the
- * floor while returning a perfectly healthy 200. That is why EMAIL_FROM has no
- * fallback below: an unset sender is a misconfigured deploy, and the send
- * should fail loudly at the first submission rather than on the day somebody
- * asks why the inbox is empty.
+ * The one sender for every email Datazag sends (decided by PC, 2026-10-14).
+ *
+ * A constant on purpose. EMAIL_FROM used to be read per deployment, and the
+ * report workers sent as `health_report@notifications.datazag.com` with no
+ * display name while the portal sent as `Datazag <noreply@…>`, so customers saw
+ * two senders. It also removes the old failure mode this file guarded against:
+ * a deploy left on Resend's test sender, which only delivers to the account owner.
+ *
+ * The address must stay on notifications.datazag.com, the Resend-verified sending
+ * domain. The portal (Customer_Portal lib/email-sender.ts) and the report workers
+ * (datazag_intelligence email_sender.py) hold the same value: change all three together.
  */
-const RESEND_TEST_SENDER = "onboarding@resend.dev";
+export const EMAIL_SENDER = "Datazag <noreply@notifications.datazag.com>";
 
-/**
- * The verified From address. Throws when it is missing or still pointed at
- * Resend's test sender — callers treat the throw as a failed delivery.
- */
+/** The From address for every Resend call on this site. */
 export function resolveSender(): string {
-  const from = process.env.EMAIL_FROM?.trim();
-
-  if (!from) {
-    throw new Error(
-      "EMAIL_FROM is not set. Refusing to send from Resend's test address, " +
-        "which only delivers to the Resend account owner.",
-    );
-  }
-
-  if (from.includes(RESEND_TEST_SENDER)) {
-    throw new Error(
-      `EMAIL_FROM is still ${RESEND_TEST_SENDER}. That sender only delivers to ` +
-        "the Resend account owner, so site mail would never arrive.",
-    );
-  }
-
-  return from;
+  return EMAIL_SENDER;
 }
 
 const HTML_ESCAPES: Record<string, string> = {

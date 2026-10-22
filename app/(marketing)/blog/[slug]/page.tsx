@@ -7,6 +7,10 @@ import { Metadata } from "next";
 import { getSiteStats } from "@/lib/site-stats-live";
 import { loadCorporateMailFigures } from "@/lib/observatory-figures";
 import { resolveBlogBody, resolveBlogText, type BlogFigureSources } from "@/lib/blog-tokens";
+import { ORGANIZATION_ID } from "@/lib/organization";
+
+// www.datazag.com is the canonical apex — keep the www (see app/layout.tsx).
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.datazag.com";
 
 async function figureSources(): Promise<BlogFigureSources> {
     const [siteStats, corporateMail] = await Promise.all([getSiteStats(), loadCorporateMailFigures()]);
@@ -21,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     return {
         title: `${post.title} | Datazag Blog`,
-        description: post.excerpt,
+        description: post.excerpt ? resolveBlogText(post.excerpt, await figureSources()) ?? undefined : undefined,
     };
 }
 
@@ -33,9 +37,33 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         notFound();
     }
 
+    // Live-figure tokens resolve here; a block whose figure is unavailable is
+    // dropped (lib/blog-tokens.ts). Without this call a post prints its tokens raw.
+    const sources = await figureSources();
+    const resolved = {
+        ...post,
+        excerpt: post.excerpt ? resolveBlogText(post.excerpt, sources) : post.excerpt,
+        body: resolveBlogBody(post.body, sources),
+    };
+
+    const url = new URL(`/blog/${post.slug}`, SITE_URL).toString();
+    const articleJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: resolved.excerpt || undefined,
+        url,
+        datePublished: post.publishedAt,
+        author: { "@id": ORGANIZATION_ID },
+        publisher: { "@id": ORGANIZATION_ID },
+        mainEntityOfPage: url,
+        keywords: Array.isArray(post.tags) && post.tags.length ? post.tags.join(", ") : undefined,
+    };
+
     return (
         <>
-            <BlogPost post={post} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+            <BlogPost post={resolved} />
             <div className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
                 <BlogSubscribe />
             </div>

@@ -20,6 +20,9 @@ import { SLUG, content } from "./copy";
 import { FaqSection } from "@/components/seo/FaqSection";
 import { recordAgeFrom, isRecordAgePublishable } from "./freshness";
 import { getSiteStats } from "@/lib/site-stats-live";
+import { BookCallLink, PartnerClosing, PartnerOfferCompact } from "@/components/partners/PartnerClosing";
+import { withSrc } from "@/lib/booking";
+import { INSURER_OFFER } from "@/lib/partner-offers";
 
 export const metadata: Metadata = {
   title: "Cyber insurance risk intelligence — Datazag",
@@ -212,13 +215,10 @@ export default async function CyberRiskUnderwritingPage() {
   const evidence = section("evidence");
   const delivery = section("delivery");
   const privacy = section("privacy");
-  const cta = section("cta");
 
-  const heroPrimary = copyCta(hero?.primaryCta, content.hero.primaryCta!);
-  const heroSecondary = copyCta(hero?.secondaryCta, content.hero.secondaryCta!);
-  const ctaPrimary = copyCta(cta?.primaryCta, content.cta.primaryCta!);
-  const ctaSecondary = copyCta(cta?.secondaryCta, content.cta.secondaryCta!);
-  const evidencePrimary = copyCta(evidence?.primaryCta, content.evidence.primaryCta!);
+  // Every action carries ?src=insurers.
+  const heroPrimaryCopy = copyCta(hero?.primaryCta, content.hero.primaryCta!);
+  const heroPrimary = { ...heroPrimaryCopy, href: withSrc(heroPrimaryCopy.href, "insurers") };
 
   const readerCards = resolveCopyCards(content.readers.items!, readers);
   const decisionCards = resolveCopyCards(content.decisions.items!, decisions);
@@ -262,9 +262,8 @@ export default async function CyberRiskUnderwritingPage() {
                 <a href={heroPrimary.href} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
                   {heroPrimary.label}
                 </a>
-                <a href={heroSecondary.href} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
-                  {heroSecondary.label}
-                </a>
+                {/* The hero's second action is the booking call, the same as the closing section. */}
+                <BookCallLink src="insurers" location="hero" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]" />
               </div>
             </div>
 
@@ -333,6 +332,8 @@ export default async function CyberRiskUnderwritingPage() {
           </div>
         </div>
       </Section>
+
+      <PartnerOfferCompact offer={INSURER_OFFER} />
 
       {/* Concentration — the differentiated number. */}
       <Section id="concentration">
@@ -554,9 +555,7 @@ export default async function CyberRiskUnderwritingPage() {
             <p className="mt-4 text-base leading-7 text-slate-400">
               {copyText(evidence?.secondaryBody, content.evidence.secondaryBody!)}
             </p>
-            <a href={evidencePrimary.href} className="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
-              {evidencePrimary.label}
-            </a>
+            <BookCallLink src="insurers" location="evidence" className="mt-8 inline-flex min-h-12 w-full items-center sm:w-auto justify-center rounded-xl border border-cyan-300/50 bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {evidenceCards.map((card) => (
@@ -571,38 +570,11 @@ export default async function CyberRiskUnderwritingPage() {
 
       <FaqSection section={section("faq")} fallback={content.faq} />
 
-      {/* Closing CTA — split by reader. The free domain report is secondary
-          here: an insurer tests against their book, not their own domain. */}
-      <Section>
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
-            {copyText(cta?.eyebrow, content.cta.eyebrow!)}
-          </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">
-            {copyText(cta?.title, content.cta.title!)}
-          </h2>
-          <p className="mt-5 text-base leading-7 text-slate-300">
-            {copyText(cta?.body, content.cta.body!)}
-          </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Underwriters</p>
-              <a href={ctaPrimary.href} className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-cyan-300 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200">
-                {ctaPrimary.label}
-              </a>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Analysts</p>
-              <a href={ctaSecondary.href} className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] px-5 text-sm font-semibold text-white transition hover:bg-white/[0.08]">
-                {ctaSecondary.label}
-              </a>
-            </div>
-          </div>
-          <p className="mt-6 text-sm text-slate-400">
-            Or <a href="/#free-report" className="font-semibold text-cyan-200 underline-offset-4 hover:underline">check one domain free</a>.
-          </p>
-        </div>
-      </Section>
+      {/* The priced offer, the booking action, what happens next and short answers. */}
+      <PartnerClosing offer={INSURER_OFFER} />
     </PageShell>
   );
 }
+
+// Re-rendered at least hourly, so a founding offer hides after its deadline without a deploy.
+export const revalidate = 3600;

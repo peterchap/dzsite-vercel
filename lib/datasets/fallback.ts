@@ -371,11 +371,11 @@ const DOMAIN_POSTURE: DatasetDoc = {
       name: "posture_first_seen_at",
       type: "TIMESTAMP",
       description:
-        "When we first observed this domain's email posture. The daily posture history starts on 20 August 2026, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
+        "When we first observed this domain's email posture, in UTC. The daily posture history starts on 20 August 2026, so no value precedes that date. It is not the domain's registration date and not the first time the domain existed.",
     },
     {
       name: "last_observed_at",
-      type: "TIMESTAMP WITH TIME ZONE",
+      type: "TIMESTAMP",
       description:
         "When this posture was last observed, in UTC. Domains are re-observed on a rolling basis, so this varies across rows within a single release.",
     },
@@ -446,8 +446,8 @@ WHERE  NOT is_parked;`,
   ],
   methodology: [
     {
-      title: "A domain that is absent has not been observed yet",
-      body: "The daily posture history starts on 20 August 2026. A rolling backfill is still working through the corpus. A domain missing from a release has not been observed yet — it does NOT mean the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
+      title: "A domain that is absent has not been observed, or does not resolve",
+      body: "The daily posture history starts on 20 August 2026, and a rolling backfill is still working through the corpus. Since 8 October 2026 a release also contains only domains that resolved at their latest DNS check: a name whose latest check returned NXDOMAIN, a registry wildcard answer, a timeout or a server failure is left out, rather than shipped as a row that appears to publish nothing. So a domain missing from a release has either not been observed yet or did not resolve when last checked — neither means the domain publishes nothing. Do not treat absence as a finding, and do not compute a percentage against your own list without accounting for the rows that are not there. last_observed_at and snapshot_date let you measure the coverage of any release yourself rather than taking a number from us.",
       tone: "caveat",
     },
     {
@@ -485,6 +485,16 @@ WHERE  NOT is_parked;`,
     },
   ],
   changelog: [
+    {
+      date: "2026-10-20",
+      summary:
+        "Timestamps are now in UTC. posture_first_seen_at and last_observed_at were recorded in Central European Summer Time (UTC+2) in every release before this one, although this page said UTC; both columns, and the full posture history behind them, have been converted. Values in earlier releases read two hours later than the true UTC time. last_observed_at is also listed with its actual type, TIMESTAMP without a time zone.",
+    },
+    {
+      date: "2026-10-08",
+      summary:
+        "Only domains that resolve. A domain is now included only if its latest DNS check resolved; names returning NXDOMAIN, a registry wildcard answer, a timeout or a server failure — about 8% of the previous release's rows — are left out, because they carried posture for names that do not exist and read as publishing nothing. Expect roughly 366 million rows instead of 397 million, and posture rates that rise accordingly. 13,352 malformed rows, whose domain field held a list of name servers rather than a domain, were also removed.",
+    },
     {
       date: "2026-09-23",
       summary:

@@ -85,25 +85,25 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
     const { DOMAINS_DISPLAY, PUBLISHED_STATS } = useSiteStats();
 
     return (
-        <div className="bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+        <div className="bg-[#030619] text-white selection:bg-cyan-300/30 selection:text-white">
             {/* Page Hero Section */}
-            <header className="border-b bg-slate-50/40 relative overflow-hidden">
+            <header className="border-b border-white/10 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
                 <div className="container mx-auto max-w-6xl px-6 py-24 lg:py-36 relative z-10">
-                    <Badge variant="secondary" className="mb-6 px-3 bg-blue-50 text-blue-600 border-blue-100 font-bold uppercase tracking-wider text-[10px]">Documentation</Badge>
-                    <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
-                        Reports and <span className="text-blue-600">datasets</span>
+                    <Badge variant="secondary" className="mb-6 px-3 border-cyan-300/25 bg-cyan-300/[0.1] text-cyan-100 font-bold uppercase tracking-wider text-[10px]">Documentation</Badge>
+                    <h1 className="text-5xl font-extrabold tracking-tight text-white md:text-6xl lg:text-7xl">
+                        Reports and <span className="text-cyan-300">datasets</span>
                     </h1>
-                    <p className="mt-8 max-w-3xl text-xl text-slate-600 leading-relaxed font-medium">
+                    <p className="mt-8 max-w-3xl text-xl text-slate-300 leading-relaxed font-medium">
                         How Datazag data reaches you. Reports are documents about a domain or an estate. Datasets
                         are tables in your own warehouse, built from {DOMAINS_DISPLAY} domains of observation. Alerts
                         reach Microsoft Sentinel as a threat-intelligence feed.
                     </p>
                     <div className="mt-12 flex flex-wrap gap-4">
-                        <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-slate-900 hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
+                        <Button asChild size="lg" className="rounded-xl h-14 px-10 font-bold bg-cyan-300 text-slate-950 hover:bg-cyan-200 transition-all">
                             <Link href="/datasets">Browse datasets</Link>
                         </Button>
-                        <Button asChild size="lg" variant="outline" className="rounded-xl h-14 px-10 font-bold border-slate-200 bg-white hover:bg-slate-50">
+                        <Button asChild size="lg" variant="outline" className="rounded-xl h-14 px-10 font-bold border-white/10 bg-white/[0.045] text-white hover:bg-white/[0.08] hover:text-white">
                             <Link href="/reports/sample">See a sample report</Link>
                         </Button>
                     </div>
@@ -116,12 +116,12 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                 <aside className="sticky top-32 hidden h-fit w-64 shrink-0 lg:block mt-2">
                     <nav className="space-y-8">
                         <div>
-                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-600">Documentation</h3>
+                            <h3 className="mb-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-300">Documentation</h3>
                             <ul className="space-y-4">
                                 {TOC.map((t) => (
                                     <li key={t.id}>
-                                        <a href={`#${t.id}`} className="group flex items-center text-sm font-semibold text-slate-500 hover:text-blue-600 transition-all">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-200 mr-3 group-hover:bg-blue-600 transition-colors"></span>
+                                        <a href={`#${t.id}`} className="group flex items-center text-sm font-semibold text-slate-400 hover:text-cyan-300 transition-all">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-white/20 mr-3 group-hover:bg-cyan-300 transition-colors"></span>
                                             {t.label}
                                         </a>
                                     </li>
@@ -134,8 +134,8 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                 {/* Documentation Sections */}
                 <div className="min-w-0 flex-1 space-y-32">
                     <Section id="overview" title="Overview">
-                        <div className="prose prose-slate max-w-none space-y-6">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                        <div className="prose prose-invert max-w-none space-y-6">
+                            <p className="text-lg text-slate-300 leading-relaxed font-medium">
                                 Datazag observes public internet infrastructure: nameservers, mail routing,
                                 email-authentication records, addressing and network placement. It does not
                                 work from a static list. Reports and datasets are two ways to receive what it
@@ -144,8 +144,8 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                             {/* WU-C3: the figure states its own population. This page previously
                                 carried two different corpus numbers eleven lines apart, which a
                                 technical buyer reads as the site not knowing its own coverage. */}
-                            <p className="text-sm text-slate-500 leading-relaxed border-l-2 border-slate-200 pl-4">
-                                <span className="font-semibold text-slate-700">What {DOMAINS_DISPLAY} counts: </span>
+                            <p className="text-sm text-slate-400 leading-relaxed border-l-2 border-white/10 pl-4">
+                                <span className="font-semibold text-slate-200">What {DOMAINS_DISPLAY} counts: </span>
                                 {PUBLISHED_STATS.domainsMonitored.definition}{" "}
                                 {PUBLISHED_STATS.domainsMonitored.measuredAt ? (
                                     <span className="whitespace-nowrap">
@@ -157,19 +157,19 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 ) : null}
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 text-center md:text-left">
-                                <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 group hover:border-blue-100 transition-colors">
-                                    <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-blue-600 transition-colors">
-                                        <Shield className="h-6 w-6 text-blue-600 group-hover:text-white" />
+                                <div className="p-8 rounded-3xl bg-white/[0.035] border border-white/10 group hover:border-cyan-300/40 transition-colors">
+                                    <div className="w-12 h-12 rounded-2xl bg-cyan-300/10 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-cyan-300 transition-colors">
+                                        <Shield className="h-6 w-6 text-cyan-300 group-hover:text-slate-950" />
                                     </div>
-                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Infrastructure</h4>
-                                    <p className="text-sm text-slate-500 leading-relaxed">Where a domain lives: its nameserver, hosting address and country, and whether it resolves at all.</p>
+                                    <h4 className="font-bold text-white text-lg mb-3">Infrastructure</h4>
+                                    <p className="text-sm text-slate-400 leading-relaxed">Where a domain lives: its nameserver, hosting address and country, and whether it resolves at all.</p>
                                 </div>
-                                <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 group hover:border-emerald-100 transition-colors">
-                                    <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-emerald-600 transition-colors">
-                                        <Zap className="h-6 w-6 text-emerald-600 group-hover:text-white" />
+                                <div className="p-8 rounded-3xl bg-white/[0.035] border border-white/10 group hover:border-emerald-300/40 transition-colors">
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-300/10 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-emerald-300 transition-colors">
+                                        <Zap className="h-6 w-6 text-emerald-300 group-hover:text-slate-950" />
                                     </div>
-                                    <h4 className="font-bold text-slate-900 text-lg mb-3">Mail and authentication</h4>
-                                    <p className="text-sm text-slate-500 leading-relaxed">Whether a domain publishes SPF and DMARC, and whether it runs its own mail or sits on a mailbox provider.</p>
+                                    <h4 className="font-bold text-white text-lg mb-3">Mail and authentication</h4>
+                                    <p className="text-sm text-slate-400 leading-relaxed">Whether a domain publishes SPF and DMARC, and whether it runs its own mail or sits on a mailbox provider.</p>
                                 </div>
                             </div>
                         </div>
@@ -180,24 +180,24 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                         implying an API a developer will hunt for. */}
                     <Section id="reports" title="Reports">
                         <div className="space-y-8">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                            <p className="text-lg text-slate-300 leading-relaxed font-medium">
                                 Reports are documents. How each one is delivered is listed below.
                             </p>
                             <DataTable
                                 columns={["Report", "Scope", "How it is delivered"]}
                                 data={REPORT_ROUTES.map((r) => [
-                                    <span key="n" className="font-bold text-slate-900">{r.name}</span>,
-                                    <span key="s" className="text-slate-600 font-medium">{r.scope}</span>,
-                                    <span key="h" className="text-slate-500 font-medium leading-relaxed">{r.how}</span>,
+                                    <span key="n" className="font-bold text-white">{r.name}</span>,
+                                    <span key="s" className="text-slate-300 font-medium">{r.scope}</span>,
+                                    <span key="h" className="text-slate-400 font-medium leading-relaxed">{r.how}</span>,
                                 ])}
                             />
-                            <p className="text-sm leading-relaxed text-slate-500">
+                            <p className="text-sm leading-relaxed text-slate-400">
                                 Building report findings into your own product? Use the datasets below.{" "}
-                                <Link href="/reports" className="font-bold text-blue-600 hover:underline">
+                                <Link href="/reports" className="font-bold text-cyan-300 hover:underline">
                                     Report catalog
                                 </Link>{" "}
                                 ·{" "}
-                                <Link href="/reports/sample" className="font-bold text-blue-600 hover:underline">
+                                <Link href="/reports/sample" className="font-bold text-cyan-300 hover:underline">
                                     Sample report
                                 </Link>
                             </p>
@@ -209,7 +209,7 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                         renders, so the two cannot disagree about what ships. */}
                     <Section id="datasets" title="Datasets">
                         <div className="space-y-8">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                            <p className="text-lg text-slate-300 leading-relaxed font-medium">
                                 Datasets are SQL tables. They arrive as cloud data shares and marketplace
                                 listings for warehouse and lakehouse use: bulk analysis, historical review
                                 and enrichment joins.
@@ -221,41 +221,41 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                     { t: "Worked SQL", d: "Runnable examples per dataset, including the join key conversions." },
                                     { t: "Stated refresh", d: "Each page states its own cadence and carries a changelog." },
                                 ].map((c) => (
-                                    <div key={c.t} className="p-6 rounded-2xl bg-slate-50 border border-slate-100">
-                                        <h4 className="font-bold text-slate-900">{c.t}</h4>
-                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{c.d}</p>
+                                    <div key={c.t} className="p-6 rounded-2xl bg-white/[0.035] border border-white/10">
+                                        <h4 className="font-bold text-white">{c.t}</h4>
+                                        <p className="mt-2 text-sm leading-relaxed text-slate-400">{c.d}</p>
                                     </div>
                                 ))}
                             </div>
 
                             {datasets.length > 0 ? (
                                 <div className="space-y-4">
-                                    <h3 className="text-2xl font-bold text-slate-900">Available now</h3>
+                                    <h3 className="text-2xl font-bold text-white">Available now</h3>
                                     <div className="grid grid-cols-1 gap-3">
                                         {datasets.map((d) => (
                                             <Link
                                                 key={d.slug}
                                                 href={`/datasets/${d.slug}`}
-                                                className="group block rounded-2xl border border-slate-100 bg-white p-6 transition-colors hover:border-blue-200"
+                                                className="group block rounded-2xl border border-white/10 bg-white/[0.035] p-6 transition-colors hover:border-cyan-300/40"
                                             >
                                                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                                                    <h4 className="font-bold text-slate-900 group-hover:text-blue-600">{d.title}</h4>
+                                                    <h4 className="font-bold text-white group-hover:text-cyan-300">{d.title}</h4>
                                                     {typeof d.columnCount === "number" ? (
                                                         <span className="text-xs font-mono uppercase tracking-tight text-slate-400">
                                                             {d.columnCount} columns
                                                         </span>
                                                     ) : null}
                                                 </div>
-                                                <p className="mt-2 text-sm leading-relaxed text-slate-500">{d.summary}</p>
+                                                <p className="mt-2 text-sm leading-relaxed text-slate-400">{d.summary}</p>
                                             </Link>
                                         ))}
                                     </div>
                                 </div>
                             ) : null}
 
-                            <p className="text-sm leading-relaxed text-slate-500">
+                            <p className="text-sm leading-relaxed text-slate-400">
                                 Each page documents only what actually ships.{" "}
-                                <Link href="/datasets" className="font-bold text-blue-600 hover:underline">
+                                <Link href="/datasets" className="font-bold text-cyan-300 hover:underline">
                                     Browse the dataset catalog
                                 </Link>
                             </p>
@@ -266,7 +266,7 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                         Pull-only TAXII 2.1. See the header comment for sources. */}
                     <Section id="sentinel" title="Microsoft Sentinel">
                         <div className="space-y-8">
-                            <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                            <p className="text-lg text-slate-300 leading-relaxed font-medium">
                                 Datazag alerts reach Microsoft Sentinel as threat-intelligence indicators. Sentinel pulls them
                                 from a TAXII 2.1 server, on a schedule you set. Datazag never connects to your workspace.
                             </p>
@@ -276,18 +276,18 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                     { t: "Table", d: "ThreatIntelIndicators, Sentinel's own table. No custom table or data collection rule." },
                                     { t: "Content", d: "The Datazag solution in the Content Hub adds an analytic rule and a hunting query." },
                                 ].map((c) => (
-                                    <div key={c.t} className="p-6 rounded-2xl bg-slate-50 border border-slate-100">
-                                        <h4 className="font-bold text-slate-900">{c.t}</h4>
-                                        <p className="mt-2 text-sm leading-relaxed text-slate-500">{c.d}</p>
+                                    <div key={c.t} className="p-6 rounded-2xl bg-white/[0.035] border border-white/10">
+                                        <h4 className="font-bold text-white">{c.t}</h4>
+                                        <p className="mt-2 text-sm leading-relaxed text-slate-400">{c.d}</p>
                                     </div>
                                 ))}
                             </div>
 
                             <div className="space-y-4">
-                                <h3 className="text-2xl font-bold text-slate-900">Connect the feed</h3>
-                                <ol className="list-decimal pl-5 space-y-3 text-slate-600 leading-relaxed">
+                                <h3 className="text-2xl font-bold text-white">Connect the feed</h3>
+                                <ol className="list-decimal pl-5 space-y-3 text-slate-300 leading-relaxed">
                                     <li>Install the <strong>Datazag</strong> solution from the Microsoft Sentinel Content Hub.</li>
-                                    <li>Ask <a href="mailto:support@datazag.com" className="font-bold text-blue-600 hover:underline">support@datazag.com</a> for TAXII credentials. Name the collections your subscription includes.</li>
+                                    <li>Ask <a href="mailto:support@datazag.com" className="font-bold text-cyan-300 hover:underline">support@datazag.com</a> for TAXII credentials. Name the collections your subscription includes.</li>
                                     <li>In the Defender portal, open Microsoft Sentinel, then Configuration, then Data connectors. Open <strong>Threat Intelligence - TAXII</strong> and select Add.</li>
                                     <li>Enter a friendly name, the API root and one collection ID, with your credentials. Poll once an hour. Repeat for each collection.</li>
                                     <li>Enable the analytic rule under Manage solution. It matches indicators against DNS activity through the ASIM DNS parsers, so those must be deployed.</li>
@@ -295,27 +295,27 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
                                 <DataTable
                                     columns={["Setting", "Value"]}
                                     data={[
-                                        [<span key="l" className="font-bold text-slate-900">API root</span>, <code key="v" className="font-mono text-sm text-slate-700">{TAXII_API_ROOT}</code>],
+                                        [<span key="l" className="font-bold text-white">API root</span>, <code key="v" className="font-mono text-sm text-slate-200">{TAXII_API_ROOT}</code>],
                                         ...TAXII_COLLECTIONS.map((c) => [
-                                            <span key="l" className="font-bold text-slate-900">{c.name}</span>,
-                                            <code key="v" className="font-mono text-sm text-slate-700">{c.id}</code>,
+                                            <span key="l" className="font-bold text-white">{c.name}</span>,
+                                            <code key="v" className="font-mono text-sm text-slate-200">{c.id}</code>,
                                         ]),
                                     ]}
                                 />
                             </div>
 
                             <div className="space-y-4">
-                                <h3 className="text-2xl font-bold text-slate-900">What an indicator looks like</h3>
-                                <p className="text-sm leading-relaxed text-slate-500">
+                                <h3 className="text-2xl font-bold text-white">What an indicator looks like</h3>
+                                <p className="text-sm leading-relaxed text-slate-400">
                                     One indicator per alerted domain or IP address. Sentinel stores the full object in the Data column.
                                     The values below are reserved examples.
                                 </p>
-                                <pre className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50 p-6 font-mono text-sm leading-7 text-slate-800"><code>{STIX_EXAMPLE}</code></pre>
+                                <pre className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.035] p-6 font-mono text-sm leading-7 text-slate-200"><code>{STIX_EXAMPLE}</code></pre>
                                 <DataTable
                                     columns={["Field", "Meaning"]}
                                     data={STIX_FIELDS.map((r) => [
-                                        <code key="k" className="font-bold text-slate-900">{r.key}</code>,
-                                        <span key="d" className="text-slate-600 font-medium leading-relaxed">{r.desc}</span>,
+                                        <code key="k" className="font-bold text-white">{r.key}</code>,
+                                        <span key="d" className="text-slate-300 font-medium leading-relaxed">{r.desc}</span>,
                                     ])}
                                 />
                             </div>
@@ -340,10 +340,10 @@ export function DocsClient({ datasets = [] }: { datasets?: DatasetSummary[] }) {
 const Section = ({ id, title, children }: { id: string, title: string, children: React.ReactNode }) => (
     <section id={id} className="scroll-mt-40 group">
         <div className="flex items-center gap-3 mb-10">
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
+            <h2 className="text-4xl font-extrabold text-white tracking-tight group-hover:text-cyan-300 transition-colors">
                 {title}
             </h2>
-            <a href={`#${id}`} className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-slate-50 text-slate-300 hover:text-blue-600 transition-all">
+            <a href={`#${id}`} className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-white/[0.06] text-slate-400 hover:text-cyan-300 transition-all">
                 <LinkIcon className="h-5 w-5" />
             </a>
         </div>
@@ -354,16 +354,16 @@ const Section = ({ id, title, children }: { id: string, title: string, children:
 );
 
 const DataTable = ({ columns, data }: { columns: string[], data: (string | React.ReactNode)[][] }) => (
-    <div className="rounded-3xl border border-slate-100 overflow-hidden shadow-xl shadow-slate-200/50">
+    <div className="rounded-3xl border border-white/10 overflow-hidden">
         <Table>
-            <TableHeader className="bg-slate-50/50">
-                <TableRow className="border-slate-100 hover:bg-transparent">
-                    {columns.map(c => <TableHead key={c} className="text-slate-600 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
+            <TableHeader className="bg-white/[0.04]">
+                <TableRow className="border-white/10 hover:bg-transparent">
+                    {columns.map(c => <TableHead key={c} className="text-slate-300 font-bold text-[10px] uppercase tracking-[0.2em] h-14 pl-8">{c}</TableHead>)}
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {data.map((row, i) => (
-                    <TableRow key={i} className="border-slate-100 hover:bg-slate-50/30 transition-all border-b last:border-0 group">
+                    <TableRow key={i} className="border-white/10 hover:bg-white/[0.03] transition-all border-b last:border-0 group">
                         {row.map((cell, j) => (
                             <TableCell key={j} className="py-6 pl-8">
                                 {cell}
@@ -378,11 +378,11 @@ const DataTable = ({ columns, data }: { columns: string[], data: (string | React
 
 const FaqItem = ({ question, answer }: { question: string, answer: string }) => (
     <div className="space-y-4 p-2">
-        <h4 className="flex items-center gap-3 font-extrabold text-slate-900 text-lg">
-            <HelpCircle className="h-5 w-5 text-blue-500" />
+        <h4 className="flex items-center gap-3 font-extrabold text-white text-lg">
+            <HelpCircle className="h-5 w-5 text-cyan-300" />
             {question}
         </h4>
-        <p className="text-slate-500 pl-8 font-medium leading-relaxed border-l-2 border-slate-50 ml-2.5 italic">
+        <p className="text-slate-400 pl-8 font-medium leading-relaxed border-l-2 border-white/10 ml-2.5 italic">
             {answer}
         </p>
     </div>

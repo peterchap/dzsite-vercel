@@ -59,7 +59,6 @@ export const content: PageContent = {
     body: "Every insured depends on providers for mail, DNS, hosting and certificates. When many insureds depend on the same provider, one outage becomes many claims at once. Datazag shows those shared dependencies across your book, with the evidence for each insured underneath.",
     secondaryBody: "For underwriters, the same evidence answers a simpler question: what does this applicant actually run, before you bind and during the term?",
     primaryCta: { label: "See a sample estate report", href: "/samples/estate-attack-surface-report.html" },
-    secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 
   readers: {
@@ -197,7 +196,6 @@ export const content: PageContent = {
     title: "Every finding can be shown to the broker.",
     body: "A number an underwriter cannot explain is a number an underwriter cannot use. Datazag attaches the observation behind each finding: the record, the source and the time it was read. A rate load, a condition or a declination survives the conversation that follows it.",
     secondaryBody: "You set the thresholds. Datazag supplies the evidence and the reasoning. The underwriting decision stays yours.",
-    primaryCta: { label: "Talk to us about your book", href: "/contact" },
     items: [
       { key: "reason-codes", title: "Reason codes", text: "Every finding states why it fired." },
       { key: "source-record", title: "Source record", text: "The DNS, certificate or routing observation it was read from." },
@@ -237,12 +235,5 @@ export const content: PageContent = {
       { key: "freshness", title: "How fresh is the data?", text: "Routing and network data refresh hourly. New, retiring and high-risk domains refresh daily. Stable records such as nameservers and mail providers refresh at least monthly. Every row carries the time it was observed." },
       { key: "privacy", title: "Does our book leave our environment?", text: "Not on the data-share route: the data is delivered into your own Snowflake or Databricks account and queried there, so Datazag is not a processor of your book. A report is different, because you send us the domains, and that is covered by the data-processing agreement." },
     ],
-  },
-  cta: {
-    eyebrow: "Start here",
-    title: "Test it against your book.",
-    body: "Send a list of domains for a sample of your book, one or more per insured. We find the rest of each estate from there, and return the discovery, posture and concentration layers separately.",
-    primaryCta: { label: "See a sample estate report", href: "/samples/estate-attack-surface-report.html" },
-    secondaryCta: { label: "Request sample data", href: "/contact" },
   },
 };
