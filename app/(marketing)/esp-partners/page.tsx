@@ -105,20 +105,32 @@ function OwnerBadge({ owner }: { owner: "datazag" | "esp" | "output" }) {
 // The join example's query. Illustrative: the table and column names are examples, not
 // Datazag's schema, and the caption under the figure says so.
 const JOIN_SQL = `SELECT log.recipient_domain, log.event, log.smtp_response, log.click_delay,
-       dz.gateway, dz.mailbox_provider, dz.recent_change
+       dz.domain_status, dz.gateway, dz.mailbox_provider, dz.provider_category,
+       dz.hosting_provider, dz.country, dz.spf, dz.dmarc, dz.recent_change
 FROM   smtp_log AS log
 LEFT JOIN datazag_mail_infrastructure AS dz
        ON dz.domain = log.recipient_domain;`;
 
 // One color per example domain, the same in all three panels, so the eye can follow the join.
-const JOIN_DOTS = ["bg-cyan-300", "bg-violet-300", "bg-amber-300", "bg-emerald-300", "bg-rose-300"];
+const JOIN_DOTS = ["bg-cyan-300", "bg-violet-300", "bg-amber-300", "bg-emerald-300", "bg-rose-300", "bg-orange-300"];
 
 function JoinDot({ color }: { color: string }) {
   return <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${color}`} />;
 }
 
-/** One input table of the join example. Scrolls sideways inside its panel on a phone. */
-function JoinPanel({ badge, heading, columns, rows }: { badge: React.ReactNode; heading: string; columns: string[]; rows: Array<{ key: string; dot: string; cells: string[] }> }) {
+/** A domain's status in the join example. OK, Parked and Disposable get their own color. */
+function StatusChip({ status }: { status?: string }) {
+  if (!status) return null;
+  const tone =
+    status === "OK" ? "border-emerald-300/30 bg-emerald-300/10 text-emerald-100"
+    : status === "Parked" ? "border-amber-300/30 bg-amber-300/10 text-amber-100"
+    : status === "Disposable" ? "border-rose-300/30 bg-rose-300/10 text-rose-100"
+    : "border-white/15 bg-white/[0.05] text-slate-200";
+  return <span className={`inline-flex rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold ${tone}`}>{status}</span>;
+}
+
+/** One input table of the join example. Scrolls sideways inside its panel when narrower than `minWidth`. */
+function JoinPanel({ badge, heading, columns, rows, minWidth = "min-w-[34rem]" }: { badge: React.ReactNode; heading: string; columns: string[]; rows: Array<{ key: string; dot: string; cells: React.ReactNode[] }>; minWidth?: string }) {
   return (
     <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b22]">
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
@@ -126,7 +138,7 @@ function JoinPanel({ badge, heading, columns, rows }: { badge: React.ReactNode; 
         <h3 className="text-sm font-semibold text-white">{heading}</h3>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[34rem] text-left text-xs">
+        <table className={`w-full ${minWidth} text-left text-xs`}>
           <thead>
             <tr className="border-b border-white/10 text-[0.65rem] uppercase tracking-[0.12em] text-slate-500">
               {columns.map((c) => <th key={c} scope="col" className="px-4 py-2.5 font-semibold">{c}</th>)}
@@ -136,7 +148,7 @@ function JoinPanel({ badge, heading, columns, rows }: { badge: React.ReactNode; 
             {rows.map((row) => (
               <tr key={row.key} className="border-b border-white/5 last:border-b-0">
                 {row.cells.map((cell, i) => (
-                  <td key={i} className={`px-4 py-2.5 align-top ${i === 0 ? "w-[30%] whitespace-nowrap font-mono text-slate-200" : "text-slate-400"}`}>
+                  <td key={i} className={`px-4 py-2.5 align-top ${i === 0 ? "whitespace-nowrap font-mono text-slate-200" : "text-slate-400"} ${i > 0 && i === row.cells.length - 1 ? "min-w-[12rem]" : ""}`}>
                     {i === 0 ? <span className="flex items-center gap-2"><JoinDot color={row.dot} />{cell}</span> : cell}
                   </td>
                 ))}
@@ -229,8 +241,10 @@ export default async function EspPartnersPage() {
   const techSpec = list("techSpec");
   const [mainStage, ...sameDataStages] = stages;
   const joinRows = list("joinExample").map((row, index) => {
-    const [time, event, response, click, gateway, provider, change] = row.points.map((p) => p ?? "—");
-    return { ...row, time, event, response, click, gateway, provider, change, dot: JOIN_DOTS[index % JOIN_DOTS.length] };
+    const [time, event, response, click] = row.points;
+    const dz = getCopyItem(sec("joinDatazag"), row.key)?.points ?? content.joinDatazag.items?.find((i) => i.key === row.key)?.points ?? [];
+    const [status, gateway, provider, category, hosting, country, spf, dmarc, change] = dz;
+    return { ...row, time, event, response, click, status, gateway, provider, category, hosting, country, spf, dmarc, change, dot: JOIN_DOTS[index % JOIN_DOTS.length] };
   });
   const pricingCta = cta("economics", "primaryCta");
   const pilotSecondary = cta("pilot", "secondaryCta");
@@ -428,8 +442,9 @@ export default async function EspPartnersPage() {
             <JoinPanel
               badge={<OwnerBadge owner="datazag" />}
               heading="Datazag, keyed by domain"
-              columns={["Domain", "Gateway", "Mailbox provider", "Recent change"]}
-              rows={joinRows.map((r) => ({ key: r.key, dot: r.dot, cells: [r.title, r.gateway, r.provider, r.change] }))}
+              columns={["Domain", "Status", "Gateway", "Mailbox provider", "Provider category", "Hosting", "Country", "SPF", "DMARC", "Recent change"]}
+              minWidth="min-w-[64rem]"
+              rows={joinRows.map((r) => ({ key: r.key, dot: r.dot, cells: [r.title, <StatusChip key="status" status={r.status} />, r.gateway, r.provider, r.category, r.hosting, r.country, r.spf, r.dmarc, r.change] }))}
             />
           </div>
           <div className="my-4 flex flex-col items-center gap-3">
@@ -444,11 +459,11 @@ export default async function EspPartnersPage() {
             </div>
             {joinRows.map((r) => (
               <div key={r.key} className="grid gap-3 border-b border-white/10 px-5 py-4 last:border-b-0 md:grid-cols-[0.3fr_0.3fr_0.4fr] md:items-center">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white"><JoinDot color={r.dot} />{r.title}</div>
+                <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-white"><JoinDot color={r.dot} />{r.title}<StatusChip status={r.status} /></div>
                 <div className="text-sm leading-6 text-slate-400">
                   <span className="text-slate-200">{r.event}</span>
                   {r.click !== "—" ? <> · {r.click}</> : r.response !== "250 OK" ? <> · {r.response}</> : null}
-                  <span className="block text-slate-500">via {r.gateway !== "None" && r.gateway !== "—" ? `${r.gateway} → ` : ""}{r.provider}</span>
+                  {r.provider && r.provider !== "None" ? <span className="block text-slate-500">via {r.gateway && r.gateway !== "None" && r.gateway !== "—" ? `${r.gateway} → ` : ""}{r.provider}</span> : null}
                 </div>
                 <div className="rounded-xl border border-cyan-300/25 bg-cyan-300/[0.08] px-4 py-3 text-sm leading-6 text-cyan-50">{r.text}</div>
               </div>

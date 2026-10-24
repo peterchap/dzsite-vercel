@@ -73,7 +73,7 @@ export const content: PageContent = {
     body: "No single dataset explains a campaign. Datazag combines what we see across the internet with what your platform already records.",
     secondaryBody: "You already hold two of the three. Datazag adds the context that connects them.",
     items: [
-      { key: "infrastructure", title: "Datazag infrastructure intelligence", text: "Security gateway, underlying mailbox provider, DNS history.", status: "Datazag, updated daily" },
+      { key: "infrastructure", title: "Datazag infrastructure intelligence", text: "Domain status, security gateway, mailbox provider and its category, hosting provider, country, SPF and DMARC, DNS history.", status: "Datazag, updated daily" },
       { key: "campaign-events", title: "ESP campaign events", text: "SMTP responses, bounces, deferrals, opens, clicks.", status: "Your platform, already collected" },
       { key: "machine-evidence", title: "Machine-interaction evidence", text: "Automated URL requests, classified with timing and confidence.", status: "Your click logs, classified by your platform using Datazag gateway data and our published methodology" },
       { key: "campaign-reporting", title: "Infrastructure-aware campaign reporting", text: "Which systems were involved, what was observed, and what the customer should investigate.", status: "The combined result, in your dashboard" },
@@ -145,19 +145,35 @@ export const content: PageContent = {
   // real company. The SQL and column names in the page are examples, not our
   // schema, and the caption says so. The ESP's platform makes the click call:
   // the explanation column says what the join shows, never a Datazag verdict.
-  // points = [time, event, SMTP response or note, click delay,
-  //           gateway, mailbox provider, recent change]; text = what it explains.
+  // The ESP's side. points = [time, event, SMTP response or note, click delay];
+  // text = what the joined row explains. Rows pair with joinDatazag by key.
   joinExample: {
     eyebrow: "The join",
     title: "From log line to explanation.",
-    body: "Your SMTP log knows what happened. Datazag knows who received it. Join them on the recipient domain, inside your own warehouse.",
-    secondaryBody: "Illustrative example. Domains are fictional, and table and column names are examples. Email addresses stay in your logs: the join needs only the domain.",
+    body: "Your SMTP log knows what happened. Datazag knows who received it, and what kind of domain it is. Join them on the recipient domain, inside your own warehouse.",
+    secondaryBody: "Illustrative example. Domains are fictional, vendor names show the type of identification we support, and table and column names are examples. Email addresses stay in your logs: the join needs only the domain.",
     items: [
-      { key: "acme", title: "acme-freight.example", points: ["09:00:04", "Clicked", "250 OK", "3 s after delivery", "Proofpoint", "Microsoft 365", "—"], text: "A click seconds after delivery, behind a link-scanning gateway. Likely automated." },
-      { key: "brightpath", title: "brightpath.example", points: ["09:00:05", "Clicked", "250 OK", "42 min after delivery", "None", "Google Workspace", "—"], text: "No gateway in the path, and a human delay. Likely a person." },
-      { key: "harbor", title: "harbor-bank.example", points: ["09:00:05", "Deferred", "421 4.7.0 Try again later", "—", "None", "Microsoft 365", "—"], text: "The mailbox provider slowed the batch. Review the sending rate to Microsoft." },
-      { key: "lumen", title: "lumen-legal.example", points: ["09:00:06", "Clicked", "250 OK", "5 s after delivery", "Mimecast", "Microsoft 365", "MX moved to Mimecast 6 days ago"], text: "Click rates jumped this week because a new gateway now scans links. Not a change in the audience." },
-      { key: "oldmill", title: "oldmill-bakery.example", points: ["09:00:06", "Bounced", "No mail server found", "—", "—", "None (parked)", "Parked since March"], text: "The domain no longer takes mail. Suppress it before the next send." },
+      { key: "acme", title: "acme-freight.example", points: ["09:00:04", "Clicked", "250 OK", "3 s after delivery"], text: "A click seconds after delivery, behind a link-scanning gateway. Likely automated." },
+      { key: "brightpath", title: "brightpath.example", points: ["09:00:05", "Clicked", "250 OK", "42 min after delivery"], text: "No gateway in the path, and a human delay. Likely a person." },
+      { key: "harbor", title: "harbor-bank.example", points: ["09:00:05", "Deferred", "421 4.7.0 Try again later", "—"], text: "The mailbox provider slowed the batch. Review the sending rate to Microsoft." },
+      { key: "lumen", title: "lumen-legal.example", points: ["09:00:06", "Clicked", "250 OK", "5 s after delivery"], text: "Click rates jumped this week because a new gateway now scans links. Not a change in the audience." },
+      { key: "oldmill", title: "oldmill-bakery.example", points: ["09:00:06", "Bounced", "No mail server found", "—"], text: "The domain is parked and no longer takes mail. Suppress it before the next send." },
+      { key: "tempinbox", title: "tempinbox.example", points: ["09:00:07", "Delivered", "250 OK", "—"], text: "A disposable mail domain. It will not engage. Keep it out of engagement rates, and check how it joined the list." },
+    ],
+  },
+  // Datazag's side, one row per domain (Peter, 2026-10-24: the data carries
+  // domain status, mailbox provider and its category, hosting provider,
+  // country, SPF and DMARC). points = [status, gateway, mailbox provider,
+  // provider category, hosting provider, country, SPF, DMARC, recent change].
+  // Status is OK, Parked or Disposable here; the page colors those three.
+  joinDatazag: {
+    items: [
+      { key: "acme", points: ["OK", "Proofpoint", "Microsoft 365", "Business suite", "AWS", "US", "-all", "reject", "—"] },
+      { key: "brightpath", points: ["OK", "None", "Google Workspace", "Business suite", "Squarespace", "GB", "~all", "none", "—"] },
+      { key: "harbor", points: ["OK", "None", "Microsoft 365", "Business suite", "Microsoft Azure", "US", "-all", "quarantine", "—"] },
+      { key: "lumen", points: ["OK", "Mimecast", "Microsoft 365", "Business suite", "Cloudflare", "DE", "-all", "reject", "MX moved to Mimecast 6 days ago"] },
+      { key: "oldmill", points: ["Parked", "—", "None", "—", "Parking service", "GB", "None", "None", "Parked since March"] },
+      { key: "tempinbox", points: ["Disposable", "None", "Disposable mail service", "Disposable", "OVHcloud", "FR", "~all", "None", "—"] },
     ],
   },
   // ILLUSTRATIVE. Every number here is made up to show the output shape, and
