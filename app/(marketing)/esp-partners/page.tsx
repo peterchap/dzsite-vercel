@@ -102,6 +102,53 @@ function OwnerBadge({ owner }: { owner: "datazag" | "esp" | "output" }) {
   return <span className="rounded-full border border-violet-300/30 bg-violet-300/10 px-3 py-1 text-xs font-semibold text-violet-100">The result</span>;
 }
 
+// The join example's query. Illustrative: the table and column names are examples, not
+// Datazag's schema, and the caption under the figure says so.
+const JOIN_SQL = `SELECT log.recipient_domain, log.event, log.smtp_response, log.click_delay,
+       dz.gateway, dz.mailbox_provider, dz.recent_change
+FROM   smtp_log AS log
+LEFT JOIN datazag_mail_infrastructure AS dz
+       ON dz.domain = log.recipient_domain;`;
+
+// One color per example domain, the same in all three panels, so the eye can follow the join.
+const JOIN_DOTS = ["bg-cyan-300", "bg-violet-300", "bg-amber-300", "bg-emerald-300", "bg-rose-300"];
+
+function JoinDot({ color }: { color: string }) {
+  return <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${color}`} />;
+}
+
+/** One input table of the join example. Scrolls sideways inside its panel on a phone. */
+function JoinPanel({ badge, heading, columns, rows }: { badge: React.ReactNode; heading: string; columns: string[]; rows: Array<{ key: string; dot: string; cells: string[] }> }) {
+  return (
+    <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b22]">
+      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+        {badge}
+        <h3 className="text-sm font-semibold text-white">{heading}</h3>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[34rem] text-left text-xs">
+          <thead>
+            <tr className="border-b border-white/10 text-[0.65rem] uppercase tracking-[0.12em] text-slate-500">
+              {columns.map((c) => <th key={c} scope="col" className="px-4 py-2.5 font-semibold">{c}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.key} className="border-b border-white/5 last:border-b-0">
+                {row.cells.map((cell, i) => (
+                  <td key={i} className={`px-4 py-2.5 align-top ${i === 0 ? "w-[30%] whitespace-nowrap font-mono text-slate-200" : "text-slate-400"}`}>
+                    {i === 0 ? <span className="flex items-center gap-2"><JoinDot color={row.dot} />{cell}</span> : cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export default async function EspPartnersPage() {
   const [pageCopy, corporateMail, intelligence, siteStats] = await Promise.all([
     sanityFetch<MarketingPageCopy>(marketingPageCopyBySlugQuery, { slug: SLUG }, 300),
@@ -181,6 +228,10 @@ export default async function EspPartnersPage() {
   const attribution = list("attribution");
   const techSpec = list("techSpec");
   const [mainStage, ...sameDataStages] = stages;
+  const joinRows = list("joinExample").map((row, index) => {
+    const [time, event, response, click, gateway, provider, change] = row.points.map((p) => p ?? "—");
+    return { ...row, time, event, response, click, gateway, provider, change, dot: JOIN_DOTS[index % JOIN_DOTS.length] };
+  });
   const pricingCta = cta("economics", "primaryCta");
   const pilotSecondary = cta("pilot", "secondaryCta");
 
@@ -361,6 +412,50 @@ export default async function EspPartnersPage() {
             <p className="mt-6 text-sm"><a href={mxProof.href} className={textLink}>{mxProof.label} →</a></p>
           </div>
         </div>
+      </Section>
+
+      {/* 5b. The join — an illustrative SMTP log joined to Datazag on the recipient domain */}
+      <Section id="join">
+        <SectionHeader eyebrow={text("joinExample", "eyebrow")} title={text("joinExample", "title")} body={text("joinExample", "body")} />
+        <figure className="mt-12">
+          <div className="grid gap-4">
+            <JoinPanel
+              badge={<OwnerBadge owner="esp" />}
+              heading="Your SMTP log"
+              columns={["Recipient domain", "Time", "Event", "Response", "Click"]}
+              rows={joinRows.map((r) => ({ key: r.key, dot: r.dot, cells: [r.title, r.time, r.event, r.response, r.click] }))}
+            />
+            <JoinPanel
+              badge={<OwnerBadge owner="datazag" />}
+              heading="Datazag, keyed by domain"
+              columns={["Domain", "Gateway", "Mailbox provider", "Recent change"]}
+              rows={joinRows.map((r) => ({ key: r.key, dot: r.dot, cells: [r.title, r.gateway, r.provider, r.change] }))}
+            />
+          </div>
+          <div className="my-4 flex flex-col items-center gap-3">
+            <span aria-hidden className="h-6 w-px bg-cyan-300/40" />
+            <pre className="w-full max-w-3xl overflow-x-auto rounded-2xl border border-cyan-300/25 bg-[#030619] p-4 text-xs leading-6 text-cyan-50"><code>{JOIN_SQL}</code></pre>
+            <span aria-hidden className="h-6 w-px bg-cyan-300/40" />
+          </div>
+          <div className="overflow-hidden rounded-[2rem] border border-violet-300/30 bg-gradient-to-br from-cyan-300/[0.08] to-violet-400/[0.08]">
+            <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+              <OwnerBadge owner="output" />
+              <h3 className="text-sm font-semibold text-white">Joined result</h3>
+            </div>
+            {joinRows.map((r) => (
+              <div key={r.key} className="grid gap-3 border-b border-white/10 px-5 py-4 last:border-b-0 md:grid-cols-[0.3fr_0.3fr_0.4fr] md:items-center">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white"><JoinDot color={r.dot} />{r.title}</div>
+                <div className="text-sm leading-6 text-slate-400">
+                  <span className="text-slate-200">{r.event}</span>
+                  {r.click !== "—" ? <> · {r.click}</> : r.response !== "250 OK" ? <> · {r.response}</> : null}
+                  <span className="block text-slate-500">via {r.gateway !== "None" && r.gateway !== "—" ? `${r.gateway} → ` : ""}{r.provider}</span>
+                </div>
+                <div className="rounded-xl border border-cyan-300/25 bg-cyan-300/[0.08] px-4 py-3 text-sm leading-6 text-cyan-50">{r.text}</div>
+              </div>
+            ))}
+          </div>
+          <figcaption className="mt-4 text-sm leading-6 text-slate-500">{text("joinExample", "secondaryBody")}</figcaption>
+        </figure>
       </Section>
 
       {/* 6. Example campaign report — illustrative figures, labeled on the panel */}

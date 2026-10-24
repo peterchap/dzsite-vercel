@@ -140,6 +140,26 @@ export const content: PageContent = {
       { key: "changes-explain", text: "Infrastructure changes often explain a sudden drop. History shows when the change happened." },
     ],
   },
+  // ILLUSTRATIVE JOIN (2026-10-24, Peter: show what joining an SMTP log to
+  // Datazag looks like). Domains use the reserved .example TLD, so none is a
+  // real company. The SQL and column names in the page are examples, not our
+  // schema, and the caption says so. The ESP's platform makes the click call:
+  // the explanation column says what the join shows, never a Datazag verdict.
+  // points = [time, event, SMTP response or note, click delay,
+  //           gateway, mailbox provider, recent change]; text = what it explains.
+  joinExample: {
+    eyebrow: "The join",
+    title: "From log line to explanation.",
+    body: "Your SMTP log knows what happened. Datazag knows who received it. Join them on the recipient domain, inside your own warehouse.",
+    secondaryBody: "Illustrative example. Domains are fictional, and table and column names are examples. Email addresses stay in your logs: the join needs only the domain.",
+    items: [
+      { key: "acme", title: "acme-freight.example", points: ["09:00:04", "Clicked", "250 OK", "3 s after delivery", "Proofpoint", "Microsoft 365", "—"], text: "A click seconds after delivery, behind a link-scanning gateway. Likely automated." },
+      { key: "brightpath", title: "brightpath.example", points: ["09:00:05", "Clicked", "250 OK", "42 min after delivery", "None", "Google Workspace", "—"], text: "No gateway in the path, and a human delay. Likely a person." },
+      { key: "harbor", title: "harbor-bank.example", points: ["09:00:05", "Deferred", "421 4.7.0 Try again later", "—", "None", "Microsoft 365", "—"], text: "The mailbox provider slowed the batch. Review the sending rate to Microsoft." },
+      { key: "lumen", title: "lumen-legal.example", points: ["09:00:06", "Clicked", "250 OK", "5 s after delivery", "Mimecast", "Microsoft 365", "MX moved to Mimecast 6 days ago"], text: "Click rates jumped this week because a new gateway now scans links. Not a change in the audience." },
+      { key: "oldmill", title: "oldmill-bakery.example", points: ["09:00:06", "Bounced", "No mail server found", "—", "—", "None (parked)", "Parked since March"], text: "The domain no longer takes mail. Suppress it before the next send." },
+    ],
+  },
   // ILLUSTRATIVE. Every number here is made up to show the output shape, and
   // the page labels it so. points = [recipients, bounced, deferred, clicks,
   // likely automated]; text = what to investigate. The summary strip and the
