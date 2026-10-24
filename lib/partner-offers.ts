@@ -66,27 +66,8 @@ export const MSSP_OFFER: PartnerOffer = {
   founding: "founding_mssp",
 };
 
-export const ESP_OFFER: PartnerOffer = {
-  src: "esp",
-  title: "Test it on your own signups",
-  summary: "See what Datazag knows about the domains moving through your platform, then take the data into your warehouse.",
-  included: [
-    { text: "Data share in your own warehouse", ids: ["data_share_standard", "data_share_advanced"] },
-    { text: "Platform Alerts for abuse and trust teams", ids: ["alerts_platform"] },
-    { text: "Organization estate reports for account reviews", ids: ["org_estate_10"] },
-  ],
-  secondary: { label: "See a sample output →", href: "/#samples" },
-  steps: [
-    "A 20-minute call to agree which workflow to test first.",
-    "You send a sample of signup or sending domains. We keep nothing after delivery.",
-    "We return the results with their evidence, and walk you through them.",
-  ],
-  questions: [
-    { question: "Is this a verdict on whether to accept a sender?", answer: { text: "No. It is evidence for your own decision. You set the rules." } },
-    { question: "Do you see our customer data?", answer: { text: "Only the domain sample you choose to send, and we do not keep it." } },
-  ],
-  founding: "founding_esp",
-};
+// No ESP offer here since 2026-10-24 (brief "ESP Page Rewrite"): the ESP page shows a
+// price only in its founding offer, which renders from founding_esp in lib/pricing.ts.
 
 export const INSURER_OFFER: PartnerOffer = {
   src: "insurers",

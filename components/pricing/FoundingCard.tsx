@@ -8,7 +8,8 @@ import { foundingDeadlineDay, foundingPrice, foundingSeatsLeft, foundingSeatsLin
 // offer in lib/pricing.ts, so a price or seat count changes in one place. When no places
 // are left, the card keeps its name and inclusions but drops the price and the button.
 
-export function FoundingCard({ offer, src, page, className = "" }: { offer: FoundingOffer; src: string; page: string; className?: string }) {
+/** `cta` replaces the button label where a page names its own action (the ESP pilot). */
+export function FoundingCard({ offer, src, page, className = "", cta = BOOK_CALL_LABEL }: { offer: FoundingOffer; src: string; page: string; className?: string; cta?: string }) {
   const open = foundingSeatsLeft(offer) > 0;
   const price = foundingPrice(offer);
   return (
@@ -37,7 +38,7 @@ export function FoundingCard({ offer, src, page, className = "" }: { offer: Foun
             params={{ page, location: "founding", offer: offer.id }}
             className="inline-flex min-h-12 items-center justify-center rounded-xl bg-cyan-300 px-5 text-center text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
           >
-            {BOOK_CALL_LABEL}
+            {cta}
           </TrackedLink>
         </div>
       ) : null}

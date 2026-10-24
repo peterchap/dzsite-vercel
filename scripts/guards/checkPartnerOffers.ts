@@ -1,7 +1,7 @@
 /**
  * Partner offer guard (brief: partner page closing sections, 13 Oct 2026).
  *
- * The MSSP, ESP and insurer pages name product ids, and the price renders from the shared
+ * The MSSP and insurer pages name product ids, and the price renders from the shared
  * pricing config. This guard fails when:
  *   - an offer names a product id the pricing config does not have (the line would vanish);
  *   - an offer does not have exactly three "what happens next" steps;
@@ -13,13 +13,13 @@
  * Run: tsx scripts/guards/checkPartnerOffers.ts   (part of `npm run guard`)
  */
 import { bookingHref, withSrc } from "../../lib/booking";
-import { ESP_OFFER, INSURER_OFFER, MSSP_OFFER, offerIds } from "../../lib/partner-offers";
+import { INSURER_OFFER, MSSP_OFFER, offerIds } from "../../lib/partner-offers";
 import { FOUNDING_OFFERS, activeFoundingOffers, foundingClosesAt, foundingSeatsLine, isFoundingOfferActive, offerFromPrices, offerPrice, type FoundingOffer } from "../../lib/pricing";
 
 const failures: string[] = [];
 const check = (ok: boolean, message: string) => { if (!ok) failures.push(message); };
 
-for (const offer of [MSSP_OFFER, ESP_OFFER, INSURER_OFFER]) {
+for (const offer of [MSSP_OFFER, INSURER_OFFER]) {
   for (const id of offerIds(offer)) check(offerPrice(id) !== null, `${offer.src}: product id "${id}" is not a launched product in the pricing config`);
   check(offer.steps.length === 3, `${offer.src}: "what happens next" needs exactly three steps`);
   check(offer.questions.length >= 2 && offer.questions.length <= 3, `${offer.src}: two or three questions`);
@@ -55,7 +55,7 @@ for (const o of FOUNDING_OFFERS) {
   check(o.seatsSold >= 0 && o.seatsSold <= o.seatsTotal, `founding offer "${o.id}": seatsSold must be between 0 and seatsTotal`);
   check(Number.isFinite(foundingClosesAt(o)), `founding offer "${o.id}": deadline must be YYYY-MM-DDTHH:mm`);
 }
-for (const offer of [MSSP_OFFER, ESP_OFFER, INSURER_OFFER]) check(!offer.founding || FOUNDING_OFFERS.some((o) => o.id === offer.founding), `${offer.src}: unknown founding offer ${offer.founding}`);
+for (const offer of [MSSP_OFFER, INSURER_OFFER]) check(!offer.founding || FOUNDING_OFFERS.some((o) => o.id === offer.founding), `${offer.src}: unknown founding offer ${offer.founding}`);
 
 if (failures.length) {
   console.error(`✗ Partner offer guard: ${failures.length} problem(s).\n`);

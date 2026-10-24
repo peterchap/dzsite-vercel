@@ -38,12 +38,12 @@ function Price({ price, showLabel }: { price: OfferPrice; showLabel: boolean }) 
   );
 }
 
-/** "Book a 20-minute call". The click is logged with its page, because the booking tool
- *  does not keep the ?src= tag. */
-export function BookCallLink({ src, location, className = primaryButton }: { src: PartnerSrc; location: string; className?: string }) {
+/** "Book a 20-minute call", or the page's own `label`. The click is logged with its page,
+ *  because the booking tool does not keep the ?src= tag. */
+export function BookCallLink({ src, location, className = primaryButton, label = BOOK_CALL_LABEL }: { src: PartnerSrc; location: string; className?: string; label?: string }) {
   return (
     <TrackedLink href={bookingHref(src)} event={BOOKING_CLICK_EVENT} params={{ page: src, location }} className={className}>
-      {BOOK_CALL_LABEL}
+      {label}
     </TrackedLink>
   );
 }
