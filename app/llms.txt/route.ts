@@ -56,7 +56,7 @@ export async function GET() {
     "",
     "## Who it is for",
     "",
-    link("Email platforms", "/esp-partners", "check the domains customers sign up with, send from and link to: mail setup, mail provider, parking, DMARC enforcement and infrastructure."),
+    link("Email platforms", "/esp-partners", "campaign intelligence for ESPs: flag problem recipient domains, screen campaign link domains and explain delivery results by the gateway and mailbox provider that received the email."),
     link("MSSPs", "/mssp-partners", "SOC enrichment, cross-client exposure, email security reviews and client reporting, under the partner's brand."),
     link("Cyber insurers", "/cyber-risk-underwriting", "provider concentration across a book, with each provider's share rated by its resilience and exit friction; which policies are exposed when a provider fails; pre-bind assessment."),
     "",
