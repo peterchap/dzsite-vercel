@@ -29,7 +29,9 @@ export const content: PageContent = {
   campaignHero: {
     eyebrow: "For email service providers",
     title: "Help your customers send better campaigns — and understand what happens to their email.",
-    body: "Datazag gives ESPs internet-scale infrastructure intelligence. Use it to flag problem recipient domains, check risky campaign links and explain delivery results.",
+    // 2026-10-24 review (CTO read): lead with explanation and gateway attribution.
+    // List cleaning and link screening are the same data, not the headline.
+    body: "Datazag gives ESPs internet-scale infrastructure intelligence. Use it to explain delivery results, flag problem recipient domains and check risky campaign links.",
     // The primary action is the booking link, labeled from pilot.primaryCta.
     secondaryCta: { label: "Read our email infrastructure research", href: "/insights" },
     items: [
@@ -37,11 +39,16 @@ export const content: PageContent = {
       { key: "your-brand", title: "Integrate it into your own platform, under your own brand.", text: "Your customers' lists never leave your environment." },
     ],
   },
+  // A third hero link, for the technical reader.
+  heroEngineers: {
+    primaryCta: { label: "For engineers: how the data joins and what leaves your systems", href: "#integration" },
+  },
+  // The first tile is the headline and gets the accent.
   heroTiles: {
     items: [
-      { key: "cleaner-lists", title: "Cleaner lists", text: "Catch dead, parked and misconfigured recipient domains before the send." },
-      { key: "safer-campaigns", title: "Safer campaigns", text: "Screen campaign links against domain and hosting risk before they go out." },
-      { key: "explainable-delivery", title: "Explainable delivery", text: "Show customers which systems handled their email and what they did." },
+      { key: "explainable-delivery", title: "Explainable delivery", text: "Show customers which gateway and mailbox provider handled their email, and what those systems did." },
+      { key: "cleaner-lists", title: "Cleaner lists", text: "Find recipient domains that look live but can't take mail: parked, or with no working mail setup." },
+      { key: "safer-campaigns", title: "Safer campaigns", text: "Screen campaign link domains against age, hosting and risk signals before they go out." },
     ],
   },
   problem: {
@@ -53,7 +60,7 @@ export const content: PageContent = {
     ].join("\n\n"),
     secondaryBody: "Your deliverability team can diagnose this. Datazag helps you explain it to every customer, at scale.",
     items: [
-      { key: "not-human", title: "Engagement that isn't human", text: "Security gateways open and click links before people do. Click rates look strong, or suddenly suspicious." },
+      { key: "not-human", title: "Engagement that isn't human", text: "Apple Mail Privacy Protection already blurred opens. Now security gateways open and click links before people do. Click rates look strong, or suddenly suspicious." },
       { key: "no-reason", title: "Failures without a reason", text: "A bounce code or a deferral says little to a marketer. They need to know which system responded, and why." },
       { key: "platform-blamed", title: "The platform takes the blame", text: "Without context, every drop looks like your problem. Your team spends hours explaining one campaign at a time." },
     ],
@@ -76,15 +83,18 @@ export const content: PageContent = {
     title: "Infrastructure is a clue, not proof.",
     body: "A documented inspection capability does not show what happened to a particular message. Your platform combines it with its own timing data to classify engagement.",
   },
-  // Item `status` is the campaign stage.
+  // Item `status` is the campaign stage. The page shows the first item as the
+  // main card and the rest as "same data" cards (review, 2026-10-24): list
+  // cleaning alone reads as a commodity next to validators ESPs already run.
   lifecycle: {
     eyebrow: "Before, during, after",
     title: "Intelligence at every stage of the campaign.",
+    body: "The core is explaining results. The same data also helps before the send.",
     secondaryBody: "One dataset, three moments where your customers notice the difference.",
     items: [
-      { key: "clean-list", status: "Before the send", title: "Clean the list", text: "Flag recipient domains that no longer resolve, have no working mail setup or look parked. Fewer bounces protect your shared reputation." },
+      { key: "explain-results", status: "After the send", title: "Explain the results", text: "Group results by the gateway and mailbox provider that received them. Classify engagement on stronger evidence than timing alone. Tell customers what to investigate." },
+      { key: "clean-list", status: "Before the send", title: "Find what validators miss", text: "Syntax checks and MX lookups pass parked domains and broken mail setups. Flag them, and recent infrastructure changes, before the send." },
       { key: "screen-links", status: "During the build", title: "Screen the links", text: "Check campaign link domains against age, hosting and risk signals. Your platform flags any links that don't use an identifiable domain." },
-      { key: "explain-results", status: "After the send", title: "Explain the results", text: "Group results by the infrastructure that received them. Classify engagement on stronger evidence than timing alone. Tell customers what to investigate." },
     ],
   },
   signupChecks: {
@@ -108,6 +118,18 @@ export const content: PageContent = {
       { key: "gateway", title: "Security gateway", points: ["MX: a gateway hostname", "Security gateway: identified vendor"] },
       { key: "mailbox", title: "Mailbox provider", points: ["—", "Underlying mailbox provider: identified provider"] },
       { key: "history", title: "Changes", points: ["—", "Recent infrastructure changes from DNS history"] },
+    ],
+  },
+  // How attribution works, for the engineer who asks about accuracy and edge
+  // cases. No accuracy figure: none is measured. The hidden-link test in the
+  // guide is how an ESP measures it on its own traffic.
+  attribution: {
+    title: "How we identify them",
+    body: "Test it on your own traffic. The hidden-link method in our implementation guide gives you ground truth.",
+    items: [
+      { key: "gateway-from-mx", title: "Gateway", text: "The MX hostnames, matched to the vendor that operates them." },
+      { key: "provider-from-txt", title: "Mailbox provider", text: "SPF include: mechanisms and other TXT records that name the platform behind the gateway. Not every domain publishes them." },
+      { key: "changes-from-history", title: "Changes", text: "DNS history: when the MX, SPF or provider records last changed." },
     ],
   },
   beyondMxWhy: {
@@ -161,6 +183,19 @@ export const content: PageContent = {
       { key: "local-joins", title: "Local joins", text: "Match recipient domains, link domains and click logs against our data inside your own warehouse. Your lists never leave your systems." },
       { key: "sentinel", title: "Microsoft Sentinel feed", text: "Infrastructure changes and alerts over TAXII 2.1, for abuse, compliance and deliverability teams." },
       { key: "reports-exports", title: "Reports and exports", text: "White-label hygiene reports and account-review material for your customers." },
+    ],
+  },
+  // Answers to the technical buyer's first questions (review, 2026-10-24):
+  // how the data is served, what runs in the send path, who builds what.
+  // There is NO query API in the send path, so no latency figure. Do not add
+  // one, or the onboarding API, while it is off the site.
+  techSpec: {
+    title: "Technical answers",
+    items: [
+      { key: "delivery", title: "How it's delivered", text: "Tables keyed by domain, shared as Iceberg or Delta through Snowflake, Databricks or Azure. They refresh daily." },
+      { key: "send-path", title: "At send time", text: "No call to Datazag. Lookups run in your own warehouse or cache, at your own throughput." },
+      { key: "leaves", title: "What leaves your systems", text: "Nothing. You join our data to your lists and click logs locally." },
+      { key: "you-build", title: "What you build", text: "The click classifier. Our guide gives the four signals, the fields to log and a test for accuracy." },
     ],
   },
   // Link targets live in the page: the vendor documentation link is gated by

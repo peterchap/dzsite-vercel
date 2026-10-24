@@ -177,6 +177,10 @@ export default async function EspPartnersPage() {
     .filter((link): link is typeof link & { href: string } => Boolean(link.href));
 
   const heroSecondary = cta("campaignHero", "secondaryCta");
+  const heroEngineers = cta("heroEngineers", "primaryCta");
+  const attribution = list("attribution");
+  const techSpec = list("techSpec");
+  const [mainStage, ...sameDataStages] = stages;
   const pricingCta = cta("economics", "primaryCta");
   const pilotSecondary = cta("pilot", "secondaryCta");
 
@@ -203,10 +207,11 @@ export default async function EspPartnersPage() {
               <BookCallLink src={SRC} location="hero" label={claimLabel} />
               <a href={withSrc(heroSecondary.href, SRC)} className={secondaryButton}>{heroSecondary.label}</a>
             </div>
+            <p className="mt-5 text-sm"><a href={heroEngineers.href} className={textLink}>{heroEngineers.label} →</a></p>
           </div>
           <div className="grid gap-4 rounded-[2rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl shadow-cyan-950/20">
             {heroTiles.map((tile, index) => (
-              <article key={tile.key} className={`rounded-[1.5rem] border p-5 ${index === 2 ? "border-cyan-300/25 bg-cyan-300/[0.08]" : "border-white/10 bg-[#050b22]"}`}>
+              <article key={tile.key} className={`rounded-[1.5rem] border p-5 ${index === 0 ? "border-cyan-300/25 bg-cyan-300/[0.08]" : "border-white/10 bg-[#050b22]"}`}>
                 <h3 className="text-xl font-semibold text-white">{tile.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{tile.text}</p>
               </article>
@@ -275,22 +280,26 @@ export default async function EspPartnersPage() {
 
       {/* 4. Before, during, after */}
       <Section>
-        <SectionHeader eyebrow={text("lifecycle", "eyebrow")} title={text("lifecycle", "title")} />
-        <ol className="mt-12 grid gap-4 lg:grid-cols-3">
-          {stages.map((stage, index) => (
-            <li key={stage.key} className="relative rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6">
-              <div className="flex items-center justify-between gap-3">
-                <span className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-semibold text-cyan-100">{index + 1}</span>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/70">{stage.status}</span>
-                </span>
-                {index < stages.length - 1 ? <span aria-hidden className="hidden text-cyan-200/40 lg:block">→</span> : null}
-              </div>
-              <h3 className="mt-5 text-xl font-semibold text-white">{stage.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{stage.text}</p>
-            </li>
+        <SectionHeader eyebrow={text("lifecycle", "eyebrow")} title={text("lifecycle", "title")} body={text("lifecycle", "body")} />
+        {/* The first stage is the core use; the others are the same data, used earlier. */}
+        {mainStage ? (
+          <article className="mt-12 grid gap-4 rounded-[2rem] border border-cyan-300/25 bg-cyan-300/[0.075] p-6 md:grid-cols-[0.35fr_0.65fr] md:items-center md:p-8">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100/80">{mainStage.status}</p>
+              <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">{mainStage.title}</h3>
+            </div>
+            <p className="text-base leading-7 text-slate-200">{mainStage.text}</p>
+          </article>
+        ) : null}
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {sameDataStages.map((stage) => (
+            <article key={stage.key} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{stage.status}</p>
+              <h3 className="mt-3 text-lg font-semibold text-white">{stage.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">{stage.text}</p>
+            </article>
           ))}
-        </ol>
+        </div>
         <div className="mt-5 flex flex-col gap-2 rounded-[1.5rem] border border-dashed border-white/15 bg-transparent p-5 md:flex-row md:items-baseline md:gap-6">
           <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{text("signupChecks", "eyebrow")}</p>
           <p className="text-sm leading-6 text-slate-400">
@@ -314,6 +323,21 @@ export default async function EspPartnersPage() {
                 <a href={corporateMail.href} className={textLink}>Source →</a>
               </p>
             ) : null}
+            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-[#030619] p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-100/70">{text("attribution", "title")}</h3>
+              <dl className="mt-4 grid gap-3">
+                {attribution.map((item) => (
+                  <div key={item.key} className="grid gap-1 sm:grid-cols-[0.3fr_0.7fr] sm:gap-4">
+                    <dt className="text-sm font-semibold text-white">{item.title}</dt>
+                    <dd className="text-sm leading-6 text-slate-400">{item.text}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                {text("attribution", "body")}{" "}
+                <a href={withSrc(MACHINE_CLICKS_GUIDE_PATH, SRC)} className={textLink}>Read the guide →</a>
+              </p>
+            </div>
           </div>
           <div>
             <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#030619]">
@@ -458,6 +482,17 @@ export default async function EspPartnersPage() {
           ))}
         </div>
         <p className="mx-auto mt-10 max-w-3xl text-center text-lg font-semibold leading-8 text-cyan-100">{text("integration", "secondaryBody")}</p>
+        <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b22]">
+          <h3 className="border-b border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100/70">{text("techSpec", "title")}</h3>
+          <dl>
+            {techSpec.map((item) => (
+              <div key={item.key} className="grid gap-1 border-b border-white/10 px-5 py-4 last:border-b-0 md:grid-cols-[0.28fr_0.72fr] md:gap-4">
+                <dt className="text-sm font-semibold text-white">{item.title}</dt>
+                <dd className="text-sm leading-6 text-slate-300">{item.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
         {technicalLinks.length > 0 ? (
           <div className="mt-8 flex flex-col gap-3 rounded-[1.5rem] border border-white/10 bg-[#050b22] p-5 md:flex-row md:items-center md:gap-6">
             <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{text("technicalLinks", "title")}</p>
